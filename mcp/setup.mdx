@@ -1,128 +1,162 @@
 ---
 title: Setup
-description: Configure emma MCP Server in Cursor to start using emma's capabilities from your IDE.
+description: Configure the emma MCP Server in Cursor, Claude Code, or Codex to start using emma's tools and Skills from your agent.
 ---
 
-This guide walks you through setting up the emma MCP Server in Cursor.
+This guide walks you through connecting to the emma MCP Server, a remote server hosted by emma — there's no local package to install.
 
 ## Prerequisites
 
 Before you begin, make sure you have:
 
-- **Cursor** installed on your machine
-- An **emma account** with API access
-- Your **emma API Key** (available in Settings)
+- One of the supported clients: **Cursor**, **Claude Code**, or **Codex**
+- An **emma account**
+- An **emma API Key** (create one from **API Keys** in the emma dashboard)
 
-## Configuration
-
-### Step 1: Get Your API Key
+## Step 1: Get Your API Key
 
 1. Log in to [emma](https://app.emma.ai)
-2. Go to **Settings**
-3. Copy your API Key
+2. Go to **API Keys**
+3. Click **Create API Key** and copy the generated key (it starts with `emma_sk_`)
 
-### Step 2: Configure Cursor
+<Warning>
+Treat your API key like a password. Never commit it to version control or share it publicly.
+</Warning>
 
-Add the emma MCP server to your Cursor configuration file.
+## Step 2: Configure Your Client
+
+emma exposes its MCP server over Streamable HTTP at:
+
+```
+https://app.emma.ai/api/v1/mcp
+```
+
+Authenticate by sending your API key as a bearer token: `Authorization: Bearer YOUR_API_KEY`.
 
 <Tabs>
-  <Tab title="macOS / Linux">
-    Edit `~/.cursor/mcp.json`:
+  <Tab title="Cursor">
+    Edit `~/.cursor/mcp.json` (or use **Cursor Settings → MCP** to add a server):
 
     ```json
     {
       "mcpServers": {
         "emma": {
-          "command": "python",
-          "args": ["-m", "emma_mcp"],
-          "env": {
-            "EMMA_API_KEY": "your_api_key_here"
+          "url": "https://app.emma.ai/api/v1/mcp",
+          "headers": {
+            "Authorization": "Bearer YOUR_API_KEY"
+          }
+        }
+      }
+    }
+    ```
+
+    Then restart Cursor to load the MCP server.
+  </Tab>
+  <Tab title="Claude Code">
+    Claude Code can add a remote HTTP MCP server directly from the CLI:
+
+    ```bash
+    claude mcp add --transport http emma \
+      "https://app.emma.ai/api/v1/mcp" \
+      --header "Authorization: Bearer YOUR_API_KEY"
+    ```
+
+    Or edit `.mcp.json` in your project manually:
+
+    ```json
+    {
+      "mcpServers": {
+        "emma": {
+          "type": "http",
+          "url": "https://app.emma.ai/api/v1/mcp",
+          "headers": {
+            "Authorization": "Bearer YOUR_API_KEY"
           }
         }
       }
     }
     ```
   </Tab>
-  <Tab title="Windows">
-    Edit `%APPDATA%\Cursor\mcp.json`:
+  <Tab title="Codex">
+    Edit `~/.codex/config.toml`:
 
-    ```json
-    {
-      "mcpServers": {
-        "emma": {
-          "command": "python",
-          "args": ["-m", "emma_mcp"],
-          "env": {
-            "EMMA_API_KEY": "your_api_key_here"
-          }
-        }
-      }
-    }
+    ```toml
+    [mcp_servers.emma]
+    url = "https://app.emma.ai/api/v1/mcp"
+    http_headers = { Authorization = "Bearer YOUR_API_KEY" }
     ```
   </Tab>
 </Tabs>
 
 <Warning>
-Replace `your_api_key_here` with your actual emma API Key. Never commit your API key to version control.
+Replace `YOUR_API_KEY` with your actual emma API Key in every example above.
 </Warning>
 
-### Step 3: Restart Cursor
+## Alternative: Local stdio Bridge
 
-After saving the configuration file, restart Cursor to load the MCP server.
+If your MCP client only supports the **stdio** transport (or doesn't support custom HTTP headers yet), use emma's local Node.js bridge instead. It proxies the same tools to the same backend over your API key.
+
+```json
+{
+  "mcpServers": {
+    "emma": {
+      "command": "npx",
+      "args": ["-y", "@duzzle/emma-mcp"],
+      "env": {
+        "EMMA_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+<Note>
+The local bridge is published on npm as [`@duzzle/emma-mcp`](https://www.npmjs.com/package/@duzzle/emma-mcp) and requires Node.js 18+. It exposes the exact same tool set described in [emma MCP Server](/mcp/emma-mcp-server).
+</Note>
 
 ## Verify the Connection
 
-To verify that emma MCP Server is working correctly, you can use the health check tool:
+To verify that the emma MCP Server is working correctly, use the health check tool:
 
-1. Open Cursor
-2. In the AI chat, ask: "Check emma connection status"
-3. The `emma_health_check` tool should return a successful response
+1. Open your client's AI chat
+2. Ask: "Check emma connection status"
+3. The `emma_health_check` tool should report that the connection is healthy and your API key is valid
 
-## Configuration Options
+## Configuration Reference
 
-### Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `EMMA_API_KEY` | Required | Your emma API key |
+| Setting | Value |
+|---------|-------|
+| Remote MCP URL | `https://app.emma.ai/api/v1/mcp` |
+| Transport | Streamable HTTP |
+| Authentication header | `Authorization: Bearer <api_key>` (also accepts `X-API-Key: <api_key>`) |
+| Local bridge package | `@duzzle/emma-mcp` (npm), requires `EMMA_API_KEY` env var |
 
 ## Troubleshooting
-
-### Server Not Starting
-
-<AccordionGroup>
-  <Accordion title="Python not found">
-    Make sure Python is installed and available in your PATH. You can verify by running:
-    
-    ```bash
-    python --version
-    ```
-    
-    If Python is not found, install it from [python.org](https://www.python.org/downloads/).
-  </Accordion>
-  
-  <Accordion title="Module not found: emma_mcp">
-    Ensure the emma MCP package is installed correctly. Contact support if you need assistance with installation.
-  </Accordion>
-  
-  <Accordion title="Invalid API Key">
-    Double-check that your API key is correct and hasn't expired. You can generate a new key from emma Settings.
-  </Accordion>
-</AccordionGroup>
 
 ### Connection Issues
 
 <AccordionGroup>
-  <Accordion title="Health check fails">
-    1. Verify your internet connection
-    2. Check that your API key is valid
-    3. Ensure there are no firewall rules blocking the connection
+  <Accordion title="401 Unauthorized / api_key_required">
+    No API key was sent with the request. Double-check that your client config includes the `Authorization: Bearer YOUR_API_KEY` header (or `X-API-Key`) exactly as shown above.
   </Accordion>
-  
+
+  <Accordion title="401 Unauthorized / invalid_api_key">
+    The API key is missing, malformed, or has been revoked. Generate a new key from **API Keys** in the emma dashboard and update your config.
+  </Accordion>
+
+  <Accordion title="429 Rate Limited">
+    You've exceeded the request rate limit for your API key. Wait and retry — the response includes a `Retry-After` header.
+  </Accordion>
+
   <Accordion title="Tools not appearing">
-    1. Restart Cursor completely
-    2. Check the MCP configuration file for syntax errors
-    3. Verify the server name matches exactly: `emma`
+    1. Restart your client completely after editing the MCP config
+    2. Check the config file for JSON/TOML syntax errors
+    3. Verify the server name matches what your client expects (usually `emma`)
+    4. Confirm the URL has no trailing typos: `https://app.emma.ai/api/v1/mcp`
+  </Accordion>
+
+  <Accordion title="Using the local stdio bridge instead">
+    If `npx -y @duzzle/emma-mcp` fails to start, make sure Node.js 18+ is installed and `EMMA_API_KEY` is set in the `env` block of your MCP config.
   </Accordion>
 </AccordionGroup>
 
@@ -130,31 +164,13 @@ To verify that emma MCP Server is working correctly, you can use the health chec
 
 <Steps>
   <Step title="Use Environment Variables">
-    Instead of hardcoding your API key, consider using environment variables:
-    
-    ```json
-    {
-      "mcpServers": {
-        "emma": {
-          "command": "python",
-          "args": ["-m", "emma_mcp"],
-          "env": {
-            "EMMA_API_KEY": "${EMMA_API_KEY}"
-          }
-        }
-      }
-    }
-    ```
-    
-    Then set the environment variable in your shell profile.
+    Where your client supports it, reference an environment variable instead of hardcoding the key in a committed config file.
   </Step>
-  
-  <Step title="Restrict API Key Permissions">
-    If emma supports scoped API keys, use a key with only the permissions you need.
+  <Step title="Scope and Name Your Keys">
+    Give each API key a descriptive name per machine/agent so you can revoke individual keys without affecting others.
   </Step>
-  
   <Step title="Rotate Keys Regularly">
-    Periodically generate new API keys and revoke old ones.
+    Periodically create new API keys and revoke old ones from **API Keys** in the emma dashboard.
   </Step>
 </Steps>
 

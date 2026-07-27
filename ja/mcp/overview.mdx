@@ -7,21 +7,21 @@ description: Model Context Protocol（MCP）について学び、emmaの機能�
 
 **Model Context Protocol（MCP）** は、AIアプリケーションが外部のデータソースやツールに安全に接続するためのオープンスタンダードです。MCPは、AIアプリケーションにとってのUSB-Cポートのようなもの — 様々なサービスに接続するための標準化された方法です。
 
-MCPを使用することで、emmaのようなAIエージェントに、統一されたインターフェースを通じてツール、データベース、API、その他のサービスへのアクセスを提供できます。
+MCPを使用することで、CursorやClaude CodeのようなAIコーディングエージェントに、統一されたインターフェースを通じてemmaのツール、インテグレーション、保存済みSkillへのアクセスを、エディタやターミナルから離れることなく提供できます。
 
 ## emmaでMCPを使うメリット
 
-emmaをMCPサーバーに接続することで、以下のことが可能になります：
+AIコーディングエージェントをemma MCP Serverに接続することで、以下のことが可能になります：
 
 <CardGroup cols={2}>
-  <Card title="機能の拡張" icon="puzzle-piece">
-    組み込みインテグレーション以外のツールやサービスへのアクセスを提供
+  <Card title="100以上のインテグレーションにアクセス" icon="puzzle-piece">
+    Slack、GitHub、Notion、Gmailなどemmaのインテグレーションを、エディタから離れずに検索・実行
   </Card>
-  <Card title="ワークフローの自動化" icon="robot">
-    emmaと既存ツールを組み合わせた強力な自動化を作成
+  <Card title="保存済みSkillを再利用" icon="book">
+    一度emmaに保存したワークフローを、どのマシン・IDE・エージェントからでも再利用
   </Card>
-  <Card title="カスタムインテグレーション" icon="code">
-    カスタムMCPサーバーを構築して社内システムと接続
+  <Card title="OAuthを自動化" icon="key">
+    emmaが認証を代わりに処理 — 認証が必要な場合はツールが接続リンクを返す
   </Card>
   <Card title="標準化されたプロトコル" icon="plug">
     異なるAIアプリケーション間で同じプロトコルを使用
@@ -30,22 +30,28 @@ emmaをMCPサーバーに接続することで、以下のことが可能にな�
 
 ## 対応トランスポート
 
-emma MCP Serverは現在、**stdio（標準入出力）** トランスポートに対応しています。これはCursorなどのローカルMCPクライアントで使用されます。
+emma MCP Serverは**リモートでホストされたMCPサーバー**で、**Streamable HTTP**で通信します。インストールは不要 — emma APIキーを使ってHTTPS経由でクライアントから直接接続できます。
 
 | トランスポート | 状態 | 説明 |
 |--------------|------|------|
-| **stdio** | 対応 | ローカルプロセスとして起動し、stdin/stdoutで通信 |
+| **Streamable HTTP** | 推奨 | `/api/v1/mcp` でemmaがホストするリモートサーバー。URLとAPIキーを設定するだけで、ローカルプロセスのインストールや起動は不要 |
+| **stdio**（ローカル・任意） | 対応 | リモートHTTP MCPにまだ対応していないクライアント向けに、emmaは同じツール群を既存のAPIキーでプロキシするローカルstdioブリッジ（npmの`@duzzle/emma-mcp`）も提供 |
 | SSE | 未対応 | Server-Sent Events |
-| Streamable HTTP | 未対応 | HTTPベースのストリーミング |
+
+<Note>
+リモートのStreamable HTTPサーバーは、ローカルのstdioブリッジと完全に同じツール群を提供します。そのため、エージェントからのemmaの使い方を変えずに両者を切り替えられます。
+</Note>
 
 ## 対応クライアント
 
-現在、emma MCP Serverは以下のクライアントを公式にサポートしています：
+Streamable HTTPトランスポート（認証用のカスタムヘッダー対応）をサポートするMCPクライアントであれば、emmaに接続できます。emmaが公式にセットアップ手順を用意しているのは：
 
 - **Cursor** — AI搭載コードエディタ
+- **Claude Code** — AnthropicのコーディングエージェントCLI
+- **Codex** — OpenAIのコーディングエージェントCLI
 
 <Note>
-今後のリリースで、追加のクライアント（Claude Desktop、Windsurfなど）のサポートが追加される可能性があります。
+stdioトランスポートのみに対応するクライアント（またはカスタムHTTPヘッダーに未対応のクライアント）は、代わりにローカルの`@duzzle/emma-mcp`パッケージを使用できます。詳細は[セットアップガイド](/ja/mcp/setup)を参照してください。
 </Note>
 
 ## 次のステップ

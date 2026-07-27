@@ -7,21 +7,21 @@ description: Learn about the Model Context Protocol (MCP) and how to extend emma
 
 The **Model Context Protocol (MCP)** is an open standard that enables AI applications to securely connect to external data sources and tools. Think of MCP like a USB-C port for AI applications — a standardized way to connect AI apps to different services.
 
-With MCP, you can give AI agents like emma access to your tools, databases, APIs, and other services through a unified interface.
+With MCP, you can give AI agents like Cursor or Claude Code access to emma's tools, integrations, and saved Skills through a unified interface — directly from your IDE or terminal.
 
 ## Why Use MCP with emma?
 
-By connecting emma to MCP servers, you can:
+By connecting your AI coding agent to the emma MCP Server, you can:
 
 <CardGroup cols={2}>
-  <Card title="Extend Capabilities" icon="puzzle-piece">
-    Give emma access to tools and services beyond its built-in integrations
+  <Card title="Access 100+ Integrations" icon="puzzle-piece">
+    Search and execute any of emma's Slack, GitHub, Notion, Gmail, and other integrations without leaving your editor
   </Card>
-  <Card title="Automate Workflows" icon="robot">
-    Create powerful automations that combine emma with your existing tools
+  <Card title="Reuse Saved Skills" icon="book">
+    Save a workflow once in emma and reuse it from any machine, IDE, or agent
   </Card>
-  <Card title="Custom Integrations" icon="code">
-    Build custom MCP servers to connect emma to your internal systems
+  <Card title="Automate OAuth" icon="key">
+    emma handles OAuth connections for you — tools return a connect link when authentication is needed
   </Card>
   <Card title="Standardized Protocol" icon="plug">
     Use the same protocol across different AI applications
@@ -30,22 +30,28 @@ By connecting emma to MCP servers, you can:
 
 ## Supported Transport
 
-emma MCP Server currently supports **stdio (standard input/output)** transport, which is used by local MCP clients like Cursor.
+emma MCP Server is a **remote, hosted MCP server** that speaks **Streamable HTTP**. There's nothing to install — your client connects directly over HTTPS using your emma API key.
 
 | Transport | Status | Description |
 |-----------|--------|-------------|
-| **stdio** | Supported | Runs as a local process, communicates via stdin/stdout |
+| **Streamable HTTP** | Recommended | Remote server hosted by emma at `/api/v1/mcp`. Just add a URL and an API key — no local process to install or keep running |
+| **stdio** | Supported (local, optional) | For clients that can't speak remote HTTP MCP yet, emma also publishes a local stdio bridge (`@duzzle/emma-mcp` on npm) that proxies the same tools over your existing API key |
 | SSE | Not supported | Server-Sent Events |
-| Streamable HTTP | Not supported | HTTP-based streaming |
+
+<Note>
+The remote Streamable HTTP server exposes exactly the same tools as the local stdio bridge, so you can switch between them without changing how you use emma from your agent.
+</Note>
 
 ## Supported Clients
 
-Currently, emma MCP Server officially supports:
+Any MCP client that supports the Streamable HTTP transport (with custom headers for authentication) can connect to emma. emma officially documents setup for:
 
 - **Cursor** — AI-powered code editor
+- **Claude Code** — Anthropic's coding agent CLI
+- **Codex** — OpenAI's coding agent CLI
 
 <Note>
-Support for additional clients (Claude Desktop, Windsurf, etc.) may be added in future releases.
+Clients that only support the stdio transport (or don't yet support custom HTTP headers) can use the local `@duzzle/emma-mcp` package instead — see the [Setup Guide](/mcp/setup) for details.
 </Note>
 
 ## Next Steps

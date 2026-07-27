@@ -1,27 +1,29 @@
 ---
 title: emma MCP Server
-description: Connect your AI tools to emma using the official MCP server for task execution and automation management.
+description: Connect your AI agent to emma's integrations and Skills using the official MCP server.
 ---
 
-The emma MCP Server provides programmatic access to emma's core capabilities, allowing you to run tasks and manage automations directly from MCP-compatible clients like Cursor.
+The emma MCP Server gives any MCP-compatible client — Cursor, Claude Code, Codex, and others — programmatic access to emma's integration ecosystem and Skill library, without exposing hundreds of individual tools to your agent's context window.
+
+Instead of registering a separate MCP tool for every Slack action, every GitHub action, every Notion action, and so on, emma follows a **Tool Vendor** pattern (similar to Composio): a small number of meta-tools let your agent *search* for the right integration, *inspect* its schema, and *execute* it on demand. A parallel **Skill Vendor** pattern does the same for reusable, saved workflows.
 
 ## Features
 
 <CardGroup cols={2}>
-  <Card title="Task Execution" icon="play">
-    Run tasks on emma with customizable execution modes
+  <Card title="Tool Discovery" icon="search">
+    Search across emma's integrations (Slack, GitHub, Notion, Gmail, and more) by keyword instead of memorizing tool names
   </Card>
-  <Card title="Session Management" icon="comments">
-    Monitor progress, send follow-up instructions, and control running tasks
+  <Card title="Direct Execution" icon="zap">
+    Execute any discovered tool with structured arguments and get the result back inline
   </Card>
-  <Card title="Automation Management" icon="clock">
-    Create, update, and manage scheduled automations
+  <Card title="Built-in OAuth Handling" icon="key">
+    When a tool needs authentication, you get a connect link back automatically — no separate auth flow to build
+  </Card>
+  <Card title="Skill Library" icon="book">
+    Save a workflow once and reuse it from any machine, IDE, or agent — Skills are stored in emma's cloud
   </Card>
   <Card title="Health Monitoring" icon="heart-pulse">
-    Check API connection status
-  </Card>
-  <Card title="Flexible Scheduling" icon="calendar">
-    Use cron expressions for precise scheduling
+    Verify your API key and connection before running anything else
   </Card>
 </CardGroup>
 
@@ -32,8 +34,10 @@ The emma MCP Server requires an API key for authentication.
 ### Getting Your API Key
 
 1. Log in to [emma](https://app.emma.ai)
-2. Navigate to **Settings**
-3. Generate or copy your API key
+2. Go to **API Keys**
+3. Create or copy your API key
+
+Send it with every request as `Authorization: Bearer <api_key>` (or `X-API-Key: <api_key>`). See the [Setup Guide](/mcp/setup) for the exact client configuration.
 
 <Warning>
 Keep your API key secure. Do not commit it to version control or share it publicly.
@@ -41,92 +45,104 @@ Keep your API key secure. Do not commit it to version control or share it public
 
 ## Available Tools
 
-The emma MCP Server provides 8 tools organized into three categories:
+The emma MCP Server provides 9 tools organized into three categories:
 
-### Task Execution
-
-| Tool | Description |
-|------|-------------|
-| `emma_run_task` | Execute a task on emma with customizable modes |
-| `emma_health_check` | Check emma API connection status |
-
-### Session Management
+### Health Check
 
 | Tool | Description |
 |------|-------------|
-| `emma_session_interact` | Monitor, communicate with, and control running sessions |
+| `emma_health_check` | Verify connectivity and that your API key is valid |
 
-### Automation Management
+### Tool Vendor
 
 | Tool | Description |
 |------|-------------|
-| `emma_create_automation` | Create a new scheduled automation |
-| `emma_list_automations` | List all automations |
-| `emma_get_automation` | Get details of a specific automation |
-| `emma_update_automation` | Update an existing automation |
-| `emma_delete_automation` | Delete an automation |
+| `emma_search_tools` | Search emma's integrations by keyword (e.g. "post slack message") |
+| `emma_get_tool_schema` | Get the input schema for a specific integration tool |
+| `emma_execute_tool` | Execute a specific integration tool with arguments |
+
+### Skill Vendor
+
+| Tool | Description |
+|------|-------------|
+| `emma_list_skills` | List saved Skills (reusable workflows), newest first |
+| `emma_get_skill` | Get a Skill's full instructions |
+| `emma_create_skill` | Save a reusable workflow as a new Skill |
+| `emma_update_skill` | Update an existing Skill |
+| `emma_delete_skill` | Delete a Skill |
 
 <Note>
-For detailed parameter information, see the [Tools Reference](/mcp/tools-reference).
+For detailed parameters, response formats, and examples for every tool, see the [Tools Reference](/mcp/tools-reference).
 </Note>
+
+## Recommended Workflows
+
+### Tool Vendor: search → schema → execute
+
+<Steps>
+  <Step title="Search for a tool">
+    Call `emma_search_tools` with a natural-language query (optionally filtered by `service`) to find the right integration tool name.
+  </Step>
+  <Step title="Inspect its schema (if needed)">
+    Call `emma_get_tool_schema` with the exact tool name to see its required and optional arguments.
+  </Step>
+  <Step title="Execute it">
+    Call `emma_execute_tool` with the tool name and a JSON object of arguments. If the underlying service requires authentication you haven't set up yet, the response includes a `connect_link` — visit it, then retry.
+  </Step>
+</Steps>
+
+### Skill Vendor: list → get → follow → save
+
+<Steps>
+  <Step title="Check for an existing Skill">
+    Call `emma_list_skills` before starting a task — it returns all your saved Skills (optionally filtered by `query`) with pagination.
+  </Step>
+  <Step title="Read its instructions">
+    Call `emma_get_skill` with a `skill_id` to get the full step-by-step instructions.
+  </Step>
+  <Step title="Follow the instructions">
+    Your agent executes the steps itself, using `emma_search_tools` / `emma_execute_tool` for any integration actions along the way.
+  </Step>
+  <Step title="Save new workflows">
+    Once you've built a workflow worth reusing, call `emma_create_skill` so it's available from any machine or agent later.
+  </Step>
+</Steps>
 
 ## Use Cases
 
-### Run a Task from Your IDE
-
-Ask emma to perform tasks directly from Cursor:
+### Discover and use an integration from your IDE
 
 ```
-"Post today's weather forecast to Slack #general"
-"Summarize the latest GitHub issues and send to the team"
-"Check our monitoring dashboard and report any anomalies"
+"Post 'Deploy finished ✅' to Slack #general"
+"Create a GitHub issue titled 'Fix login redirect bug' in owner/repo"
+"Search for tools related to Notion"
 ```
 
-### Create Scheduled Automations
+Your agent will call `emma_search_tools`, then `emma_execute_tool` (fetching the schema first if it's unsure of the arguments).
 
-Set up recurring tasks that run automatically:
-
-```
-"Create a daily standup reminder at 9 AM"
-"Schedule a weekly report every Monday morning"
-"Set up hourly health checks for our production system"
-```
-
-### Manage Your Automations
-
-View, update, or delete your scheduled tasks:
+### Handle authentication mid-task
 
 ```
-"List all my automations"
-"Disable the daily report automation"
-"Change the weekly sync to run at 10 AM instead of 9 AM"
+"Send a message to my team on Slack"
 ```
 
-### Monitor and Control Running Tasks
+If you haven't connected Slack yet, `emma_execute_tool` returns `success: false` with `reason: "auth_required"` and a `connect_link`. Your agent should surface that link, wait for you to authenticate, then retry the same call.
 
-Track progress and interact with running sessions:
+### Save and reuse a workflow as a Skill
 
 ```
-"Check the status of my running task"
-"Send additional instructions to the current session"
-"Cancel the task that's taking too long"
+"Save this as a skill called 'Weekly Status Report'"
+"List my saved skills"
+"Run my 'Weekly Status Report' skill"
 ```
 
-## Execution Modes
-
-When running tasks with `emma_run_task`, you can specify different execution modes:
-
-| Mode | Description | Best For |
-|------|-------------|----------|
-| `normal` | Standard execution (default) | Most tasks |
-| `deep_thinking` | Extended reasoning for complex tasks | Complex analysis, multi-step tasks |
-| `ask` | Information gathering mode | Research, data collection |
+Skills created this way also appear in emma's Web UI under the **Skills** tab and can be used by emma's own agents — not just your MCP client.
 
 ## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Setup Guide" icon="wrench" href="/mcp/setup">
-    Configure emma MCP Server in Cursor
+    Configure the emma MCP Server in Cursor, Claude Code, or Codex
   </Card>
   <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
     Detailed documentation for all tools
