@@ -1,10 +1,115 @@
 /* Invert the navbar CTA button colors in dark mode so it stays visible
-   against the near-black background (light mode already looks correct). */
-html.dark #topbar-cta-button a span.absolute {
+   against the near-black background (light mode already looks correct).
+   Selectors are intentionally broad (not tied to specific utility class
+   names like ".absolute" or ".z-10") since Mintlify's internal markup for
+   the button can differ between the local preview build and the deployed
+   production build. */
+html.dark #topbar-cta-button a {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.dark #topbar-cta-button a * {
+  color: #000000 !important;
+}
+
+html.dark #topbar-cta-button a > span:first-child {
   background-color: #ffffff !important;
 }
 
-html.dark #topbar-cta-button a span.z-10,
-html.dark #topbar-cta-button a svg {
-  color: #000000 !important;
+/* Card-style previous/next footer navigation.
+   Each link becomes a bordered tile with a small "Previous"/"Next"
+   eyebrow label above the linked page's title, instead of a plain
+   inline text link. */
+#pagination {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
+
+#pagination a {
+  display: grid;
+  align-items: center;
+  column-gap: 0.6rem;
+  row-gap: 0.35rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid rgb(228 228 231);
+  border-radius: 0.75rem;
+  text-decoration: none;
+}
+
+html.dark #pagination a {
+  border-color: rgb(39 39 42);
+}
+
+/* Reset Tailwind's space-x-3 utility (adds margin-left to non-first
+   children) since the grid gap/areas below already handle spacing. */
+#pagination a > svg,
+#pagination a > span {
+  margin: 0 !important;
+}
+
+#pagination a > svg {
+  grid-area: icon;
+}
+
+#pagination a > span {
+  grid-area: title;
+  font-size: 0.95rem;
+}
+
+#pagination a::before {
+  grid-area: label;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(113 113 122);
+}
+
+/* Previous link: no "ml-auto" class, icon then title, left-aligned. */
+#pagination a:not(.ml-auto) {
+  grid-column: 1;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "label label"
+    "icon title";
+  justify-content: start;
+  text-align: left;
+}
+
+#pagination a:not(.ml-auto)::before {
+  content: "Previous";
+  justify-self: start;
+}
+
+/* Localize the eyebrow label for Japanese pages based on their target href. */
+#pagination a[href^="/ja/"]:not(.ml-auto)::before {
+  content: "前へ";
+}
+
+/* Next link: has "ml-auto" class, title then icon, right-aligned. */
+#pagination a.ml-auto {
+  grid-column: 2;
+  margin-left: 0;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label label"
+    "title icon";
+  justify-content: end;
+  text-align: right;
+}
+
+#pagination a.ml-auto::before {
+  content: "Next";
+  justify-self: end;
+}
+
+#pagination a[href^="/ja/"].ml-auto::before {
+  content: "次へ";
+}
+
+/* Note: a lone previous/next link (first or last page) naturally stays
+   within its own half of the grid via the grid-column rules above, since
+   there is no rule making it span the full row. */
