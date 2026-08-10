@@ -6,7 +6,7 @@
 
 [Shanone](https://app.Shanone.ai) の公式ドキュメントです
 
-**公開サイト:** [docs.duzzle.dev](https://docs.duzzle.dev)
+**公開サイト:** [docs.shanone.ai](https://docs.shanone.ai)
 
 ## Shanoneについて
 
@@ -21,7 +21,7 @@ Shanoneは、意欲的なエンジニアリングチームがバックオフィ�
 
 ## リンク
 
-- [ドキュメント](https://docs.duzzle.dev)
+- [ドキュメント](https://docs.shanone.ai)
 - [GitHub](https://github.com/Duzzle-development/Shanone-docs)
 - [X](https://x.com/Duzzle_ai)
 

@@ -6,7 +6,7 @@
 
 Official documentation for [Shanone](https://app.Shanone.ai).
 
-**Live site:** [docs.duzzle.dev](https://docs.duzzle.dev)
+**Live site:** [docs.shanone.ai](https://docs.shanone.ai)
 
 ## About Shanone
 
@@ -21,7 +21,7 @@ Shanone is a product designed for ambitious engineering teams to streamline and 
 
 ## Links
 
-- [Documentation](https://docs.duzzle.dev)
+- [Documentation](https://docs.shanone.ai)
 - [GitHub](https://github.com/Duzzle-development/Shanone-docs)
 - [X](https://x.com/Duzzle_ai)
 
