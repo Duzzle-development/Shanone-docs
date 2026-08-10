@@ -1,27 +1,27 @@
 ---
 title: MCP Overview
-description: Learn about the Model Context Protocol (MCP) and how to extend emma's capabilities with external tools.
+description: Learn about the Model Context Protocol (MCP) and how to extend Shanone's capabilities with external tools.
 ---
 
 ## What is MCP?
 
 The **Model Context Protocol (MCP)** is an open standard that enables AI applications to securely connect to external data sources and tools. Think of MCP like a USB-C port for AI applications — a standardized way to connect AI apps to different services.
 
-With MCP, you can give AI agents like Cursor or Claude Code access to emma's tools, integrations, and saved Skills through a unified interface — directly from your IDE or terminal.
+With MCP, you can give AI agents like Cursor or Claude Code access to Shanone's tools, integrations, and saved Skills through a unified interface — directly from your IDE or terminal.
 
-## Why Use MCP with emma?
+## Why Use MCP with Shanone?
 
-By connecting your AI coding agent to the emma MCP Server, you can:
+By connecting your AI coding agent to the Shanone MCP Server, you can:
 
 <CardGroup cols={2}>
   <Card title="Access 100+ Integrations" icon="puzzle-piece">
-    Search and execute any of emma's Slack, GitHub, Notion, Gmail, and other integrations without leaving your editor
+    Search and execute any of Shanone's Slack, GitHub, Notion, Gmail, and other integrations without leaving your editor
   </Card>
   <Card title="Reuse Saved Skills" icon="book">
-    Save a workflow once in emma and reuse it from any machine, IDE, or agent
+    Save a workflow once in Shanone and reuse it from any machine, IDE, or agent
   </Card>
   <Card title="Automate OAuth" icon="key">
-    emma handles OAuth connections for you — tools return a connect link when authentication is needed
+    Shanone handles OAuth connections for you — tools return a connect link when authentication is needed
   </Card>
   <Card title="Standardized Protocol" icon="plug">
     Use the same protocol across different AI applications
@@ -30,37 +30,37 @@ By connecting your AI coding agent to the emma MCP Server, you can:
 
 ## Supported Transport
 
-emma MCP Server is a **remote, hosted MCP server** that speaks **Streamable HTTP**. There's nothing to install — your client connects directly over HTTPS using your emma API key.
+Shanone MCP Server is a **remote, hosted MCP server** that speaks **Streamable HTTP**. There's nothing to install — your client connects directly over HTTPS using your Shanone API key.
 
 | Transport | Status | Description |
 |-----------|--------|-------------|
-| **Streamable HTTP** | Recommended | Remote server hosted by emma at `/api/v1/mcp`. Just add a URL and an API key — no local process to install or keep running |
-| **stdio** | Supported (local, optional) | For clients that can't speak remote HTTP MCP yet, emma also publishes a local stdio bridge (`@duzzle/emma-mcp` on npm) that proxies the same tools over your existing API key |
+| **Streamable HTTP** | Recommended | Remote server hosted by Shanone at `/api/v1/mcp`. Just add a URL and an API key — no local process to install or keep running |
+| **stdio** | Supported (local, optional) | For clients that can't speak remote HTTP MCP yet, Shanone also publishes a local stdio bridge (`@duzzle/Shanone-mcp` on npm) that proxies the same tools over your existing API key |
 | SSE | Not supported | Server-Sent Events |
 
 <Note>
-The remote Streamable HTTP server exposes exactly the same tools as the local stdio bridge, so you can switch between them without changing how you use emma from your agent.
+The remote Streamable HTTP server exposes exactly the same tools as the local stdio bridge, so you can switch between them without changing how you use Shanone from your agent.
 </Note>
 
 ## Supported Clients
 
-Any MCP client that supports the Streamable HTTP transport (with custom headers for authentication) can connect to emma. emma officially documents setup for:
+Any MCP client that supports the Streamable HTTP transport (with custom headers for authentication) can connect to Shanone. Shanone officially documents setup for:
 
 - **Cursor** — AI-powered code editor
 - **Claude Code** — Anthropic's coding agent CLI
 - **Codex** — OpenAI's coding agent CLI
 
 <Note>
-Clients that only support the stdio transport (or don't yet support custom HTTP headers) can use the local `@duzzle/emma-mcp` package instead — see the [Setup Guide](/mcp/setup) for details.
+Clients that only support the stdio transport (or don't yet support custom HTTP headers) can use the local `@duzzle/Shanone-mcp` package instead — see the [Setup Guide](/mcp/setup) for details.
 </Note>
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="emma MCP Server" icon="server" href="/mcp/emma-mcp-server">
-    Learn about emma's official MCP server and available tools
+  <Card title="Shanone MCP Server" icon="server" href="/mcp/Shanone-mcp-server">
+    Learn about Shanone's official MCP server and available tools
   </Card>
   <Card title="Setup Guide" icon="wrench" href="/mcp/setup">
-    Get started with configuring emma MCP in your environment
+    Get started with configuring Shanone MCP in your environment
   </Card>
 </CardGroup>

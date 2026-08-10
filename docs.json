@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "emma Documentation",
+  "name": "Shanone Documentation",
   "colors": {
     "primary": "#10b981",
     "light": "#34d399",
@@ -23,8 +23,8 @@
   "navbar": {
     "primary": {
       "type": "button",
-      "label": "emma",
-      "href": "https://app.emma.ai"
+      "label": "Shanone",
+      "href": "https://app.Shanone.ai"
     }
   },
   "navigation": {
@@ -40,7 +40,7 @@
                 "pages": ["introduction", "quickstart"]
               },
               {
-                "group": "How to Use emma",
+                "group": "How to Use Shanone",
                 "pages": [
                   "guides/overview",
                   "guides/best-practices",
@@ -92,7 +92,7 @@
                 "group": "MCP",
                 "pages": [
                   "mcp/overview",
-                  "mcp/emma-mcp-server",
+                  "mcp/Shanone-mcp-server",
                   "mcp/setup",
                   "mcp/tools-reference"
                 ]
@@ -112,7 +112,7 @@
                 "pages": ["ja/introduction", "ja/quickstart"]
               },
               {
-                "group": "emmaの使い方",
+                "group": "Shanoneの使い方",
                 "pages": [
                   "ja/guides/overview",
                   "ja/guides/best-practices",
@@ -164,7 +164,7 @@
                 "group": "MCP",
                 "pages": [
                   "ja/mcp/overview",
-                  "ja/mcp/emma-mcp-server",
+                  "ja/mcp/Shanone-mcp-server",
                   "ja/mcp/setup",
                   "ja/mcp/tools-reference"
                 ]
@@ -178,7 +178,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/Duzzle_ai",
-      "github": "https://github.com/Duzzle-development/emma-docs",
+      "github": "https://github.com/Duzzle-development/Shanone-docs",
       "discord": "https://discord.gg/"
     }
   },
@@ -186,7 +186,7 @@
     "thumbsRating": true
   },
   "search": {
-    "prompt": "Search emma docs..."
+    "prompt": "Search Shanone docs..."
   },
   "llmsTxt": {
     "enabled": true

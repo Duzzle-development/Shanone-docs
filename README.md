@@ -1,28 +1,28 @@
-# emma Documentation
+# Shanone Documentation
 
 <p align="center">
   <a href="README.md">English</a> | <a href="README.ja.md">日本語</a>
 </p>
 
-Official documentation for [emma](https://app.emma.ai).
+Official documentation for [Shanone](https://app.Shanone.ai).
 
 **Live site:** [docs.duzzle.dev](https://docs.duzzle.dev)
 
-## About emma
+## About Shanone
 
-emma is a product designed for ambitious engineering teams to streamline and automate back-office work.
+Shanone is a product designed for ambitious engineering teams to streamline and automate back-office work.
 
 ## Documentation
 
 - **Getting Started** - Introduction and quickstart guide
 - **Guides** - Best practices and troubleshooting
-- **Integrations** - Connect emma to Slack, GitHub, and other tools
+- **Integrations** - Connect Shanone to Slack, GitHub, and other tools
 - **API Reference** - API documentation for developers
 
 ## Links
 
 - [Documentation](https://docs.duzzle.dev)
-- [GitHub](https://github.com/Duzzle-development/emma-docs)
+- [GitHub](https://github.com/Duzzle-development/Shanone-docs)
 - [X](https://x.com/Duzzle_ai)
 
 ## Support

@@ -1,15 +1,15 @@
 ---
 title: Tools Reference
-description: Complete reference documentation for all emma MCP Server tools with parameters, examples, and return values.
+description: Complete reference documentation for all Shanone MCP Server tools with parameters, examples, and return values.
 ---
 
-This page provides detailed documentation for all 9 tools available in the emma MCP Server. All tools return plain text (formatted with Markdown), not structured JSON — the example responses below show the shape of that text.
+This page provides detailed documentation for all 9 tools available in the Shanone MCP Server. All tools return plain text (formatted with Markdown), not structured JSON — the example responses below show the shape of that text.
 
 ## Health Check
 
-### emma_health_check
+### Shanone_health_check
 
-Check emma MCP server connectivity and authentication status. Use this to verify your API key is valid before running other tools. Takes no parameters.
+Check Shanone MCP server connectivity and authentication status. Use this to verify your API key is valid before running other tools. Takes no parameters.
 
 <Tabs>
   <Tab title="Example Request">
@@ -19,7 +19,7 @@ Check emma MCP server connectivity and authentication status. Use this to verify
   </Tab>
   <Tab title="Example Response">
     ```
-    Emma Remote MCP Server: healthy. API key is valid.
+    Shanone Remote MCP Server: healthy. API key is valid.
     ```
   </Tab>
 </Tabs>
@@ -28,11 +28,11 @@ Check emma MCP server connectivity and authentication status. Use this to verify
 
 ## Tool Vendor
 
-The Tool Vendor tools let your agent discover and execute any of emma's integrations (Slack, GitHub, Notion, Gmail, and 100+ others) without needing a dedicated MCP tool per integration action.
+The Tool Vendor tools let your agent discover and execute any of Shanone's integrations (Slack, GitHub, Notion, Gmail, and 100+ others) without needing a dedicated MCP tool per integration action.
 
-**Recommended workflow:** `emma_search_tools` → `emma_get_tool_schema` (if needed) → `emma_execute_tool`.
+**Recommended workflow:** `Shanone_search_tools` → `Shanone_get_tool_schema` (if needed) → `Shanone_execute_tool`.
 
-### emma_search_tools
+### Shanone_search_tools
 
 Search for integration tools by keyword. Returns matching tools with name, service, and description.
 
@@ -68,20 +68,20 @@ Search for integration tools by keyword. Returns matching tools with name, servi
       Post a message to a Slack channel or user.
 
     **Next steps:**
-    1. Use `emma_get_tool_schema` to see the input schema for a tool
-    2. Use `emma_execute_tool` to execute the tool with arguments
+    1. Use `Shanone_get_tool_schema` to see the input schema for a tool
+    2. Use `Shanone_execute_tool` to execute the tool with arguments
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_get_tool_schema
+### Shanone_get_tool_schema
 
 Get the JSON Schema for a specific integration tool's input arguments.
 
 <ParamField path="tool_name" type="string" required>
-  The exact tool name (e.g. `"slack_post_message"`, `"github_create_issue"`). Get this from `emma_search_tools`.
+  The exact tool name (e.g. `"slack_post_message"`, `"github_create_issue"`). Get this from `Shanone_search_tools`.
 </ParamField>
 
 <Tabs>
@@ -112,19 +112,19 @@ Get the JSON Schema for a specific integration tool's input arguments.
 
     **Required arguments:** channel, text
 
-    **Next step:** Use `emma_execute_tool` with tool_name="slack_post_message" and the required arguments.
+    **Next step:** Use `Shanone_execute_tool` with tool_name="slack_post_message" and the required arguments.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_execute_tool
+### Shanone_execute_tool
 
-Execute a specific integration tool with arguments. OAuth is handled by emma — if the tool requires authentication you haven't set up, you get a connect link back instead of an error.
+Execute a specific integration tool with arguments. OAuth is handled by Shanone — if the tool requires authentication you haven't set up, you get a connect link back instead of an error.
 
 <ParamField path="tool_name" type="string" required>
-  The exact tool name to execute (e.g. `"slack_post_message"`). Get this from `emma_search_tools`.
+  The exact tool name to execute (e.g. `"slack_post_message"`). Get this from `Shanone_search_tools`.
 </ParamField>
 
 <ParamField path="arguments" type="string" required>
@@ -168,7 +168,7 @@ Execute a specific integration tool with arguments. OAuth is handled by emma —
 
     Slack への接続が必要です。
 
-    Connect Link: https://app.emma.ai/connect/slack?request=req_abc123
+    Connect Link: https://app.Shanone.ai/connect/slack?request=req_abc123
 
     Please ask the user to visit the connect link to authenticate, then retry the request.
     ```
@@ -176,18 +176,18 @@ Execute a specific integration tool with arguments. OAuth is handled by emma —
 </Tabs>
 
 <Note>
-When `reason` is `auth_required` or `auth_expired`, surface the `Connect Link` to the user. Once they authenticate, retry the same `emma_execute_tool` call.
+When `reason` is `auth_required` or `auth_expired`, surface the `Connect Link` to the user. Once they authenticate, retry the same `Shanone_execute_tool` call.
 </Note>
 
 ---
 
 ## Skill Vendor
 
-A **Skill** is a named, reusable prompt describing how to accomplish a task — essentially an Agent Skill (`name` + `summary`/description + `instructions`/body). Skills are stored in emma's cloud, so they're reproducible across machines, IDEs, and agents, and they also appear in emma's Web UI under the **Skills** tab.
+A **Skill** is a named, reusable prompt describing how to accomplish a task — essentially an Agent Skill (`name` + `summary`/description + `instructions`/body). Skills are stored in Shanone's cloud, so they're reproducible across machines, IDEs, and agents, and they also appear in Shanone's Web UI under the **Skills** tab.
 
-**Recommended workflow:** call `emma_list_skills` before starting a task to check whether a relevant Skill already exists, then `emma_get_skill` to read it and follow its instructions yourself.
+**Recommended workflow:** call `Shanone_list_skills` before starting a task to check whether a relevant Skill already exists, then `Shanone_get_skill` to read it and follow its instructions yourself.
 
-### emma_list_skills
+### Shanone_list_skills
 
 List saved Skills, newest first. By default returns **all** Skills (paginated) — `query` is an optional filter, not a required keyword search.
 
@@ -222,19 +222,19 @@ List saved Skills, newest first. By default returns **all** Skills (paginated) �
     - **Daily Standup Reminder** (skill_id: 7c2b5f8d-5678-4d9e-bcde-234567890abc)
       Posts a standup reminder to Slack #general every weekday morning.
 
-    **Next step:** Use `emma_get_skill` with a skill_id to read the full instructions, then follow them.
+    **Next step:** Use `Shanone_get_skill` with a skill_id to read the full instructions, then follow them.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_get_skill
+### Shanone_get_skill
 
-Get a Skill's full instructions (body). The returned text is a prompt/workflow — after reading it, your agent should follow the steps itself, using `emma_search_tools` / `emma_get_tool_schema` / `emma_execute_tool` for any integration actions required.
+Get a Skill's full instructions (body). The returned text is a prompt/workflow — after reading it, your agent should follow the steps itself, using `Shanone_search_tools` / `Shanone_get_tool_schema` / `Shanone_execute_tool` for any integration actions required.
 
 <ParamField path="skill_id" type="string" required>
-  The exact Skill ID. Get this from `emma_list_skills`.
+  The exact Skill ID. Get this from `Shanone_list_skills`.
 </ParamField>
 
 <Tabs>
@@ -252,18 +252,18 @@ Get a Skill's full instructions (body). The returned text is a prompt/workflow �
     Gathers last week's closed issues and posts a summary to Slack #team.
 
     **Instructions:**
-    1. Use emma_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
+    1. Use Shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
     2. Summarize them into 3-5 bullet points.
-    3. Use emma_execute_tool with slack_post_message to post the summary to #team.
+    3. Use Shanone_execute_tool with slack_post_message to post the summary to #team.
 
-    **Next step:** Follow these instructions. Use `emma_execute_tool` for any integration actions required.
+    **Next step:** Follow these instructions. Use `Shanone_execute_tool` for any integration actions required.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_create_skill
+### Shanone_create_skill
 
 Save a reusable workflow as a new Skill. Use this after completing a task worth reusing later from a different machine, IDE, or agent. All three arguments are required.
 
@@ -272,11 +272,11 @@ Save a reusable workflow as a new Skill. Use this after completing a task worth 
 </ParamField>
 
 <ParamField path="description" type="string" required>
-  What the Skill does and when to use it (used for discovery via `emma_list_skills`).
+  What the Skill does and when to use it (used for discovery via `Shanone_list_skills`).
 </ParamField>
 
 <ParamField path="body" type="string" required>
-  Step-by-step workflow/instructions to follow. Reference emma tools where relevant.
+  Step-by-step workflow/instructions to follow. Reference Shanone tools where relevant.
 </ParamField>
 
 <Tabs>
@@ -285,7 +285,7 @@ Save a reusable workflow as a new Skill. Use this after completing a task worth 
     {
       "name": "Weekly Status Report",
       "description": "Gathers last week's closed issues and posts a summary to Slack #team.",
-      "body": "1. Use emma_execute_tool with github_list_issues to fetch issues closed in the last 7 days.\n2. Summarize them into 3-5 bullet points.\n3. Use emma_execute_tool with slack_post_message to post the summary to #team."
+      "body": "1. Use Shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.\n2. Summarize them into 3-5 bullet points.\n3. Use Shanone_execute_tool with slack_post_message to post the summary to #team."
     }
     ```
   </Tab>
@@ -295,19 +295,19 @@ Save a reusable workflow as a new Skill. Use this after completing a task worth 
     skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab
     name: Weekly Status Report
 
-    Retrieve it later with `emma_get_skill` or find it with `emma_list_skills`.
+    Retrieve it later with `Shanone_get_skill` or find it with `Shanone_list_skills`.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_update_skill
+### Shanone_update_skill
 
 Update an existing Skill. Only non-empty fields are changed.
 
 <ParamField path="skill_id" type="string" required>
-  The exact Skill ID. Get this from `emma_list_skills`.
+  The exact Skill ID. Get this from `Shanone_list_skills`.
 </ParamField>
 
 <ParamField path="name" type="string">
@@ -327,7 +327,7 @@ Update an existing Skill. Only non-empty fields are changed.
     ```json
     {
       "skill_id": "3f1a9e2b-1234-4c56-9abc-1234567890ab",
-      "instructions": "1. Use emma_execute_tool with github_list_issues (last 7 days).\n2. Summarize into bullet points.\n3. Post to Slack #team AND #eng-leads."
+      "instructions": "1. Use Shanone_execute_tool with github_list_issues (last 7 days).\n2. Summarize into bullet points.\n3. Post to Slack #team AND #eng-leads."
     }
     ```
   </Tab>
@@ -343,12 +343,12 @@ Update an existing Skill. Only non-empty fields are changed.
 
 ---
 
-### emma_delete_skill
+### Shanone_delete_skill
 
 Delete a Skill.
 
 <ParamField path="skill_id" type="string" required>
-  The exact Skill ID. Get this from `emma_list_skills`.
+  The exact Skill ID. Get this from `Shanone_list_skills`.
 </ParamField>
 
 <Warning>
@@ -376,9 +376,9 @@ Deleting a Skill is permanent and cannot be undone.
 
 | Situation | Response |
 |-----------|----------|
-| Unknown tool name passed to `emma_execute_tool` / `emma_get_tool_schema` | `Tool not found: <tool_name>` with a hint to use `emma_search_tools` |
-| Unknown `skill_id` passed to any Skill Vendor tool | `Skill not found: <skill_id>` with a hint to use `emma_list_skills` |
-| Invalid JSON passed to `emma_execute_tool`'s `arguments` | `Invalid JSON in arguments: ...` with the expected format |
+| Unknown tool name passed to `Shanone_execute_tool` / `Shanone_get_tool_schema` | `Tool not found: <tool_name>` with a hint to use `Shanone_search_tools` |
+| Unknown `skill_id` passed to any Skill Vendor tool | `Skill not found: <skill_id>` with a hint to use `Shanone_list_skills` |
+| Invalid JSON passed to `Shanone_execute_tool`'s `arguments` | `Invalid JSON in arguments: ...` with the expected format |
 | Integration requires OAuth and isn't connected yet | `reason: "auth_required"` (or `"auth_expired"`) plus a `connect_link` |
 | HTTP-level authentication failure (bad/missing API key) | `401` with `error: "api_key_required"` or `"invalid_api_key"` |
 | Too many requests | `429` with `error: "rate_limit_exceeded"` and a `Retry-After` header |

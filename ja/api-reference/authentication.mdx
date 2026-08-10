@@ -1,11 +1,11 @@
 ---
 title: 認証
-description: emma API での認証方法
+description: Shanone API での認証方法
 ---
 
 # 認証
 
-emma API へのリクエストを認証する方法を学びましょう。
+Shanone API へのリクエストを認証する方法を学びましょう。
 
 ## API キー
 
@@ -18,8 +18,8 @@ Authorization: Bearer YOUR_API_KEY
 ## API キーの取得
 
 <Steps>
-  <Step title="emma にサインイン">
-    [app.emma.ai](https://app.emma.ai) にアクセスしてアカウントにサインインします。
+  <Step title="Shanone にサインイン">
+    [app.Shanone.ai](https://app.Shanone.ai) にアクセスしてアカウントにサインインします。
   </Step>
   <Step title="設定に移動">
     プロフィールをクリックして **設定** を選択します。
@@ -41,10 +41,10 @@ API キーは安全に保管してください！クライアントサイドの�
 <Tabs>
   <Tab title="cURL">
     ```bash
-    curl -X POST "https://api.emma.ai/v1/sessions" \
+    curl -X POST "https://api.Shanone.ai/v1/sessions" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
-      -d '{"prompt": "こんにちは、emma！"}'
+      -d '{"prompt": "こんにちは、Shanone！"}'
     ```
   </Tab>
   <Tab title="Python">
@@ -57,21 +57,21 @@ API キーは安全に保管してください！クライアントサイドの�
     }
 
     response = requests.post(
-        "https://api.emma.ai/v1/sessions",
+        "https://api.Shanone.ai/v1/sessions",
         headers=headers,
-        json={"prompt": "こんにちは、emma！"}
+        json={"prompt": "こんにちは、Shanone！"}
     )
     ```
   </Tab>
   <Tab title="JavaScript">
     ```javascript
-    const response = await fetch("https://api.emma.ai/v1/sessions", {
+    const response = await fetch("https://api.Shanone.ai/v1/sessions", {
       method: "POST",
       headers: {
         "Authorization": "Bearer YOUR_API_KEY",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ prompt: "こんにちは、emma！" })
+      body: JSON.stringify({ prompt: "こんにちは、Shanone！" })
     });
     ```
   </Tab>

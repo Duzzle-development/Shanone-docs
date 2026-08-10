@@ -1,23 +1,23 @@
 ---
 title: セットアップ
-description: Cursor、Claude Code、Codexでemma MCP Serverを設定し、エージェントからemmaのツールとSkillを使い始めましょう。
+description: Cursor、Claude Code、CodexでShanone MCP Serverを設定し、エージェントからShanoneのツールとSkillを使い始めましょう。
 ---
 
-このガイドでは、emmaがホストするリモートサーバーであるemma MCP Serverへの接続方法を説明します。ローカルにインストールするパッケージはありません。
+このガイドでは、ShanoneがホストするリモートサーバーであるShanone MCP Serverへの接続方法を説明します。ローカルにインストールするパッケージはありません。
 
 ## 前提条件
 
 始める前に、以下を確認してください：
 
 - 対応クライアントのいずれか：**Cursor**、**Claude Code**、**Codex**
-- **emmaアカウント**
-- **emma API Key**（emmaダッシュボードの**API Keys**から作成）
+- **Shanoneアカウント**
+- **Shanone API Key**（Shanoneダッシュボードの**API Keys**から作成）
 
 ## ステップ1: API Keyを取得
 
-1. [emma](https://app.emma.ai)にログイン
+1. [Shanone](https://app.Shanone.ai)にログイン
 2. **API Keys**に移動
-3. **Create API Key**をクリックし、生成されたキー（`emma_sk_`で始まる）をコピー
+3. **Create API Key**をクリックし、生成されたキー（`Shanone_sk_`で始まる）をコピー
 
 <Warning>
 API Keyはパスワードと同様に扱ってください。バージョン管理にコミットしたり、公開したりしないでください。
@@ -25,10 +25,10 @@ API Keyはパスワードと同様に扱ってください。バージョン管�
 
 ## ステップ2: クライアントを設定
 
-emmaはMCPサーバーを以下のURLでStreamable HTTP経由で公開しています：
+ShanoneはMCPサーバーを以下のURLでStreamable HTTP経由で公開しています：
 
 ```
-https://app.emma.ai/api/v1/mcp
+https://app.Shanone.ai/api/v1/mcp
 ```
 
 APIキーはBearerトークンとして送信します：`Authorization: Bearer YOUR_API_KEY`。
@@ -40,8 +40,8 @@ APIキーはBearerトークンとして送信します：`Authorization: Bearer 
     ```json
     {
       "mcpServers": {
-        "emma": {
-          "url": "https://app.emma.ai/api/v1/mcp",
+        "Shanone": {
+          "url": "https://app.Shanone.ai/api/v1/mcp",
           "headers": {
             "Authorization": "Bearer YOUR_API_KEY"
           }
@@ -56,8 +56,8 @@ APIキーはBearerトークンとして送信します：`Authorization: Bearer 
     Claude CodeはCLIから直接リモートHTTP MCPサーバーを追加できます：
 
     ```bash
-    claude mcp add --transport http emma \
-      "https://app.emma.ai/api/v1/mcp" \
+    claude mcp add --transport http Shanone \
+      "https://app.Shanone.ai/api/v1/mcp" \
       --header "Authorization: Bearer YOUR_API_KEY"
     ```
 
@@ -66,9 +66,9 @@ APIキーはBearerトークンとして送信します：`Authorization: Bearer 
     ```json
     {
       "mcpServers": {
-        "emma": {
+        "Shanone": {
           "type": "http",
-          "url": "https://app.emma.ai/api/v1/mcp",
+          "url": "https://app.Shanone.ai/api/v1/mcp",
           "headers": {
             "Authorization": "Bearer YOUR_API_KEY"
           }
@@ -81,29 +81,29 @@ APIキーはBearerトークンとして送信します：`Authorization: Bearer 
     `~/.codex/config.toml`を編集：
 
     ```toml
-    [mcp_servers.emma]
-    url = "https://app.emma.ai/api/v1/mcp"
+    [mcp_servers.Shanone]
+    url = "https://app.Shanone.ai/api/v1/mcp"
     http_headers = { Authorization = "Bearer YOUR_API_KEY" }
     ```
   </Tab>
 </Tabs>
 
 <Warning>
-上記のすべての例で`YOUR_API_KEY`を実際のemma API Keyに置き換えてください。
+上記のすべての例で`YOUR_API_KEY`を実際のShanone API Keyに置き換えてください。
 </Warning>
 
 ## 代替方法: ローカルstdioブリッジ
 
-MCPクライアントが**stdio**トランスポートのみに対応している場合（またはまだカスタムHTTPヘッダーに対応していない場合）は、代わりにemmaのローカルNode.jsブリッジを使用してください。同じツール群を、同じバックエンドに、APIキー経由でプロキシします。
+MCPクライアントが**stdio**トランスポートのみに対応している場合（またはまだカスタムHTTPヘッダーに対応していない場合）は、代わりにShanoneのローカルNode.jsブリッジを使用してください。同じツール群を、同じバックエンドに、APIキー経由でプロキシします。
 
 ```json
 {
   "mcpServers": {
-    "emma": {
+    "Shanone": {
       "command": "npx",
-      "args": ["-y", "@duzzle/emma-mcp"],
+      "args": ["-y", "@duzzle/Shanone-mcp"],
       "env": {
-        "EMMA_API_KEY": "YOUR_API_KEY"
+        "SHANONE_API_KEY": "YOUR_API_KEY"
       }
     }
   }
@@ -111,25 +111,25 @@ MCPクライアントが**stdio**トランスポートのみに対応してい�
 ```
 
 <Note>
-ローカルブリッジはnpmで[`@duzzle/emma-mcp`](https://www.npmjs.com/package/@duzzle/emma-mcp)として公開されており、Node.js 18以上が必要です。[emma MCP Server](/ja/mcp/emma-mcp-server)に記載されているのと同じツール群を提供します。
+ローカルブリッジはnpmで[`@duzzle/Shanone-mcp`](https://www.npmjs.com/package/@duzzle/Shanone-mcp)として公開されており、Node.js 18以上が必要です。[Shanone MCP Server](/ja/mcp/Shanone-mcp-server)に記載されているのと同じツール群を提供します。
 </Note>
 
 ## 接続の確認
 
-emma MCP Serverが正しく動作しているか確認するには、ヘルスチェックツールを使用します：
+Shanone MCP Serverが正しく動作しているか確認するには、ヘルスチェックツールを使用します：
 
 1. クライアントのAIチャットを開く
-2. 「emmaの接続状態を確認して」と入力
-3. `emma_health_check`ツールが、接続が正常でAPIキーが有効であることを報告するはずです
+2. 「Shanoneの接続状態を確認して」と入力
+3. `Shanone_health_check`ツールが、接続が正常でAPIキーが有効であることを報告するはずです
 
 ## 設定リファレンス
 
 | 設定項目 | 値 |
 |---------|-----|
-| リモートMCP URL | `https://app.emma.ai/api/v1/mcp` |
+| リモートMCP URL | `https://app.Shanone.ai/api/v1/mcp` |
 | トランスポート | Streamable HTTP |
 | 認証ヘッダー | `Authorization: Bearer <api_key>`（`X-API-Key: <api_key>`も可） |
-| ローカルブリッジパッケージ | `@duzzle/emma-mcp`（npm）、`EMMA_API_KEY`環境変数が必須 |
+| ローカルブリッジパッケージ | `@duzzle/Shanone-mcp`（npm）、`SHANONE_API_KEY`環境変数が必須 |
 
 ## トラブルシューティング
 
@@ -141,7 +141,7 @@ emma MCP Serverが正しく動作しているか確認するには、ヘルス�
   </Accordion>
 
   <Accordion title="401 Unauthorized / invalid_api_key">
-    APIキーが未設定、形式が不正、または無効化されています。emmaダッシュボードの**API Keys**から新しいキーを生成し、設定を更新してください。
+    APIキーが未設定、形式が不正、または無効化されています。Shanoneダッシュボードの**API Keys**から新しいキーを生成し、設定を更新してください。
   </Accordion>
 
   <Accordion title="429 Rate Limited">
@@ -151,12 +151,12 @@ emma MCP Serverが正しく動作しているか確認するには、ヘルス�
   <Accordion title="ツールが表示されない">
     1. MCP設定を編集した後、クライアントを完全に再起動
     2. 設定ファイルのJSON/TOML構文エラーを確認
-    3. サーバー名がクライアントが期待する名前と一致していることを確認（通常は`emma`）
-    4. URLにタイプミスがないことを確認：`https://app.emma.ai/api/v1/mcp`
+    3. サーバー名がクライアントが期待する名前と一致していることを確認（通常は`Shanone`）
+    4. URLにタイプミスがないことを確認：`https://app.Shanone.ai/api/v1/mcp`
   </Accordion>
 
   <Accordion title="代わりにローカルstdioブリッジを使う場合">
-    `npx -y @duzzle/emma-mcp`の起動に失敗する場合は、Node.js 18以上がインストールされていること、MCP設定の`env`ブロックに`EMMA_API_KEY`が設定されていることを確認してください。
+    `npx -y @duzzle/Shanone-mcp`の起動に失敗する場合は、Node.js 18以上がインストールされていること、MCP設定の`env`ブロックに`SHANONE_API_KEY`が設定されていることを確認してください。
   </Accordion>
 </AccordionGroup>
 
@@ -170,14 +170,14 @@ emma MCP Serverが正しく動作しているか確認するには、ヘルス�
     マシン/エージェントごとにわかりやすい名前でAPIキーを発行し、他のキーに影響を与えずに個別に無効化できるようにしてください。
   </Step>
   <Step title="定期的にキーをローテーション">
-    emmaダッシュボードの**API Keys**から定期的に新しいAPI Keyを生成し、古いものを無効にしてください。
+    Shanoneダッシュボードの**API Keys**から定期的に新しいAPI Keyを生成し、古いものを無効にしてください。
   </Step>
 </Steps>
 
 ## 次のステップ
 
 <CardGroup cols={2}>
-  <Card title="emma MCP Server" icon="server" href="/ja/mcp/emma-mcp-server">
+  <Card title="Shanone MCP Server" icon="server" href="/ja/mcp/Shanone-mcp-server">
     利用可能なツールとユースケースについて学ぶ
   </Card>
   <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">

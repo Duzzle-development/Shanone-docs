@@ -1,18 +1,18 @@
 ---
 title: "RemoteGraph"
-description: "LangSmithにデプロイしたLangGraph RemoteGraphをemmaから呼び出す"
+description: "LangSmithにデプロイしたLangGraph RemoteGraphをShanoneから呼び出す"
 icon: "laptop"
 ---
 
 ## 概要
 
-RemoteGraphを使用すると、LangSmithにデプロイしたLangGraphのグラフをemmaから直接呼び出すことができます。これにより、カスタムAIワークフローやエージェントをemmaの自動化機能と組み合わせて活用できます。
+RemoteGraphを使用すると、LangSmithにデプロイしたLangGraphのグラフをShanoneから直接呼び出すことができます。これにより、カスタムAIワークフローやエージェントをShanoneの自動化機能と組み合わせて活用できます。
 
 ## RemoteGraphとは？
 
-RemoteGraphはLangGraphの機能で、LangSmithにデプロイされたグラフをローカルで実行しているかのように操作できます。RemoteGraphをemmaと統合することで、以下のことが可能になります：
+RemoteGraphはLangGraphの機能で、LangSmithにデプロイされたグラフをローカルで実行しているかのように操作できます。RemoteGraphをShanoneと統合することで、以下のことが可能になります：
 
-- **カスタムAIワークフローの実行** - LangGraphエージェントをemmaから実行
+- **カスタムAIワークフローの実行** - LangGraphエージェントをShanoneから実行
 - **LangSmithデプロイメントの活用** - LangSmithインフラにデプロイされたグラフを使用
 - **Automationsとの連携** - LangGraphワークフローをスケジュール・自動化
 
@@ -25,17 +25,17 @@ RemoteGraphはLangGraphの機能で、LangSmithにデプロイされたグラフ
   <Step title="デプロイメントURLを取得">
     デプロイ後、LangSmithのデプロイメントURLとAPIキーを取得します。
   </Step>
-  <Step title="emmaで設定">
-    emmaの設定でRemoteGraph構成を追加します。
+  <Step title="Shanoneで設定">
+    Shanoneの設定でRemoteGraph構成を追加します。
   </Step>
   <Step title="使用開始">
-    emmaのタスクやAutomationsからRemoteGraphを呼び出します。
+    ShanoneのタスクやAutomationsからRemoteGraphを呼び出します。
   </Step>
 </Steps>
 
 ## 設定
 
-LangSmithデプロイメントをemmaに接続するには、以下が必要です：
+LangSmithデプロイメントをShanoneに接続するには、以下が必要です：
 
 | パラメータ | 説明 |
 |-----------|------|
@@ -47,7 +47,7 @@ LangSmithデプロイメントをemmaに接続するには、以下が必要で�
 
 <CardGroup cols={2}>
   <Card title="カスタムAIエージェント" icon="robot">
-    カスタムLangGraphエージェントをemma経由で実行
+    カスタムLangGraphエージェントをShanone経由で実行
   </Card>
   <Card title="複雑なワークフロー" icon="diagram-project">
     状態管理を伴うマルチステップAIワークフローを実行
@@ -56,7 +56,7 @@ LangSmithデプロイメントをemmaに接続するには、以下が必要で�
     Automationsと組み合わせてグラフをスケジュール実行
   </Card>
   <Card title="チームコラボレーション" icon="users">
-    デプロイされたグラフをemma経由でチーム全体で共有
+    デプロイされたグラフをShanone経由でチーム全体で共有
   </Card>
 </CardGroup>
 

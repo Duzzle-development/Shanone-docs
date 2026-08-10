@@ -1,15 +1,15 @@
 ---
 title: ツールリファレンス
-description: emma MCP Serverの全ツールの完全なリファレンスドキュメント。パラメータ、例、戻り値を含みます。
+description: Shanone MCP Serverの全ツールの完全なリファレンスドキュメント。パラメータ、例、戻り値を含みます。
 ---
 
-このページでは、emma MCP Serverで利用可能な9つのツールすべての詳細なドキュメントを提供します。全ツールはプレーンテキスト（Markdown整形）を返します。構造化されたJSONは返しません — 以下の例は、そのテキストの形式を示しています。
+このページでは、Shanone MCP Serverで利用可能な9つのツールすべての詳細なドキュメントを提供します。全ツールはプレーンテキスト（Markdown整形）を返します。構造化されたJSONは返しません — 以下の例は、そのテキストの形式を示しています。
 
 ## ヘルスチェック
 
-### emma_health_check
+### Shanone_health_check
 
-emma MCPサーバーの接続状態と認証状態を確認します。他のツールを実行する前にAPIキーが有効であることを確認するために使用します。パラメータはありません。
+Shanone MCPサーバーの接続状態と認証状態を確認します。他のツールを実行する前にAPIキーが有効であることを確認するために使用します。パラメータはありません。
 
 <Tabs>
   <Tab title="リクエスト例">
@@ -19,7 +19,7 @@ emma MCPサーバーの接続状態と認証状態を確認します。他のツ
   </Tab>
   <Tab title="レスポンス例">
     ```
-    Emma Remote MCP Server: healthy. API key is valid.
+    Shanone Remote MCP Server: healthy. API key is valid.
     ```
   </Tab>
 </Tabs>
@@ -30,9 +30,9 @@ emma MCPサーバーの接続状態と認証状態を確認します。他のツ
 
 Tool Vendorのツールは、インテグレーション（Slack、GitHub、Notion、Gmailなど100以上）ごとに専用のMCPツールを用意することなく、エージェントがそれらを発見・実行できるようにします。
 
-**推奨ワークフロー：** `emma_search_tools` → `emma_get_tool_schema`（必要な場合） → `emma_execute_tool`
+**推奨ワークフロー：** `Shanone_search_tools` → `Shanone_get_tool_schema`（必要な場合） → `Shanone_execute_tool`
 
-### emma_search_tools
+### Shanone_search_tools
 
 キーワードでインテグレーションツールを検索します。名前、サービス、説明を含む一致するツールを返します。
 
@@ -68,20 +68,20 @@ Tool Vendorのツールは、インテグレーション（Slack、GitHub、Noti
       Post a message to a Slack channel or user.
 
     **Next steps:**
-    1. Use `emma_get_tool_schema` to see the input schema for a tool
-    2. Use `emma_execute_tool` to execute the tool with arguments
+    1. Use `Shanone_get_tool_schema` to see the input schema for a tool
+    2. Use `Shanone_execute_tool` to execute the tool with arguments
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_get_tool_schema
+### Shanone_get_tool_schema
 
 特定のインテグレーションツールの入力引数のJSON Schemaを取得します。
 
 <ParamField path="tool_name" type="string" required>
-  正確なツール名（例：`"slack_post_message"`、`"github_create_issue"`）。`emma_search_tools`から取得します。
+  正確なツール名（例：`"slack_post_message"`、`"github_create_issue"`）。`Shanone_search_tools`から取得します。
 </ParamField>
 
 <Tabs>
@@ -112,19 +112,19 @@ Tool Vendorのツールは、インテグレーション（Slack、GitHub、Noti
 
     **Required arguments:** channel, text
 
-    **Next step:** Use `emma_execute_tool` with tool_name="slack_post_message" and the required arguments.
+    **Next step:** Use `Shanone_execute_tool` with tool_name="slack_post_message" and the required arguments.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_execute_tool
+### Shanone_execute_tool
 
-特定のインテグレーションツールを引数付きで実行します。OAuthはemmaが処理します — ツールに未設定の認証が必要な場合、エラーの代わりに接続リンクが返されます。
+特定のインテグレーションツールを引数付きで実行します。OAuthはShanoneが処理します — ツールに未設定の認証が必要な場合、エラーの代わりに接続リンクが返されます。
 
 <ParamField path="tool_name" type="string" required>
-  実行する正確なツール名（例：`"slack_post_message"`）。`emma_search_tools`から取得します。
+  実行する正確なツール名（例：`"slack_post_message"`）。`Shanone_search_tools`から取得します。
 </ParamField>
 
 <ParamField path="arguments" type="string" required>
@@ -168,7 +168,7 @@ Tool Vendorのツールは、インテグレーション（Slack、GitHub、Noti
 
     Slack への接続が必要です。
 
-    Connect Link: https://app.emma.ai/connect/slack?request=req_abc123
+    Connect Link: https://app.Shanone.ai/connect/slack?request=req_abc123
 
     Please ask the user to visit the connect link to authenticate, then retry the request.
     ```
@@ -176,18 +176,18 @@ Tool Vendorのツールは、インテグレーション（Slack、GitHub、Noti
 </Tabs>
 
 <Note>
-`reason`が`auth_required`または`auth_expired`の場合は、`Connect Link`をユーザーに提示してください。ユーザーが認証を完了したら、同じ`emma_execute_tool`呼び出しを再試行します。
+`reason`が`auth_required`または`auth_expired`の場合は、`Connect Link`をユーザーに提示してください。ユーザーが認証を完了したら、同じ`Shanone_execute_tool`呼び出しを再試行します。
 </Note>
 
 ---
 
 ## Skill Vendor
 
-**Skill**とは、タスクの実行方法を記述した名前付きの再利用可能なプロンプトです — 実質的にはAgent Skill（`name` + `summary`/description + `instructions`/body）です。Skillはemmaのクラウドに保存されるため、マシン・IDE・エージェントを問わず再現可能で、emmaのWeb UIの**Skills**タブにも表示されます。
+**Skill**とは、タスクの実行方法を記述した名前付きの再利用可能なプロンプトです — 実質的にはAgent Skill（`name` + `summary`/description + `instructions`/body）です。SkillはShanoneのクラウドに保存されるため、マシン・IDE・エージェントを問わず再現可能で、ShanoneのWeb UIの**Skills**タブにも表示されます。
 
-**推奨ワークフロー：** タスクを始める前に`emma_list_skills`で関連するSkillが既に存在するか確認し、`emma_get_skill`で内容を取得して自分で手順に従います。
+**推奨ワークフロー：** タスクを始める前に`Shanone_list_skills`で関連するSkillが既に存在するか確認し、`Shanone_get_skill`で内容を取得して自分で手順に従います。
 
-### emma_list_skills
+### Shanone_list_skills
 
 保存済みのSkillを新しい順に一覧表示します。デフォルトでは**全件**を返します（ページネーション対応）。`query`はオプションの絞り込みフィルタであり、必須のキーワード検索ではありません。
 
@@ -222,19 +222,19 @@ Tool Vendorのツールは、インテグレーション（Slack、GitHub、Noti
     - **Daily Standup Reminder** (skill_id: 7c2b5f8d-5678-4d9e-bcde-234567890abc)
       Posts a standup reminder to Slack #general every weekday morning.
 
-    **Next step:** Use `emma_get_skill` with a skill_id to read the full instructions, then follow them.
+    **Next step:** Use `Shanone_get_skill` with a skill_id to read the full instructions, then follow them.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_get_skill
+### Shanone_get_skill
 
-Skillの完全な手順（本文）を取得します。返される内容はプロンプト/ワークフローであり、読んだ後はエージェント自身がその手順に従います。インテグレーションアクションが必要な場合は`emma_search_tools` / `emma_get_tool_schema` / `emma_execute_tool`を使用します。
+Skillの完全な手順（本文）を取得します。返される内容はプロンプト/ワークフローであり、読んだ後はエージェント自身がその手順に従います。インテグレーションアクションが必要な場合は`Shanone_search_tools` / `Shanone_get_tool_schema` / `Shanone_execute_tool`を使用します。
 
 <ParamField path="skill_id" type="string" required>
-  正確なSkill ID。`emma_list_skills`から取得します。
+  正確なSkill ID。`Shanone_list_skills`から取得します。
 </ParamField>
 
 <Tabs>
@@ -252,18 +252,18 @@ Skillの完全な手順（本文）を取得します。返される内容はプ
     Gathers last week's closed issues and posts a summary to Slack #team.
 
     **Instructions:**
-    1. Use emma_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
+    1. Use Shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
     2. Summarize them into 3-5 bullet points.
-    3. Use emma_execute_tool with slack_post_message to post the summary to #team.
+    3. Use Shanone_execute_tool with slack_post_message to post the summary to #team.
 
-    **Next step:** Follow these instructions. Use `emma_execute_tool` for any integration actions required.
+    **Next step:** Follow these instructions. Use `Shanone_execute_tool` for any integration actions required.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_create_skill
+### Shanone_create_skill
 
 再利用可能なワークフローを新しいSkillとして保存します。他のマシン・IDE・エージェントから再利用する価値のあるタスクを完了した後に使用します。3つの引数すべてが必須です。
 
@@ -272,11 +272,11 @@ Skillの完全な手順（本文）を取得します。返される内容はプ
 </ParamField>
 
 <ParamField path="description" type="string" required>
-  Skillが何を行い、いつ使うべきかの説明（`emma_list_skills`での発見に使用）。
+  Skillが何を行い、いつ使うべきかの説明（`Shanone_list_skills`での発見に使用）。
 </ParamField>
 
 <ParamField path="body" type="string" required>
-  従うべき手順・ワークフロー。関連するemmaツールを参照してください。
+  従うべき手順・ワークフロー。関連するShanoneツールを参照してください。
 </ParamField>
 
 <Tabs>
@@ -285,7 +285,7 @@ Skillの完全な手順（本文）を取得します。返される内容はプ
     {
       "name": "Weekly Status Report",
       "description": "Gathers last week's closed issues and posts a summary to Slack #team.",
-      "body": "1. Use emma_execute_tool with github_list_issues to fetch issues closed in the last 7 days.\n2. Summarize them into 3-5 bullet points.\n3. Use emma_execute_tool with slack_post_message to post the summary to #team."
+      "body": "1. Use Shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.\n2. Summarize them into 3-5 bullet points.\n3. Use Shanone_execute_tool with slack_post_message to post the summary to #team."
     }
     ```
   </Tab>
@@ -295,19 +295,19 @@ Skillの完全な手順（本文）を取得します。返される内容はプ
     skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab
     name: Weekly Status Report
 
-    Retrieve it later with `emma_get_skill` or find it with `emma_list_skills`.
+    Retrieve it later with `Shanone_get_skill` or find it with `Shanone_list_skills`.
     ```
   </Tab>
 </Tabs>
 
 ---
 
-### emma_update_skill
+### Shanone_update_skill
 
 既存のSkillを更新します。空でないフィールドのみが変更されます。
 
 <ParamField path="skill_id" type="string" required>
-  正確なSkill ID。`emma_list_skills`から取得します。
+  正確なSkill ID。`Shanone_list_skills`から取得します。
 </ParamField>
 
 <ParamField path="name" type="string">
@@ -327,7 +327,7 @@ Skillの完全な手順（本文）を取得します。返される内容はプ
     ```json
     {
       "skill_id": "3f1a9e2b-1234-4c56-9abc-1234567890ab",
-      "instructions": "1. Use emma_execute_tool with github_list_issues (last 7 days).\n2. Summarize into bullet points.\n3. Post to Slack #team AND #eng-leads."
+      "instructions": "1. Use Shanone_execute_tool with github_list_issues (last 7 days).\n2. Summarize into bullet points.\n3. Post to Slack #team AND #eng-leads."
     }
     ```
   </Tab>
@@ -343,12 +343,12 @@ Skillの完全な手順（本文）を取得します。返される内容はプ
 
 ---
 
-### emma_delete_skill
+### Shanone_delete_skill
 
 Skillを削除します。
 
 <ParamField path="skill_id" type="string" required>
-  正確なSkill ID。`emma_list_skills`から取得します。
+  正確なSkill ID。`Shanone_list_skills`から取得します。
 </ParamField>
 
 <Warning>
@@ -376,9 +376,9 @@ Skillの削除は永続的で、元に戻すことはできません。
 
 | 状況 | レスポンス |
 |------|-----------|
-| `emma_execute_tool` / `emma_get_tool_schema`に不明なツール名を渡した場合 | `Tool not found: <tool_name>`（`emma_search_tools`の利用を促すヒント付き） |
-| Skill Vendorのいずれかのツールに不明な`skill_id`を渡した場合 | `Skill not found: <skill_id>`（`emma_list_skills`の利用を促すヒント付き） |
-| `emma_execute_tool`の`arguments`に不正なJSONを渡した場合 | `Invalid JSON in arguments: ...`（期待される形式付き） |
+| `Shanone_execute_tool` / `Shanone_get_tool_schema`に不明なツール名を渡した場合 | `Tool not found: <tool_name>`（`Shanone_search_tools`の利用を促すヒント付き） |
+| Skill Vendorのいずれかのツールに不明な`skill_id`を渡した場合 | `Skill not found: <skill_id>`（`Shanone_list_skills`の利用を促すヒント付き） |
+| `Shanone_execute_tool`の`arguments`に不正なJSONを渡した場合 | `Invalid JSON in arguments: ...`（期待される形式付き） |
 | インテグレーションにOAuthが必要で未接続の場合 | `reason: "auth_required"`（または`"auth_expired"`）と`connect_link` |
 | HTTPレベルの認証失敗（APIキーが不正/未指定） | `401`と`error: "api_key_required"`または`"invalid_api_key"` |
 | リクエスト過多 | `429`と`error: "rate_limit_exceeded"`、`Retry-After`ヘッダー |

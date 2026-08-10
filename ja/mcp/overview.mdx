@@ -1,27 +1,27 @@
 ---
 title: MCP 概要
-description: Model Context Protocol（MCP）について学び、emmaの機能を外部ツールで拡張する方法を理解しましょう。
+description: Model Context Protocol（MCP）について学び、Shanoneの機能を外部ツールで拡張する方法を理解しましょう。
 ---
 
 ## MCPとは？
 
 **Model Context Protocol（MCP）** は、AIアプリケーションが外部のデータソースやツールに安全に接続するためのオープンスタンダードです。MCPは、AIアプリケーションにとってのUSB-Cポートのようなもの — 様々なサービスに接続するための標準化された方法です。
 
-MCPを使用することで、CursorやClaude CodeのようなAIコーディングエージェントに、統一されたインターフェースを通じてemmaのツール、インテグレーション、保存済みSkillへのアクセスを、エディタやターミナルから離れることなく提供できます。
+MCPを使用することで、CursorやClaude CodeのようなAIコーディングエージェントに、統一されたインターフェースを通じてShanoneのツール、インテグレーション、保存済みSkillへのアクセスを、エディタやターミナルから離れることなく提供できます。
 
-## emmaでMCPを使うメリット
+## ShanoneでMCPを使うメリット
 
-AIコーディングエージェントをemma MCP Serverに接続することで、以下のことが可能になります：
+AIコーディングエージェントをShanone MCP Serverに接続することで、以下のことが可能になります：
 
 <CardGroup cols={2}>
   <Card title="100以上のインテグレーションにアクセス" icon="puzzle-piece">
-    Slack、GitHub、Notion、Gmailなどemmaのインテグレーションを、エディタから離れずに検索・実行
+    Slack、GitHub、Notion、GmailなどShanoneのインテグレーションを、エディタから離れずに検索・実行
   </Card>
   <Card title="保存済みSkillを再利用" icon="book">
-    一度emmaに保存したワークフローを、どのマシン・IDE・エージェントからでも再利用
+    一度Shanoneに保存したワークフローを、どのマシン・IDE・エージェントからでも再利用
   </Card>
   <Card title="OAuthを自動化" icon="key">
-    emmaが認証を代わりに処理 — 認証が必要な場合はツールが接続リンクを返す
+    Shanoneが認証を代わりに処理 — 認証が必要な場合はツールが接続リンクを返す
   </Card>
   <Card title="標準化されたプロトコル" icon="plug">
     異なるAIアプリケーション間で同じプロトコルを使用
@@ -30,37 +30,37 @@ AIコーディングエージェントをemma MCP Serverに接続することで
 
 ## 対応トランスポート
 
-emma MCP Serverは**リモートでホストされたMCPサーバー**で、**Streamable HTTP**で通信します。インストールは不要 — emma APIキーを使ってHTTPS経由でクライアントから直接接続できます。
+Shanone MCP Serverは**リモートでホストされたMCPサーバー**で、**Streamable HTTP**で通信します。インストールは不要 — Shanone APIキーを使ってHTTPS経由でクライアントから直接接続できます。
 
 | トランスポート | 状態 | 説明 |
 |--------------|------|------|
-| **Streamable HTTP** | 推奨 | `/api/v1/mcp` でemmaがホストするリモートサーバー。URLとAPIキーを設定するだけで、ローカルプロセスのインストールや起動は不要 |
-| **stdio**（ローカル・任意） | 対応 | リモートHTTP MCPにまだ対応していないクライアント向けに、emmaは同じツール群を既存のAPIキーでプロキシするローカルstdioブリッジ（npmの`@duzzle/emma-mcp`）も提供 |
+| **Streamable HTTP** | 推奨 | `/api/v1/mcp` でShanoneがホストするリモートサーバー。URLとAPIキーを設定するだけで、ローカルプロセスのインストールや起動は不要 |
+| **stdio**（ローカル・任意） | 対応 | リモートHTTP MCPにまだ対応していないクライアント向けに、Shanoneは同じツール群を既存のAPIキーでプロキシするローカルstdioブリッジ（npmの`@duzzle/Shanone-mcp`）も提供 |
 | SSE | 未対応 | Server-Sent Events |
 
 <Note>
-リモートのStreamable HTTPサーバーは、ローカルのstdioブリッジと完全に同じツール群を提供します。そのため、エージェントからのemmaの使い方を変えずに両者を切り替えられます。
+リモートのStreamable HTTPサーバーは、ローカルのstdioブリッジと完全に同じツール群を提供します。そのため、エージェントからのShanoneの使い方を変えずに両者を切り替えられます。
 </Note>
 
 ## 対応クライアント
 
-Streamable HTTPトランスポート（認証用のカスタムヘッダー対応）をサポートするMCPクライアントであれば、emmaに接続できます。emmaが公式にセットアップ手順を用意しているのは：
+Streamable HTTPトランスポート（認証用のカスタムヘッダー対応）をサポートするMCPクライアントであれば、Shanoneに接続できます。Shanoneが公式にセットアップ手順を用意しているのは：
 
 - **Cursor** — AI搭載コードエディタ
 - **Claude Code** — AnthropicのコーディングエージェントCLI
 - **Codex** — OpenAIのコーディングエージェントCLI
 
 <Note>
-stdioトランスポートのみに対応するクライアント（またはカスタムHTTPヘッダーに未対応のクライアント）は、代わりにローカルの`@duzzle/emma-mcp`パッケージを使用できます。詳細は[セットアップガイド](/ja/mcp/setup)を参照してください。
+stdioトランスポートのみに対応するクライアント（またはカスタムHTTPヘッダーに未対応のクライアント）は、代わりにローカルの`@duzzle/Shanone-mcp`パッケージを使用できます。詳細は[セットアップガイド](/ja/mcp/setup)を参照してください。
 </Note>
 
 ## 次のステップ
 
 <CardGroup cols={2}>
-  <Card title="emma MCP Server" icon="server" href="/ja/mcp/emma-mcp-server">
-    emma公式MCPサーバーと利用可能なツールについて学ぶ
+  <Card title="Shanone MCP Server" icon="server" href="/ja/mcp/Shanone-mcp-server">
+    Shanone公式MCPサーバーと利用可能なツールについて学ぶ
   </Card>
   <Card title="セットアップガイド" icon="wrench" href="/ja/mcp/setup">
-    emma MCPの設定を始める
+    Shanone MCPの設定を始める
   </Card>
 </CardGroup>

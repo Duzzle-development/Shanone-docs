@@ -1,23 +1,23 @@
 ---
 title: Setup
-description: Configure the emma MCP Server in Cursor, Claude Code, or Codex to start using emma's tools and Skills from your agent.
+description: Configure the Shanone MCP Server in Cursor, Claude Code, or Codex to start using Shanone's tools and Skills from your agent.
 ---
 
-This guide walks you through connecting to the emma MCP Server, a remote server hosted by emma — there's no local package to install.
+This guide walks you through connecting to the Shanone MCP Server, a remote server hosted by Shanone — there's no local package to install.
 
 ## Prerequisites
 
 Before you begin, make sure you have:
 
 - One of the supported clients: **Cursor**, **Claude Code**, or **Codex**
-- An **emma account**
-- An **emma API Key** (create one from **API Keys** in the emma dashboard)
+- An **Shanone account**
+- An **Shanone API Key** (create one from **API Keys** in the Shanone dashboard)
 
 ## Step 1: Get Your API Key
 
-1. Log in to [emma](https://app.emma.ai)
+1. Log in to [Shanone](https://app.Shanone.ai)
 2. Go to **API Keys**
-3. Click **Create API Key** and copy the generated key (it starts with `emma_sk_`)
+3. Click **Create API Key** and copy the generated key (it starts with `Shanone_sk_`)
 
 <Warning>
 Treat your API key like a password. Never commit it to version control or share it publicly.
@@ -25,10 +25,10 @@ Treat your API key like a password. Never commit it to version control or share 
 
 ## Step 2: Configure Your Client
 
-emma exposes its MCP server over Streamable HTTP at:
+Shanone exposes its MCP server over Streamable HTTP at:
 
 ```
-https://app.emma.ai/api/v1/mcp
+https://app.Shanone.ai/api/v1/mcp
 ```
 
 Authenticate by sending your API key as a bearer token: `Authorization: Bearer YOUR_API_KEY`.
@@ -40,8 +40,8 @@ Authenticate by sending your API key as a bearer token: `Authorization: Bearer Y
     ```json
     {
       "mcpServers": {
-        "emma": {
-          "url": "https://app.emma.ai/api/v1/mcp",
+        "Shanone": {
+          "url": "https://app.Shanone.ai/api/v1/mcp",
           "headers": {
             "Authorization": "Bearer YOUR_API_KEY"
           }
@@ -56,8 +56,8 @@ Authenticate by sending your API key as a bearer token: `Authorization: Bearer Y
     Claude Code can add a remote HTTP MCP server directly from the CLI:
 
     ```bash
-    claude mcp add --transport http emma \
-      "https://app.emma.ai/api/v1/mcp" \
+    claude mcp add --transport http Shanone \
+      "https://app.Shanone.ai/api/v1/mcp" \
       --header "Authorization: Bearer YOUR_API_KEY"
     ```
 
@@ -66,9 +66,9 @@ Authenticate by sending your API key as a bearer token: `Authorization: Bearer Y
     ```json
     {
       "mcpServers": {
-        "emma": {
+        "Shanone": {
           "type": "http",
-          "url": "https://app.emma.ai/api/v1/mcp",
+          "url": "https://app.Shanone.ai/api/v1/mcp",
           "headers": {
             "Authorization": "Bearer YOUR_API_KEY"
           }
@@ -81,29 +81,29 @@ Authenticate by sending your API key as a bearer token: `Authorization: Bearer Y
     Edit `~/.codex/config.toml`:
 
     ```toml
-    [mcp_servers.emma]
-    url = "https://app.emma.ai/api/v1/mcp"
+    [mcp_servers.Shanone]
+    url = "https://app.Shanone.ai/api/v1/mcp"
     http_headers = { Authorization = "Bearer YOUR_API_KEY" }
     ```
   </Tab>
 </Tabs>
 
 <Warning>
-Replace `YOUR_API_KEY` with your actual emma API Key in every example above.
+Replace `YOUR_API_KEY` with your actual Shanone API Key in every example above.
 </Warning>
 
 ## Alternative: Local stdio Bridge
 
-If your MCP client only supports the **stdio** transport (or doesn't support custom HTTP headers yet), use emma's local Node.js bridge instead. It proxies the same tools to the same backend over your API key.
+If your MCP client only supports the **stdio** transport (or doesn't support custom HTTP headers yet), use Shanone's local Node.js bridge instead. It proxies the same tools to the same backend over your API key.
 
 ```json
 {
   "mcpServers": {
-    "emma": {
+    "Shanone": {
       "command": "npx",
-      "args": ["-y", "@duzzle/emma-mcp"],
+      "args": ["-y", "@duzzle/Shanone-mcp"],
       "env": {
-        "EMMA_API_KEY": "YOUR_API_KEY"
+        "SHANONE_API_KEY": "YOUR_API_KEY"
       }
     }
   }
@@ -111,25 +111,25 @@ If your MCP client only supports the **stdio** transport (or doesn't support cus
 ```
 
 <Note>
-The local bridge is published on npm as [`@duzzle/emma-mcp`](https://www.npmjs.com/package/@duzzle/emma-mcp) and requires Node.js 18+. It exposes the exact same tool set described in [emma MCP Server](/mcp/emma-mcp-server).
+The local bridge is published on npm as [`@duzzle/Shanone-mcp`](https://www.npmjs.com/package/@duzzle/Shanone-mcp) and requires Node.js 18+. It exposes the exact same tool set described in [Shanone MCP Server](/mcp/Shanone-mcp-server).
 </Note>
 
 ## Verify the Connection
 
-To verify that the emma MCP Server is working correctly, use the health check tool:
+To verify that the Shanone MCP Server is working correctly, use the health check tool:
 
 1. Open your client's AI chat
-2. Ask: "Check emma connection status"
-3. The `emma_health_check` tool should report that the connection is healthy and your API key is valid
+2. Ask: "Check Shanone connection status"
+3. The `Shanone_health_check` tool should report that the connection is healthy and your API key is valid
 
 ## Configuration Reference
 
 | Setting | Value |
 |---------|-------|
-| Remote MCP URL | `https://app.emma.ai/api/v1/mcp` |
+| Remote MCP URL | `https://app.Shanone.ai/api/v1/mcp` |
 | Transport | Streamable HTTP |
 | Authentication header | `Authorization: Bearer <api_key>` (also accepts `X-API-Key: <api_key>`) |
-| Local bridge package | `@duzzle/emma-mcp` (npm), requires `EMMA_API_KEY` env var |
+| Local bridge package | `@duzzle/Shanone-mcp` (npm), requires `SHANONE_API_KEY` env var |
 
 ## Troubleshooting
 
@@ -141,7 +141,7 @@ To verify that the emma MCP Server is working correctly, use the health check to
   </Accordion>
 
   <Accordion title="401 Unauthorized / invalid_api_key">
-    The API key is missing, malformed, or has been revoked. Generate a new key from **API Keys** in the emma dashboard and update your config.
+    The API key is missing, malformed, or has been revoked. Generate a new key from **API Keys** in the Shanone dashboard and update your config.
   </Accordion>
 
   <Accordion title="429 Rate Limited">
@@ -151,12 +151,12 @@ To verify that the emma MCP Server is working correctly, use the health check to
   <Accordion title="Tools not appearing">
     1. Restart your client completely after editing the MCP config
     2. Check the config file for JSON/TOML syntax errors
-    3. Verify the server name matches what your client expects (usually `emma`)
-    4. Confirm the URL has no trailing typos: `https://app.emma.ai/api/v1/mcp`
+    3. Verify the server name matches what your client expects (usually `Shanone`)
+    4. Confirm the URL has no trailing typos: `https://app.Shanone.ai/api/v1/mcp`
   </Accordion>
 
   <Accordion title="Using the local stdio bridge instead">
-    If `npx -y @duzzle/emma-mcp` fails to start, make sure Node.js 18+ is installed and `EMMA_API_KEY` is set in the `env` block of your MCP config.
+    If `npx -y @duzzle/Shanone-mcp` fails to start, make sure Node.js 18+ is installed and `SHANONE_API_KEY` is set in the `env` block of your MCP config.
   </Accordion>
 </AccordionGroup>
 
@@ -170,14 +170,14 @@ To verify that the emma MCP Server is working correctly, use the health check to
     Give each API key a descriptive name per machine/agent so you can revoke individual keys without affecting others.
   </Step>
   <Step title="Rotate Keys Regularly">
-    Periodically create new API keys and revoke old ones from **API Keys** in the emma dashboard.
+    Periodically create new API keys and revoke old ones from **API Keys** in the Shanone dashboard.
   </Step>
 </Steps>
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="emma MCP Server" icon="server" href="/mcp/emma-mcp-server">
+  <Card title="Shanone MCP Server" icon="server" href="/mcp/Shanone-mcp-server">
     Learn about available tools and use cases
   </Card>
   <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">

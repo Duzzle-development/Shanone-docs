@@ -1,16 +1,16 @@
-# emma ドキュメント
+# Shanone ドキュメント
 
 <p align="center">
   <a href="README.md">English</a> | <a href="README.ja.md">日本語</a>
 </p>
 
-[emma](https://app.emma.ai) の公式ドキュメントです
+[Shanone](https://app.Shanone.ai) の公式ドキュメントです
 
 **公開サイト:** [docs.duzzle.dev](https://docs.duzzle.dev)
 
-## emmaについて
+## Shanoneについて
 
-emmaは、意欲的なエンジニアリングチームがバックオフィス業務を効率化・自動化するための製品です。
+Shanoneは、意欲的なエンジニアリングチームがバックオフィス業務を効率化・自動化するための製品です。
 
 ## ドキュメント
 
@@ -22,7 +22,7 @@ emmaは、意欲的なエンジニアリングチームがバックオフィス�
 ## リンク
 
 - [ドキュメント](https://docs.duzzle.dev)
-- [GitHub](https://github.com/Duzzle-development/emma-docs)
+- [GitHub](https://github.com/Duzzle-development/Shanone-docs)
 - [X](https://x.com/Duzzle_ai)
 
 ## サポート
