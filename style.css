@@ -1,11 +1,11 @@
 /* Invert the navbar CTA button colors in dark mode so it stays visible
    against the near-black background (light mode already looks correct).
-   Selectors are intentionally broad (not tied to specific utility class
-   names like ".absolute" or ".z-10") since Mintlify's internal markup for
-   the button can differ between the local preview build and the deployed
-   production build. */
+   The background override targets only the rounded inner overlay span
+   (structurally, not by class name, since Mintlify's internal markup can
+   differ between the local preview and deployed builds) rather than the
+   outer <a>, which has no border-radius of its own and would otherwise
+   turn the rounded pill into a squared-off block. */
 html.dark #topbar-cta-button a {
-  background-color: #ffffff !important;
   color: #000000 !important;
 }
 
