@@ -1,0 +1,10 @@
+/* Invert the navbar CTA button colors in dark mode so it stays visible
+   against the near-black background (light mode already looks correct). */
+html.dark #topbar-cta-button a span.absolute {
+  background-color: #ffffff !important;
+}
+
+html.dark #topbar-cta-button a span.z-10,
+html.dark #topbar-cta-button a svg {
+  color: #000000 !important;
+}

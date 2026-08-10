@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Shanone Documentation",
   "colors": {
-    "primary": "#10b981",
-    "light": "#34d399",
-    "dark": "#10b981"
+    "primary": "#000000",
+    "light": "#FFFFFF",
+    "dark": "#000000"
   },
   "background": {
     "color": {
