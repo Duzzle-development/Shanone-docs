@@ -1,0 +1,67 @@
+---
+title: "OpenHands"
+description: "OpenHands AIコーディングエージェントの会話を実行・管理"
+icon: /images/openhands.svg
+---
+
+# OpenHands
+
+ShanoneのOpenHands連携は、[OpenHands](https://all-hands.dev)のコーディングエージェントの会話を操作するための8個のツールをエージェントに提供します。Shanoneのワークフローを離れずに、自律的なコーディングセッションを作成・メッセージ送信・監視できます。
+
+## はじめに
+
+<Steps>
+  <Step title="OpenHands APIキーを作成する">
+    [OpenHands Cloudの設定画面](https://app.all-hands.dev/settings/api-keys)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でOpenHandsを選択し、APIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`openhands_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはOpenHands向けに**8個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="会話">
+    `openhands_list_conversations`, `openhands_get_conversation`, `openhands_create_conversation`, `openhands_start_conversation`, `openhands_stop_conversation`, `openhands_delete_conversation`
+  </Accordion>
+  <Accordion title="メッセージング & イベント">
+    `openhands_send_message`, `openhands_get_conversation_events`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="コーディング作業の委任" icon="terminal">
+    OpenHandsの会話を作成し、バグや機能要件を伝えて自律的に作業させる
+  </Card>
+  <Card title="進捗の監視" icon="activity">
+    `openhands_get_conversation_events`をポーリングし、エージェントがこれまでに行った作業を要約する
+  </Card>
+  <Card title="複数エージェントへの割り振り" icon="git-branch">
+    独立したタスクごとに複数の会話を開始し、一箇所からまとめて確認する
+  </Card>
+  <Card title="セッションの整理" icon="trash-2">
+    古い会話を一覧表示し、完了・停滞したものを停止または削除する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="openhands_create_conversationは成功するがエージェントが動き出さない">
+    会話の作成と開始は別のステップです。作成後に`openhands_start_conversation`を呼び出してください。ツールスキーマを確認し、開始フラグを直接指定できるか確認するのも有効です。
+  </Accordion>
+  <Accordion title="openhands_send_messageが停止中の会話に届かないように見える">
+    メッセージはアクティブな会話にのみ送信できます。まず`openhands_get_conversation`で状態を確認し、停止していれば`openhands_start_conversation`で再開してください。
+  </Accordion>
+  <Accordion title="openhands_get_conversation_eventsのレスポンスが非常に大きい">
+    長時間実行された会話にはツール呼び出し、ファイル編集、ターミナル出力など多数のイベントが蓄積します。毎回全履歴を取得するのではなく、差分的にイベントを取得してください。
+  </Accordion>
+</AccordionGroup>

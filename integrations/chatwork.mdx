@@ -1,0 +1,79 @@
+---
+title: "Chatwork"
+description: "Team messaging for Japanese businesses — rooms, messages, tasks, files, contacts, and invite links"
+icon: /images/chatwork.svg
+---
+
+# Chatwork
+
+Shanone's Chatwork integration gives your agent 32 tools for team messaging: rooms, messages, tasks, files, contacts, and invite links.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Chatwork (e.g. "send a message to the Sales room"), or connect proactively from **Integrations** in the Shanone dashboard. Either way, you'll get a `connect_link` to authorize Shanone against your Chatwork account.
+  </Step>
+  <Step title="Authorize the Chatwork account">
+    Approve Chatwork's OAuth consent screen for the account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `chatwork_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **32 tools** for Chatwork, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Messages">
+    `chatwork_get_room_messages`, `chatwork_send_message`, `chatwork_mark_as_read`, `chatwork_mark_as_unread`, `chatwork_get_message`, `chatwork_update_message`, `chatwork_delete_message`
+  </Accordion>
+  <Accordion title="Rooms">
+    `chatwork_list_rooms`, `chatwork_get_room_info`, `chatwork_list_room_members`, `chatwork_create_room`, `chatwork_update_room`, `chatwork_leave_room`, `chatwork_update_room_members`
+  </Accordion>
+  <Accordion title="Tasks">
+    `chatwork_create_task`, `chatwork_get_my_tasks`, `chatwork_list_tasks`, `chatwork_update_task_status`, `chatwork_get_task`
+  </Accordion>
+  <Accordion title="Files">
+    `chatwork_list_files`, `chatwork_get_file`, `chatwork_upload_file`
+  </Accordion>
+  <Accordion title="Contacts">
+    `chatwork_get_me`, `chatwork_get_my_status`, `chatwork_list_contacts`, `chatwork_list_incoming_requests`, `chatwork_approve_incoming_request`, `chatwork_reject_incoming_request`
+  </Accordion>
+  <Accordion title="Invite Links">
+    `chatwork_get_invite_link`, `chatwork_create_invite_link`, `chatwork_update_invite_link`, `chatwork_delete_invite_link`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Task triage" icon="list-checks">
+    Pull your open tasks across rooms and summarize what's due soon
+  </Card>
+  <Card title="Room-wide announcements" icon="megaphone">
+    Post updates to a room and mark related messages as read once acted on
+  </Card>
+  <Card title="File hand-off" icon="file-up">
+    Upload a report or attachment directly to a project room
+  </Card>
+  <Card title="Onboarding automation" icon="user-plus">
+    Generate an invite link for a room and approve incoming contact requests
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="chatwork_send_message fails with a room access error">
+    The connected account must already be a member of the target room. Use `chatwork_list_rooms` to confirm the `room_id` is visible to the authenticated user before sending.
+  </Accordion>
+  <Accordion title="chatwork_create_task doesn't notify the assignee as expected">
+    `to_ids` must be a comma-separated list of valid Chatwork account IDs that are already members of the room — look them up first with `chatwork_list_room_members`.
+  </Accordion>
+  <Accordion title="Uploaded file doesn't show up in chatwork_list_files immediately">
+    Chatwork processes uploads server-side; if a freshly uploaded file isn't listed yet, retry `chatwork_list_files` after a short delay.
+  </Accordion>
+</AccordionGroup>

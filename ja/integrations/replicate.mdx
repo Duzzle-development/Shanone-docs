@@ -1,0 +1,79 @@
+---
+title: "Replicate"
+description: "AIモデルの実行・管理 — 推論、トレーニング、デプロイメント、モデルバージョン"
+icon: "cpu"
+---
+
+# Replicate
+
+ShanoneのReplicate連携は、[Replicate](https://replicate.com)上でホストされたAIモデルを実行・管理するための31個のツールをエージェントに提供します。推論、ファインチューニング/トレーニング、デプロイメント、モデルカタログの閲覧に対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="Replicate APIトークンを作成する">
+    [Replicateアカウント設定](https://replicate.com/account/api-tokens)からトークンを発行します。
+  </Step>
+  <Step title="Shanoneにトークンを追加する">
+    Shanoneダッシュボードの**連携**でReplicateを選択し、トークン(`r8_...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`replicate_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはReplicate向けに**31個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="モデル">
+    `replicate_create_model`, `replicate_get_model`, `replicate_list_models`, `replicate_update_model`, `replicate_delete_model`, `replicate_search`, `replicate_list_model_examples`, `replicate_run_model`, `replicate_get_model_readme`
+  </Accordion>
+  <Accordion title="推論(Predictions)">
+    `replicate_create_prediction`, `replicate_get_prediction`, `replicate_list_predictions`, `replicate_cancel_prediction`
+  </Accordion>
+  <Accordion title="トレーニング">
+    `replicate_create_training`, `replicate_get_training`, `replicate_list_trainings`, `replicate_cancel_training`
+  </Accordion>
+  <Accordion title="デプロイメント">
+    `replicate_create_deployment`, `replicate_get_deployment`, `replicate_list_deployments`, `replicate_update_deployment`, `replicate_delete_deployment`, `replicate_run_deployment`
+  </Accordion>
+  <Accordion title="バージョン & コレクション">
+    `replicate_get_model_version`, `replicate_list_model_versions`, `replicate_delete_model_version`, `replicate_get_collection`, `replicate_list_collections`
+  </Accordion>
+  <Accordion title="アカウント">
+    `replicate_get_account`, `replicate_list_hardware`, `replicate_get_webhook_signing_secret`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="モデルの発見" icon="search">
+    タスクに合ったモデルをReplicateのカタログから検索し、READMEで入力パラメータを確認する
+  </Card>
+  <Card title="オンデマンド推論" icon="cpu">
+    モデルの推論を直接実行するか、本番環境で安定した動作をするピン留めされたデプロイメントに対して実行する
+  </Card>
+  <Card title="ファインチューニング" icon="sliders">
+    カスタムデータセットでベースモデルに対するトレーニングジョブを開始し、進捗を監視する
+  </Card>
+  <Card title="Webhook駆動パイプライン" icon="webhook">
+    推論結果を処理する前に、署名シークレットで受信したReplicateのWebhookを検証する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="replicate_create_predictionが「starting」ステータスで即座に返ってくる">
+    推論は非同期に実行されます。最初のレスポンスに出力を期待するのではなく、返されたIDで`replicate_get_prediction`をポーリングし、`status`が`succeeded`または`failed`になるまで待ってください。
+  </Accordion>
+  <Accordion title="replicate_run_modelが無効な入力エラーで失敗する">
+    各モデルは独自の入力スキーマを定義しています。`replicate_run_model`を呼ぶ前に`replicate_get_model_readme`やモデルのバージョン詳細で期待されるパラメータを確認してください。
+  </Accordion>
+  <Accordion title="replicate_create_trainingが予想より大幅に長く実行される">
+    トレーニングの実行時間はデータセットのサイズやベースモデルに大きく依存します。固定の実行時間を想定するのではなく`replicate_get_training`で状態を確認し、必要であれば`replicate_cancel_training`で停止してください。
+  </Accordion>
+</AccordionGroup>

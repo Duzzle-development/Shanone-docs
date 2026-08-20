@@ -1,0 +1,89 @@
+---
+title: "BigQuery"
+description: "Query and manage Google BigQuery datasets, tables, jobs, and IAM — using a service account key"
+icon: /images/bigquery.svg
+---
+
+# BigQuery
+
+Shanone's BigQuery integration gives your agent 40 tools for Google's data warehouse — running queries, managing datasets/tables/models, loading and exporting data, and controlling IAM access.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a service account">
+    In Google Cloud Console, create a service account with the BigQuery permissions you want Shanone to have (e.g. **BigQuery Data Editor**, **BigQuery Job User**), then generate a JSON key for it.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to query BigQuery, or paste the service account key JSON proactively into **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the key is stored, `shanone_execute_tool` calls for `bigquery_*` tools will succeed.
+  </Step>
+</Steps>
+
+<Note>
+BigQuery uses a Service Account Key (JSON) rather than OAuth or a simple API key. Shanone exchanges this key for short-lived access tokens internally.
+</Note>
+
+## Available Tools
+
+Shanone provides **40 tools** for BigQuery, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Query">
+    `bigquery_query`, `bigquery_query_and_wait`
+  </Accordion>
+  <Accordion title="Tables">
+    `bigquery_list_tables`, `bigquery_get_table`, `bigquery_list_partitions`, `bigquery_schema_to_json`, `bigquery_update_table`, `bigquery_create_table`, `bigquery_delete_table`, `bigquery_list_rows`, `bigquery_preview_table`
+  </Accordion>
+  <Accordion title="Datasets">
+    `bigquery_list_datasets`, `bigquery_get_dataset`, `bigquery_list_projects`, `bigquery_get_service_account_email`, `bigquery_update_dataset`, `bigquery_create_dataset`, `bigquery_delete_dataset`
+  </Accordion>
+  <Accordion title="Jobs">
+    `bigquery_list_jobs`, `bigquery_get_job`, `bigquery_cancel_job`, `bigquery_delete_job_metadata`
+  </Accordion>
+  <Accordion title="Load, copy & export">
+    `bigquery_load_table_from_uri`, `bigquery_load_table_from_json`, `bigquery_copy_table`, `bigquery_extract_table`, `bigquery_insert_rows`, `bigquery_insert_rows_json`
+  </Accordion>
+  <Accordion title="Models">
+    `bigquery_list_models`, `bigquery_get_model`, `bigquery_update_model`, `bigquery_delete_model`
+  </Accordion>
+  <Accordion title="Routines (stored procedures & UDFs)">
+    `bigquery_list_routines`, `bigquery_get_routine`, `bigquery_create_routine`, `bigquery_update_routine`, `bigquery_delete_routine`
+  </Accordion>
+  <Accordion title="IAM">
+    `bigquery_get_iam_policy`, `bigquery_set_iam_policy`, `bigquery_test_iam_permissions`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Ad-hoc data analysis" icon="bar-chart-3">
+    Run a SQL query against a dataset and summarize the results in plain language
+  </Card>
+  <Card title="Data pipeline ops" icon="workflow">
+    Load data from a GCS URI into a table, then monitor the load job to completion
+  </Card>
+  <Card title="Schema & access audits" icon="shield-check">
+    Review table schemas and IAM policies before granting a new team access to a dataset
+  </Card>
+  <Card title="ML model management" icon="brain">
+    List and inspect BigQuery ML models used by a reporting pipeline
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="bigquery_query fails with a permission denied error">
+    Check the service account's IAM roles with `bigquery_test_iam_permissions` — most read operations need at least `bigquery.jobs.create` and `bigquery.tables.getData` on the target dataset.
+  </Accordion>
+  <Accordion title="bigquery_query returns a job that never completes">
+    Long-running queries return a job reference rather than blocking. Poll `bigquery_get_job` until `status.state` is `DONE`, or use `bigquery_query_and_wait` for short queries where blocking is acceptable.
+  </Accordion>
+  <Accordion title="bigquery_load_table_from_uri fails silently or partially loads data">
+    Check `bigquery_get_job` for the load job's `errorResult` and `errors` fields — schema mismatches or malformed rows in the source file are the most common cause.
+  </Accordion>
+</AccordionGroup>

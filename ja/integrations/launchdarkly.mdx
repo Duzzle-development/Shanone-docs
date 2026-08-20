@@ -1,0 +1,88 @@
+---
+title: "LaunchDarkly"
+description: "フィーチャーフラグ、実験、AI Config、セグメント、監査ログなど — 機能管理全般"
+icon: "flag"
+---
+
+# LaunchDarkly
+
+ShanoneのLaunchDarkly連携では、LaunchDarklyの機能管理プラットフォームのほぼ全機能——フラグ、環境、セグメント、実験、AI Config、承認、監査ログ、チーム/ロール管理を扱う76のツールをエージェントが利用できるようになります。
+
+## はじめに
+
+<Steps>
+  <Step title="LaunchDarklyのアクセストークンを発行する">
+    LaunchDarklyアカウントで**Account Settings → Authorization**に移動し、Personal ScoreまたはService Access Tokenを作成します(SDK/Mobileキーは使用できません)。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、LaunchDarklyを選択してアクセストークンを貼り付けます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`launchdarkly_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはLaunchDarkly用に**76のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="フィーチャーフラグ & トリガー">
+    `launchdarkly_list_feature_flags`, `launchdarkly_get_feature_flag`, `launchdarkly_create_feature_flag`, `launchdarkly_update_feature_flag`, `launchdarkly_toggle_feature_flag`, `launchdarkly_delete_feature_flag`, `launchdarkly_copy_feature_flag`, `launchdarkly_get_feature_flag_status`, `launchdarkly_list_feature_flag_statuses`, `launchdarkly_list_flag_triggers`, `launchdarkly_create_flag_trigger`, `launchdarkly_delete_flag_trigger`
+  </Accordion>
+  <Accordion title="承認 & スケジュール変更">
+    `launchdarkly_list_approval_requests_for_flag`, `launchdarkly_create_approval_request_for_flag`, `launchdarkly_review_approval_request_for_flag`, `launchdarkly_apply_approval_request_for_flag`, `launchdarkly_delete_approval_request_for_flag`, `launchdarkly_list_scheduled_changes`, `launchdarkly_create_scheduled_change`
+  </Accordion>
+  <Accordion title="プロジェクト & 環境">
+    `launchdarkly_list_projects`, `launchdarkly_get_project`, `launchdarkly_create_project`, `launchdarkly_update_project`, `launchdarkly_delete_project`, `launchdarkly_list_environments`, `launchdarkly_get_environment`, `launchdarkly_create_environment`, `launchdarkly_update_environment`, `launchdarkly_delete_environment`
+  </Accordion>
+  <Accordion title="セグメント & コンテキスト">
+    `launchdarkly_list_segments`, `launchdarkly_get_segment`, `launchdarkly_create_segment`, `launchdarkly_update_segment`, `launchdarkly_delete_segment`, `launchdarkly_search_contexts`, `launchdarkly_get_context_attribute_names`, `launchdarkly_evaluate_context_instance`
+  </Accordion>
+  <Accordion title="実験・メトリクス・ホールドアウト">
+    `launchdarkly_list_experiments`, `launchdarkly_get_experiment`, `launchdarkly_create_experiment`, `launchdarkly_list_metrics`, `launchdarkly_get_metric`, `launchdarkly_create_metric`, `launchdarkly_update_metric`, `launchdarkly_list_holdouts`, `launchdarkly_create_holdout`
+  </Accordion>
+  <Accordion title="AI Config">
+    `launchdarkly_list_ai_configs`, `launchdarkly_get_ai_config`, `launchdarkly_create_ai_config`, `launchdarkly_update_ai_config`, `launchdarkly_delete_ai_config`, `launchdarkly_list_ai_config_variations`, `launchdarkly_create_ai_config_variation`, `launchdarkly_get_ai_config_variation`
+  </Accordion>
+  <Accordion title="インサイト & 監査ログ">
+    `launchdarkly_get_deployment_frequency_chart`, `launchdarkly_get_lead_time_chart`, `launchdarkly_get_flag_status_chart`, `launchdarkly_list_audit_log_entries`, `launchdarkly_get_audit_log_entry`, `launchdarkly_search_audit_log_entries`, `launchdarkly_get_audit_log_entry_counts`
+  </Accordion>
+  <Accordion title="チーム・ロール・メンバー">
+    `launchdarkly_list_account_members`, `launchdarkly_get_account_member`, `launchdarkly_list_custom_roles`, `launchdarkly_get_custom_role`, `launchdarkly_create_custom_role`, `launchdarkly_list_teams`, `launchdarkly_get_team`, `launchdarkly_create_team`
+  </Accordion>
+  <Accordion title="Webhook & ワークフロー">
+    `launchdarkly_list_webhooks`, `launchdarkly_get_webhook`, `launchdarkly_create_webhook`, `launchdarkly_update_webhook`, `launchdarkly_delete_webhook`, `launchdarkly_list_workflows`, `launchdarkly_create_workflow`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="段階的なロールアウト" icon="git-branch">
+    トラフィックの一部に対してフラグをオンにし、完全展開前にステータスを監視する
+  </Card>
+  <Card title="キルスイッチ対応" icon="power">
+    問題のある機能のフラグを複数の環境で即座にオフにする
+  </Card>
+  <Card title="A/Bテスト分析" icon="flask-conical">
+    実験とメトリクスのデータを取得し、どのバリエーションが優れているかを要約する
+  </Card>
+  <Card title="コンプライアンス監査" icon="scroll-text">
+    特定のフラグを誰がいつ変更したかを監査ログから検索する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="launchdarkly_toggle_feature_flagが反映されないように見える">
+    フラグは環境ごとに切り替わります——正しい`environmentKey`(例:`production`か`staging`か)を指定しているか確認してください。ある環境での切り替えは他の環境には影響しません。
+  </Accordion>
+  <Accordion title="launchdarkly_update_feature_flagやlaunchdarkly_delete_feature_flagが競合/承認エラーを返す">
+    LaunchDarklyのワークスペースによっては、フラグの変更に承認ワークフローが必須な場合があります——直接更新する代わりに`launchdarkly_create_approval_request_for_flag`と`launchdarkly_review_approval_request_for_flag`/`launchdarkly_apply_approval_request_for_flag`を使用してください。
+  </Accordion>
+  <Accordion title="アクセストークンが一部のツールでは動作するが他では動作しない">
+    LaunchDarklyのアクセストークンには特定のロール/権限スコープが設定されています——単一プロジェクトや読み取り専用ロールにスコープされたトークンでは、`launchdarkly_create_custom_role`や`launchdarkly_create_project`のような管理者レベルのツールで失敗します。必要に応じてより広い権限を持つトークンを生成してください。
+  </Accordion>
+</AccordionGroup>

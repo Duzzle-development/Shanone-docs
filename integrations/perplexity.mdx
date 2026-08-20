@@ -1,0 +1,64 @@
+---
+title: "Perplexity"
+description: "AI-powered web search with citations, powered by Perplexity's Sonar models"
+icon: /images/perplexity.svg
+---
+
+# Perplexity
+
+Shanone's Perplexity integration gives your agent 1 tool for AI-powered, citation-backed web search — a lightweight way to ground answers in real-time information without building your own search pipeline.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Perplexity API key">
+    Generate a key from the [Perplexity API settings page](https://www.perplexity.ai/settings/api).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Perplexity, and paste in the key (`pplx-...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `perplexity_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **1 tool** for Perplexity, organized into this category:
+
+<AccordionGroup>
+  <Accordion title="Search">
+    `perplexity_search` — ask a natural-language question and get an AI-generated answer with cited sources, using a selectable model tier (`small`/`large`/`huge`)
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Fact-checking" icon="check-circle">
+    Verify a claim in a document against real-time, cited web sources
+  </Card>
+  <Card title="Current events summaries" icon="newspaper">
+    Get an up-to-date answer on a topic that changes faster than a model's training data
+  </Card>
+  <Card title="Technical Q&A" icon="code">
+    Ask complex technical questions and get sourced, detailed explanations
+  </Card>
+  <Card title="Quick research grounding" icon="search">
+    Pull citations for a claim before including it in a report or email
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="perplexity_search returns an authentication error">
+    Confirm the key saved in **Integrations** starts with `pplx-` — keys from other Perplexity products (e.g. Comet) won't work with the Sonar API.
+  </Accordion>
+  <Accordion title="Answers feel shallow for a complex question">
+    Try the `huge` model tier instead of the default `small` — it trades speed for better reasoning on complex or multi-part questions.
+  </Accordion>
+  <Accordion title="perplexity_search is rate limited">
+    Perplexity API plans have per-minute rate limits tied to the account behind the key; wait and retry, or check usage on the Perplexity dashboard.
+  </Accordion>
+</AccordionGroup>

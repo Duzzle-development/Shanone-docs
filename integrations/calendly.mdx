@@ -1,0 +1,88 @@
+---
+title: "Calendly"
+description: "Manage scheduling — event types, scheduled events, invitees, availability, teams, and routing forms"
+icon: /images/calendly.svg
+---
+
+# Calendly
+
+Shanone's Calendly integration gives your agent 51 tools for managing scheduling: event types, scheduled events, invitees, availability, organizations, teams, and routing forms.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Calendly (e.g. "list my upcoming scheduled events"), or connect proactively from **Integrations** in the Shanone dashboard. Either way, you'll get a `connect_link` to authorize Shanone against your Calendly account.
+  </Step>
+  <Step title="Authorize the Calendly account">
+    Approve Calendly's OAuth consent screen for the account (and organization, if applicable) you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `calendly_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **51 tools** for Calendly, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Scheduled Events & Invitees">
+    `calendly_list_scheduled_events`, `calendly_get_scheduled_event`, `calendly_cancel_scheduled_event`, `calendly_list_event_invitees`, `calendly_get_invitee`, `calendly_create_event_invitee`, `calendly_mark_invitee_no_show`, `calendly_delete_invitee_no_show`
+  </Accordion>
+  <Accordion title="Event Types">
+    `calendly_list_event_types`, `calendly_get_event_type`, `calendly_create_event_type`, `calendly_update_event_type`, `calendly_create_one_off_event_type`, `calendly_get_event_type_availability`, `calendly_update_event_type_availability`, `calendly_list_event_type_hosts`, `calendly_list_group_event_types`, `calendly_get_group_event_type`, `calendly_list_group_relationships`
+  </Accordion>
+  <Accordion title="Scheduling Links & Availability">
+    `calendly_create_scheduling_link`, `calendly_create_single_use_scheduling_link`, `calendly_list_event_type_available_times`, `calendly_list_user_busy_times`, `calendly_list_user_availability_schedules`, `calendly_get_user_availability_schedule`, `calendly_update_user_availability_schedule`, `calendly_get_user_availability`
+  </Accordion>
+  <Accordion title="Organizations & Teams">
+    `calendly_get_organization`, `calendly_get_organization_membership`, `calendly_list_organization_memberships`, `calendly_invite_user_to_organization`, `calendly_remove_user_from_organization`, `calendly_list_organization_invitations`, `calendly_revoke_organization_invitation`, `calendly_list_teams`, `calendly_get_team`, `calendly_list_team_memberships`, `calendly_get_team_membership`
+  </Accordion>
+  <Accordion title="Routing Forms">
+    `calendly_list_routing_forms`, `calendly_get_routing_form`, `calendly_list_routing_form_submissions`, `calendly_get_routing_form_submission`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `calendly_list_webhook_subscriptions`, `calendly_create_webhook_subscription`, `calendly_delete_webhook_subscription`
+  </Accordion>
+  <Accordion title="Sharing">
+    `calendly_create_share`, `calendly_delete_share`
+  </Accordion>
+  <Accordion title="Data Compliance">
+    `calendly_delete_invitee_data`, `calendly_delete_scheduled_event_data`
+  </Accordion>
+  <Accordion title="Activity Log & Profile">
+    `calendly_list_activity_log_entries`, `calendly_get_current_user`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting prep" icon="calendar-clock">
+    Pull today's scheduled events and invitee details before a call
+  </Card>
+  <Card title="No-show follow-up" icon="user-x">
+    Detect no-shows and draft a reschedule email via a scheduling link
+  </Card>
+  <Card title="Lead routing" icon="split">
+    Read routing form submissions and file them into a CRM or task tracker
+  </Card>
+  <Card title="Team access management" icon="users">
+    Invite or remove organization members and audit team memberships
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="calendly_create_event_invitee fails with a permission error">
+    Creating invitees programmatically requires an Enterprise-tier Calendly account; on lower tiers, use `calendly_create_scheduling_link` instead and send that link to the invitee.
+  </Accordion>
+  <Accordion title="Organization or team tools return empty results">
+    Membership/team management endpoints require the connected user to be an admin or owner of the Calendly organization — a regular member account won't see other users' data.
+  </Accordion>
+  <Accordion title="Routing form submissions aren't showing up">
+    Routing forms must be published and actively receiving submissions in Calendly; `calendly_list_routing_forms` only returns forms owned by the connected user or their organization.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,76 @@
+---
+title: "Mem0"
+description: "エージェントに永続的で検索可能な長期記憶を持たせる — メモリとそれが参照するエンティティを追加・検索・管理する"
+icon: "plug"
+---
+
+# Mem0
+
+ShanoneのMem0連携は、会話を横断した長期記憶の保存・検索・管理と、非同期メモリ操作の背後にあるエンティティやイベントステータスを扱う14個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Mem0 APIキーを取得する">
+    [app.mem0.ai](https://app.mem0.ai)でサインアップし、ダッシュボードからAPIキーをコピーします。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**Integrations > Mem0**で、そのAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`mem0_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはMem0向けに**14個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="メモリ">
+    `mem0_add_memories`, `mem0_search_memories`, `mem0_get_memories`
+  </Accordion>
+  <Accordion title="個別メモリ操作">
+    `mem0_get_memory`, `mem0_update_memory`, `mem0_delete_memory`, `mem0_delete_all_memories`
+  </Accordion>
+  <Accordion title="メモリ履歴 & バッチ操作">
+    `mem0_get_memory_history`, `mem0_batch_update_memories`, `mem0_batch_delete_memories`
+  </Accordion>
+  <Accordion title="エンティティ">
+    `mem0_list_entities`, `mem0_get_entity`, `mem0_delete_entity`
+  </Accordion>
+  <Accordion title="イベント">
+    `mem0_get_event_status` — 非同期メモリ操作(バッチでの追加/更新/削除など)のステータスを確認する
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="パーソナライズされたアシスタント" icon="user">
+    セッションをまたいでユーザーの好みや過去のリクエストを思い出す
+  </Card>
+  <Card title="会話の継続性" icon="message-circle">
+    会話の中の重要な事実を、将来の参照用にメモリとして追加する
+  </Card>
+  <Card title="メモリのクリーンアップ" icon="trash-2">
+    特定のエンティティに紐づく古くなった、または誤ったメモリをバッチ削除する
+  </Card>
+  <Card title="監査ログ" icon="history">
+    `mem0_get_memory_history`を使って、メモリがどのように変化してきたかを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="mem0_search_memoriesが関連する結果を返さない">
+    検索の精度はメモリ追加時の情報の与え方に依存します——追加時に十分なコンテキスト(user_id、agent_id、run_id)を渡すことで、後から正しくスコープを絞って取得できるようになります。
+  </Accordion>
+  <Accordion title="バッチ操作が成功と表示されたのにメモリが反映されていない">
+    `mem0_get_event_status`でバッチ操作が完全に完了したかを確認できます。一部のバッチ追加/更新呼び出しは非同期で処理されるため、結果が確定するまで少し時間がかかることがあります。
+  </Accordion>
+  <Accordion title="エンティティを削除したのにそのメモリがまだ表示される">
+    `mem0_delete_entity`はエンティティのレコード自体を削除します。関連するメモリも削除したい場合は、そのエンティティのuser/agent IDを指定して`mem0_delete_all_memories`を使ってください。
+  </Accordion>
+</AccordionGroup>

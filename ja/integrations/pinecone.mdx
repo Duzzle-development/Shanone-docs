@@ -1,0 +1,88 @@
+---
+title: "Pinecone"
+description: "ベクトルデータベース操作 — インデックス、ネームスペース、ベクトル、アシスタント、バックアップ、組織レベルの管理"
+icon: "database"
+---
+
+# Pinecone
+
+ShanoneのPinecone連携は、ベクトルデータベースの全体像をカバーする85個のツールをエージェントに提供します。インデックス・ネームスペース管理、ベクトルのCRUD/検索、RAGチャット用のAssistant API、バックアップ/リストアに加えて、他の連携ではあまり扱われない組織レベルの管理機能(ユーザー、サービスアカウント、ロールバインディング)まで対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="Pinecone APIキーを作成する">
+    [Pineconeコンソール](https://app.pinecone.io/organizations/-/keys)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でPineconeを選択し、キー(`pcsk_...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`pinecone_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはPinecone向けに**85個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="インデックス & ネームスペース">
+    `pinecone_list_indexes`, `pinecone_create_index`, `pinecone_describe_index`, `pinecone_delete_index`, `pinecone_configure_index`, `pinecone_create_index_for_model`, `pinecone_list_namespaces`, `pinecone_create_namespace`, `pinecone_describe_namespace`, `pinecone_delete_namespace`, `pinecone_upsert_records`, `pinecone_search_records`
+  </Accordion>
+  <Accordion title="ベクトル">
+    `pinecone_upsert_vectors`, `pinecone_query_vectors`, `pinecone_fetch_vectors`, `pinecone_delete_vectors`, `pinecone_update_vector`, `pinecone_list_vectors`, `pinecone_describe_index_stats`, `pinecone_fetch_vectors_by_metadata`
+  </Accordion>
+  <Accordion title="Assistant(RAGチャット)">
+    `pinecone_list_assistants`, `pinecone_create_assistant`, `pinecone_describe_assistant`, `pinecone_update_assistant`, `pinecone_delete_assistant`, `pinecone_chat_assistant`, `pinecone_chat_completion_assistant`, `pinecone_context_assistant`, `pinecone_upload_assistant_file`, `pinecone_list_assistant_files`, `pinecone_describe_assistant_file`, `pinecone_upsert_assistant_file`, `pinecone_delete_assistant_file`, `pinecone_list_assistant_operations`, `pinecone_describe_assistant_operation`
+  </Accordion>
+  <Accordion title="バックアップ & リストア">
+    `pinecone_create_backup`, `pinecone_list_index_backups`, `pinecone_list_project_backups`, `pinecone_describe_backup`, `pinecone_delete_backup`, `pinecone_create_index_from_backup`, `pinecone_list_restore_jobs`, `pinecone_describe_restore_job`
+  </Accordion>
+  <Accordion title="インポート & 推論">
+    `pinecone_start_import`, `pinecone_list_imports`, `pinecone_describe_import`, `pinecone_cancel_import`, `pinecone_list_models`, `pinecone_describe_model`, `pinecone_generate_embeddings`, `pinecone_rerank`
+  </Accordion>
+  <Accordion title="コレクション">
+    `pinecone_list_collections`, `pinecone_create_collection`, `pinecone_describe_collection`, `pinecone_delete_collection`
+  </Accordion>
+  <Accordion title="管理: 組織 & プロジェクト">
+    `pinecone_admin_list_organizations`, `pinecone_admin_get_organization`, `pinecone_admin_update_organization`, `pinecone_admin_delete_organization`, `pinecone_admin_list_projects`, `pinecone_admin_create_project`, `pinecone_admin_get_project`, `pinecone_admin_update_project`, `pinecone_admin_delete_project`
+  </Accordion>
+  <Accordion title="管理: ユーザー、サービスアカウント & アクセス">
+    `pinecone_admin_list_users`, `pinecone_admin_get_user`, `pinecone_admin_delete_user`, `pinecone_admin_list_api_keys`, `pinecone_admin_create_api_key`, `pinecone_admin_get_api_key`, `pinecone_admin_update_api_key`, `pinecone_admin_delete_api_key`, `pinecone_admin_list_invites`, `pinecone_admin_create_invite`, `pinecone_admin_get_invite`, `pinecone_admin_delete_invite`, `pinecone_admin_resend_invite`, `pinecone_admin_list_role_bindings`, `pinecone_admin_create_role_binding`, `pinecone_admin_get_role_binding`, `pinecone_admin_delete_role_binding`, `pinecone_admin_list_service_accounts`, `pinecone_admin_create_service_account`, `pinecone_admin_get_service_account`, `pinecone_admin_update_service_account`, `pinecone_admin_delete_service_account`, `pinecone_admin_rotate_service_account_secret`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="セマンティック検索" icon="search">
+    テキストや埋め込みに最も近いベクトルを既存のインデックスから検索する
+  </Card>
+  <Card title="RAGアシスタントチャット" icon="message-circle">
+    アップロードしたナレッジベース上にPinecone Assistantを作成し、直接チャットする
+  </Card>
+  <Card title="インデックスのライフサイクル管理" icon="database">
+    ワークロード用に新しいインデックスをプロビジョニングし、リスクの高い移行の前にバックアップを取る
+  </Card>
+  <Card title="一括インジェスト" icon="upload">
+    ベクトルを一件ずつupsertする代わりに、オブジェクトストレージから一括インポートを開始する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="pinecone_query_vectorsやpinecone_upsert_vectorsが次元不一致エラーで失敗する">
+    ベクトルの次元数はインデックスに設定された次元数と正確に一致する必要があります。特に埋め込みモデルを切り替えた後は、まず`pinecone_describe_index`で確認してください。
+  </Accordion>
+  <Accordion title="pinecone_upsert_recordsやpinecone_search_recordsがベクトルレベルのツールと異なる挙動をする">
+    これらは生のベクトルではなく、Pineconeの新しいRecords API(ネームスペース単位、統合推論による自動埋め込み対応)を操作します。`shanone_get_tool_schema`でそれぞれが期待するフィールド形式を確認してください。
+  </Accordion>
+  <Accordion title="pinecone_chat_assistantがアップロードしたファイルを無視した回答をする">
+    チャットする前に`pinecone_describe_assistant_file`でファイルの処理が完了しているか確認してください——新しくアップロードされたファイルは、アシスタントが参照できるようになる前にインデックス化が必要です。
+  </Accordion>
+  <Accordion title="管理系ツール(pinecone_admin_*)が権限エラーを返す">
+    管理系エンドポイントには、プロジェクトレベルのキーではなく組織レベルのスコープを持つAPIキーが必要です。プロジェクトキーしか設定していない場合は、Pineconeコンソールから専用の管理者キーを発行してください。
+  </Accordion>
+</AccordionGroup>

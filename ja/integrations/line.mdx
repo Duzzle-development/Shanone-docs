@@ -1,0 +1,94 @@
+---
+title: "LINE"
+description: "LINE Messaging APIのメッセージ配信、リッチメニュー、オーディエンス、インサイト、アカウント管理"
+icon: /images/line.svg
+---
+
+# LINE
+
+ShanoneのLINE連携では、LINE Messaging APIおよびLogin APIのほぼ全機能——メッセージ送信、リッチメニュー管理、ターゲティング配信用のオーディエンスセグメント構築、エンゲージメントインサイトの取得を扱う101のツールをエージェントが利用できるようになります。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにLINEで何か作業をしてもらう(例:「このお知らせを全フォロワーに配信して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="LINEチャンネルを認可する">
+    ShanoneがLINE公式アカウント/チャンネルの代わりに操作することをOAuthフローで承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`line_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはLINE用に**101のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="メッセージ配信">
+    `line_push_message`, `line_reply_message`, `line_broadcast_message`, `line_multicast_message`, `line_narrowcast_message`, `line_get_narrowcast_progress`, `line_get_profile_by_user_id`, `line_get_group_summary`, `line_get_group_member_count`, `line_get_bot_info`, `line_get_message_quota`, `line_get_followers_count`, `line_leave_group`
+  </Accordion>
+  <Accordion title="メッセージ管理 & 検証">
+    `line_validate_reply_message`, `line_validate_push_message`, `line_validate_multicast_message`, `line_validate_narrowcast_message`, `line_validate_broadcast_message`, `line_get_reply_message_count`, `line_get_push_message_count`, `line_get_multicast_message_count`, `line_get_broadcast_message_count`, `line_mark_as_read`, `line_show_loading_indicator`
+  </Accordion>
+  <Accordion title="リッチメニュー">
+    `line_create_rich_menu`, `line_validate_rich_menu`, `line_upload_rich_menu_image`, `line_download_rich_menu_image`, `line_get_rich_menu_list`, `line_get_rich_menu`, `line_delete_rich_menu`, `line_set_default_rich_menu`, `line_get_default_rich_menu_id`, `line_clear_default_rich_menu`
+  </Accordion>
+  <Accordion title="リッチメニューエイリアス & ユーザー単位の割り当て">
+    `line_create_rich_menu_alias`, `line_delete_rich_menu_alias`, `line_update_rich_menu_alias`, `line_get_rich_menu_alias`, `line_get_rich_menu_alias_list`, `line_link_rich_menu_to_user`, `line_link_rich_menu_to_users`, `line_get_rich_menu_id_of_user`, `line_unlink_rich_menu_from_user`, `line_unlink_rich_menu_from_users`, `line_batch_control_rich_menus`, `line_get_rich_menu_batch_progress`, `line_validate_rich_menu_batch_request`
+  </Accordion>
+  <Accordion title="オーディエンスグループ">
+    `line_create_upload_audience_group`, `line_create_upload_audience_group_by_file`, `line_update_upload_audience_group`, `line_update_upload_audience_group_by_file`, `line_create_click_audience_group`, `line_create_imp_audience_group`, `line_rename_audience_group`, `line_delete_audience_group`, `line_get_audience_group`, `line_get_audience_groups`, `line_get_shared_audience_group`, `line_get_shared_audience_groups`
+  </Accordion>
+  <Accordion title="インサイト">
+    `line_get_message_delivery_count`, `line_get_friend_demographics`, `line_get_message_event_stats`, `line_get_statistics_per_unit`, `line_get_unit_name_type_count`, `line_get_unit_name_list`, `line_get_rich_menu_insight_summary`, `line_get_rich_menu_insight_daily`
+  </Accordion>
+  <Accordion title="ログイン & ユーザーアクセス">
+    `line_get_user_profile`, `line_verify_access_token`, `line_get_friendship_status`, `line_refresh_access_token`, `line_revoke_login_access_token`, `line_deauthorize_app`, `line_verify_id_token`, `line_get_userinfo`, `line_get_follower_ids`, `line_issue_link_token`
+  </Accordion>
+  <Accordion title="チャンネルアクセストークン">
+    `line_issue_channel_access_token_v21`, `line_verify_channel_access_token_v21`, `line_get_channel_access_token_key_ids`, `line_revoke_channel_access_token_v21`, `line_issue_stateless_channel_access_token`, `line_issue_shortlived_channel_access_token`, `line_verify_channel_access_token`, `line_revoke_channel_access_token`
+  </Accordion>
+  <Accordion title="コンテンツ・クーポン・メンバーシップ">
+    `line_get_message_content`, `line_get_message_content_preview`, `line_verify_content_transcoding`, `line_create_coupon`, `line_discontinue_coupon`, `line_get_coupons_list`, `line_get_coupon`, `line_get_membership_subscription_status`, `line_get_membership_user_ids`, `line_get_membership_plans`
+  </Accordion>
+  <Accordion title="グループ & ルーム">
+    `line_get_group_member_ids`, `line_get_group_member_profile`, `line_get_room_member_count`, `line_get_room_member_ids`, `line_get_room_member_profile`, `line_leave_room`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="ターゲティングキャンペーン" icon="target">
+    クリック/インプレッションデータからオーディエンスグループを作成し、それに対してnarrowcast配信する
+  </Card>
+  <Card title="リッチメニュー体験" icon="layout-grid">
+    リッチメニューを設計・配信し、ユーザーセグメントごとに異なるメニューを割り当てる
+  </Card>
+  <Card title="サポート自動応答" icon="message-square-reply">
+    Webhookイベントから得たリプライトークンを使って受信メッセージに返信する
+  </Card>
+  <Card title="エンゲージメントレポート" icon="bar-chart-3">
+    配信数とフォロワー属性を取得してキャンペーンの効果をレポートする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="line_reply_messageで無効または期限切れのリプライトークンエラーが出る">
+    リプライトークンは使い捨てで、Webhookイベントで発行された直後から短時間で失効します——その即時のWebhook処理ウィンドウの外で応答する場合は代わりに`line_push_message`を使用してください。
+  </Accordion>
+  <Accordion title="line_broadcast_messageやline_multicast_messageがレート制限/クォータエラーを返す">
+    プランの月間上限については`line_get_message_quota`と該当する`line_get_*_message_count`ツールを確認してください——無料プランや下位プランにはプッシュ/配信量の厳格な上限があります。
+  </Accordion>
+  <Accordion title="特定のユーザーにリッチメニューが表示されない">
+    リッチメニューはアカウント全体のデフォルト(`line_set_default_rich_menu`)として設定するか、ユーザーごとに明示的にリンク(`line_link_rich_menu_to_user`)します——ユーザー単位のリンクは常にデフォルトより優先されるため、意図しないメニューが表示される場合は`line_get_rich_menu_id_of_user`を確認してください。
+  </Accordion>
+  <Accordion title="line_create_upload_audience_group_by_fileの検証が失敗する">
+    まず対応する`line_validate_*`ツールでリクエストを検証してください——オーディエンスのアップロードには厳格なフォーマット要件(例:1行に1つの識別子、サイズ制限)があり、気づかずに違反しやすいです。
+  </Accordion>
+</AccordionGroup>

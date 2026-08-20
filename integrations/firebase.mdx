@@ -1,0 +1,82 @@
+---
+title: "Firebase"
+description: "Manage Firebase projects — Firestore, Authentication, Cloud Messaging, Remote Config, Storage, and Hosting"
+icon: /images/firebase.svg
+---
+
+# Firebase
+
+Shanone's Firebase integration gives your agent 45 tools across the Firebase Admin surface — Firestore, Auth, Cloud Messaging, Remote Config, Cloud Storage, and app/project management.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a service account key">
+    In the Firebase console, go to Project Settings → Service Accounts and generate a new private key (JSON).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select Firebase, and paste the full service account JSON.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `firebase_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **45 tools** for Firebase, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Projects & apps">
+    `firebase_list_projects`, `firebase_get_project`, `firebase_list_web_apps`, `firebase_list_android_apps`, `firebase_list_ios_apps`, `firebase_create_android_app`, `firebase_create_ios_app`
+  </Accordion>
+  <Accordion title="Firestore">
+    `firebase_list_firestore_collections`, `firebase_list_firestore_documents`, `firebase_get_firestore_document`, `firebase_create_firestore_document`, `firebase_update_firestore_document`, `firebase_delete_firestore_document`, `firebase_query_firestore`
+  </Accordion>
+  <Accordion title="Authentication">
+    `firebase_auth_list_users`, `firebase_auth_get_user`, `firebase_auth_create_user`, `firebase_auth_update_user`, `firebase_auth_delete_user`, `firebase_auth_delete_users`, `firebase_auth_set_custom_user_claims`, `firebase_auth_revoke_refresh_tokens`, `firebase_auth_verify_id_token`, `firebase_auth_create_custom_token`, `firebase_auth_generate_password_reset_link`, `firebase_auth_generate_email_verification_link`
+  </Accordion>
+  <Accordion title="Cloud Messaging">
+    `firebase_messaging_send`, `firebase_messaging_send_each`, `firebase_messaging_send_each_for_multicast`, `firebase_messaging_subscribe_to_topic`, `firebase_messaging_unsubscribe_from_topic`
+  </Accordion>
+  <Accordion title="Remote Config">
+    `firebase_remote_config_get_template`, `firebase_remote_config_publish_template`, `firebase_remote_config_list_versions`, `firebase_remote_config_rollback`, `firebase_remote_config_download_defaults`
+  </Accordion>
+  <Accordion title="Cloud Storage">
+    `firebase_storage_list_files`, `firebase_storage_get_file_metadata`, `firebase_storage_upload_file`, `firebase_storage_download_file`, `firebase_storage_delete_file`, `firebase_storage_generate_signed_url`
+  </Accordion>
+  <Accordion title="Hosting & App Check">
+    `firebase_list_hosting_sites`, `firebase_list_hosting_releases`, `firebase_app_check_verify_token`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="User account administration" icon="users">
+    List, create, or update Firebase Auth users and manage custom claims for role-based access
+  </Card>
+  <Card title="Push notification campaigns" icon="bell-ring">
+    Send targeted or topic-based push notifications via Cloud Messaging
+  </Card>
+  <Card title="Firestore data operations" icon="database">
+    Query, read, and update Firestore documents/collections without opening the console
+  </Card>
+  <Card title="Config rollouts & rollbacks" icon="rotate-ccw">
+    Publish a new Remote Config template, then roll back instantly if metrics regress
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="firebase_query_firestore returns fewer results than expected">
+    Firestore queries require indexes for compound filters/sorts — check the Firebase console for a missing-index error before assuming the query logic is wrong.
+  </Accordion>
+  <Accordion title="firebase_auth_delete_users silently skips some UIDs">
+    Batch user deletion reports per-UID errors in its response; inspect the returned error list rather than assuming a 200-level success means every UID was deleted.
+  </Accordion>
+  <Accordion title="Tool calls fail with a permission or project-mismatch error">
+    The service account JSON is scoped to one Firebase project — verify `firebase_get_project` returns the project you expect, since a key from the wrong project will fail on every subsequent call.
+  </Accordion>
+</AccordionGroup>

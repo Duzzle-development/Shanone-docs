@@ -1,0 +1,85 @@
+---
+title: "Box"
+description: "Boxでファイル・フォルダ、コラボレーション、メタデータ、電子署名、AIによるコンテンツQ&Aを管理"
+icon: /images/box.svg
+---
+
+# Box
+
+ShanoneのBox連携では、Boxのコンテンツ管理機能全体をカバーする**100個のツール**をエージェントに提供します — ファイル/フォルダ、共有・コラボレーション、メタデータテンプレート、タスク、電子署名、そしてBox AIのask/extract機能まで扱えます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにBoxで何か作業をしてもらう(例:「Legalフォルダの最新の契約書を探して」)か、Shanoneダッシュボードの**インテグレーション**から事前に接続します。
+  </Step>
+  <Step title="Boxアカウントを承認する">
+    Shanoneにアクセスさせたいアカウント/エンタープライズについて、BoxのOAuth承認画面で承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`box_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Box向けに**100個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="ファイル & フォルダ">
+    `box_get_file_info`, `box_search`, `box_download_file`, `box_copy_file`, `box_move_file`, `box_rename_file`, `box_update_file`, `box_list_file_versions`, `box_get_file_version`, `box_restore_file_version`, `box_delete_file_version`, `box_list_folder`, `box_create_folder`, `box_delete_item`
+  </Accordion>
+  <Accordion title="アップロード & ダウンロード">
+    `box_upload_file`, `box_upload_file_version`, `box_upload_file_from_url`, `box_preflight_check`, `box_chunked_upload`, `box_get_download_url`, `box_download_file_content`, `box_get_thumbnail`, `box_get_file_representation`, `box_download_zip`
+  </Accordion>
+  <Accordion title="コラボレーション & 共有">
+    `box_list_file_collaborations`, `box_list_folder_collaborations`, `box_get_collaboration`, `box_create_collaboration`, `box_update_collaboration`, `box_delete_collaboration`, `box_get_pending_collaborations`, `box_accept_collaboration`, `box_create_shared_link`
+  </Accordion>
+  <Accordion title="メタデータ">
+    `box_list_file_metadata`, `box_get_file_metadata`, `box_create_file_metadata`, `box_update_file_metadata`, `box_delete_file_metadata`, `box_list_folder_metadata`, `box_create_folder_metadata`, `box_update_folder_metadata`, `box_list_metadata_templates`, `box_get_metadata_template`, `box_create_metadata_template`, `box_update_metadata_template`, `box_delete_metadata_template`, `box_search_by_metadata`
+  </Accordion>
+  <Accordion title="コメント & タスク">
+    `box_list_file_comments`, `box_get_comment`, `box_create_comment`, `box_reply_to_comment`, `box_update_comment`, `box_delete_comment`, `box_list_file_tasks`, `box_get_task`, `box_create_task`, `box_update_task`, `box_delete_task`, `box_assign_task`
+  </Accordion>
+  <Accordion title="ユーザー、グループ & メンバーシップ">
+    `box_list_users`, `box_get_user`, `box_get_current_user`, `box_create_user`, `box_update_user`, `box_delete_user`, `box_invite_user`, `box_get_user_info`, `box_list_groups`, `box_get_group`, `box_create_group`, `box_update_group`, `box_delete_group`, `box_list_group_collaborations`, `box_list_group_members`, `box_list_user_memberships`, `box_get_membership`, `box_add_group_member`, `box_remove_group_member`
+  </Accordion>
+  <Accordion title="AI、署名 & コレクション">
+    `box_ai_ask`, `box_ai_extract`, `box_ai_text_gen`, `box_list_sign_requests`, `box_get_sign_request`, `box_create_sign_request`, `box_cancel_sign_request`, `box_list_collections`, `box_get_collection_items`, `box_add_to_collection`, `box_remove_from_collection`
+  </Accordion>
+  <Accordion title="ゴミ箱、イベント & Webhook">
+    `box_list_trashed_items`, `box_restore_item`, `box_permanently_delete`, `box_get_user_events`, `box_get_enterprise_events`, `box_long_poll_events`, `box_list_webhooks`, `box_get_webhook`, `box_create_webhook`, `box_update_webhook`, `box_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="コンテンツQ&A" icon="message-circle-question">
+    `box_ai_ask`を使って、特定のファイルやフォルダの内容に基づいた質問に回答する
+  </Card>
+  <Card title="構造化データの抽出" icon="scan-text">
+    `box_ai_extract`を使って、Boxに保存された契約書や請求書から構造化フィールドを抽出する
+  </Card>
+  <Card title="契約書レビュー & 電子署名" icon="file-signature">
+    契約書を検索し、コラボレーターと共有した上で署名リクエストを作成する
+  </Card>
+  <Card title="ガバナンスに基づくメタデータ付与" icon="tags">
+    フォルダに整理する際にメタデータテンプレートをファイルに適用し、後の検索を容易にする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="box_ai_askやbox_ai_extractが未対応のファイル形式エラーを返す">
+    Box AIが対応しているのは一部のファイル形式(主にドキュメント、PDF、一部の画像形式)のみです — ファイルを変換するか、Box AIが対応する形式一覧と照らし合わせて確認してください。
+  </Accordion>
+  <Accordion title="box_create_collaborationが権限不足エラーで失敗する">
+    対象フォルダに適切なロールを持つユーザーのみが新しいコラボレーターを招待できます。再試行する前に、`box_get_collaboration`でリクエスト元アカウントのロールを確認してください。
+  </Accordion>
+  <Accordion title="大きなファイルでbox_upload_fileが失敗する">
+    Boxはおおよそ20MBを超えるファイルにはチャンクアップロードを要求します。大きなファイルには`box_upload_file`ではなく、(先に`box_preflight_check`を行った上で)`box_chunked_upload`を使用してください。
+  </Accordion>
+</AccordionGroup>

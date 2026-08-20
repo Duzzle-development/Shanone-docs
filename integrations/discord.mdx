@@ -1,0 +1,110 @@
+---
+title: "Discord"
+description: "Manage servers end-to-end — messages, channels, roles, moderation, voice, events, and webhooks"
+icon: /images/discord.svg
+---
+
+# Discord
+
+Shanone's Discord integration gives your agent 182 tools covering nearly all of the Discord API: messages, channels, threads, roles, members, moderation, voice, scheduled events, soundboards, stickers, webhooks, and guild administration.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Discord (e.g. "post a message to #general"), or connect proactively from **Integrations** in the Shanone dashboard. Either way, you'll get a `connect_link` to authorize Shanone's Discord app for your server.
+  </Step>
+  <Step title="Authorize and add the app to your server">
+    Approve Discord's OAuth consent screen, selecting the server (guild) you want Shanone to manage.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `discord_*` tools will succeed.
+  </Step>
+</Steps>
+
+<Note>
+Most write operations (posting messages, moderation, role management) require Shanone's bot to have the relevant permissions in your server — if a tool that should work returns a permissions error, check the bot's role permissions in Discord's Server Settings.
+</Note>
+
+## Available Tools
+
+Shanone provides **182 tools** for Discord, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Messages (23 tools)">
+    `discord_get_channel_messages`, `discord_send_message`, `discord_edit_message`, `discord_delete_message`, `discord_get_pinned_messages`, `discord_pin_message`, `discord_unpin_message`, `discord_search_messages`, `discord_get_message`, `discord_get_message_reference`, `discord_bulk_delete_messages`, `discord_crosspost_message`, `discord_get_reactions`, `discord_delete_all_reactions`, `discord_delete_emoji_reactions`, `discord_delete_user_reaction`, `discord_add_reaction`, `discord_remove_reaction`, `discord_send_with_buttons`, `discord_send_with_select_menu`, `discord_update_message_components`, `discord_disable_components`, `discord_get_poll_answer_voters`
+  </Accordion>
+  <Accordion title="Embeds & Rich Content (5 tools)">
+    `discord_send_embed`, `discord_edit_embed`, `discord_send_rich_embed`, `discord_create_embed_builder`, `discord_send_file_with_embed`
+  </Accordion>
+  <Accordion title="Channels (17 tools)">
+    `discord_list_channels`, `discord_get_channel_info`, `discord_create_channel`, `discord_update_channel`, `discord_delete_channel`, `discord_clone_channel`, `discord_set_channel_position`, `discord_set_channel_parent`, `discord_get_channel_permissions`, `discord_edit_channel_permissions`, `discord_delete_channel_permissions`, `discord_sync_channel_permissions`, `discord_set_voice_channel_status`, `discord_follow_announcement_channel`, `discord_trigger_typing_indicator`, `discord_group_dm_add_recipient`, `discord_group_dm_remove_recipient`
+  </Accordion>
+  <Accordion title="Threads & Forums (16 tools)">
+    `discord_create_thread`, `discord_create_thread_from_message`, `discord_create_thread_without_message`, `discord_join_thread`, `discord_leave_thread`, `discord_add_thread_member`, `discord_remove_thread_member`, `discord_list_thread_members`, `discord_list_active_threads`, `discord_list_archived_threads`, `discord_get_thread_member`, `discord_list_joined_private_archived_threads`, `discord_create_forum_post`, `discord_get_forum_tags`, `discord_update_forum_post_tags`, `discord_end_poll`
+  </Accordion>
+  <Accordion title="Members & Roles (20 tools)">
+    `discord_get_member`, `discord_list_members`, `discord_search_members`, `discord_update_member`, `discord_set_nickname`, `discord_add_role_to_member`, `discord_remove_role_from_member`, `discord_set_member_roles`, `discord_list_roles`, `discord_get_role`, `discord_create_role`, `discord_update_role`, `discord_delete_role`, `discord_set_role_positions`, `discord_get_guild_role_member_counts`, `discord_calculate_permissions`, `discord_check_permission`, `discord_get_role_members`, `discord_compare_roles`, `discord_get_guild_prune_count`
+  </Accordion>
+  <Accordion title="Moderation (11 tools)">
+    `discord_list_bans`, `discord_get_ban`, `discord_create_ban`, `discord_remove_ban`, `discord_bulk_ban`, `discord_kick_member`, `discord_timeout_member`, `discord_remove_timeout`, `discord_begin_guild_prune`, `discord_list_automod_rules`, `discord_get_automod_rule`
+  </Accordion>
+  <Accordion title="Auto Moderation & Audit Log (6 tools)">
+    `discord_create_automod_rule`, `discord_update_automod_rule`, `discord_delete_automod_rule`, `discord_get_audit_log`, `discord_search_audit_log`, `discord_modify_guild_incident_actions`
+  </Accordion>
+  <Accordion title="Guild & Server Settings (23 tools)">
+    `discord_list_guilds`, `discord_get_guild_info`, `discord_get_guild_members`, `discord_search_guild`, `discord_get_guild_settings`, `discord_update_guild_settings`, `discord_get_guild_preview`, `discord_get_guild_widget_settings`, `discord_modify_guild_widget`, `discord_get_guild_widget`, `discord_get_guild_widget_image`, `discord_get_guild_vanity_url`, `discord_get_guild_template`, `discord_list_guild_templates`, `discord_create_guild_template`, `discord_sync_guild_template`, `discord_modify_guild_template`, `discord_delete_guild_template`, `discord_get_guild_welcome_screen`, `discord_modify_guild_welcome_screen`, `discord_get_guild_onboarding`, `discord_modify_guild_onboarding`, `discord_get_guild_integrations`
+  </Accordion>
+  <Accordion title="Invites (5 tools)">
+    `discord_list_guild_invites`, `discord_get_invite`, `discord_create_invite`, `discord_delete_invite`, `discord_list_channel_invites`
+  </Accordion>
+  <Accordion title="Voice & Stage (14 tools)">
+    `discord_list_voice_regions`, `discord_get_current_user_voice_state`, `discord_get_user_voice_state`, `discord_modify_current_user_voice_state`, `discord_modify_user_voice_state`, `discord_create_stage_instance`, `discord_get_stage_instance`, `discord_modify_stage_instance`, `discord_delete_stage_instance`, `discord_send_soundboard_sound`, `discord_list_default_soundboard_sounds`, `discord_list_guild_soundboard_sounds`, `discord_get_guild_soundboard_sound`, `discord_create_guild_soundboard_sound`
+  </Accordion>
+  <Accordion title="Scheduled Events (6 tools)">
+    `discord_list_scheduled_events`, `discord_get_scheduled_event`, `discord_create_scheduled_event`, `discord_update_scheduled_event`, `discord_delete_scheduled_event`, `discord_list_event_users`
+  </Accordion>
+  <Accordion title="Emoji & Stickers (10 tools)">
+    `discord_list_emojis`, `discord_get_emoji`, `discord_create_emoji`, `discord_update_emoji`, `discord_delete_emoji`, `discord_list_stickers`, `discord_get_sticker`, `discord_create_sticker`, `discord_update_sticker`, `discord_delete_sticker`
+  </Accordion>
+  <Accordion title="Webhooks (10 tools)">
+    `discord_list_channel_webhooks`, `discord_list_guild_webhooks`, `discord_get_webhook`, `discord_create_webhook`, `discord_update_webhook`, `discord_delete_webhook`, `discord_execute_webhook`, `discord_execute_webhook_with_embed`, `discord_edit_webhook_message`, `discord_delete_webhook_message`
+  </Accordion>
+  <Accordion title="Users & Application (16 tools)">
+    `discord_get_current_user`, `discord_get_user`, `discord_get_current_user_guilds`, `discord_get_user_connections`, `discord_modify_current_user`, `discord_get_current_user_guild_member`, `discord_leave_guild`, `discord_create_dm`, `discord_get_user_application_role_connection`, `discord_update_user_application_role_connection`, `discord_get_current_application`, `discord_edit_current_application`, `discord_get_application_activity_instance`, `discord_get_guild_integrations`, `discord_delete_guild_integration`, `discord_modify_guild_widget`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Community moderation" icon="shield">
+    Review the audit log, timeout or ban members violating rules, and configure auto-moderation
+  </Card>
+  <Card title="Announcement automation" icon="megaphone">
+    Post rich embeds to an announcement channel and cross-post them to following servers
+  </Card>
+  <Card title="Event management" icon="calendar">
+    Create scheduled events, track RSVPs, and notify members via role mentions
+  </Card>
+  <Card title="Support ticket bots" icon="ticket">
+    Spin up a thread per support request and manage its lifecycle through resolution
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="discord_send_message or moderation tools fail with a Missing Permissions error">
+    Discord permissions are role-based and hierarchical — Shanone's bot role needs the specific permission (e.g. `Send Messages`, `Ban Members`) *and* must be positioned above the target role/member in the server's role list for moderation actions.
+  </Accordion>
+  <Accordion title="discord_search_messages returns limited or no results">
+    Discord's native search API only indexes messages in channels the bot can see and has limited support for complex queries — for exhaustive history, paginate `discord_get_channel_messages` instead.
+  </Accordion>
+  <Accordion title="Voice state or soundboard tools return no effect">
+    Most voice-related write operations require the bot to already be connected to a voice channel in that guild; check `discord_get_current_user_voice_state` first before modifying voice state or triggering soundboard sounds.
+  </Accordion>
+  <Accordion title="discord_create_scheduled_event fails with a validation error">
+    External-location events (`entity_type: EXTERNAL`) require both `scheduled_end_time` and an `entity_metadata.location` — voice/stage events don't need those fields but do need a valid `channel_id`.
+  </Accordion>
+</AccordionGroup>

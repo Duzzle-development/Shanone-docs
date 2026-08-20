@@ -1,0 +1,73 @@
+---
+title: "Zapier"
+description: "Run Zapier actions and inspect Zaps, connected apps, and templates from your agent"
+icon: /images/zapier.svg
+---
+
+# Zapier
+
+Shanone's Zapier integration gives your agent 9 tools for triggering Zapier's AI Actions and inspecting your existing Zaps, connected apps, and Zap templates — a lightweight bridge into Zapier's much larger automation ecosystem rather than a full Zapier admin API.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Zapier Access Token">
+    Generate a token from the [Zapier Developer Platform](https://zapier.com/app/developer).
+  </Step>
+  <Step title="Connect via API key">
+    In the Shanone dashboard, go to **Integrations → Zapier** and paste the Access Token.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `zapier_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **9 tools** for Zapier, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Actions">
+    `zapier_list_actions`, `zapier_get_action_input_fields`, `zapier_run_action`, `zapier_get_action_run`
+  </Accordion>
+  <Accordion title="Connected apps">
+    `zapier_list_apps`, `zapier_list_authentications`
+  </Accordion>
+  <Accordion title="Zaps">
+    `zapier_list_zaps`, `zapier_get_zap`
+  </Accordion>
+  <Accordion title="Zap templates">
+    `zapier_list_zap_templates`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Trigger a downstream automation" icon="zap">
+    Run a configured AI Action to hand off work to whatever app it's connected to
+  </Card>
+  <Card title="Discover available actions" icon="list">
+    List which actions and connected apps are available before wiring up a workflow
+  </Card>
+  <Card title="Check an action's run result" icon="check-circle">
+    Poll a specific action run to confirm it completed and see its output
+  </Card>
+  <Card title="Audit existing Zaps" icon="search">
+    List and inspect Zaps already configured in the connected account
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="zapier_run_action fails with a missing field error">
+    Call `zapier_get_action_input_fields` for the action first — required fields vary per action and per connected app, so don't assume a fixed schema across actions.
+  </Accordion>
+  <Accordion title="zapier_run_action returns immediately but nothing seems to have happened">
+    Some actions run asynchronously; use `zapier_get_action_run` with the run ID returned by `zapier_run_action` to check whether it actually completed.
+  </Accordion>
+  <Accordion title="An action I expect to see isn't listed by zapier_list_actions">
+    Only AI Actions explicitly enabled for your Zapier account (via Zapier's AI Actions setup) are exposed here — check `zapier_list_apps`/`zapier_list_authentications` to confirm the underlying app connection exists in Zapier first.
+  </Accordion>
+</AccordionGroup>

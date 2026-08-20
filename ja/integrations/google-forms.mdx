@@ -1,0 +1,76 @@
+---
+title: "Google Forms"
+description: "フォームの作成、質問管理、回答の読み取り、公開設定とウォッチの設定を行う"
+icon: /images/google-forms.svg
+---
+
+# Google Forms
+
+ShanoneのGoogle Forms連携では、フォームの作成、質問の管理、送信済み回答の読み取り、新しい回答用のWebhook風ウォッチの設定を行う16のツールをエージェントが利用できるようになります。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにFormsで何か作業をしてもらう(例:「3つの質問を含むフィードバックフォームを作成して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="Googleアカウントを認可する">
+    ShanoneがアクセスすべきFormsを持つアカウントでGoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`google_forms_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Forms用に**16のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="フォーム">
+    `google_forms_get_form`, `google_forms_create_form`, `google_forms_update_form_info`, `google_forms_update_settings`
+  </Accordion>
+  <Accordion title="質問(アイテム)">
+    `google_forms_add_question`, `google_forms_update_question`, `google_forms_delete_question`, `google_forms_move_question`
+  </Accordion>
+  <Accordion title="公開">
+    `google_forms_set_publish_settings`
+  </Accordion>
+  <Accordion title="回答">
+    `google_forms_list_responses`, `google_forms_get_response`
+  </Accordion>
+  <Accordion title="ウォッチ">
+    `google_forms_create_watch`, `google_forms_delete_watch`, `google_forms_list_watches`, `google_forms_renew_watch` — フォームの回答やスキーマが変更されたときにプッシュ通知を受け取るよう登録する
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="アンケート生成" icon="clipboard-list">
+    短い説明から複数の質問タイプを含む完全なフォームを作成する
+  </Card>
+  <Card title="回答の要約" icon="bar-chart-3">
+    フォームのすべての回答を取得して傾向を要約したり、注目すべき回答を洗い出す
+  </Card>
+  <Card title="公開管理" icon="megaphone">
+    適切なタイミングでフォームの新規回答受付を開始・停止する
+  </Card>
+  <Card title="回答のリアルタイム通知" icon="bell-ring">
+    フォームの新しい回答を監視し、後続のワークフローをトリガーする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="google_forms_add_questionが不正なitem構造エラーで失敗する">
+    `google_forms_add_question`の正確なペイロード形式は`shanone_get_tool_schema`で確認してください——質問タイプ(テキスト、選択肢、スケール、日付など)ごとに異なる形状のitem本体が必要です。
+  </Accordion>
+  <Accordion title="google_forms_create_watchの通知が届かない">
+    ウォッチには接続済みプロジェクトに設定されたGoogle Cloud Pub/Subトピックが必要で、定期的に失効します——失効前に`google_forms_renew_watch`を呼び出すか、`google_forms_create_watch`でウォッチを再作成してください。
+  </Accordion>
+  <Accordion title="google_forms_list_responsesで最近の回答が見つからない">
+    フォームの回答は送信後インデックス化までに少し時間がかかることがあります。それでも見つからない場合は、フォームIDが編集用URLのIDと公開用URLのIDのどちらか(両者は異なります)、正しい方を使っているか確認してください。
+  </Accordion>
+</AccordionGroup>

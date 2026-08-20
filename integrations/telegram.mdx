@@ -1,0 +1,76 @@
+---
+title: "Telegram"
+description: "Run a Telegram bot — send messages, manage chats, moderate members, and configure webhooks"
+icon: /images/telegram.svg
+---
+
+# Telegram
+
+Shanone's Telegram integration gives your agent 38 tools for sending and managing messages, administering chats/groups, moderating members, and configuring the bot itself — everything you need to run a Telegram bot's day-to-day behavior through an agent instead of custom bot code.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a bot with BotFather">
+    In Telegram, message [@BotFather](https://t.me/BotFather), run `/newbot`, and follow the prompts to get a Bot Token.
+  </Step>
+  <Step title="Connect the Bot Token in Shanone">
+    Ask your agent to do something with Telegram (e.g. "send a message to this chat"), or add the Bot Token proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `telegram_*` tools will succeed. Your bot must already be a member of any chat/group it acts on.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **38 tools** for Telegram, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Messages">
+    `telegram_send_message`, `telegram_forward_message`, `telegram_edit_message`, `telegram_delete_message`, `telegram_pin_message`, `telegram_unpin_message`, `telegram_unpin_all_messages`, `telegram_get_updates`, `telegram_copy_message`
+  </Accordion>
+  <Accordion title="Chats">
+    `telegram_get_chat`, `telegram_get_chat_member_count`, `telegram_get_chat_member`, `telegram_get_chat_administrators`, `telegram_leave_chat`, `telegram_set_chat_title`, `telegram_set_chat_description`, `telegram_export_chat_invite_link`, `telegram_set_chat_photo`, `telegram_delete_chat_photo`
+  </Accordion>
+  <Accordion title="Member moderation">
+    `telegram_get_user_profile_photos`, `telegram_ban_chat_member`, `telegram_unban_chat_member`, `telegram_restrict_chat_member`, `telegram_promote_chat_member`, `telegram_set_chat_administrator_custom_title`
+  </Accordion>
+  <Accordion title="Bot configuration">
+    `telegram_get_me`, `telegram_set_my_commands`, `telegram_get_my_commands`, `telegram_delete_my_commands`, `telegram_set_my_name`, `telegram_get_my_name`, `telegram_set_my_description`, `telegram_get_my_description`, `telegram_set_my_short_description`, `telegram_get_my_short_description`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `telegram_set_webhook`, `telegram_delete_webhook`, `telegram_get_webhook_info`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Notification bot" icon="bell">
+    Send alerts or reports to a channel or group when a workflow completes
+  </Card>
+  <Card title="Community moderation" icon="shield-check">
+    Ban or restrict a disruptive member and pin a moderation notice
+  </Card>
+  <Card title="Group announcements" icon="megaphone">
+    Update the chat title/description and pin an announcement when something changes
+  </Card>
+  <Card title="Bot self-configuration" icon="settings">
+    Update the bot's command list and description as new capabilities are added
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="A chat-targeted tool fails even though the bot token is valid">
+    The bot must be added as a member (and often an admin, for moderation actions) of the target chat/group/channel — a valid token alone doesn't grant access to arbitrary chats.
+  </Accordion>
+  <Accordion title="telegram_ban_chat_member, telegram_restrict_chat_member, or telegram_promote_chat_member fails">
+    These require the bot to have admin rights with the specific permission in that chat (e.g. "Ban users" or "Add new admins") — check the bot's admin permissions in the chat's settings.
+  </Accordion>
+  <Accordion title="telegram_get_updates returns nothing">
+    If a webhook is already set via `telegram_set_webhook`, Telegram stops delivering updates through the polling-based `telegram_get_updates` — call `telegram_delete_webhook` first if you want to switch back to polling.
+  </Accordion>
+</AccordionGroup>

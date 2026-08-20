@@ -1,0 +1,94 @@
+---
+title: "TikTok Ads"
+description: "Manage TikTok ad campaigns — campaigns, ad groups, ads, audiences, targeting, and reporting"
+icon: /images/tiktok-ads.svg
+---
+
+# TikTok Ads
+
+Shanone's TikTok Ads integration gives your agent 119 tools covering the full campaign hierarchy (campaigns → ad groups → ads), audience management, targeting dictionaries, creative assets, Business Center administration, and reporting — enough to run TikTok ad operations end-to-end from an agent.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with TikTok Ads (e.g. "show me the performance of my top 5 campaigns this week"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your TikTok Ads account">
+    Approve TikTok's OAuth consent screen for the Business Center or Ad Account you want Shanone to manage.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `tiktok_ads_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **119 tools** for TikTok Ads, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Accounts & Business Center">
+    `tiktok_ads_get_authorized_ad_accounts`, `tiktok_ads_get_advertiser_info`, `tiktok_ads_update_advertiser_info`, `tiktok_ads_get_advertiser_balance`, `tiktok_ads_get_bc_list`, `tiktok_ads_get_bc_activity_log`, `tiktok_ads_get_bc_ad_accounts`, `tiktok_ads_get_bc_members`, `tiktok_ads_get_bc_currencies_regions`, `tiktok_ads_check_access_token_permissions`
+  </Accordion>
+  <Accordion title="Campaign management">
+    `tiktok_ads_create_campaign`, `tiktok_ads_update_campaign`, `tiktok_ads_list_campaigns`, `tiktok_ads_update_campaign_status`, `tiktok_ads_create_ad_group`, `tiktok_ads_update_ad_group`, `tiktok_ads_list_ad_groups`, `tiktok_ads_update_ad_group_status`, `tiktok_ads_update_ad_group_budget`, `tiktok_ads_estimate_ad_group_audience_size`, `tiktok_ads_create_ad`, `tiktok_ads_update_ad`, `tiktok_ads_list_ads`, `tiktok_ads_update_ad_status`, `tiktok_ads_get_ad_review_info`, `tiktok_ads_appeal_ad_rejection`
+  </Accordion>
+  <Accordion title="Reporting">
+    `tiktok_ads_run_sync_report`, `tiktok_ads_create_async_report_task`, `tiktok_ads_get_async_report_task_status`, `tiktok_ads_download_async_report`, `tiktok_ads_cancel_async_report_task`, `tiktok_ads_get_recommended_budgets_and_bids`
+  </Accordion>
+  <Accordion title="Audience management">
+    `tiktok_ads_upload_audience_file`, `tiktok_ads_create_audience_by_file`, `tiktok_ads_create_audience_by_rule`, `tiktok_ads_create_lookalike_audience`, `tiktok_ads_refresh_lookalike_audience`, `tiktok_ads_list_audiences`, `tiktok_ads_get_audience_details`, `tiktok_ads_update_audience`, `tiktok_ads_delete_audiences`, `tiktok_ads_share_audiences`, `tiktok_ads_apply_audiences_to_ad_groups`, `tiktok_ads_get_audience_application_log`, `tiktok_ads_create_saved_audience`, `tiktok_ads_delete_saved_audiences`
+  </Accordion>
+  <Accordion title="Targeting dictionaries">
+    `tiktok_ads_search_location_targets`, `tiktok_ads_get_location_target_details`, `tiktok_ads_get_available_locations`, `tiktok_ads_get_languages`, `tiktok_ads_get_os_versions`, `tiktok_ads_get_device_models`, `tiktok_ads_get_interest_categories`, `tiktok_ads_get_additional_interest_categories`, `tiktok_ads_search_additional_interest_categories`, `tiktok_ads_get_action_categories`, `tiktok_ads_search_targeting_hashtags`, `tiktok_ads_get_targeting_hashtags_by_id`, `tiktok_ads_get_recommended_interest_and_action_categories`, `tiktok_ads_get_contextual_tags`, `tiktok_ads_get_content_exclusion_categories`, `tiktok_ads_get_carriers_and_isps`
+  </Accordion>
+  <Accordion title="Creative assets & tools">
+    `tiktok_ads_upload_image`, `tiktok_ads_upload_video`, `tiktok_ads_get_images`, `tiktok_ads_get_videos`, `tiktok_ads_search_images`, `tiktok_ads_search_videos`, `tiktok_ads_create_identity`, `tiktok_ads_get_identities`, `tiktok_ads_create_creative_portfolio`, `tiktok_ads_get_creative_portfolios`, `tiktok_ads_delete_creative_portfolios`, `tiktok_ads_preview_ad`, `tiktok_ads_get_recommended_ctas`
+  </Accordion>
+  <Accordion title="Business Center management">
+    `tiktok_ads_create_bc_ad_account`, `tiktok_ads_update_bc_ad_account`, `tiktok_ads_disable_bc_ad_account`, `tiktok_ads_get_bc_qualifications`, `tiktok_ads_invite_bc_members`, `tiktok_ads_update_bc_member`, `tiktok_ads_delete_bc_member`, `tiktok_ads_assign_asset_to_member`, `tiktok_ads_get_bc_balance`, `tiktok_ads_process_payment`, `tiktok_ads_get_transaction_records`, `tiktok_ads_create_payment_portfolio`, `tiktok_ads_get_payment_portfolios`, `tiktok_ads_create_billing_group`, `tiktok_ads_get_billing_groups`
+  </Accordion>
+  <Accordion title="Automation & lead generation">
+    `tiktok_ads_create_automated_rule`, `tiktok_ads_update_automated_rule`, `tiktok_ads_update_automated_rule_status`, `tiktok_ads_get_automated_rules`, `tiktok_ads_get_automated_rule_results`, `tiktok_ads_create_lead_download_task`, `tiktok_ads_download_leads`, `tiktok_ads_get_instant_form_fields`
+  </Accordion>
+  <Accordion title="Product catalog">
+    `tiktok_ads_create_catalog`, `tiktok_ads_update_catalog_name`, `tiktok_ads_delete_catalog`, `tiktok_ads_get_catalogs`, `tiktok_ads_upload_products_via_url`, `tiktok_ads_upload_products_via_json`, `tiktok_ads_update_products`, `tiktok_ads_remove_products`, `tiktok_ads_get_products`, `tiktok_ads_create_product_set`, `tiktok_ads_get_product_sets`, `tiktok_ads_get_available_stores`, `tiktok_ads_get_store_products`
+  </Accordion>
+  <Accordion title="Measurement">
+    `tiktok_ads_create_pixel`, `tiktok_ads_update_pixel`, `tiktok_ads_get_pixels`, `tiktok_ads_get_pixel_event_statistics`, `tiktok_ads_create_pixel_event`, `tiktok_ads_create_custom_conversion`, `tiktok_ads_update_custom_conversion`, `tiktok_ads_get_custom_conversions`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Campaign performance review" icon="chart-bar">
+    Run a sync report across active campaigns and flag underperforming ad groups
+  </Card>
+  <Card title="Budget management" icon="banknote">
+    Get recommended budgets/bids for an ad group and update its budget accordingly
+  </Card>
+  <Card title="Audience expansion" icon="users">
+    Create a lookalike audience from a high-performing seed audience and apply it to new ad groups
+  </Card>
+  <Card title="Creative launch" icon="video">
+    Upload new video creatives, preview an ad, and check its review status before it goes live
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="tiktok_ads_get_ad_review_info shows a rejected ad">
+    Check the rejection reason in the response, fix the creative or targeting issue, then use `tiktok_ads_appeal_ad_rejection` if you believe the rejection was in error rather than recreating the ad from scratch.
+  </Accordion>
+  <Accordion title="A reporting tool times out or returns partial data for a large date range">
+    Use `tiktok_ads_create_async_report_task` instead of `tiktok_ads_run_sync_report` for large date ranges or high-cardinality breakdowns, then poll `tiktok_ads_get_async_report_task_status` and fetch results with `tiktok_ads_download_async_report`.
+  </Accordion>
+  <Accordion title="tiktok_ads_create_audience_by_file fails after uploading">
+    Audience files must be uploaded with `tiktok_ads_upload_audience_file` first (PII pre-hashed with SHA-256), and the audience creation call must reference the returned file ID(s) — check `shanone_get_tool_schema` for the exact linkage.
+  </Accordion>
+  <Accordion title="Targeting or budget update tools fail with a permissions error">
+    Some operations (e.g. `tiktok_ads_create_bc_ad_account`, `tiktok_ads_process_payment`) require Business Center admin-level access, not just standard Ad Account access — check the connected account's role with `tiktok_ads_get_bc_members`.
+  </Accordion>
+</AccordionGroup>

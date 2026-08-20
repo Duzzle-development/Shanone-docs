@@ -1,0 +1,64 @@
+---
+title: "Wan (Alibaba)"
+description: "DashScope経由でAlibabaのWanモデルを使い、テキストや画像から動画を生成する"
+icon: /images/wan.svg
+---
+
+# Wan (Alibaba)
+
+ShanoneのWan連携は、テキストプロンプトや元画像から動画を生成し、Alibaba CloudのDashScope APIを通じてその(非同期の)生成ジョブを追跡する4個のツールをエージェントに提供します。広範なプラットフォームAPIではなく、小規模で用途を絞った連携です。
+
+## はじめに
+
+<Steps>
+  <Step title="DashScope APIキーを発行する">
+    [Alibaba Cloud DashScopeコンソール](https://dashscope.console.aliyun.com/)で、Wan動画生成モデルへのアクセス権を持つAPIキーを作成します。
+  </Step>
+  <Step title="ShanoneでAPIキーを接続する">
+    エージェントにWan関連の作業を依頼(例: 「紙飛行機が都市を飛ぶ動画を生成して」)するか、Shanoneダッシュボードの**連携**からAPIキーを事前に登録しておきます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`wan_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはWan向けに**4個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="動画生成">
+    `wan_text_to_video`, `wan_image_to_video`
+  </Accordion>
+  <Accordion title="タスク追跡">
+    `wan_get_task`, `wan_wait_for_task`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="テキストから動画への生成" icon="video">
+    シーンの説明を、ストーリーボードやSNS投稿用の短い動画クリップに変換する
+  </Card>
+  <Card title="画像のアニメーション化" icon="image">
+    静止した商品写真やイラストを、短いモーションクリップにアニメーション化する
+  </Card>
+  <Card title="コンテンツの一括生成" icon="layers">
+    複数の生成タスクをキューに入れ、レビューパイプラインで完了をポーリングする
+  </Card>
+  <Card title="クリエイティブな探索" icon="sparkles">
+    同じプロンプトから複数のバリエーションを生成し、最良の結果を選ぶ
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="wan_text_to_videoやwan_image_to_videoがすぐに動画を返さない">
+    動画生成は非同期です——両方のツールはタスクIDを返すので、それを`wan_wait_for_task`に渡す(または`wan_get_task`で手動ポーリングする)ことでジョブの完了を待ってください。
+  </Accordion>
+  <Accordion title="wan_image_to_videoが元画像で失敗する">
+    `wan_image_to_video`の`shanone_get_tool_schema`を確認してください——元画像は通常、生のバイナリデータではなく公開アクセス可能なURLである必要があり、DashScopeの形式/サイズ要件を満たす必要があります。
+  </Accordion>
+</AccordionGroup>

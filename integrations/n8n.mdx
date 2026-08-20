@@ -1,0 +1,70 @@
+---
+title: "n8n"
+description: "Inspect and control n8n workflows and executions — activate, deactivate, retry, and manage tags/variables"
+icon: /images/n8n.svg
+---
+
+# n8n
+
+Shanone's n8n integration gives your agent 15 tools for managing workflows and their executions on your self-hosted or n8n Cloud instance.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an n8n API key">
+    In your n8n instance, go to **Settings > n8n API** and create an API key.
+  </Step>
+  <Step title="Add the key and base URL in Shanone">
+    Go to **Integrations > n8n** in the Shanone dashboard and enter both the API key and your instance's base URL (e.g. `https://your-instance.app.n8n.cloud`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `n8n_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **15 tools** for n8n, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Workflows">
+    `n8n_list_workflows`, `n8n_get_workflow`, `n8n_activate_workflow`, `n8n_deactivate_workflow`, `n8n_delete_workflow`
+  </Accordion>
+  <Accordion title="Executions">
+    `n8n_list_executions`, `n8n_get_execution`, `n8n_retry_execution`, `n8n_delete_execution`
+  </Accordion>
+  <Accordion title="Tags & variables">
+    `n8n_list_tags`, `n8n_create_tag`, `n8n_delete_tag`, `n8n_list_variables`, `n8n_create_variable`, `n8n_delete_variable`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Failure triage" icon="alert-triangle">
+    List recent failed executions and retry the ones caused by a transient error
+  </Card>
+  <Card title="Workflow rollout control" icon="toggle-right">
+    Activate or deactivate workflows as part of a staged rollout
+  </Card>
+  <Card title="Environment config" icon="settings">
+    Manage shared variables used across workflows without opening the n8n UI
+  </Card>
+  <Card title="Workflow organization" icon="tag">
+    Tag workflows by team or purpose for easier filtering
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="n8n_retry_execution fails immediately">
+    Only failed executions can be retried, and only if the workflow hasn't been modified since the original run — check `n8n_get_execution` first to confirm status.
+  </Accordion>
+  <Accordion title="Tools return a connection error">
+    Confirm the base URL configured in Shanone points to your n8n instance's API root (not the editor UI URL), and that the instance is reachable from the internet if self-hosted.
+  </Accordion>
+  <Accordion title="n8n_delete_variable fails with a permission error">
+    Variables scoped to a specific n8n project require a key with access to that project; check which project the variable belongs to via `n8n_list_variables`.
+  </Accordion>
+</AccordionGroup>

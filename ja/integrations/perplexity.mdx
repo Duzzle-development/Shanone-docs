@@ -1,0 +1,64 @@
+---
+title: "Perplexity"
+description: "PerplexityのSonarモデルによる、引用付きのAI Web検索"
+icon: /images/perplexity.svg
+---
+
+# Perplexity
+
+ShanoneのPerplexity連携は、引用付きでAIによるWeb検索を行うための1個のツールをエージェントに提供します。独自の検索パイプラインを構築せずに、回答をリアルタイムの情報に基づかせる手軽な方法です。
+
+## はじめに
+
+<Steps>
+  <Step title="Perplexity APIキーを作成する">
+    [Perplexity APIの設定ページ](https://www.perplexity.ai/settings/api)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でPerplexityを選択し、キー(`pplx-...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`perplexity_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはPerplexity向けに**1個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="検索">
+    `perplexity_search` — 自然言語の質問を投げると、選択可能なモデルレベル(`small`/`large`/`huge`)を使ってAIが引用付きの回答を生成します
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ファクトチェック" icon="check-circle">
+    文書内の主張をリアルタイムの引用付きWeb情報と照らし合わせて検証する
+  </Card>
+  <Card title="最新情報の要約" icon="newspaper">
+    モデルの学習データより速く変化するトピックについて最新の回答を得る
+  </Card>
+  <Card title="技術的な質問応答" icon="code">
+    複雑な技術的質問に対して、出典付きの詳細な説明を得る
+  </Card>
+  <Card title="素早いリサーチの裏付け" icon="search">
+    レポートやメールに含める前に、ある主張の引用元を取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="perplexity_searchが認証エラーを返す">
+    **連携**に保存したキーが`pplx-`で始まっているか確認してください——他のPerplexity製品(例: Comet)のキーはSonar APIでは使えません。
+  </Accordion>
+  <Accordion title="複雑な質問に対して回答が浅く感じる">
+    デフォルトの`small`モデルではなく`huge`モデルを試してください——速度と引き換えに、複雑・多段の質問に対する推論品質が向上します。
+  </Accordion>
+  <Accordion title="perplexity_searchがレート制限にかかる">
+    Perplexity APIのプランには、キーに紐づくアカウント単位で分単位のレート制限があります。時間をおいて再試行するか、Perplexityダッシュボードで使用状況を確認してください。
+  </Accordion>
+</AccordionGroup>

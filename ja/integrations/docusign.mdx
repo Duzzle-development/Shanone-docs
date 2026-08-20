@@ -1,0 +1,88 @@
+---
+title: "DocuSign"
+description: "電子署名エンベロープの送信・署名・管理 — テンプレート、受信者、ドキュメント、アカウント管理"
+icon: /images/docusign.svg
+---
+
+# DocuSign
+
+ShanoneのDocuSign連携は、エンベロープ・テンプレート・受信者・ドキュメントに加えて、他の連携ではあまり扱われないアカウント/請求管理まで含む144個のツールをエージェントに提供し、電子署名のライフサイクル全体をカバーします。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにDocuSign関連の作業を依頼(例: 「この契約書を署名依頼で送って」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="DocuSignアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、DocuSignのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`docusign_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはDocuSign向けに**144個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="エンベロープ">
+    `docusign_create_envelope`, `docusign_send_envelope`, `docusign_get_envelope`, `docusign_list_envelopes`, `docusign_update_envelope`, `docusign_void_envelope`, `docusign_delete_envelope`, `docusign_get_envelope_status`, `docusign_list_status_changes`, `docusign_get_audit_events`, `docusign_get_notification_settings`, `docusign_update_notification_settings`, `docusign_list_custom_fields`, `docusign_create_custom_field`, `docusign_update_custom_field`, `docusign_create_envelope_from_template`
+  </Accordion>
+  <Accordion title="受信者">
+    `docusign_list_recipients`, `docusign_add_recipients`, `docusign_update_recipients`, `docusign_delete_recipient`, `docusign_list_recipient_tabs`, `docusign_create_recipient_tabs`, `docusign_update_recipient_tabs`, `docusign_delete_recipient_tabs`, `docusign_create_recipient_preview`, `docusign_get_recipient_signature`, `docusign_get_recipient_initials_image`, `docusign_get_recipient_signature_image`
+  </Accordion>
+  <Accordion title="ドキュメント">
+    `docusign_list_documents`, `docusign_get_document`, `docusign_add_document`, `docusign_update_document`, `docusign_delete_document`, `docusign_get_combined_document`, `docusign_get_document_page_image`, `docusign_list_document_fields`, `docusign_create_document_fields`, `docusign_update_document_fields`
+  </Accordion>
+  <Accordion title="ビュー">
+    `docusign_create_recipient_view`, `docusign_create_shared_recipient_view`, `docusign_create_sender_view`, `docusign_create_edit_view`, `docusign_create_correct_view`, `docusign_create_console_view`, `docusign_create_template_edit_view`, `docusign_create_template_recipient_preview`
+  </Accordion>
+  <Accordion title="テンプレート">
+    `docusign_list_templates`, `docusign_get_template`, `docusign_create_template`, `docusign_update_template`, `docusign_delete_template`, `docusign_get_template_sharing`, `docusign_share_template`, `docusign_list_favorite_templates`, `docusign_add_favorite_template`, `docusign_remove_favorite_template`, `docusign_get_template_lock`, `docusign_list_template_recipients`, `docusign_add_template_recipients`, `docusign_update_template_recipients`, `docusign_delete_template_recipient`, `docusign_list_template_documents`, `docusign_get_template_document`, `docusign_add_template_document`, `docusign_delete_template_document`, `docusign_list_template_recipient_tabs`, `docusign_update_template_recipient_tabs`
+  </Accordion>
+  <Accordion title="ユーザー & 連絡先">
+    `docusign_list_users`, `docusign_get_user`, `docusign_create_user`, `docusign_update_user`, `docusign_delete_user`, `docusign_list_contacts`, `docusign_get_contact`, `docusign_create_contacts`, `docusign_update_contact`, `docusign_delete_contacts`, `docusign_get_user_signature`, `docusign_update_user_signature`
+  </Accordion>
+  <Accordion title="アカウント & 請求">
+    `docusign_get_account_info`, `docusign_get_account_settings`, `docusign_update_account_settings`, `docusign_list_brands`, `docusign_get_brand`, `docusign_create_brand`, `docusign_update_brand`, `docusign_delete_brand`, `docusign_list_permission_profiles`, `docusign_get_permission_profile`, `docusign_create_permission_profile`, `docusign_update_permission_profile`, `docusign_delete_permission_profile`, `docusign_list_account_custom_fields`, `docusign_list_groups`, `docusign_get_billing_plan`, `docusign_list_billing_plans`, `docusign_get_credit_card_info`, `docusign_purchase_envelopes`, `docusign_list_invoices`, `docusign_get_invoice`, `docusign_list_past_due_invoices`, `docusign_list_payments`, `docusign_get_payment`, `docusign_create_payment`
+  </Accordion>
+  <Accordion title="バルク送信、Connect & 署名グループ">
+    `docusign_list_bulk_send_lists`, `docusign_get_bulk_send_list`, `docusign_create_bulk_send_list`, `docusign_update_bulk_send_list`, `docusign_delete_bulk_send_list`, `docusign_create_bulk_send_request`, `docusign_get_bulk_send_batch_status`, `docusign_list_bulk_send_batch_envelopes`, `docusign_list_connect_configs`, `docusign_get_connect_config`, `docusign_create_connect_config`, `docusign_update_connect_config`, `docusign_delete_connect_config`, `docusign_list_connect_logs`, `docusign_get_connect_log`, `docusign_delete_connect_logs`, `docusign_retry_connect_event`, `docusign_list_connect_failures`, `docusign_list_signing_groups`, `docusign_get_signing_group`, `docusign_create_signing_group`, `docusign_update_signing_group`, `docusign_delete_signing_group`, `docusign_list_signing_group_users`, `docusign_add_signing_group_users`, `docusign_delete_signing_group_users`
+  </Accordion>
+  <Accordion title="PowerForms、フォルダ & ワークスペース">
+    `docusign_list_powerforms`, `docusign_get_powerform`, `docusign_create_powerform`, `docusign_update_powerform`, `docusign_delete_powerform`, `docusign_list_powerform_senders`, `docusign_list_folders`, `docusign_get_folder_items`, `docusign_move_envelopes_to_folder`, `docusign_list_workspaces`, `docusign_get_workspace`, `docusign_create_workspace`, `docusign_update_workspace`, `docusign_delete_workspace`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="契約書の送付" icon="file-signature">
+    テンプレートからエンベロープを作成し、受信者を追加して署名依頼を一度の流れで送信する
+  </Card>
+  <Card title="署名状況のトラッキング" icon="list-checks">
+    エンベロープのステータスと監査イベントをポーリングし、契約がいつ完全に締結されたかを正確に把握する
+  </Card>
+  <Card title="バルク送信" icon="send">
+    バルク送信リストとバッチを使って、同一テンプレートを大量の受信者リストに送信する
+  </Card>
+  <Card title="ブランドに沿ったワークスペース管理" icon="folder-open">
+    エンベロープをフォルダ・ワークスペースで整理し、テンプレートのブランド一貫性を保つ
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="docusign_send_envelopeが受信者のルーティングエラーで失敗する">
+    まず`docusign_list_recipients`と`docusign_list_recipient_tabs`を確認してください——DocuSignはエンベロープを送信する前に、署名・イニシャルタブが有効なドキュメントと受信者に紐付いていることを要求します。
+  </Accordion>
+  <Accordion title="テンプレートベースのエンベロープでフィールドが欠落する">
+    テンプレートには独自の受信者/タブ定義が含まれています。タブをゼロから作り直すのではなく、`docusign_create_envelope_from_template`を使い、変更が必要な受信者ロールだけを上書きしてください。
+  </Accordion>
+  <Accordion title="請求やアカウント管理系のツールが権限エラーを返す">
+    アカウント設定・ブランド・請求関連のツール(`docusign_update_account_settings`、`docusign_get_billing_plan`など)には管理者権限を持つDocuSignユーザーが必要です。`docusign_get_account_info`で接続先アカウントが管理者メンバーシップを持っているか確認してください。
+  </Accordion>
+</AccordionGroup>

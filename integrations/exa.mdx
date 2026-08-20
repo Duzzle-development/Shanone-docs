@@ -1,0 +1,67 @@
+---
+title: "Exa"
+description: "Neural web search, similarity search, content retrieval, and long-running research agents"
+icon: /images/exa.svg
+---
+
+# Exa
+
+Shanone's Exa integration gives your agent 12 tools for neural/semantic search — going beyond keyword search with similarity search, direct answer generation, deep multi-step research, and asynchronous research agents.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get an Exa API key">
+    Create an API key from the [Exa dashboard](https://dashboard.exa.ai/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select Exa, and paste the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `exa_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **12 tools** for Exa, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Search & content">
+    `exa_search`, `exa_find_similar`, `exa_get_contents`, `exa_answer`, `exa_deep_search`
+  </Accordion>
+  <Accordion title="Research agents">
+    `exa_agent_create`, `exa_agent_get`, `exa_agent_list`, `exa_agent_cancel`, `exa_agent_delete`, `exa_agent_events`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Grounded question answering" icon="message-circle-question">
+    Use `exa_answer` to get a direct answer with cited sources instead of a raw results list
+  </Card>
+  <Card title="Competitive research" icon="search">
+    Find pages similar to a competitor's site with `exa_find_similar`, then pull full content with `exa_get_contents`
+  </Card>
+  <Card title="Multi-step deep research" icon="telescope">
+    Kick off `exa_deep_search` or a research agent for a complex query that needs iterative exploration
+  </Card>
+  <Card title="Long-running background research" icon="clock">
+    Create a research agent with `exa_agent_create` and poll `exa_agent_events` while it runs asynchronously
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="exa_search results feel too broad or off-topic">
+    Exa ranks by semantic meaning rather than keywords — phrase the query as a natural-language description of what you want, not a keyword string, and narrow with domain/date filters where supported.
+  </Accordion>
+  <Accordion title="A research agent seems stuck in progress">
+    Long-running research jobs created with `exa_agent_create` are asynchronous; poll `exa_agent_get` or `exa_agent_events` for status rather than expecting a synchronous result, and use `exa_agent_cancel` if it needs to be stopped.
+  </Accordion>
+  <Accordion title="exa_get_contents returns empty or truncated content">
+    Some pages block scraping or require JavaScript rendering that Exa's content fetcher can't execute; fall back to `exa_search` snippets or try `exa_find_similar` for an alternate source.
+  </Accordion>
+</AccordionGroup>

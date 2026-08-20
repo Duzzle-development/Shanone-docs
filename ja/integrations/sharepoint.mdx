@@ -1,0 +1,73 @@
+---
+title: "SharePoint"
+description: "SharePointのドキュメントライブラリ内のファイルやサイトを閲覧・アップロード・共有する"
+icon: /images/sharepoint.svg
+---
+
+# SharePoint
+
+ShanoneのSharePoint連携は、サイトの検索、ドキュメントライブラリの閲覧、ファイルの入出力を行う13個のツールをエージェントに提供します——SharePointの管理機能全体ではなく、エージェントが実際に必要とする操作に絞り込んだセットです。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにSharePoint関連の作業を依頼(例: 「財務サイトからQ3予算のファイルを探して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Microsoftアカウントを許可する">
+    Shanoneに利用させたいSharePointサイトへのアクセス権を持つアカウントで、MicrosoftのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`sharepoint_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはSharePoint向けに**13個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ファイル">
+    `sharepoint_get_file_info`, `sharepoint_download_file`, `sharepoint_upload_file`, `sharepoint_delete_file`, `sharepoint_search_files`
+  </Accordion>
+  <Accordion title="フォルダ">
+    `sharepoint_list_folder`, `sharepoint_create_folder`, `sharepoint_delete_folder`
+  </Accordion>
+  <Accordion title="共有">
+    `sharepoint_create_sharing_link`, `sharepoint_list_permissions`
+  </Accordion>
+  <Accordion title="サイト">
+    `sharepoint_list_sites`, `sharepoint_get_site`, `sharepoint_search_sites`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ドキュメント検索" icon="folder-search">
+    サイト全体からファイル名やキーワードでファイルを検索し、レビュー用にダウンロードする
+  </Card>
+  <Card title="ファイル投入の自動化" icon="upload">
+    生成したレポートを定期的に対象サイトのドキュメントライブラリにアップロードする
+  </Card>
+  <Card title="外部共有リンク" icon="link">
+    権限を手動で設定する代わりに、ファイルの閲覧専用共有リンクを生成する
+  </Card>
+  <Card title="アクセス権の監査" icon="shield-check">
+    機密性の高いフォルダの権限を一覧表示し、現在誰がアクセスできるかを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="sharepoint_search_sitesやsharepoint_search_filesが何も返さない">
+    接続したアカウントが対象サイトの実際のメンバーである必要があります——SharePointの検索は、テナント全体ではなく認証済みユーザーが見えるサイトに限定されます。
+  </Accordion>
+  <Accordion title="sharepoint_upload_fileが大きいファイルで失敗する">
+    `sharepoint_upload_file`の`shanone_get_tool_schema`を確認してください——非常に大きいファイル(通常数MBを超えるもの)は、小さいファイルとは異なるアップロードセッションのフローが必要になることが多いため、可能な場合は大きなアップロードを小さいファイルに分割してください。
+  </Accordion>
+  <Accordion title="sharepoint_delete_fileやsharepoint_delete_folderが成功してもアイテムが表示され続ける">
+    削除したアイテムは即座に消えるのではなく、サイトのごみ箱に移動します。これはツールの不具合ではなく、SharePointの想定された動作です。
+  </Accordion>
+</AccordionGroup>

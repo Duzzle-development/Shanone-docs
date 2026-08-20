@@ -1,0 +1,67 @@
+---
+title: "Google Gemini"
+description: "Deep research and image generation via the Gemini API"
+icon: /images/gemini.svg
+---
+
+# Google Gemini
+
+Shanone's Gemini integration gives your agent 6 tools for two specialized capabilities the chat model itself doesn't cover: long-running multi-step research and image generation.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Gemini API key">
+    Create an API key from [Google AI Studio](https://aistudio.google.com/apikey).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select Google Gemini, and paste the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `gemini_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **6 tools** for Google Gemini, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Deep research">
+    `gemini_deep_research`, `gemini_get_research_status`
+  </Accordion>
+  <Accordion title="Image generation">
+    `gemini_generate_image`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="In-depth topic research" icon="telescope">
+    Kick off `gemini_deep_research` on a complex question and get a synthesized, cited report back
+  </Card>
+  <Card title="Concept art & illustrations" icon="image">
+    Generate an image from a text description for a mockup, blog post, or presentation
+  </Card>
+  <Card title="Background research jobs" icon="clock">
+    Start a research task and poll `gemini_get_research_status` while the agent continues other work
+  </Card>
+  <Card title="Visual asset drafts" icon="palette">
+    Quickly draft several visual concepts to compare before commissioning final artwork
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="gemini_deep_research doesn't return a final answer immediately">
+    Deep research runs asynchronously for complex queries — poll `gemini_get_research_status` with the returned research ID until it reports completion.
+  </Accordion>
+  <Accordion title="gemini_generate_image produces text or details that don't match the prompt">
+    Be explicit about style, composition, and content in the prompt — vague prompts tend to produce generic results; iterate with a refined prompt rather than assuming the first generation is final.
+  </Accordion>
+  <Accordion title="Tool calls fail with an invalid API key error">
+    Gemini API keys from Google AI Studio are separate from a Google Cloud service account — confirm the key was generated at aistudio.google.com and reconnect if it was revoked or regenerated.
+  </Accordion>
+</AccordionGroup>

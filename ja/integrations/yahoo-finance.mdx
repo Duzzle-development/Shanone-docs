@@ -1,0 +1,67 @@
+---
+title: "Yahoo Finance"
+description: "株価、過去の価格データ、財務諸表、ニュースを取得 — APIキー不要"
+icon: /images/yahoo-finance.svg
+---
+
+# Yahoo Finance
+
+ShanoneのYahoo Finance連携は、非公式ライブラリ`yfinance`経由で市場データを取得するための4個のツールをエージェントに提供します。株価、過去の価格データ、財務諸表、ニュースを、認証なしで利用できます。
+
+## はじめに
+
+<Steps>
+  <Step title="接続不要">
+    Yahoo Financeのツールは無料の非公式データソース`yfinance`を利用しており、APIキーやOAuthは不要です — **連携**画面で接続する必要はありません。
+  </Step>
+  <Step title="そのまま質問する">
+    エージェントに株価、価格履歴、最近のニュースを尋ねる(例: 「今日のApple株はどう?」)だけで、`yahoo_finance_*`ツールが直接呼び出されます。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはYahoo Finance向けに**4個のツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="市場データ">
+    `yahoo_finance_quote` — ティッカーの現在価格、当日の値幅、52週レンジ、市場価値、主要な指標
+
+    `yahoo_finance_history` — 設定可能な期間・間隔での過去のOHLCV価格データ
+
+    `yahoo_finance_financials` — 損益計算書、バランスシート、キャッシュフローのデータ
+
+    `yahoo_finance_news` — ティッカーに関連する最近のニュース見出し
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ポートフォリオの確認" icon="line-chart">
+    ウォッチリストのティッカーの株価を取得し、日々の変動を要約する
+  </Card>
+  <Card title="決算リサーチ" icon="file-bar-chart">
+    リサーチ要約の前に企業の財務諸表を確認する
+  </Card>
+  <Card title="価格トレンド分析" icon="candlestick-chart">
+    数ヶ月〜数年分の過去データを取得してトレンドを見つける
+  </Card>
+  <Card title="ニュース駆動のアラート" icon="newspaper">
+    意思決定の前にティッカーの最近の見出しを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="yahoo_finance_quoteが「Symbol not found」を返す">
+    Yahoo Financeのティッカーは米国以外の上場では取引所サフィックスを使用します(例: 東証上場のトヨタは`7203.T`) — 対象の取引所に合ったシンボル形式か再確認してください。
+  </Accordion>
+  <Accordion title="短い間隔でyahoo_finance_historyが空のデータを返す">
+    日中の間隔(`1m`、`5m`、`15m`)は最近の期間のみ利用可能です(間隔によって通常直近7〜60日程度) — より長期の履歴を取得する場合は日次(`1d`)の間隔を使用してください。
+  </Accordion>
+  <Accordion title="データがやや遅延していたり、時々取得できないことがある">
+    この連携は有料のリアルタイムフィードではなく、Yahoo Financeの公開データを取得する非公式ライブラリ`yfinance`に依存しています — 保証されたリアルタイム精度ではなく、ベストエフォートの鮮度として扱ってください。
+  </Accordion>
+</AccordionGroup>

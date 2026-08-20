@@ -1,0 +1,88 @@
+---
+title: "Confluence"
+description: "Confluenceを読み取り・書き込み・検索する — ページ、ブログ記事、コメント、ラベル、添付ファイル"
+icon: /images/confluence.svg
+---
+
+# Confluence
+
+ShanoneのConfluence連携は、Atlassian Confluenceを扱う46個のツールをエージェントに提供します。ページ、ブログ記事、コメント、ラベル、添付ファイル、スペース、タスク、検索が対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="Atlassian APIトークンを発行する">
+    [Atlassian API tokens](https://id.atlassian.com/manage-profile/security/api-tokens)にアクセスし、アカウント用の新しいトークンを作成します。
+  </Step>
+  <Step title="認証情報をShanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Confluenceを選択して、AtlassianアカウントのメールアドレスとAPIトークンを入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`confluence_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはConfluence向けに**46個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ページ">
+    `confluence_list_pages`, `confluence_get_page`, `confluence_get_page_children`, `confluence_create_page`, `confluence_update_page`, `confluence_delete_page`, `confluence_update_page_title`, `confluence_get_page_ancestors`, `confluence_get_page_descendants`
+  </Accordion>
+  <Accordion title="ブログ記事">
+    `confluence_list_blogposts`, `confluence_get_blogpost`, `confluence_create_blogpost`, `confluence_update_blogpost`, `confluence_delete_blogpost`
+  </Accordion>
+  <Accordion title="コメント">
+    `confluence_create_comment`, `confluence_list_page_comments`, `confluence_get_comment`, `confluence_update_comment`, `confluence_delete_comment`, `confluence_create_inline_comment`, `confluence_list_inline_comments`
+  </Accordion>
+  <Accordion title="ラベル">
+    `confluence_get_page_labels`, `confluence_add_label`, `confluence_remove_label`, `confluence_list_labels`, `confluence_get_label_pages`, `confluence_get_space_labels`
+  </Accordion>
+  <Accordion title="添付ファイル">
+    `confluence_list_attachments`, `confluence_get_attachment`, `confluence_delete_attachment`, `confluence_upload_attachment`
+  </Accordion>
+  <Accordion title="スペース">
+    `confluence_list_spaces`, `confluence_get_space`, `confluence_create_space`
+  </Accordion>
+  <Accordion title="タスク">
+    `confluence_list_tasks`, `confluence_get_task`, `confluence_update_task`
+  </Accordion>
+  <Accordion title="プロパティ・権限 & バージョン">
+    `confluence_get_page_properties`, `confluence_create_page_property`, `confluence_get_space_properties`, `confluence_get_space_permissions`, `confluence_get_page_operations`, `confluence_get_page_versions`, `confluence_get_page_version_details`
+  </Accordion>
+  <Accordion title="検索 & ユーザー">
+    `confluence_search`, `confluence_bulk_user_lookup`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ドキュメントの保守" icon="file-pen">
+    古くなったページを更新し、バージョン管理された変更コメントを追加する
+  </Card>
+  <Card title="ナレッジ検索" icon="search">
+    新しいコンテンツを書く前に、スペース内の過去の決定事項やドキュメントを検索する
+  </Card>
+  <Card title="スペースのオンボーディング" icon="folder-plus">
+    初期ページ構成と権限概要を持つ新しいスペースを作成する
+  </Card>
+  <Card title="レビューワークフロー" icon="message-square">
+    ページの草稿にインラインコメントを追加し、対応済みになったら解決する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="トークンは有効に見えるのにツールが401で失敗する">
+    Confluence Cloudでは、トークン単体ではなくアカウントの**メールアドレス**とAPIトークンの組み合わせ(Basic認証)が必要です。連携ページの両方のフィールドが保存されているか確認してください。
+  </Accordion>
+  <Accordion title="confluence_create_pageが本文フォーマットのエラーで失敗する">
+    Confluenceのページ本文は、APIバージョンによってAtlassian Document Format(ADF)またはstorage形式のXHTMLを使用します。リッチコンテンツを送信する前に、`confluence_create_page`について`shanone_get_tool_schema`でどちらの形式が期待されているか確認してください。
+  </Accordion>
+  <Accordion title="confluence_searchの結果が想定より少ない">
+    `confluence_search`は内部でCQL(Confluence Query Language)を使用します。単純なキーワードでも動作しますが、スペース・ラベル・タイプなどで正確に絞り込むにはフリーテキストではなく適切なCQL式を組み立ててください。
+  </Accordion>
+</AccordionGroup>

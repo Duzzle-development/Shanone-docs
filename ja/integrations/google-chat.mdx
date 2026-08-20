@@ -1,0 +1,85 @@
+---
+title: "Google Chat"
+description: "スペース、メッセージ、メンバー、リアクションの管理 — 在席状況やカスタム絵文字にも対応"
+icon: /images/google-chat.svg
+---
+
+# Google Chat
+
+ShanoneのGoogle Chat連携は、スペース・メッセージング・メンバー管理に加えて、他の連携ではあまり扱われない機能(在席状況、カスタム絵文字、既読状態、セクション)まで含む49個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにGoogle Chat関連の作業を依頼(例: 「#launchスペースに要約を投稿して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Googleアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、GoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`google_chat_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Chat向けに**49個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="スペース">
+    `google_chat_list_spaces`, `google_chat_get_space`, `google_chat_list_members`, `google_chat_find_direct_message`, `google_chat_create_space`, `google_chat_update_space`, `google_chat_delete_space`, `google_chat_setup_space`, `google_chat_find_group_chat`
+  </Accordion>
+  <Accordion title="メッセージ">
+    `google_chat_list_messages`, `google_chat_get_message`, `google_chat_create_message`, `google_chat_create_card_message`, `google_chat_update_message`, `google_chat_delete_message`, `google_chat_search_messages`, `google_chat_replace_message_cards`
+  </Accordion>
+  <Accordion title="メンバー">
+    `google_chat_add_member`, `google_chat_remove_member`, `google_chat_get_member`, `google_chat_update_member_role`
+  </Accordion>
+  <Accordion title="リアクション & ピン留め">
+    `google_chat_add_reaction`, `google_chat_remove_reaction`, `google_chat_list_reactions`, `google_chat_pin_message`, `google_chat_unpin_message`, `google_chat_list_pinned_messages`
+  </Accordion>
+  <Accordion title="添付ファイル">
+    `google_chat_get_attachment`, `google_chat_download_media`, `google_chat_upload_attachment`
+  </Accordion>
+  <Accordion title="既読状態 & 通知">
+    `google_chat_get_space_read_state`, `google_chat_mark_space_read`, `google_chat_get_thread_read_state`, `google_chat_get_notification_setting`, `google_chat_update_notification_setting`
+  </Accordion>
+  <Accordion title="在席状況">
+    `google_chat_get_user_availability`, `google_chat_set_availability_active`, `google_chat_set_availability_away`, `google_chat_set_availability_dnd`, `google_chat_update_availability`
+  </Accordion>
+  <Accordion title="カスタム絵文字 & セクション">
+    `google_chat_list_custom_emojis`, `google_chat_create_custom_emoji`, `google_chat_get_custom_emoji`, `google_chat_delete_custom_emoji`, `google_chat_list_sections`, `google_chat_create_section`, `google_chat_update_section`, `google_chat_delete_section`, `google_chat_reorder_section`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="自動ステータス更新" icon="megaphone">
+    デプロイやビルドが完了したときに、整形されたカードメッセージをスペースに投稿する
+  </Card>
+  <Card title="スペースメンバーシップ管理" icon="users">
+    新しいメンバーをスペースに追加し、適切なメンバーロールを割り当てる
+  </Card>
+  <Card title="メッセージ検索 & トリアージ" icon="search">
+    スペースのメッセージ履歴を検索して、スレッドを解決した決定事項を見つけてピン留めする
+  </Card>
+  <Card title="在席状況を考慮した通知" icon="circle-dot">
+    すぐの返信を期待するダイレクトメッセージを送る前に、相手の在席状況を確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="google_chat_create_messageでリッチカードを送信しようとすると失敗する">
+    カード形式のコンテンツには`google_chat_create_message`ではなく`google_chat_create_card_message`を使ってください——通常のメッセージツールはテキストのみを受け付けます。
+  </Accordion>
+  <Accordion title="google_chat_search_messagesで古いメッセージが見つからない">
+    非常に新しいメッセージは検索インデックスへの反映が遅れることがあり、検索対象は接続中のアカウントがメンバーになっているスペースに限られます。まず`google_chat_list_spaces`で確認してください。
+  </Accordion>
+  <Accordion title="google_chat_upload_attachmentは成功するがメッセージにファイルが表示されない">
+    添付ファイルは、返された添付ファイルのリソースを使って後続の`google_chat_create_message`呼び出しで参照する必要があります——アップロードだけではスペースに投稿されません。
+  </Accordion>
+</AccordionGroup>

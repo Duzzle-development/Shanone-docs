@@ -1,0 +1,70 @@
+---
+title: "Apify"
+description: "Webスクレイピング・自動化用のApify Actorを実行し、実行結果やデータセットを取得"
+icon: /images/apify.svg
+---
+
+# Apify
+
+ShanoneのApify連携では、Webスクレイピング・データ抽出・ブラウザ自動化用のクラウドプログラムである Actorの実行・管理、および出力データセットの取得のための**6個のツール**をエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Apify APIトークンを取得する">
+    Apify Consoleの**Settings > Integrations**で、個人用APIトークンをコピーします。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにApify Actorの実行を依頼する(例:「このGoogleマップ検索をApifyでスクレイピングして」)か、Shanoneダッシュボードの**インテグレーション**からAPIトークンを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    トークンが保存されると、`apify_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Apify向けに**6個のツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="Actorの実行">
+    `apify_run_actor` — Actor IDまたは組み込みのエイリアス(`google_maps`、`instagram`、`web_scraper`など)を指定して起動し、完了を待ってデータセットの結果を返すこともできる
+  </Accordion>
+  <Accordion title="実行の管理">
+    `apify_get_run_status`, `apify_abort_run`, `apify_list_runs`
+  </Accordion>
+  <Accordion title="Actor & データセット">
+    `apify_list_actors`, `apify_get_dataset`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="リードリストのスクレイピング" icon="database">
+    GoogleマップやLinkedIn向けのActorを実行し、得られたデータセットをCRMに取り込む
+  </Card>
+  <Card title="競合の価格追跡" icon="tag">
+    定期的に競合のECサイトの商品情報をスクレイピングし、結果を時系列で比較する
+  </Card>
+  <Card title="長時間スクレイピングの監視" icon="clock">
+    完了を待たずにActorを起動し、`apify_get_run_status`を定期的にポーリングして成功を確認する
+  </Card>
+  <Card title="SNSコンテンツの収集" icon="messages-square">
+    Instagram、TikTok、Twitter向けのActorから最新の投稿やプロフィール情報を分析用に取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="apify_run_actorが大規模スクレイピングでタイムアウトする">
+    `wait_for_completion`は最大600秒までポーリングします。より長時間かかるActorには、`wait_for_completion: false`を指定して`apify_run_actor`を呼び、別途`apify_get_run_status`をポーリングしてください。
+  </Accordion>
+  <Accordion title="apify_get_datasetの取得件数が想定より少ない">
+    結果は`limit`パラメータ(デフォルト100)で上限が設定されています。`limit`を増やすか、`offset`でページ分割してデータセット全体を取得してください。
+  </Accordion>
+  <Accordion title="'instagram'のようなActorエイリアスが想定と違うActorに解決される">
+    組み込みエイリアスは、その用途向けのメンテナーのデフォルトActor IDにマッピングされています。特定のActorを使いたい場合は、エイリアスではなく正確なActor ID(例:`username/actor-name`)を指定してください。
+  </Accordion>
+</AccordionGroup>

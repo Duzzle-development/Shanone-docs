@@ -1,0 +1,85 @@
+---
+title: "Canva"
+description: "Canvaのデザインを作成・管理・書き出す — アセット、フォルダ、ブランドテンプレート、オートフィル、コメント"
+icon: /images/canva.svg
+---
+
+# Canva
+
+ShanoneのCanva連携は、Canva Connect APIを扱う36個のツールをエージェントに提供します。デザイン、アセット、フォルダ、ブランドテンプレート、オートフィルジョブ、インポート/エクスポート、コメントが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにCanva関連の作業を依頼(例: 「最近のデザインを一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続します。どちらの場合も、ShanoneのCanvaアプリを許可するための`connect_link`が発行されます。
+  </Step>
+  <Step title="Canvaアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、CanvaのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`canva_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはCanva向けに**36個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="デザイン">
+    `canva_list_designs`, `canva_get_design`, `canva_create_design`, `canva_get_design_pages`
+  </Accordion>
+  <Accordion title="アセット">
+    `canva_list_assets`, `canva_upload_asset`, `canva_get_asset_upload_job`, `canva_create_url_asset_upload_job`, `canva_get_url_asset_upload_job`, `canva_update_asset`, `canva_delete_asset`
+  </Accordion>
+  <Accordion title="フォルダ">
+    `canva_create_folder`, `canva_list_folders`, `canva_get_folder`, `canva_update_folder`, `canva_delete_folder`, `canva_move_folder_item`
+  </Accordion>
+  <Accordion title="ブランドテンプレート & オートフィル">
+    `canva_list_brand_templates`, `canva_get_brand_template`, `canva_get_brand_template_dataset`, `canva_create_design_autofill_job`, `canva_get_design_autofill_job`
+  </Accordion>
+  <Accordion title="エクスポート & リサイズ">
+    `canva_export_design`, `canva_get_export_status`, `canva_create_design_resize_job`, `canva_get_design_resize_job`
+  </Accordion>
+  <Accordion title="インポート">
+    `canva_create_design_import_job`, `canva_get_design_import_job`, `canva_create_url_import_job`, `canva_get_url_import_job`
+  </Accordion>
+  <Accordion title="コメント">
+    `canva_create_comment`, `canva_list_comments`
+  </Accordion>
+  <Accordion title="ユーザー & OAuth管理">
+    `canva_get_user_profile`, `canva_get_user_capabilities`, `canva_introspect_token`, `canva_revoke_token`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ブランド統一されたアセット生成" icon="palette">
+    ブランドテンプレートにキャンペーンデータをオートフィルして、ブランドに沿ったデザインを量産する
+  </Card>
+  <Card title="一括エクスポート" icon="download">
+    複数のデザインをPNG/PDFにまとめて書き出し、各エクスポートジョブの完了を追跡する
+  </Card>
+  <Card title="アセットライブラリの整理" icon="folder-open">
+    共有フォルダをまたいでアセットをアップロード・整理・整理整頓する
+  </Card>
+  <Card title="デザインレビューワークフロー" icon="message-square">
+    デザインのコメントを一覧表示し、レビュアー向けのフォローアップコメントを追加する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="canva_create_design_autofill_jobがスキーマ不一致で失敗する">
+    `data`ペイロードのフィールド名と型は、ブランドテンプレートのデータセットと完全に一致している必要があります。オートフィルを呼び出す前に、まず`canva_get_brand_template_dataset`で期待されるフィールドを確認してください。
+  </Accordion>
+  <Accordion title="エクスポートやインポートのジョブが保留状態のままになる">
+    Canva Connect APIのジョブ(エクスポート、リサイズ、インポート、オートフィル)は非同期処理です。即座に結果が返ることを期待せず、対応する`_get_*_job`/`_get_export_status`ツールをステータスが`success`または`failed`になるまでポーリングしてください。
+  </Accordion>
+  <Accordion title="アップロードしたアセットがcanva_list_assetsにすぐ表示されない">
+    アセットのアップロード(`canva_upload_asset`、`canva_create_url_asset_upload_job`)は非同期で処理されます。アセットが使用可能になる前に、`canva_get_asset_upload_job` / `canva_get_url_asset_upload_job`で完了を確認してください。
+  </Accordion>
+</AccordionGroup>

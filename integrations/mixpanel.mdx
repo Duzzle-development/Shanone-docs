@@ -1,0 +1,85 @@
+---
+title: "Mixpanel"
+description: "Track events, manage user/group profiles, and query analytics — segmentation, retention, funnels, and annotations"
+icon: /images/mixpanel.svg
+---
+
+# Mixpanel
+
+Shanone's Mixpanel integration gives your agent 46 tools spanning event tracking, user/group profile writes, and the analytics queries (segmentation, retention, funnels) most teams build dashboards around.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Mixpanel service account">
+    In your Mixpanel project settings, go to **Service Accounts** and create one — note the username, password, and project ID.
+  </Step>
+  <Step title="Add the credentials in Shanone">
+    Go to **Integrations > Mixpanel** in the Shanone dashboard and enter the project ID, service account username, and password.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `mixpanel_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **46 tools** for Mixpanel, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Analytics queries">
+    `mixpanel_query_segmentation`, `mixpanel_query_segmentation_sum`, `mixpanel_query_segmentation_average`, `mixpanel_query_segmentation_numeric`, `mixpanel_query_retention`, `mixpanel_query_frequency`, `mixpanel_query_addiction`
+  </Accordion>
+  <Accordion title="Events & funnels">
+    `mixpanel_get_top_events`, `mixpanel_get_event_counts`, `mixpanel_get_top_event_properties`, `mixpanel_list_saved_funnels`, `mixpanel_query_funnel_trends`
+  </Accordion>
+  <Accordion title="Event tracking">
+    `mixpanel_track_event`, `mixpanel_track_events_batch`, `mixpanel_import_events`, `mixpanel_track_revenue`
+  </Accordion>
+  <Accordion title="User profiles">
+    `mixpanel_set_user_properties`, `mixpanel_set_user_properties_once`, `mixpanel_increment_user_property`, `mixpanel_append_to_user_list`, `mixpanel_union_to_user_list`, `mixpanel_delete_user_profile`, `mixpanel_remove_from_user_list_property`, `mixpanel_delete_user_property`, `mixpanel_update_user_profiles_batch`, `mixpanel_delete_user_profiles_batch`
+  </Accordion>
+  <Accordion title="Group profiles">
+    `mixpanel_set_group_properties`, `mixpanel_set_user_group`, `mixpanel_delete_group_profile`, `mixpanel_set_group_properties_once`, `mixpanel_union_to_group_list_property`, `mixpanel_remove_from_group_list_property`, `mixpanel_delete_group_property`, `mixpanel_update_group_profiles_batch`
+  </Accordion>
+  <Accordion title="Identity">
+    `mixpanel_identify_user`, `mixpanel_create_alias`, `mixpanel_merge_users`
+  </Accordion>
+  <Accordion title="Annotations">
+    `mixpanel_list_annotations`, `mixpanel_get_annotation`, `mixpanel_create_annotation`, `mixpanel_delete_annotation`, `mixpanel_create_annotation_tag`, `mixpanel_list_annotation_tags`
+  </Accordion>
+  <Accordion title="Lookup tables & projects">
+    `mixpanel_list_lookup_tables`, `mixpanel_replace_lookup_table`, `mixpanel_get_all_projects`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Retention analysis" icon="repeat">
+    Query cohort retention to see how a recent feature affected stickiness
+  </Card>
+  <Card title="Funnel debugging" icon="filter">
+    Pull funnel trends to find where users drop off in an onboarding flow
+  </Card>
+  <Card title="Backfilling events" icon="upload">
+    Import historical events in bulk when migrating from another analytics tool
+  </Card>
+  <Card title="Release annotations" icon="flag">
+    Mark a deploy or experiment start date on the Mixpanel timeline for later reference
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="mixpanel_track_event succeeds but the event doesn't show up right away">
+    Mixpanel's ingestion pipeline has processing lag — events can take a few minutes to appear in reports, even though the tracking call itself returned success immediately.
+  </Accordion>
+  <Accordion title="mixpanel_import_events rejects historical data">
+    The import endpoint (unlike live tracking) requires events to include a valid `time` property and rejects events older than 5 years or timestamped in the future.
+  </Accordion>
+  <Accordion title="Segmentation query returns unexpected empty results">
+    Double-check the event name and property names match exactly (case-sensitive) what's tracked — use `mixpanel_get_top_events` and `mixpanel_get_top_event_properties` first to confirm the real names.
+  </Accordion>
+</AccordionGroup>

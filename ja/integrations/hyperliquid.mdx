@@ -1,0 +1,85 @@
+---
+title: "Hyperliquid"
+description: "パーペチュアルDEXのアカウント・マーケット・注文データ — 残高、オーダーブック、ファンディング、ポジション、取引"
+icon: /images/hyperliquid.svg
+---
+
+# Hyperliquid
+
+ShanoneのHyperliquid連携では、パーペチュアルDEXであるHyperliquidを扱う34のツールをエージェントが利用できるようになります——アカウント/ポートフォリオ状態、マーケットデータ(オーダーブック、ローソク足、ファンディング)、注文管理、レバレッジ、TWAP注文まで対応します。
+
+## はじめに
+
+<Steps>
+  <Step title="ウォレットアドレスを取得する">
+    Hyperliquidで使用している(または使用予定の)Ethereumウォレットアドレスをコピーします。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、Hyperliquidを選択してウォレットアドレスを入力します。読み取り専用のアカウント・マーケットデータツールにはこれで十分です。
+  </Step>
+  <Step title="取引用の秘密鍵を設定する(任意)">
+    注文の作成・変更には秘密鍵が必要ですが、これは通常の連携フォームではなく環境変数として別途設定されます——取引系ツールで認証エラーが出る場合はShanoneの管理者に確認してください。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはHyperliquid用に**34のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="アカウント">
+    `hyperliquid_get_account_state`, `hyperliquid_get_spot_balances`, `hyperliquid_get_portfolio`, `hyperliquid_get_subaccounts`
+  </Accordion>
+  <Accordion title="マーケットデータ">
+    `hyperliquid_get_all_mids`, `hyperliquid_get_orderbook`, `hyperliquid_get_recent_trades`, `hyperliquid_get_candles`
+  </Accordion>
+  <Accordion title="メタデータ">
+    `hyperliquid_get_perp_meta`, `hyperliquid_get_spot_meta`, `hyperliquid_get_asset_contexts`
+  </Accordion>
+  <Accordion title="約定 & 手数料">
+    `hyperliquid_get_fills`, `hyperliquid_get_fills_by_time`, `hyperliquid_get_funding_history`, `hyperliquid_get_user_fees`, `hyperliquid_get_rate_limit`
+  </Accordion>
+  <Accordion title="ファンディングマーケットデータ">
+    `hyperliquid_get_funding_rates`, `hyperliquid_get_funding_rate_history`, `hyperliquid_get_predicted_fundings`
+  </Accordion>
+  <Accordion title="注文">
+    `hyperliquid_get_open_orders`, `hyperliquid_get_order_status`, `hyperliquid_get_order_history`, `hyperliquid_place_order`, `hyperliquid_cancel_order`, `hyperliquid_cancel_orders_by_coin`, `hyperliquid_modify_order`, `hyperliquid_cancel_all_orders`
+  </Accordion>
+  <Accordion title="TWAP注文">
+    `hyperliquid_place_twap_order`, `hyperliquid_cancel_twap_order`
+  </Accordion>
+  <Accordion title="レバレッジ & 安全機能">
+    `hyperliquid_update_leverage`, `hyperliquid_update_isolated_margin`, `hyperliquid_close_position`, `hyperliquid_set_dead_mans_switch`, `hyperliquid_approve_api_wallet`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="ポートフォリオ監視" icon="wallet">
+    複数のサブアカウントにわたるアカウント状態、現物残高、オープンポジションを確認する
+  </Card>
+  <Card title="マーケットスナップショット" icon="candlestick-chart">
+    意思決定の前にオーダーブックの深さ、直近の取引、ローソク足を取得する
+  </Card>
+  <Card title="自動注文管理" icon="repeat">
+    TWAP実行を含め、注文をプログラムで発注・変更・キャンセルする
+  </Card>
+  <Card title="リスク管理" icon="shield-alert">
+    レバレッジ/マージンモードを調整し、エージェントが応答不能になった場合に自動キャンセルするデッドマンスイッチを設定する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="hyperliquid_place_orderなど取引系ツールが認証エラーで失敗する">
+    読み取り専用ツールはウォレットアドレスのみで動作しますが、注文の発注/変更/キャンセルにはサーバー側で設定された秘密鍵が必要です——アカウントで取引が有効になっているか管理者に確認してください。
+  </Accordion>
+  <Accordion title="hyperliquid_get_account_stateがHyperliquidのUIと異なる数値を表示する">
+    `hyperliquid_get_subaccounts`で正しいサブアカウントを確認しているか確認してください——パーペチュアルと現物の残高は別々に管理されており(`hyperliquid_get_account_state`と`hyperliquid_get_spot_balances`)、誤った方を確認しがちです。
+  </Accordion>
+  <Accordion title="hyperliquid_place_twap_orderの動作が想定と異なる">
+    TWAP注文は即時執行ではなく指定した期間にわたって小分けに執行されます——即時約定を期待せず`hyperliquid_get_order_status`で進行状況を追跡し、必要であれば`hyperliquid_cancel_twap_order`で早期に停止してください。
+  </Accordion>
+</AccordionGroup>

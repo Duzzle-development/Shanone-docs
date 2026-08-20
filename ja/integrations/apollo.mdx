@@ -1,0 +1,85 @@
+---
+title: "Apollo"
+description: "コンタクト・取引先・組織の検索とエンリッチメント、取引やアウトリーチシーケンスの管理"
+icon: /images/apollo.svg
+---
+
+# Apollo
+
+ShanoneのApollo連携では、B2Bセールスのワークフローに関する**40個のツール**をエージェントに提供します — コンタクト・取引先のCRM管理、人物/組織の検索とエンリッチメント、取引、タスク、アウトリーチシーケンスをカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="Apollo APIキーを取得する">
+    Apolloで**Settings > Integrations > API Keys**を開き、キーを発行します。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにApolloで何か作業をしてもらう(例:「シリーズB企業のVP of Engineeringのコンタクトを検索して」)か、Shanoneダッシュボードの**インテグレーション**からAPIキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`apollo_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Apollo向けに**40個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="取引先(Accounts)">
+    `apollo_create_account`, `apollo_bulk_create_accounts`, `apollo_get_account`, `apollo_update_account`, `apollo_bulk_update_accounts`, `apollo_search_accounts`, `apollo_list_account_stages`, `apollo_update_account_stage`, `apollo_update_account_owner`
+  </Accordion>
+  <Accordion title="コンタクト">
+    `apollo_create_contact`, `apollo_bulk_create_contacts`, `apollo_get_contact`, `apollo_update_contact`, `apollo_bulk_update_contacts`, `apollo_search_contacts`, `apollo_list_contact_stages`, `apollo_update_contact_stage`, `apollo_update_contact_owner`
+  </Accordion>
+  <Accordion title="検索">
+    `apollo_search_people`, `apollo_search_organizations`, `apollo_search_news`, `apollo_search_job_postings`
+  </Accordion>
+  <Accordion title="エンリッチメント">
+    `apollo_enrich_person`, `apollo_bulk_enrich_people`, `apollo_enrich_organization`, `apollo_bulk_enrich_organizations`
+  </Accordion>
+  <Accordion title="取引(Deals)">
+    `apollo_create_deal`, `apollo_get_deal`, `apollo_update_deal`, `apollo_list_deals`, `apollo_list_deal_stages`
+  </Accordion>
+  <Accordion title="シーケンス">
+    `apollo_search_sequences`, `apollo_add_contacts_to_sequence`, `apollo_activate_sequence`, `apollo_deactivate_sequence`
+  </Accordion>
+  <Accordion title="タスク">
+    `apollo_create_task`, `apollo_search_tasks`
+  </Accordion>
+  <Accordion title="その他 & アカウント管理">
+    `apollo_list_users`, `apollo_list_email_accounts`, `apollo_get_api_usage`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="見込み客リストの作成" icon="search">
+    役職・企業規模・業種で人物/組織を検索し、一致するコンタクトを一括作成する
+  </Card>
+  <Card title="コンタクトのエンリッチメント" icon="user-round-search">
+    メールアドレスやLinkedIn URLのリストから、詳細なコンタクト・企業情報を補完する
+  </Card>
+  <Card title="アウトリーチシーケンスの管理" icon="send">
+    新たにエンリッチしたコンタクトをシーケンスに追加し、アウトリーチを開始する
+  </Card>
+  <Card title="パイプラインの健全化" icon="clipboard-check">
+    同じステージに滞留している取引・コンタクトを点検し、担当者やステージを一括更新する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="apollo_enrich_personやapollo_enrich_organizationの結果が一部しか埋まらない">
+    Apolloのエンリッチメントの網羅度は、その人物・企業について公開/自社データがどれだけ存在するかによって変わります — すべてのレコードで全項目が埋まるわけではありません。
+  </Accordion>
+  <Accordion title="一括系ツール(apollo_bulk_create_contactsなど)が途中で失敗する">
+    レート制限やクレジット枯渇の可能性があるため`apollo_get_api_usage`で確認してください — Apolloは検索・エンリッチメント・一括書き込み操作にプランごとの上限を設けています。
+  </Accordion>
+  <Accordion title="apollo_add_contacts_to_sequenceは成功するがコンタクトにアウトリーチが届かない">
+    `apollo_activate_sequence`で対象シーケンスがアクティブになっているか確認してください — 一時停止中またはドラフト状態のシーケンスに追加されたコンタクトには、アクティブ化するまでメールが送信されません。
+  </Accordion>
+</AccordionGroup>

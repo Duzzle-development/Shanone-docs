@@ -1,0 +1,67 @@
+---
+title: "Google Tasks"
+description: "タスクリストとタスクを管理する — 作成、完了、再開、移動、完了済みアイテムのクリア"
+icon: "list-checks"
+---
+
+# Google Tasks
+
+ShanoneのGoogle Tasks連携では、タスクリストとその中のタスクを管理する14のツールをエージェントが利用できるようになります。完了状態の管理、moveによる並び替え/ネスト、完了済みアイテムの一括クリアなどが含まれます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにTasksで何か作業をしてもらう(例:「金曜期限で『ドメイン更新』をAdminリストに追加して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="Googleアカウントを認可する">
+    ShanoneがアクセスすべきTasksを持つアカウントでGoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`google_tasks_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Tasks用に**14のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="タスクリスト">
+    `google_tasks_list_tasklists`, `google_tasks_get_tasklist`, `google_tasks_create_tasklist`, `google_tasks_update_tasklist`, `google_tasks_delete_tasklist`
+  </Accordion>
+  <Accordion title="タスク">
+    `google_tasks_list_tasks`, `google_tasks_get_task`, `google_tasks_create_task`, `google_tasks_update_task`, `google_tasks_delete_task`, `google_tasks_move_task`, `google_tasks_clear_completed_tasks`, `google_tasks_complete_task`, `google_tasks_reopen_task`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="クイックキャプチャ" icon="pencil-line">
+    口頭での依頼やメールのアクションアイテムを、期限付きのタスクとしてすぐに登録する
+  </Card>
+  <Card title="リストの整理" icon="list-x">
+    完了済みタスクをリストからクリアし、未完了のものに集中できる状態にする
+  </Card>
+  <Card title="サブタスクの整理" icon="git-branch">
+    タスクを移動して親タスクの下にネストしたり、リスト内で並び替える
+  </Card>
+  <Card title="デイリーレビュー" icon="calendar-check">
+    複数のリストの未完了タスクを一覧表示し、今日の期限のものを要約する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="google_tasks_move_taskで期待通りに並び替わらない">
+    `google_tasks_move_task`はネストと位置を制御するための`parent`と`previous`のオプションパラメータを受け取ります——両方を省略すると、位置が変わらず維持されるのではなく、タスクはトップレベルのリスト末尾に移動します。
+  </Accordion>
+  <Accordion title="完了済みタスクがgoogle_tasks_list_tasksに表示され続ける">
+    デフォルトでは`google_tasks_list_tasks`は完了済みタスクも含みます——除外するには`show_completed=False`(正確なパラメータ名は`shanone_get_tool_schema`で確認してください)を指定するか、`google_tasks_clear_completed_tasks`でリストから完全に削除してください。
+  </Accordion>
+  <Accordion title="google_tasks_create_taskで期限日が無視される">
+    期限日はRFC 3339形式のタイムスタンプである必要があります(日付のみの値は受け付けられますが、時刻部分はTasksのUI上では無視されます)——期待した期限が表示されない場合はフォーマットを確認してください。
+  </Accordion>
+</AccordionGroup>

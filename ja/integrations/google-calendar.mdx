@@ -1,0 +1,79 @@
+---
+title: "Google Calendar"
+description: "カレンダーとイベントの管理 — スケジューリング、空き時間検索、共有、スマートスケジューリング補助機能"
+icon: /images/google-calendar.svg
+---
+
+# Google Calendar
+
+ShanoneのGoogle Calendar連携は、標準的なカレンダー/イベント管理に加えて、他の連携ではあまり提供されない高度なスマートスケジューリング機能(空き時間検索、イベントの一括作成、ミーティング時間の提案)まで含む49個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにCalendar関連の作業を依頼(例: 「今週Alexと30分空いている時間を見つけて」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Googleアカウントを許可する">
+    Shanoneに操作させたいカレンダーについて、GoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`google_calendar_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Calendar向けに**49個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="カレンダー">
+    `google_calendar_list_calendars`, `google_calendar_get_calendar`, `google_calendar_create_calendar`, `google_calendar_delete_calendar`, `google_calendar_update_calendar`, `google_calendar_patch_calendar`, `google_calendar_clear_calendar`, `google_calendar_transfer_calendar_ownership`, `google_calendar_get_calendar_list_entry`, `google_calendar_add_calendar_to_list`, `google_calendar_update_calendar_list_entry`, `google_calendar_patch_calendar_list_entry`, `google_calendar_remove_calendar_from_list`, `google_calendar_watch_calendar_list`
+  </Accordion>
+  <Accordion title="イベント">
+    `google_calendar_list_events`, `google_calendar_get_event`, `google_calendar_search_events`, `google_calendar_create_event`, `google_calendar_quick_add_event`, `google_calendar_update_event`, `google_calendar_delete_event`, `google_calendar_move_event`, `google_calendar_patch_event`, `google_calendar_import_event`, `google_calendar_get_event_instances`, `google_calendar_watch_events`
+  </Accordion>
+  <Accordion title="ACL(アクセス制御)">
+    `google_calendar_list_acl_rules`, `google_calendar_get_acl_rule`, `google_calendar_share_calendar`, `google_calendar_update_acl_rule`, `google_calendar_patch_acl_rule`, `google_calendar_revoke_acl_rule`, `google_calendar_watch_acl`
+  </Accordion>
+  <Accordion title="設定、カラー & チャンネル">
+    `google_calendar_get_colors`, `google_calendar_get_setting`, `google_calendar_list_settings`, `google_calendar_watch_settings`, `google_calendar_stop_channel`
+  </Accordion>
+  <Accordion title="スマートスケジューリング">
+    `google_calendar_batch_create_events`, `google_calendar_list_events_from_all_calendars`, `google_calendar_find_free_slots`, `google_calendar_get_current_datetime`, `google_calendar_respond_to_event`, `google_calendar_remove_attendee`, `google_calendar_suggest_meeting_times`, `google_calendar_duplicate_event`
+  </Accordion>
+  <Accordion title="ユーティリティ">
+    `google_calendar_get_free_busy`, `google_calendar_get_upcoming_events`, `google_calendar_get_todays_events`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ミーティングスケジューリング" icon="calendar-plus">
+    複数のカレンダーから空き時間を見つけ、参加者付きのイベントを一度の操作で作成する
+  </Card>
+  <Card title="日次/週次ブリーフィング" icon="list">
+    今日または今週のイベントを取得し、誰かのスケジュールを要約する
+  </Card>
+  <Card title="出欠管理" icon="check-check">
+    招待に返信したり、代理で参加者をイベントから削除する
+  </Card>
+  <Card title="カレンダー共有 & ガバナンス" icon="users">
+    同僚とカレンダーを共有したり、ACLルールを監査して誰がアクセス権を持っているか確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="google_calendar_create_eventは成功するが参加者に通知が届かない">
+    `shanone_get_tool_schema`で`sendUpdates`の挙動を確認してください——通知は呼び出しごとのオプトイン設定であり、デフォルトの挙動はカレンダーによって異なる場合があります。
+  </Accordion>
+  <Accordion title="google_calendar_find_free_slotsが共有カレンダーの予定時間を見逃す">
+    関連するすべてのカレンダーIDを明示的に渡すか、まず`google_calendar_list_events_from_all_calendars`を使って接続中のアカウントが実際にどのカレンダーを閲覧できるか確認してください。
+  </Accordion>
+  <Accordion title="google_calendar_watch_eventsやwatch_calendar_listの更新通知が止まる">
+    プッシュ通知チャンネルには有効期限があります。チャンネルが永続的だと想定せず、古いチャンネルに対して`google_calendar_stop_channel`を呼び、新たに`watch_*`を発行してください。
+  </Accordion>
+</AccordionGroup>

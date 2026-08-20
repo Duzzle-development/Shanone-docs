@@ -1,0 +1,73 @@
+---
+title: "Parallel"
+description: "AI-powered web search, structured extraction, and long-running research tasks"
+icon: /images/parallel.svg
+---
+
+# Parallel
+
+Shanone's Parallel integration gives your agent 7 tools for [Parallel](https://parallel.ai)'s web search, structured find-and-extract, chat, and asynchronous research/monitoring APIs — built for agentic workloads that need grounded, real-time web data.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Parallel API key">
+    Generate a key from the [Parallel platform](https://platform.parallel.ai/).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Parallel, and paste in your API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `parallel_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **7 tools** for Parallel, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Search & extract">
+    `parallel_search`, `parallel_extract` — run a web search optimized for LLM consumption, or extract structured content from specific URLs
+  </Accordion>
+  <Accordion title="Find-all">
+    `parallel_findall` — discover entities matching a description across the web (e.g. "find companies that do X"), returning a structured list
+  </Accordion>
+  <Accordion title="Research & chat">
+    `parallel_task`, `parallel_chat` — run a long-running research task with citations, or have a grounded conversation backed by live web search
+  </Accordion>
+  <Accordion title="Monitoring">
+    `parallel_monitor_create`, `parallel_monitor_list`, `parallel_monitor_events`, `parallel_monitor_delete` — set up a standing web monitor for a topic and poll for new events
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Grounded research reports" icon="file-search">
+    Run `parallel_task` on a complex question and get a cited, structured answer back
+  </Card>
+  <Card title="Lead / entity discovery" icon="users">
+    Use `parallel_findall` to build a list of companies or people matching specific criteria
+  </Card>
+  <Card title="Competitive monitoring" icon="radar">
+    Create a monitor for a competitor or topic and check `parallel_monitor_events` on a schedule
+  </Card>
+  <Card title="Structured data extraction" icon="file-code">
+    Pull specific fields out of a set of URLs with `parallel_extract` instead of scraping manually
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="parallel_task never seems to return a final answer">
+    Research tasks run asynchronously and can take longer than a single request for complex queries — check the tool's response for a task/run ID and poll rather than expecting an immediate synchronous result.
+  </Accordion>
+  <Accordion title="parallel_monitor_events returns an empty list right after creating a monitor">
+    Monitors need time to run their first scan cycle. Wait a few minutes after `parallel_monitor_create` before expecting events, then poll periodically.
+  </Accordion>
+  <Accordion title="parallel_extract returns partial or missing fields for a URL">
+    Extraction quality depends on the page being accessible and reasonably structured; for JS-heavy or paywalled pages, results may be incomplete even with a valid API key.
+  </Accordion>
+</AccordionGroup>

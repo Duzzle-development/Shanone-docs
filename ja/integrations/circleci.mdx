@@ -1,0 +1,88 @@
+---
+title: "CircleCI"
+description: "CI/CDパイプラインを管理する — パイプライン、ワークフロー、ジョブ、コンテキスト、ポリシー、インサイト"
+icon: "workflow"
+---
+
+# CircleCI
+
+ShanoneのCircleCI連携は、CI/CD関連の111個のツールをエージェントに提供します。パイプライン、ワークフロー、ジョブ、プロジェクト、コンテキスト、ポリシー、OIDC、パイプラインインサイトが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="Personal API Tokenを発行する">
+    CircleCIの**User Settings → Personal API Tokens**で新しいトークンを作成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、CircleCIを選択してPersonal API Tokenを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`circleci_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはCircleCI向けに**111個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="パイプライン・定義 & トリガー">
+    `circleci_list_pipelines`, `circleci_list_project_pipelines`, `circleci_list_my_pipelines`, `circleci_get_pipeline`, `circleci_get_pipeline_by_number`, `circleci_get_pipeline_config`, `circleci_get_pipeline_workflows`, `circleci_get_pipeline_values`, `circleci_trigger_pipeline`, `circleci_trigger_pipeline_run`, `circleci_continue_pipeline`, `circleci_list_pipeline_definitions`, `circleci_create_pipeline_definition`, `circleci_get_pipeline_definition`, `circleci_update_pipeline_definition`, `circleci_delete_pipeline_definition`, `circleci_list_pipeline_definition_triggers`, `circleci_create_trigger`, `circleci_get_trigger`, `circleci_update_trigger`, `circleci_delete_trigger`, `circleci_list_schedules`, `circleci_create_schedule`, `circleci_get_schedule`, `circleci_update_schedule`, `circleci_delete_schedule`
+  </Accordion>
+  <Accordion title="ワークフロー & ジョブ">
+    `circleci_get_workflow`, `circleci_list_workflow_jobs`, `circleci_approve_job`, `circleci_cancel_workflow`, `circleci_rerun_workflow`, `circleci_get_job`, `circleci_cancel_job`, `circleci_cancel_job_by_number`
+  </Accordion>
+  <Accordion title="インサイト & 使用状況">
+    `circleci_get_project_summary`, `circleci_get_job_timeseries`, `circleci_get_org_summary`, `circleci_get_insights_branches`, `circleci_get_flaky_tests`, `circleci_get_workflow_metrics`, `circleci_get_workflow_runs`, `circleci_get_workflow_job_metrics`, `circleci_get_workflow_summary`, `circleci_get_workflow_test_metrics`, `circleci_create_usage_export`, `circleci_get_usage_export`
+  </Accordion>
+  <Accordion title="プロジェクト・組織 & グループ">
+    `circleci_create_project`, `circleci_get_project`, `circleci_delete_project`, `circleci_get_project_settings`, `circleci_update_project_settings`, `circleci_create_organization`, `circleci_get_organization`, `circleci_delete_organization`, `circleci_list_url_orb_allowlist`, `circleci_create_url_orb_allowlist_entry`, `circleci_delete_url_orb_allowlist_entry`, `circleci_list_groups`, `circleci_create_group`, `circleci_get_group`, `circleci_delete_group`
+  </Accordion>
+  <Accordion title="コンテキスト & 環境変数">
+    `circleci_create_context`, `circleci_list_contexts`, `circleci_get_context`, `circleci_delete_context`, `circleci_list_context_env_vars`, `circleci_set_context_env_var`, `circleci_delete_context_env_var`, `circleci_get_context_restrictions`, `circleci_create_context_restriction`, `circleci_delete_context_restriction`, `circleci_list_env_vars`, `circleci_create_env_var`, `circleci_get_env_var`, `circleci_delete_env_var`
+  </Accordion>
+  <Accordion title="ポリシー & OIDC">
+    `circleci_get_decision_logs`, `circleci_make_decision`, `circleci_get_decision_settings`, `circleci_set_decision_settings`, `circleci_get_decision_log`, `circleci_get_decision_log_policy_bundle`, `circleci_get_policy_bundle`, `circleci_create_policy_bundle`, `circleci_get_policy_document`, `circleci_get_org_oidc_claims`, `circleci_update_org_oidc_claims`, `circleci_delete_org_oidc_claims`, `circleci_get_project_oidc_claims`, `circleci_update_project_oidc_claims`, `circleci_delete_project_oidc_claims`
+  </Accordion>
+  <Accordion title="Webhook & OpenTelemetry">
+    `circleci_list_webhooks`, `circleci_create_webhook`, `circleci_get_webhook`, `circleci_update_webhook`, `circleci_delete_webhook`, `circleci_list_otel_exporters`, `circleci_create_otel_exporter`, `circleci_delete_otel_exporter`
+  </Accordion>
+  <Accordion title="デプロイ・チェックアウトキー & ロールバック">
+    `circleci_list_deploy_environments`, `circleci_get_deploy_environment`, `circleci_list_deploy_components`, `circleci_get_deploy_component`, `circleci_list_component_versions`, `circleci_list_checkout_keys`, `circleci_create_checkout_key`, `circleci_get_checkout_key`, `circleci_delete_checkout_key`, `circleci_rollback_project`
+  </Accordion>
+  <Accordion title="ユーザー">
+    `circleci_get_me`, `circleci_get_collaborations`, `circleci_get_user`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ビルド失敗のトリアージ" icon="triangle-alert">
+    直近のワークフロー実行とフレイキーテストのインサイトを取得し、失敗したパイプラインの原因を調べる
+  </Card>
+  <Card title="リリース自動化" icon="rocket">
+    カスタムパラメータでパイプラインをトリガーし、デプロイまで進行を監視する
+  </Card>
+  <Card title="シークレットのローテーション" icon="key">
+    プロジェクト間のコンテキストやプロジェクト環境変数を確認・更新する
+  </Card>
+  <Card title="コンプライアンス監査" icon="shield-check">
+    セキュリティ上重要なパイプラインについて、ポリシーの判定ログとOIDCクレームを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="circleci_trigger_pipelineが404を返す">
+    `project_slug`は`vcs-slug/org-name/repo-name`の形式(例: `gh/my-org/my-repo`)である必要があります。トリガーする前に`circleci_get_project`で正確なslugを確認してください。
+  </Accordion>
+  <Accordion title="コンテキストや環境変数系のツールが権限エラーを返す">
+    コンテキストとその環境変数を管理するには、Personal API Tokenのアカウントが組織の管理者権限を持っている必要があります。管理者権限のないユーザーのトークンではパイプラインの読み取りはできますが、シークレットの書き込みはできません。
+  </Accordion>
+  <Accordion title="作成したばかりのプロジェクトでインサイト系のツールがデータを返さない">
+    CircleCI Insightsはデータを遅延して集計し、実際に実行されたパイプラインのみを対象とします。新規または実行頻度の低いプロジェクトにはまだサマリーデータがありません。
+  </Accordion>
+</AccordionGroup>

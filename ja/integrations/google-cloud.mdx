@@ -1,0 +1,76 @@
+---
+title: "Google Cloud"
+description: "Workload Identity Federationを介したAPI有効化管理、IAMポリシー、組織レベル設定の管理"
+icon: "cloud"
+---
+
+# Google Cloud
+
+ShanoneのGoogle Cloud連携は、サービスの有効化/無効化、IAMポリシー/ロールの管理、組織レベルの変更の監査といったオペレーターレベルのGCP管理のための24個のツールをエージェントに提供します。ダウンロード可能なサービスアカウントキーではなく、Workload Identity Federationで認証されます。
+
+## はじめに
+
+<Steps>
+  <Step title="Workload Identity Federationを設定する">
+    Google Cloud Consoleで、Shanoneのバックエンドを信頼する[Workload Identity Pool と Provider](https://console.cloud.google.com/iam-admin/workload-identity-pools)を作成し、Shanoneがなりすます(impersonate)サービスアカウントを作成します。
+  </Step>
+  <Step title="ShanoneにWIFの情報を追加する">
+    Shanoneダッシュボードの**連携**を開き、Google Cloudを選択して、プロジェクト番号、プールID、プロバイダID、サービスアカウントのメールアドレス、対象プロジェクトIDを入力します。サービスアカウントキーファイルは不要です。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`gcloud_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Cloud向けに**24個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="サービス使用状況">
+    `gcloud_service_usage_list`, `gcloud_service_usage_get`, `gcloud_service_usage_batch_get`, `gcloud_service_usage_search`, `gcloud_service_usage_enable`, `gcloud_service_usage_disable`, `gcloud_service_usage_batch_enable`, `gcloud_service_usage_disable_check`
+  </Accordion>
+  <Accordion title="IAMポリシー & メンバー">
+    `gcloud_iam_get_policy`, `gcloud_iam_add_binding`, `gcloud_iam_remove_binding`, `gcloud_iam_set_policy`, `gcloud_iam_list_members`
+  </Accordion>
+  <Accordion title="IAMロール & 権限">
+    `gcloud_iam_list_grantable_roles`, `gcloud_iam_get_role`, `gcloud_iam_test_permissions`, `gcloud_iam_list_service_accounts`, `gcloud_iam_search_roles`
+  </Accordion>
+  <Accordion title="組織レベル">
+    `gcloud_org_get_policy`, `gcloud_org_add_binding`, `gcloud_org_list_projects`
+  </Accordion>
+  <Accordion title="監査">
+    `gcloud_audit_get_connection_status`, `gcloud_audit_list_recent_changes`, `gcloud_audit_export_policy_snapshot`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="API有効化のロールアウト" icon="toggle-right">
+    新しいサービスをデプロイする前に、必要なAPI群をプロジェクト全体で一括有効化する
+  </Card>
+  <Card title="IAMアクセスレビュー" icon="shield-check">
+    プロジェクトのIAMポリシーバインディングとメンバーを一覧化し、過剰なアクセス権がないか確認する
+  </Card>
+  <Card title="権限のトラブルシューティング" icon="key-round">
+    `gcloud_iam_test_permissions`を使って、失敗している呼び出しに必要なアクセス権をサービスアカウントが実際に持っているか確認する
+  </Card>
+  <Card title="変更の監査" icon="history">
+    ポリシースナップショットをエクスポートし、最近の変更を一覧化して誰がIAMバインディングを変更したか調査する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="接続直後にすべてのgcloud_*呼び出しが失敗する">
+    まず`gcloud_audit_get_connection_status`を実行してください——Workload Identity Federationの信頼関係となりすまし先のサービスアカウントが正しく設定されているかを確認する最も速い方法です。
+  </Accordion>
+  <Accordion title="gcloud_iam_add_bindingまたはgcloud_org_add_bindingが権限拒否エラーを返す">
+    なりすまし先のサービスアカウント自体に`resourcemanager.projects.setIamPolicy`(または組織レベルの同等の権限)が必要です。対象リソースに対する`gcloud_iam_get_policy`でそのサービスアカウント自身のIAMロールを確認してください。
+  </Accordion>
+  <Accordion title="gcloud_service_usage_enableは成功するがAPIがまだ使えない">
+    サービスの有効化が反映されるまで数分かかることがあります。すぐに有効になったと想定せず、`gcloud_service_usage_get`や`gcloud_service_usage_disable_check`をポーリングしてください。
+  </Accordion>
+</AccordionGroup>

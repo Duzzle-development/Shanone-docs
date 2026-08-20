@@ -1,0 +1,85 @@
+---
+title: "MoneyForward"
+description: "MoneyForwardの会計・経費・請求書・支払を管理 — 仕訳、取引、レポート、承認"
+icon: /images/moneyforward.svg
+---
+
+# MoneyForward
+
+ShanoneのMoneyForward連携は、コア会計(仕訳、試算表)、経費レポート、請求書発行、支払管理をカバーする59個のツールをエージェントに提供します——MoneyForwardの会計・経費・請求書・支払という個別のサービスにまたがっています。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにMoneyForward関連の作業を依頼(例: 「今月の仕訳を一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="利用する各MoneyForwardサービスを認可する">
+    MoneyForwardの会計、経費、請求書、支払は、それぞれ個別にOAuth保護されたサービスです——使用する`moneyforward_*`ツールに応じて、複数のサービスを認可する必要がある場合があります。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`moneyforward_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはMoneyForward向けに**59個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="会計基本情報(事業所、口座、税)">
+    `moneyforward_get_office`, `moneyforward_list_accounts`, `moneyforward_list_departments`, `moneyforward_list_taxes`, `moneyforward_list_sub_accounts`, `moneyforward_get_term_settings`
+  </Accordion>
+  <Accordion title="仕訳 & 証憑">
+    `moneyforward_list_journals`, `moneyforward_get_journal`, `moneyforward_create_journal`, `moneyforward_update_journal`, `moneyforward_delete_journal`, `moneyforward_create_voucher`, `moneyforward_detach_voucher`
+  </Accordion>
+  <Accordion title="取引先 & 取引">
+    `moneyforward_list_trade_partners`, `moneyforward_create_trade_partner`, `moneyforward_list_transactions`, `moneyforward_create_transaction`, `moneyforward_create_journal_from_transaction`, `moneyforward_list_connected_accounts`, `moneyforward_get_connected_account`
+  </Accordion>
+  <Accordion title="会計レポート">
+    `moneyforward_get_trial_balance_bs`, `moneyforward_get_trial_balance_pl`, `moneyforward_get_transition_bs`, `moneyforward_get_transition_pl`
+  </Accordion>
+  <Accordion title="経費取引">
+    `moneyforward_expense_list_offices`, `moneyforward_expense_get_office`, `moneyforward_expense_list_transactions`, `moneyforward_expense_get_transaction`, `moneyforward_expense_create_transaction`, `moneyforward_expense_update_transaction`, `moneyforward_expense_delete_transaction`, `moneyforward_expense_upload_receipt`
+  </Accordion>
+  <Accordion title="経費レポート & 承認">
+    `moneyforward_expense_list_reports`, `moneyforward_expense_get_report`, `moneyforward_expense_create_report`, `moneyforward_expense_update_report`, `moneyforward_expense_submit_report`, `moneyforward_expense_list_approvals`, `moneyforward_expense_approve_report`, `moneyforward_expense_reject_report`
+  </Accordion>
+  <Accordion title="請求書発行">
+    `moneyforward_invoice_list_billings`, `moneyforward_invoice_get_billing`, `moneyforward_invoice_create_billing`, `moneyforward_invoice_update_billing`, `moneyforward_invoice_delete_billing`, `moneyforward_invoice_send_billing`, `moneyforward_invoice_list_quotes`, `moneyforward_invoice_get_quote`, `moneyforward_invoice_create_quote`, `moneyforward_invoice_update_quote`
+  </Accordion>
+  <Accordion title="支払 & 承認">
+    `moneyforward_payable_list_offices`, `moneyforward_payable_list_payment_requests`, `moneyforward_payable_get_payment_request`, `moneyforward_payable_create_payment_request`, `moneyforward_payable_update_payment_request`, `moneyforward_payable_submit_payment_request`, `moneyforward_payable_list_approvals`, `moneyforward_payable_approve_request`, `moneyforward_payable_reject_request`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="月次決算のサポート" icon="calculator">
+    決算前に試算表を取得し、仕訳を照合する
+  </Card>
+  <Card title="経費承認キュー" icon="check-square">
+    承認待ちの経費レポートを一覧表示し、自然言語で承認・却下する
+  </Card>
+  <Card title="請求書のフォローアップ" icon="file-text">
+    請求書を作成・送信し、支払われるまで追跡する
+  </Card>
+  <Card title="支払依頼のトリアージ" icon="credit-card">
+    月末の支払実行前に、承認待ちの支払依頼をレビューする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="他のMoneyForwardツールは動くのに特定のツールだけ401エラーになる">
+    会計、経費、請求書、支払はそれぞれ独立したOAuthトークンを持っています——失敗しているツールが属するサービスを**連携**画面から個別に再接続してください。
+  </Accordion>
+  <Accordion title="moneyforward_create_journalが仕訳の不整合エラーで失敗する">
+    MoneyForwardでは、すべての仕訳行にわたって借方と貸方の合計が一致している必要があります——送信前に`moneyforward_list_accounts`と`moneyforward_list_sub_accounts`でアカウントIDを確認してください。
+  </Accordion>
+  <Accordion title="経費レポートを承認できない">
+    レポートは`moneyforward_expense_submit_report`で提出されてからでないと`moneyforward_expense_list_approvals`に表示されません——ドラフト状態のレポートはまだ承認できません。
+  </Accordion>
+</AccordionGroup>

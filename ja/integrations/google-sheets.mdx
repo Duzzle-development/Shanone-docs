@@ -1,0 +1,94 @@
+---
+title: "Google Sheets"
+description: "Sheets APIのほぼ全機能 — スプレッドシート、セル、書式、グラフ、フィルタ、テーブルなど"
+icon: /images/google-sheets.svg
+---
+
+# Google Sheets
+
+ShanoneのGoogle Sheets連携では、Sheets APIのほぼ全機能を扱う88のツールをエージェントが利用できるようになります——値の読み書きだけでなく、書式、グラフ、フィルタ、保護範囲、テーブル、行/列管理など、多くの連携が省略しがちな機能まで含まれます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにSheetsで何か作業をしてもらう(例:「Q3予算シートにグラフを追加して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="Googleアカウントを認可する">
+    ShanoneがアクセスすべきSheetsを持つアカウントでGoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`google_sheets_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Sheets用に**88のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="スプレッドシート">
+    `google_sheets_create`, `google_sheets_get_spreadsheet`, `google_sheets_get_values`, `google_sheets_update_values`, `google_sheets_append_values`, `google_sheets_clear_values`, `google_sheets_batch_get_values`, `google_sheets_batch_update_values`, `google_sheets_batch_clear_values`
+  </Accordion>
+  <Accordion title="シート・タブ">
+    `google_sheets_add_sheet`, `google_sheets_delete_sheet`, `google_sheets_duplicate_sheet`, `google_sheets_copy_sheet_to`, `google_sheets_update_sheet_properties`, `google_sheets_update_spreadsheet_properties`, `google_sheets_get_sheet_names`
+  </Accordion>
+  <Accordion title="セル & データ操作">
+    `google_sheets_update_cells`, `google_sheets_append_cells`, `google_sheets_repeat_cell`, `google_sheets_insert_range`, `google_sheets_delete_range`, `google_sheets_cut_paste`, `google_sheets_copy_paste`, `google_sheets_paste_data`, `google_sheets_text_to_columns`, `google_sheets_trim_whitespace`, `google_sheets_sort_range`, `google_sheets_find_replace`, `google_sheets_remove_duplicates`
+  </Accordion>
+  <Accordion title="書式 & 交互の色">
+    `google_sheets_format_cells`, `google_sheets_update_borders`, `google_sheets_merge_cells`, `google_sheets_unmerge_cells`, `google_sheets_auto_fill`, `google_sheets_add_banding`, `google_sheets_update_banding`, `google_sheets_delete_banding`, `google_sheets_add_conditional_format_rule`, `google_sheets_update_conditional_format_rule`, `google_sheets_delete_conditional_format_rule`
+  </Accordion>
+  <Accordion title="グラフ & スライサー">
+    `google_sheets_add_chart`, `google_sheets_update_chart_spec`, `google_sheets_delete_embedded_object`, `google_sheets_update_embedded_object_position`, `google_sheets_add_slicer`, `google_sheets_update_slicer_spec`, `google_sheets_delete_slicer`
+  </Accordion>
+  <Accordion title="フィルタ & ビュー">
+    `google_sheets_set_basic_filter`, `google_sheets_clear_basic_filter`, `google_sheets_add_filter_view`, `google_sheets_update_filter_view`, `google_sheets_delete_filter_view`, `google_sheets_duplicate_filter_view`, `google_sheets_batch_get_values_by_data_filter`, `google_sheets_batch_update_values_by_data_filter`
+  </Accordion>
+  <Accordion title="テーブル & 範囲">
+    `google_sheets_add_table`, `google_sheets_update_table`, `google_sheets_delete_table`, `google_sheets_add_named_range`, `google_sheets_update_named_range`, `google_sheets_delete_named_range`, `google_sheets_add_protected_range`, `google_sheets_update_protected_range`, `google_sheets_delete_protected_range`
+  </Accordion>
+  <Accordion title="行・列・グループ">
+    `google_sheets_insert_dimension`, `google_sheets_delete_dimension`, `google_sheets_move_dimension`, `google_sheets_append_dimension`, `google_sheets_update_dimension_properties`, `google_sheets_auto_resize_dimensions`, `google_sheets_add_dimension_group`, `google_sheets_delete_dimension_group`, `google_sheets_update_dimension_group`
+  </Accordion>
+  <Accordion title="コメント">
+    `google_sheets_list_comments`, `google_sheets_create_comment`, `google_sheets_reply_to_comment`, `google_sheets_resolve_comment`
+  </Accordion>
+  <Accordion title="検証 & 開発者メタデータ">
+    `google_sheets_set_data_validation`, `google_sheets_get_data_validation_rules`, `google_sheets_create_developer_metadata`, `google_sheets_search_developer_metadata`, `google_sheets_get_developer_metadata`, `google_sheets_update_developer_metadata`
+  </Accordion>
+  <Accordion title="Drive連携">
+    `google_sheets_search_spreadsheets`, `google_sheets_copy_spreadsheet`, `google_sheets_export_spreadsheet`, `google_sheets_share_spreadsheet`, `google_sheets_delete_spreadsheet`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="自動レポート作成" icon="table">
+    シートに最新データを取り込み、書式を整え、一度の操作でグラフまで追加する
+  </Card>
+  <Card title="データクリーンアップ" icon="broom">
+    大きな範囲に対して空白のトリム、重複削除、検索/置換を行う
+  </Card>
+  <Card title="アクセス制御されたテンプレート" icon="lock">
+    重要な範囲を保護し、適切な権限レベルでスプレッドシートを共有する
+  </Card>
+  <Card title="ダッシュボード構築" icon="layout-dashboard">
+    名前付き範囲、フィルタビュー、スライサーを追加して生データを使いやすいダッシュボードに変える
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="google_sheets_update_valuesが意図しないセルを上書きしてしまう">
+    A1表記の範囲(例:`Sheet1!B2:D10`)を再確認してください——シート名を省略すると最初のシートがデフォルトになり、意図しない上書きの典型的な原因になります。
+  </Accordion>
+  <Accordion title="google_sheets_add_chartやgoogle_sheets_add_tableが不正な範囲エラーで失敗する">
+    グラフ、テーブル、交互の色、保護範囲などの構造系ツールの多くは、シート名ではなく`sheetId`(数値ID)を必要とします——先に`google_sheets_get_spreadsheet`や`google_sheets_get_sheet_names`を呼んで解決してください。
+  </Accordion>
+  <Accordion title="バッチ操作が一部しか適用されない">
+    `google_sheets_batch_update_values`のようなバッチツールは各範囲を個別に処理します——全体が成功したからといって全範囲が成功したとは限らないため、レスポンス内の範囲ごとのエラーを確認してください。
+  </Accordion>
+</AccordionGroup>

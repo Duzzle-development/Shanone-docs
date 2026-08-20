@@ -1,0 +1,73 @@
+---
+title: "Deepgram"
+description: "音声認識・音声合成・音声インテリジェンス — 文字起こし、TTS、テキスト解析"
+icon: /images/deepgram.svg
+---
+
+# Deepgram
+
+ShanoneのDeepgram連携は、音声AIを扱う12個のツールをエージェントに提供します。音声の文字起こし、話者分離、要約、テキスト読み上げ、テキストインテリジェンス(感情分析、トピック、インテント、エンティティ)が対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="Deepgram APIキーを取得する">
+    [Deepgram Console](https://console.deepgram.com/project/api-keys)にサインインし、プロジェクト用の新しいAPIキーを作成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Deepgramを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`deepgram_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはDeepgram向けに**12個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="文字起こし">
+    `deepgram_transcribe`, `deepgram_analyze_audio`, `deepgram_detect_entities`, `deepgram_summarize_audio`
+  </Accordion>
+  <Accordion title="音声合成">
+    `deepgram_text_to_speech`, `deepgram_list_voices`
+  </Accordion>
+  <Accordion title="テキストインテリジェンス">
+    `deepgram_analyze_text`, `deepgram_summarize_text`
+  </Accordion>
+  <Accordion title="管理">
+    `deepgram_list_models`, `deepgram_get_usage`, `deepgram_get_balance`, `deepgram_list_project_models`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="会議の文字起こし" icon="mic">
+    録音した通話を話者分離付きで文字起こしし、要点を要約する
+  </Card>
+  <Card title="音声インターフェース" icon="volume-2">
+    生成したテキスト応答を音声に変換し、音声ベースのエージェント体験を実現する
+  </Card>
+  <Card title="サポートチケットのトリアージ" icon="inbox">
+    文字起こししたサポート通話に感情分析とエンティティ抽出を実行し、対応の優先度を判断する
+  </Card>
+  <Card title="使用状況の監視" icon="gauge">
+    API使用量と残高を追跡し、想定外の課金を防ぐ
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="deepgram_transcribeが取得エラーで失敗する">
+    `audio_url`は公開アクセス可能なURLである必要があります。Deepgramはサーバー側でファイルを取得するため、認証が必要なURLやローカルネットワーク上のURLにはアクセスできません。
+  </Accordion>
+  <Accordion title="deepgram_analyze_audio / deepgram_summarize_audioが想定より一般的な結果を返す">
+    これらのインテリジェンス機能は、まず`smart_format`とクリーンな文字起こしに依存します。ノイズの多い音声の場合は、要約やエンティティ検出を行う前に、最も精度の高いモデルである`nova-3`を試してください。
+  </Accordion>
+  <Accordion title="deepgram_get_usageやdeepgram_get_balanceが想定と異なる数値を示す">
+    使用量と残高はAPIキーに紐づくDeepgramのプロジェクト単位で追跡され、Shanone内のユーザー単位ではありません。複数の連携が同じDeepgramプロジェクトを共有している場合、使用量はそれらすべての合計になります。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,91 @@
+---
+title: "Dropbox"
+description: "ファイル・フォルダの保存・共有・管理 — アップロード、共有、チーム管理、Paperドキュメント"
+icon: /images/dropbox.svg
+---
+
+# Dropbox
+
+ShanoneのDropbox連携は、個人向けファイル操作や共有に加えて、他の連携ではほとんど扱われないチーム管理系の機能(メンバー、グループ、フォルダ、容量制限)まで含む166個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにDropbox関連の作業を依頼(例: 「Q3レポートを財務チームと共有して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Dropboxアカウントを許可する">
+    Shanoneに操作させたいアカウント(またはチーム)について、DropboxのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`dropbox_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはDropbox向けに**166個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ファイル & フォルダ">
+    `dropbox_list_folder`, `dropbox_list_folder_continue`, `dropbox_get_metadata`, `dropbox_create_folder`, `dropbox_create_folder_batch`, `dropbox_create_folder_batch_check`, `dropbox_delete`, `dropbox_delete_batch`, `dropbox_delete_batch_check`, `dropbox_move`, `dropbox_move_batch`, `dropbox_move_batch_check`, `dropbox_copy`, `dropbox_copy_batch`, `dropbox_copy_batch_check`, `dropbox_search`
+  </Accordion>
+  <Accordion title="アップロード & ダウンロード">
+    `dropbox_upload_file`, `dropbox_upload_session_start`, `dropbox_upload_session_append`, `dropbox_upload_session_finish`, `dropbox_upload_session_start_batch`, `dropbox_upload_session_append_batch`, `dropbox_upload_session_finish_batch`, `dropbox_upload_session_finish_batch_check`, `dropbox_save_url`, `dropbox_save_url_check_status`, `dropbox_download_file`, `dropbox_download_zip`, `dropbox_get_thumbnail`, `dropbox_get_thumbnail_v2`, `dropbox_get_thumbnail_batch`, `dropbox_get_preview`, `dropbox_export`
+  </Accordion>
+  <Accordion title="バージョン、ロック & 復元">
+    `dropbox_list_revisions`, `dropbox_restore`, `dropbox_permanently_delete`, `dropbox_lock_file`, `dropbox_unlock_file`, `dropbox_unlock_file_batch`, `dropbox_get_file_lock`, `dropbox_get_file_lock_batch`
+  </Accordion>
+  <Accordion title="共有">
+    `dropbox_create_shared_link`, `dropbox_get_temporary_link`, `dropbox_list_shared_links`, `dropbox_modify_shared_link`, `dropbox_revoke_shared_link`, `dropbox_get_shared_link_metadata`, `dropbox_get_shared_link_file`, `dropbox_share_folder`, `dropbox_list_shared_folders`, `dropbox_list_shared_folders_continue`, `dropbox_get_shared_folder`, `dropbox_unshare_folder`, `dropbox_mount_folder`, `dropbox_unmount_folder`, `dropbox_relinquish_folder`, `dropbox_transfer_folder`, `dropbox_check_share_job_status`, `dropbox_list_folder_members`, `dropbox_list_folder_members_continue`, `dropbox_add_folder_member`, `dropbox_remove_folder_member`, `dropbox_update_folder_member`, `dropbox_check_job_status`, `dropbox_add_file_member`, `dropbox_list_file_members`, `dropbox_remove_file_member`, `dropbox_list_received_files`
+  </Accordion>
+  <Accordion title="アカウント & プロフィール">
+    `dropbox_get_account_info`, `dropbox_get_account`, `dropbox_get_account_batch`, `dropbox_get_features`, `dropbox_delete_contacts`, `dropbox_account_set_profile_photo`, `dropbox_account_delete_profile_photo`, `dropbox_account_get_photo`, `dropbox_check_app`, `dropbox_check_user`, `dropbox_copy_reference_get`, `dropbox_copy_reference_save`
+  </Accordion>
+  <Accordion title="テンプレート、プロパティ & タグ">
+    `dropbox_add_template`, `dropbox_get_template`, `dropbox_list_templates`, `dropbox_update_template`, `dropbox_add_properties`, `dropbox_update_properties`, `dropbox_remove_properties`, `dropbox_overwrite_properties`, `dropbox_search_properties`, `dropbox_add_tags`, `dropbox_get_tags`, `dropbox_remove_tags`
+  </Accordion>
+  <Accordion title="Paperドキュメント">
+    `dropbox_paper_create`, `dropbox_paper_update`, `dropbox_paper_docs_list`, `dropbox_paper_docs_get_folder_info`, `dropbox_paper_docs_download`, `dropbox_paper_docs_archive`, `dropbox_paper_docs_permanently_delete`, `dropbox_paper_docs_sharing_policy_get`, `dropbox_paper_docs_users_add`, `dropbox_paper_docs_users_list`, `dropbox_paper_docs_users_remove`
+  </Accordion>
+  <Accordion title="ファイルリクエスト">
+    `dropbox_file_requests_create`, `dropbox_file_requests_get`, `dropbox_file_requests_list`, `dropbox_file_requests_list_continue`, `dropbox_file_requests_update`, `dropbox_file_requests_delete`, `dropbox_file_requests_delete_all_closed`, `dropbox_file_requests_count`
+  </Accordion>
+  <Accordion title="チームメンバー & グループ">
+    `dropbox_team_members_list`, `dropbox_team_members_list_continue`, `dropbox_team_members_get_info`, `dropbox_team_members_add`, `dropbox_team_members_add_job_status`, `dropbox_team_members_set_profile`, `dropbox_team_members_set_admin`, `dropbox_team_members_send_welcome_email`, `dropbox_team_member_set_profile_photo`, `dropbox_team_member_delete_profile_photo`, `dropbox_team_groups_list`, `dropbox_team_groups_list_continue`, `dropbox_team_groups_get_info`, `dropbox_team_groups_create`, `dropbox_team_groups_update`, `dropbox_team_groups_delete`, `dropbox_team_groups_members_add`, `dropbox_team_groups_members_remove`, `dropbox_team_groups_members_list`, `dropbox_team_groups_members_set_access`
+  </Accordion>
+  <Accordion title="チーム管理">
+    `dropbox_team_get_info`, `dropbox_team_features_get_values`, `dropbox_team_member_roles_list`, `dropbox_team_log_get_events`, `dropbox_team_log_get_events_continue`, `dropbox_team_folder_list`, `dropbox_team_folder_list_continue`, `dropbox_team_folder_get_info`, `dropbox_team_folder_create`, `dropbox_team_folder_rename`, `dropbox_team_folder_archive`, `dropbox_team_folder_archive_check`, `dropbox_team_folder_activate`, `dropbox_team_folder_permanently_delete`, `dropbox_team_folder_update_sync_settings`, `dropbox_team_namespaces_list`, `dropbox_team_namespaces_list_continue`, `dropbox_team_devices_list`, `dropbox_team_member_devices_list`, `dropbox_team_linked_apps_list`, `dropbox_team_linked_apps_list_members`, `dropbox_team_sharing_allowlist_add`, `dropbox_team_sharing_allowlist_remove`, `dropbox_team_sharing_allowlist_list`, `dropbox_team_sharing_allowlist_list_continue`, `dropbox_team_member_space_limits_set`, `dropbox_team_member_space_limits_get`, `dropbox_team_member_space_limits_remove`, `dropbox_team_member_space_limits_excluded_add`, `dropbox_team_member_space_limits_excluded_remove`, `dropbox_team_member_space_limits_excluded_list`, `dropbox_team_member_space_limits_excluded_list_continue`, `dropbox_team_secondary_emails_add`, `dropbox_team_secondary_emails_delete`, `dropbox_team_secondary_emails_resend`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="共有リンクの配布" icon="link">
+    ファイルをアップロードし、すぐに共有リンクを生成してクライアントに送る
+  </Card>
+  <Card title="チームオンボーディング" icon="user-plus">
+    新しいチームメンバーを追加し、グループに割り当て、容量制限を一度の流れで設定する
+  </Card>
+  <Card title="ファイルリクエストによる回収" icon="inbox">
+    ファイルリクエストを作成し、Dropboxアカウントを持たない相手からもドキュメントをアップロードしてもらう
+  </Card>
+  <Card title="ストレージガバナンス" icon="shield-check">
+    チームログのイベントと容量制限を監査し、過剰共有や容量超過を検知する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="dropbox_upload_fileが大きなファイルで失敗する">
+    おおよそ150MBを超えるファイルは、チャンク分割のアップロードセッションフローが必要です。単発のアップロード呼び出しの代わりに、`dropbox_upload_session_start`、`dropbox_upload_session_append`、`dropbox_upload_session_finish`(またはバッチ版)を使用してください。
+  </Accordion>
+  <Accordion title="チーム管理系のツールが権限エラーを返す">
+    `dropbox_team_*`系のツールには、接続先アカウントがDropbox Business/Teamの管理者であることが必要です。個人のDropboxアカウントや管理者権限のないチームメンバーは呼び出せません。
+  </Accordion>
+  <Accordion title="共有フォルダの操作が結果ではなく非同期ジョブのステータスを返す">
+    `dropbox_share_folder`や`dropbox_transfer_folder`などの一部の共有操作は非同期で実行されます。完了するまで、返されたジョブIDを使って`dropbox_check_share_job_status`や`dropbox_check_job_status`をポーリングしてください。
+  </Accordion>
+</AccordionGroup>

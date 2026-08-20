@@ -1,0 +1,76 @@
+---
+title: "Coincheck"
+description: "Trade and manage assets on Coincheck — orders, market data, transfers, and withdrawals"
+icon: /images/coincheck.svg
+---
+
+# Coincheck
+
+Shanone's Coincheck integration gives your agent 24 tools for the Japanese crypto exchange: account balances, market data, order management, crypto transfers, and JPY withdrawals.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an API Key and Secret">
+    In Coincheck, go to **設定 (Settings) → API** and create a new API Key/Secret pair with the permissions you need (order, withdraw, etc.).
+  </Step>
+  <Step title="Add credentials to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Coincheck, and enter both the API Key and API Secret — both are required.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `coincheck_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **24 tools** for Coincheck, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Orders">
+    `coincheck_create_order`, `coincheck_get_open_orders`, `coincheck_cancel_order`, `coincheck_get_transactions`, `coincheck_get_order_detail`, `coincheck_get_cancel_status`, `coincheck_get_transactions_pagination`
+  </Accordion>
+  <Accordion title="Market Data">
+    `coincheck_get_ticker`, `coincheck_get_order_book`, `coincheck_get_rate`, `coincheck_get_exchange_status`, `coincheck_get_trades`, `coincheck_calculate_rate`
+  </Accordion>
+  <Accordion title="Withdrawals & Bank Accounts">
+    `coincheck_get_bank_accounts`, `coincheck_register_bank_account`, `coincheck_delete_bank_account`, `coincheck_get_withdraw_history`, `coincheck_create_withdraw`, `coincheck_cancel_withdraw`
+  </Accordion>
+  <Accordion title="Transfers">
+    `coincheck_send_crypto`, `coincheck_get_send_history`, `coincheck_get_deposit_history`
+  </Accordion>
+  <Accordion title="Account">
+    `coincheck_get_balance`, `coincheck_get_account_info`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Portfolio monitoring" icon="wallet">
+    Check balances and recent transactions across your Coincheck account
+  </Card>
+  <Card title="Rate-triggered orders" icon="trending-up">
+    Watch the ticker/rate and place a limit order when a target price is reached
+  </Card>
+  <Card title="Withdrawal automation" icon="banknote">
+    Initiate a JPY withdrawal to a pre-registered bank account and track its status
+  </Card>
+  <Card title="Crypto transfers" icon="arrow-right-left">
+    Send crypto to an external address and confirm it in the send history
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="coincheck_create_order or coincheck_create_withdraw fails with an authentication error">
+    Coincheck signs every private request with an HMAC built from both the API Key and API Secret — if either is missing or the account's IP allowlist (if configured in Coincheck) doesn't include Shanone's egress IP, private endpoints will reject the request.
+  </Accordion>
+  <Accordion title="coincheck_cancel_withdraw or coincheck_cancel_order returns an error for a recent action">
+    Orders and withdrawals can only be canceled while still pending; once Coincheck has started processing them (matched, or sent to the bank/network), cancellation is no longer possible.
+  </Accordion>
+  <Accordion title="Rate-related tools return stale or unexpected prices">
+    `coincheck_get_rate` and `coincheck_calculate_rate` reflect Coincheck's own order book at request time, not an external index — always confirm with `coincheck_get_ticker` immediately before placing an order.
+  </Accordion>
+</AccordionGroup>

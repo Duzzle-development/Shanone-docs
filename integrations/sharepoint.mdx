@@ -1,0 +1,73 @@
+---
+title: "SharePoint"
+description: "Browse, upload, and share files and sites across your SharePoint document libraries"
+icon: /images/sharepoint.svg
+---
+
+# SharePoint
+
+Shanone's SharePoint integration gives your agent 13 tools for finding sites, browsing document libraries, and moving files in and out of SharePoint — a focused set covering the operations agents actually need, rather than the full SharePoint admin surface.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with SharePoint (e.g. "find the Q3 budget file in our finance site"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Microsoft account">
+    Approve Microsoft's OAuth consent screen for the account that has access to the SharePoint sites you want Shanone to use.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `sharepoint_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **13 tools** for SharePoint, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Files">
+    `sharepoint_get_file_info`, `sharepoint_download_file`, `sharepoint_upload_file`, `sharepoint_delete_file`, `sharepoint_search_files`
+  </Accordion>
+  <Accordion title="Folders">
+    `sharepoint_list_folder`, `sharepoint_create_folder`, `sharepoint_delete_folder`
+  </Accordion>
+  <Accordion title="Sharing">
+    `sharepoint_create_sharing_link`, `sharepoint_list_permissions`
+  </Accordion>
+  <Accordion title="Sites">
+    `sharepoint_list_sites`, `sharepoint_get_site`, `sharepoint_search_sites`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Document lookup" icon="folder-search">
+    Search across sites for a file by name or keyword and download it for review
+  </Card>
+  <Card title="Drop-off automation" icon="upload">
+    Upload a generated report into the right site's document library on a schedule
+  </Card>
+  <Card title="External sharing links" icon="link">
+    Generate a view-only sharing link for a file instead of manually setting permissions
+  </Card>
+  <Card title="Access audits" icon="shield-check">
+    List permissions on a sensitive folder to check who currently has access
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="sharepoint_search_sites or sharepoint_search_files returns nothing">
+    The connected account must actually be a member of the target site — SharePoint search is scoped to sites the authenticated user can see, not the whole tenant.
+  </Accordion>
+  <Accordion title="sharepoint_upload_file fails on large files">
+    Check `shanone_get_tool_schema` for `sharepoint_upload_file` — very large files (typically over a few MB) often need a different upload session flow than small ones, so break large uploads into smaller files where possible.
+  </Accordion>
+  <Accordion title="sharepoint_delete_file or sharepoint_delete_folder succeeds but the item still appears">
+    Deleted items go to the site's recycle bin rather than disappearing immediately; this is expected SharePoint behavior, not a tool failure.
+  </Accordion>
+</AccordionGroup>

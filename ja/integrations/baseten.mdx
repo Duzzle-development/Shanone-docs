@@ -1,0 +1,88 @@
+---
+title: "Baseten"
+description: "MLモデルのデプロイと実行 — 推論、トレーニング、チェーン、ゲートウェイルーティング、ワークスペース管理"
+icon: "cpu"
+---
+
+# Baseten
+
+ShanoneのBaseten連携では、**129個のツール**をエージェントに提供します — カタログ内最大のML基盤連携で、モデルのデプロイ・推論、複数ステップのチェーン、非同期キュー、トレーニングジョブ、モデルゲートウェイのルーティング、ワークスペース/請求管理までカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="Baseten APIキーを発行する">
+    Basetenダッシュボードの**Settings > API Keys**で新しいキーを発行します。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにBasetenで何か作業をしてもらう(例:「デプロイ済みモデルで推論を実行して」)か、Shanoneダッシュボードの**インテグレーション**からAPIキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`baseten_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Baseten向けに**129個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="推論 & 非同期推論">
+    `baseten_predict_model`, `baseten_predict_chain`, `baseten_predict_model_regional`, `baseten_predict_chain_regional`, `baseten_wake_model`, `baseten_wake_model_regional`, `baseten_predict_model_async`, `baseten_predict_chain_async`, `baseten_get_async_request_status`, `baseten_cancel_async_request`, `baseten_get_async_queue_status`, `baseten_get_async_queue_status_regional`
+  </Accordion>
+  <Accordion title="モデル & チェーン">
+    `baseten_list_models`, `baseten_get_model`, `baseten_create_model_from_source`, `baseten_delete_model`, `baseten_list_chains`, `baseten_get_chain`, `baseten_get_chainlet_logs`, `baseten_delete_chain`
+  </Accordion>
+  <Accordion title="デプロイメント & 環境">
+    `baseten_list_deployments`, `baseten_add_deployment`, `baseten_get_production_deployment`, `baseten_get_development_deployment`, `baseten_get_deployment_by_id`, `baseten_update_deployment`, `baseten_delete_deployment`, `baseten_get_deployment_logs`, `baseten_get_deployment_metrics`, `baseten_get_deployment_config`, `baseten_get_deployment_download_url`, `baseten_terminate_deployment_replica`, `baseten_get_development_patch_state`, `baseten_get_deployment_ssh_certificate`, `baseten_update_deployment_backpressure_policy`, `baseten_list_chain_deployments`, `baseten_get_chain_deployment`, `baseten_deactivate_chain_deployment`, `baseten_create_environment`, `baseten_list_environments`, `baseten_update_environment`, `baseten_delete_environment`
+  </Accordion>
+  <Accordion title="Model API(マネージドチャット/補完エンドポイント)">
+    `baseten_chat_completion`, `baseten_create_message`, `baseten_list_model_apis`, `baseten_get_model_api`, `baseten_get_model_apis_usage`
+  </Accordion>
+  <Accordion title="Gateway(ルーティング、グループ、キー)">
+    `baseten_gateway_create_endpoint`, `baseten_gateway_list_endpoints`, `baseten_gateway_get_endpoint`, `baseten_gateway_update_endpoint`, `baseten_gateway_delete_endpoint`, `baseten_gateway_create_group`, `baseten_gateway_list_groups`, `baseten_gateway_get_group`, `baseten_gateway_get_group_usage`, `baseten_gateway_update_group`, `baseten_gateway_delete_group`, `baseten_gateway_create_api_key`, `baseten_gateway_register_api_key`, `baseten_gateway_list_api_keys`, `baseten_gateway_get_api_key`, `baseten_gateway_revoke_api_key`
+  </Accordion>
+  <Accordion title="トレーニング">
+    `baseten_create_training_project`, `baseten_list_training_projects`, `baseten_get_training_project`, `baseten_delete_training_project`, `baseten_create_training_job`, `baseten_list_training_jobs`, `baseten_search_training_jobs`, `baseten_get_training_job`, `baseten_stop_training_job`, `baseten_recreate_training_job`, `baseten_delete_training_job`, `baseten_get_training_job_logs`, `baseten_get_training_job_metrics`, `baseten_get_training_job_queue_context`, `baseten_get_training_project_cache_summary`, `baseten_list_training_job_checkpoints`, `baseten_get_training_job_checkpoint_files`, `baseten_download_training_job_source`
+  </Accordion>
+  <Accordion title="Loops(強化学習トレーニング実行)">
+    `baseten_create_loops_session`, `baseten_get_loops_session`, `baseten_get_server_capabilities`, `baseten_create_loops_run`, `baseten_create_loops_trainer`, `baseten_list_loops_runs`, `baseten_get_loops_run`, `baseten_deactivate_loops_run`, `baseten_create_loops_sampler`, `baseten_list_loops_samplers`, `baseten_get_loops_sampler`, `baseten_pair_loops_sampler_with_run`, `baseten_list_loops_checkpoints`, `baseten_validate_loops_checkpoint`, `baseten_get_loops_checkpoint_files`, `baseten_list_loops_deployments`, `baseten_get_loops_deployment`, `baseten_deactivate_loops_deployment`, `baseten_get_loops_deployment_metrics`, `baseten_get_loops_deployment_logs`
+  </Accordion>
+  <Accordion title="インフラ情報 & モデルライブラリ">
+    `baseten_list_instance_types`, `baseten_get_instance_type_prices`, `baseten_list_regions`, `baseten_list_library_listings`, `baseten_create_library_listing`, `baseten_get_library_listing`, `baseten_update_library_listing`, `baseten_delete_library_listing`, `baseten_list_listing_versions`, `baseten_create_listing_version`, `baseten_get_listing_version`, `baseten_update_listing_version`, `baseten_delete_listing_version`
+  </Accordion>
+  <Accordion title="ワークスペース管理">
+    `baseten_list_teams`, `baseten_get_team`, `baseten_list_users`, `baseten_get_current_user`, `baseten_get_user`, `baseten_list_secrets`, `baseten_upsert_secret`, `baseten_delete_secret`, `baseten_list_api_keys`, `baseten_create_api_key`, `baseten_delete_api_key`, `baseten_get_billing_usage_summary`, `baseten_get_workspace_audit_logs`, `baseten_get_model_audit_logs`, `baseten_get_chain_audit_logs`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="エージェントワークフローからのモデル推論" icon="cpu">
+    より大きなエージェントタスクの一部として、`baseten_predict_model`や`baseten_chat_completion`をデプロイ済みモデルに対して呼び出す
+  </Card>
+  <Card title="デプロイメントのヘルスチェック" icon="activity">
+    デプロイメントのメトリクスとログを取得し、遅延や失敗の原因を診断する
+  </Card>
+  <Card title="トレーニングジョブの監視" icon="line-chart">
+    トレーニングジョブの状態・メトリクス・チェックポイントを完了まで追跡する
+  </Card>
+  <Card title="ゲートウェイのコスト管理" icon="dollar-sign">
+    ゲートウェイグループの利用状況を確認し、プロジェクトに紐づくAPIキーをローテーション・失効させる
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="baseten_predict_modelがコールドスタートの遅延やタイムアウトを返す">
+    ゼロスケールされたデプロイメントは、応答する前に起動が必要です。先に`baseten_wake_model`を呼ぶか、`baseten_predict_model`にバックオフ付きのリトライを追加してください。
+  </Accordion>
+  <Accordion title="baseten_predict_model_asyncがいつまでも完了しない">
+    非同期推論はキュー経由で処理されます。同期的な結果を期待するのではなく、返されたリクエストIDで`baseten_get_async_request_status`をポーリングしてください。
+  </Accordion>
+  <Accordion title="リージョン指定版のツール(baseten_predict_model_regionalなど)がデフォルトのツールと異なる動きをする">
+    リージョン指定版のツールは、Basetenのデフォルトルーティングではなく特定のデプロイメントリージョンを対象とします — レイテンシやコンプライアンス上の理由で推論を特定リージョンに固定したい場合にのみ使用してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,94 @@
+---
+title: "Trello"
+description: "ボード、リスト、カードを管理する — チェックリスト、ラベル、カスタムフィールド、Webhook"
+icon: /images/trello.svg
+---
+
+# Trello
+
+ShanoneのTrello連携は、ボード、リスト、カード、チェックリスト、ラベル、カスタムフィールド、コメント、組織/メンバー管理をカバーする113個のツールをエージェントに提供します——Trelloベースのプロジェクト運用をエージェントから完全に実行できます。
+
+## はじめに
+
+<Steps>
+  <Step title="APIキーとトークンを発行する">
+    Trelloの**[Power-Ups Admin](https://trello.com/power-ups/admin)**でAPIキーを取得し、そのキーに対してアカウントを許可するトークンを生成します。
+  </Step>
+  <Step title="Shanoneで認証情報を接続する">
+    エージェントにTrello関連の作業を依頼(例: 「Sprintボードにカードを作成して」)するか、Shanoneダッシュボードの**連携**からAPIキーとトークンを事前に登録しておきます。両方が必須です。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`trello_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはTrello向けに**113個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ボード">
+    `trello_get_boards`, `trello_get_board`, `trello_create_board`, `trello_update_board`, `trello_delete_board`, `trello_get_board_lists`, `trello_get_board_cards`, `trello_get_board_members`, `trello_get_board_labels`, `trello_get_board_plugins`, `trello_get_enabled_plugins`, `trello_get_board_memberships`, `trello_update_board_membership`, `trello_invite_member_by_email`, `trello_get_board_stars`, `trello_mark_board_viewed`, `trello_get_board_checklists`
+  </Accordion>
+  <Accordion title="リスト">
+    `trello_get_list`, `trello_create_list`, `trello_update_list`, `trello_archive_list`, `trello_get_list_cards`, `trello_archive_all_cards`, `trello_move_all_cards`
+  </Accordion>
+  <Accordion title="カード">
+    `trello_get_card`, `trello_create_card`, `trello_update_card`, `trello_delete_card`, `trello_move_card`, `trello_add_member_to_card`, `trello_remove_member_from_card`, `trello_vote_on_card`, `trello_remove_vote`, `trello_get_card_votes`, `trello_set_card_due`, `trello_set_card_due_complete`, `trello_set_card_cover`, `trello_set_card_customfield`, `trello_get_card_customfields`, `trello_add_sticker`, `trello_remove_sticker`
+  </Accordion>
+  <Accordion title="チェックリスト">
+    `trello_create_checklist`, `trello_get_checklists`, `trello_add_checkitem`, `trello_update_checkitem`, `trello_delete_checklist`, `trello_delete_checkitem`
+  </Accordion>
+  <Accordion title="ラベル & カスタムフィールド">
+    `trello_create_label`, `trello_update_label`, `trello_delete_label`, `trello_add_label_to_card`, `trello_remove_label_from_card`, `trello_create_customfield`, `trello_get_customfield`, `trello_update_customfield`, `trello_delete_customfield`, `trello_get_board_customfields`, `trello_get_customfield_options`, `trello_add_customfield_option`, `trello_delete_customfield_option`
+  </Accordion>
+  <Accordion title="コメント & 添付ファイル">
+    `trello_add_comment`, `trello_get_comments`, `trello_update_comment`, `trello_delete_comment`, `trello_get_card_attachments`, `trello_get_attachment`, `trello_add_attachment_url`, `trello_add_attachment_file`, `trello_delete_attachment`, `trello_set_attachment_cover`
+  </Accordion>
+  <Accordion title="メンバー & 組織">
+    `trello_get_me`, `trello_get_member`, `trello_get_member_boards`, `trello_add_member_to_board`, `trello_remove_member_from_board`, `trello_get_organization`, `trello_create_organization`, `trello_update_organization`, `trello_delete_organization`, `trello_get_organization_boards`, `trello_get_organization_members`, `trello_add_organization_member`, `trello_remove_organization_member`, `trello_update_organization_member`, `trello_get_member_organizations`
+  </Accordion>
+  <Accordion title="アクション & 通知">
+    `trello_get_action`, `trello_get_action_board`, `trello_get_action_card`, `trello_get_action_list`, `trello_get_action_member`, `trello_get_action_organization`, `trello_get_board_actions`, `trello_get_action_reactions`, `trello_add_reaction`, `trello_delete_reaction`, `trello_get_notifications`, `trello_get_notification`, `trello_update_notification`, `trello_mark_all_notifications_read`, `trello_get_notification_board`, `trello_get_notification_card`
+  </Accordion>
+  <Accordion title="検索、バッチ & トークン">
+    `trello_search`, `trello_search_members`, `trello_batch_get`, `trello_batch_request`, `trello_get_token`, `trello_get_token_member`, `trello_delete_token`
+  </Accordion>
+  <Accordion title="Webhook">
+    `trello_create_webhook`, `trello_get_webhook`, `trello_update_webhook`, `trello_delete_webhook`, `trello_get_token_webhooks`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="スプリントボードの管理" icon="kanban">
+    新しいスプリント用のカードを作成し、メンバーを割り当て、期限日を一括設定する
+  </Card>
+  <Card title="チェックリスト駆動のワークフロー" icon="list-checks">
+    リスト内のすべての新規カードに標準チェックリストを追加し、プロセスを徹底する
+  </Card>
+  <Card title="ボードレポート" icon="chart-bar">
+    ボード上のすべてのカードをリスト/ラベルごとにまとめてステータスサマリーを作成する
+  </Card>
+  <Card title="ボード横断検索" icon="search">
+    すべてのボードから、キーワードや顧客名を含むカードを検索する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="すべての呼び出しが認可エラーになる">
+    TrelloにはAPIキーと、そのキーに対して許可されたトークンの両方が必要です——キーだけでは非常に限定的な公開情報の読み取りしかできません。トークンが期限切れまたは取り消された場合は、**Power-Ups Admin**から再生成してください。
+  </Accordion>
+  <Accordion title="trello_create_cardは成功するがカスタムフィールドが設定されない">
+    カスタムフィールドは別の呼び出しで設定する必要があります——カード作成後に、`trello_get_board_customfields`から取得したフィールドIDを参照して`trello_set_card_customfield`を呼び出してください。
+  </Accordion>
+  <Accordion title="存在するはずのカードがtrello_searchで見つからない">
+    デフォルトの検索は広い範囲を対象としますが、ボードのメンバーシップに従います——接続中のアカウントがそのボードのメンバーであることを確認し、`trello_search`の`shanone_get_tool_schema`でボード/リストを明示的に指定する方法を確認してください。
+  </Accordion>
+  <Accordion title="trello_archive_listやtrello_delete_cardがコンテンツを完全に削除しない">
+    Trelloはデフォルトで多くのオブジェクト(リスト、ボード)を永久削除せずアーカイブします——アーカイブされたアイテムはまだ存在し復元可能です。これは想定された動作であり不具合ではありません。
+  </Accordion>
+</AccordionGroup>

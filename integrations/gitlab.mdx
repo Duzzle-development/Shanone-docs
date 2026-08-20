@@ -1,0 +1,82 @@
+---
+title: "GitLab"
+description: "Manage projects, issues, merge requests, pipelines, and repository files"
+icon: /images/gitlab.svg
+---
+
+# GitLab
+
+Shanone's GitLab integration gives your agent 60 tools covering the full development workflow — issues, merge requests, branches/commits, CI/CD pipelines and jobs, and repository file operations.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with GitLab (e.g. "list open merge requests assigned to me"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the GitLab account">
+    Approve GitLab's OAuth consent screen for the account/group you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `gitlab_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **60 tools** for GitLab, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Projects & groups">
+    `gitlab_get_current_user`, `gitlab_list_projects`, `gitlab_get_project`, `gitlab_list_groups`, `gitlab_get_group`, `gitlab_list_group_projects`, `gitlab_list_project_members`, `gitlab_add_project_member`, `gitlab_remove_project_member`
+  </Accordion>
+  <Accordion title="Issues">
+    `gitlab_list_issues`, `gitlab_get_issue`, `gitlab_create_issue`, `gitlab_update_issue`
+  </Accordion>
+  <Accordion title="Merge requests & notes">
+    `gitlab_list_merge_requests`, `gitlab_get_merge_request`, `gitlab_create_merge_request`, `gitlab_list_issue_notes`, `gitlab_create_issue_note`, `gitlab_list_mr_notes`, `gitlab_create_mr_note`
+  </Accordion>
+  <Accordion title="Branches & commits">
+    `gitlab_list_branches`, `gitlab_get_branch`, `gitlab_create_branch`, `gitlab_delete_branch`, `gitlab_delete_merged_branches`, `gitlab_list_commits`, `gitlab_get_commit`, `gitlab_get_commit_diff`, `gitlab_cherry_pick_commit`, `gitlab_revert_commit`
+  </Accordion>
+  <Accordion title="Repository files">
+    `gitlab_get_file`, `gitlab_get_raw_file`, `gitlab_create_file`, `gitlab_update_file`
+  </Accordion>
+  <Accordion title="Pipelines & jobs">
+    `gitlab_list_pipelines`, `gitlab_get_pipeline`, `gitlab_get_latest_pipeline`, `gitlab_create_pipeline`, `gitlab_retry_pipeline`, `gitlab_cancel_pipeline`, `gitlab_delete_pipeline`, `gitlab_get_pipeline_variables`, `gitlab_list_project_jobs`, `gitlab_list_pipeline_jobs`, `gitlab_get_job`, `gitlab_get_job_log`, `gitlab_cancel_job`, `gitlab_retry_job`, `gitlab_play_job`, `gitlab_erase_job`
+  </Accordion>
+  <Accordion title="Labels & milestones">
+    `gitlab_list_labels`, `gitlab_get_label`, `gitlab_create_label`, `gitlab_update_label`, `gitlab_delete_label`, `gitlab_list_milestones`, `gitlab_get_milestone`, `gitlab_create_milestone`, `gitlab_update_milestone`, `gitlab_delete_milestone`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Issue triage" icon="list-checks">
+    List open issues, apply labels/milestones, and update priority based on discussion notes
+  </Card>
+  <Card title="Merge request review support" icon="git-pull-request">
+    Fetch a merge request's diff and notes to summarize what changed before a human reviews it
+  </Card>
+  <Card title="CI/CD troubleshooting" icon="wrench">
+    Get the latest pipeline status, pull job logs for a failure, and retry the failed job
+  </Card>
+  <Card title="Repository housekeeping" icon="git-branch">
+    Clean up merged branches and review recent commits across a project
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="gitlab_get_job_log returns truncated or empty output">
+    GitLab job logs can be very large and are streamed — for long-running jobs, call `gitlab_get_job_log` again after the job finishes to get the complete trace rather than a partial one mid-run.
+  </Accordion>
+  <Accordion title="gitlab_create_file or gitlab_update_file fails with a branch conflict">
+    These operations commit directly to a branch — pass the correct `branch` parameter and make sure no one else has pushed conflicting changes since you last read the file with `gitlab_get_file`.
+  </Accordion>
+  <Accordion title="Pipeline or job tools return a 403/permission error">
+    Retrying, canceling, or playing pipelines/jobs requires at least Developer-level access on the project for the connected GitLab account — check `gitlab_list_project_members` if unsure.
+  </Accordion>
+</AccordionGroup>

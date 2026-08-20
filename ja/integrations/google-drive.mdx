@@ -1,0 +1,79 @@
+---
+title: "Google Drive"
+description: "Google Driveのファイル、フォルダ、共有ドライブ、権限、コメント、リビジョンを管理する"
+icon: /images/google-drive.svg
+---
+
+# Google Drive
+
+ShanoneのGoogle Drive連携では、ファイル、フォルダ、共有ドライブ、権限、コメント、リビジョン履歴を扱う50のツールをエージェントが利用できるようになります——ちょっとしたアップロードから、誰がドキュメントにアクセスできるかの監査まで幅広くカバーします。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにDriveで何か作業をしてもらう(例:「Shared Reportsフォルダ内のファイルを一覧表示して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="Googleアカウントを認可する">
+    ShanoneがアクセスすべきDriveを持つアカウントでGoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`google_drive_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Drive用に**50のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="ファイル">
+    `google_drive_about`, `google_drive_list_files`, `google_drive_search`, `google_drive_get_file`, `google_drive_download_file`, `google_drive_export_file`, `google_drive_upload_file`, `google_drive_create_file_from_text`, `google_drive_create_folder`, `google_drive_update_file`, `google_drive_copy_file`, `google_drive_delete_file`, `google_drive_trash_file`, `google_drive_untrash_file`, `google_drive_empty_trash`
+  </Accordion>
+  <Accordion title="ドライブ・ラベル・ショートカット">
+    `google_drive_list_drives`, `google_drive_get_drive`, `google_drive_create_drive`, `google_drive_update_drive`, `google_drive_hide_drive`, `google_drive_unhide_drive`, `google_drive_delete_drive`, `google_drive_list_labels`, `google_drive_modify_labels`, `google_drive_generate_ids`, `google_drive_move_file`, `google_drive_create_shortcut`
+  </Accordion>
+  <Accordion title="共有 & 権限">
+    `google_drive_list_permissions`, `google_drive_get_permission`, `google_drive_create_permission`, `google_drive_update_permission`, `google_drive_delete_permission`
+  </Accordion>
+  <Accordion title="コメント & 返信">
+    `google_drive_list_comments`, `google_drive_get_comment`, `google_drive_create_comment`, `google_drive_update_comment`, `google_drive_delete_comment`, `google_drive_list_replies`, `google_drive_get_reply`, `google_drive_create_reply`, `google_drive_update_reply`, `google_drive_delete_reply`
+  </Accordion>
+  <Accordion title="リビジョン & 変更追跡">
+    `google_drive_list_revisions`, `google_drive_get_revision`, `google_drive_update_revision`, `google_drive_delete_revision`, `google_drive_get_start_page_token`, `google_drive_list_changes`, `google_drive_watch_changes`, `google_drive_stop_channel`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="ドキュメントの整理" icon="folder-search">
+    共有ドライブから特定のトピックに関連する最近のファイルを検索して要約する
+  </Card>
+  <Card title="アクセス監査" icon="shield-check">
+    機密性の高いファイルやフォルダの権限を一覧表示し、アクセス権を持つべきでない人がいないか確認する
+  </Card>
+  <Card title="一括整理" icon="folder-tree">
+    複数のファイルを移動・コピー・再ラベル付けして正しいフォルダ構成に整理する
+  </Card>
+  <Card title="レビュースレッド" icon="message-square-text">
+    ブラウザを開かずにドキュメントのコメントスレッドを読んで返信する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="ブラウザでは見えるファイルなのにgoogle_drive_get_fileが404を返す">
+    ファイルIDが間違っている可能性が高いです——手入力せず、DriveのURL内(`/d/`と次の`/`の間の長い文字列)からコピーしてください。また、接続済みアカウントが実際にそのファイルへのアクセス権を持っているかも確認してください。
+  </Accordion>
+  <Accordion title="Google Doc/Sheet/Slideでgoogle_drive_download_fileが失敗する">
+    Google Workspaceのネイティブファイル(Docs、Sheets、Slides)は生バイトとしてダウンロードできません——代わりに`google_drive_export_file`を使用してください。これはまずPDFやDOCXなどの形式に変換します。
+  </Accordion>
+  <Accordion title="google_drive_watch_changesの通知が届かない">
+    プッシュ通知には、チャンネルアドレスとして設定された公開アクセス可能なHTTPS Webhook URLが必要です——これはShanoneの範囲外のプロジェクトレベルの設定作業です。プッシュ通知が不要であれば、代わりにポーリング用に`google_drive_list_changes`を使用してください。
+  </Accordion>
+  <Accordion title="権限の変更が反映されないように見える">
+    `google_drive_create_permission`に渡す`role`と`type`フィールドを確認してください——Driveの権限モデルでは`user`、`group`、`domain`、`anyone`が区別され、それぞれ有効なroleの組み合わせが異なります。
+  </Accordion>
+</AccordionGroup>

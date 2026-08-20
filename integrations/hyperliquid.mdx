@@ -1,0 +1,85 @@
+---
+title: "Hyperliquid"
+description: "Perpetual DEX account, market, and order data — balances, orderbooks, funding, positions, and trading"
+icon: /images/hyperliquid.svg
+---
+
+# Hyperliquid
+
+Shanone's Hyperliquid integration gives your agent 34 tools for the Hyperliquid perpetual DEX — account/portfolio state, market data (orderbooks, candles, funding), order management, leverage, and TWAP orders.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your wallet address">
+    Copy the Ethereum wallet address you use (or plan to use) on Hyperliquid.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Hyperliquid, and enter your wallet address. This is enough for all read-only account and market data tools.
+  </Step>
+  <Step title="Configure a private key for trading (optional)">
+    Placing or modifying orders requires a private key, which is configured separately as an environment variable rather than through the standard integration form — check with your Shanone admin if trading tools return an authentication error.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **34 tools** for Hyperliquid, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Account">
+    `hyperliquid_get_account_state`, `hyperliquid_get_spot_balances`, `hyperliquid_get_portfolio`, `hyperliquid_get_subaccounts`
+  </Accordion>
+  <Accordion title="Market data">
+    `hyperliquid_get_all_mids`, `hyperliquid_get_orderbook`, `hyperliquid_get_recent_trades`, `hyperliquid_get_candles`
+  </Accordion>
+  <Accordion title="Metadata">
+    `hyperliquid_get_perp_meta`, `hyperliquid_get_spot_meta`, `hyperliquid_get_asset_contexts`
+  </Accordion>
+  <Accordion title="Fills & fees">
+    `hyperliquid_get_fills`, `hyperliquid_get_fills_by_time`, `hyperliquid_get_funding_history`, `hyperliquid_get_user_fees`, `hyperliquid_get_rate_limit`
+  </Accordion>
+  <Accordion title="Funding market data">
+    `hyperliquid_get_funding_rates`, `hyperliquid_get_funding_rate_history`, `hyperliquid_get_predicted_fundings`
+  </Accordion>
+  <Accordion title="Orders">
+    `hyperliquid_get_open_orders`, `hyperliquid_get_order_status`, `hyperliquid_get_order_history`, `hyperliquid_place_order`, `hyperliquid_cancel_order`, `hyperliquid_cancel_orders_by_coin`, `hyperliquid_modify_order`, `hyperliquid_cancel_all_orders`
+  </Accordion>
+  <Accordion title="TWAP orders">
+    `hyperliquid_place_twap_order`, `hyperliquid_cancel_twap_order`
+  </Accordion>
+  <Accordion title="Leverage & safety">
+    `hyperliquid_update_leverage`, `hyperliquid_update_isolated_margin`, `hyperliquid_close_position`, `hyperliquid_set_dead_mans_switch`, `hyperliquid_approve_api_wallet`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Portfolio monitoring" icon="wallet">
+    Check account state, spot balances, and open positions across subaccounts
+  </Card>
+  <Card title="Market snapshotting" icon="candlestick-chart">
+    Pull orderbook depth, recent trades, and candles for a coin before making a decision
+  </Card>
+  <Card title="Automated order management" icon="repeat">
+    Place, modify, or cancel orders programmatically, including TWAP execution
+  </Card>
+  <Card title="Risk management" icon="shield-alert">
+    Adjust leverage/margin mode and configure a dead man's switch to auto-cancel orders if the agent goes silent
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="hyperliquid_place_order or other trading tools fail with an authentication error">
+    Read-only tools work with just a wallet address, but placing/modifying/canceling orders requires a private key configured server-side — confirm with your admin that trading is enabled for your account.
+  </Accordion>
+  <Accordion title="hyperliquid_get_account_state shows different numbers than the Hyperliquid UI">
+    Confirm you're checking the right subaccount with `hyperliquid_get_subaccounts` — perp and spot balances are tracked separately (`hyperliquid_get_account_state` vs `hyperliquid_get_spot_balances`), and it's easy to check the wrong one.
+  </Accordion>
+  <Accordion title="hyperliquid_place_twap_order behaves unexpectedly">
+    TWAP orders execute over a specified duration in slices rather than immediately — use `hyperliquid_get_order_status` to track progress instead of expecting an instant fill, and `hyperliquid_cancel_twap_order` to stop it early if needed.
+  </Accordion>
+</AccordionGroup>

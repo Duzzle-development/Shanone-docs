@@ -1,0 +1,85 @@
+---
+title: "Spotify"
+description: "Control playback, manage playlists and library, and browse artists, albums, shows, and audiobooks"
+icon: /images/spotify.svg
+---
+
+# Spotify
+
+Shanone's Spotify integration gives your agent 57 tools covering playback control, playlist management, your saved library, and metadata for artists/albums/shows/audiobooks — enough to let an agent DJ, curate, or answer "what have I been listening to" questions.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Spotify (e.g. "skip to the next track" or "add this song to my Discover playlist"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your Spotify account">
+    Approve Spotify's OAuth consent screen for the account you want Shanone to control.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `spotify_*` tools will succeed. Playback control tools require an active Spotify device (app open somewhere) to act on.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **57 tools** for Spotify, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Player">
+    `spotify_get_playback_state`, `spotify_get_currently_playing`, `spotify_get_available_devices`, `spotify_get_queue`, `spotify_get_recently_played`, `spotify_start_playback`, `spotify_pause_playback`, `spotify_skip_to_next`, `spotify_skip_to_previous`, `spotify_seek_to_position`, `spotify_set_repeat_mode`, `spotify_set_shuffle`, `spotify_set_volume`, `spotify_transfer_playback`, `spotify_add_to_queue`
+  </Accordion>
+  <Accordion title="Library">
+    `spotify_get_saved_albums`, `spotify_save_albums`, `spotify_remove_saved_albums`, `spotify_get_saved_shows`, `spotify_save_shows`, `spotify_remove_saved_shows`, `spotify_get_saved_audiobooks`, `spotify_save_audiobooks`, `spotify_remove_saved_audiobooks`, `spotify_get_saved_tracks`, `spotify_save_tracks`, `spotify_remove_saved_tracks`
+  </Accordion>
+  <Accordion title="Playlists">
+    `spotify_get_my_playlists`, `spotify_get_playlist`, `spotify_create_playlist`, `spotify_add_tracks_to_playlist`, `spotify_remove_tracks_from_playlist`, `spotify_update_playlist_details`, `spotify_reorder_playlist_items`, `spotify_replace_playlist_items`, `spotify_get_playlist_cover_image`, `spotify_upload_playlist_cover_image`, `spotify_get_playlist_items`
+  </Accordion>
+  <Accordion title="Follow">
+    `spotify_follow_artists`, `spotify_unfollow_artists`, `spotify_get_followed_artists`, `spotify_check_following_artists`, `spotify_follow_playlist`, `spotify_unfollow_playlist`
+  </Accordion>
+  <Accordion title="Tracks & recommendations">
+    `spotify_get_track`, `spotify_get_recommendations`, `spotify_search`
+  </Accordion>
+  <Accordion title="Albums & artists">
+    `spotify_get_album`, `spotify_get_artist`
+  </Accordion>
+  <Accordion title="Shows, episodes & audiobooks">
+    `spotify_get_show`, `spotify_get_show_episodes`, `spotify_get_episode`, `spotify_get_audiobook`, `spotify_get_audiobook_chapters`, `spotify_get_chapter`
+  </Accordion>
+  <Accordion title="User profile">
+    `spotify_get_my_profile`, `spotify_get_top_items`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Voice-driven playback" icon="play">
+    Play a specific track/album/playlist, skip, or adjust volume based on a request
+  </Card>
+  <Card title="Playlist curation" icon="list-music">
+    Build a themed playlist from search results and add a custom cover image
+  </Card>
+  <Card title="Listening recap" icon="chart-bar">
+    Pull top tracks/artists and recently played to summarize someone's listening habits
+  </Card>
+  <Card title="Discovery" icon="compass">
+    Get recommendations seeded from a few favorite tracks or artists
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="spotify_start_playback or spotify_skip_to_next fails with no active device">
+    Playback control tools need at least one Spotify Connect device already active (app open on phone/desktop/web). Use `spotify_get_available_devices` and `spotify_transfer_playback` to pick a target first.
+  </Accordion>
+  <Accordion title="Playback tools work but nothing actually changes">
+    Spotify Free accounts have restricted playback control (no seeking, limited skips) on some devices — check the account type if playback commands are silently ignored.
+  </Accordion>
+  <Accordion title="spotify_add_tracks_to_playlist fails on a playlist I own">
+    Confirm the playlist ID belongs to the authenticated user or that they have collaborative edit rights — Spotify rejects writes to playlists the connected account can't modify.
+  </Accordion>
+</AccordionGroup>

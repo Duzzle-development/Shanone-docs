@@ -1,0 +1,70 @@
+---
+title: "Bubble"
+description: "Read and write Bubble.io app data, and trigger backend workflows via the Data and Workflow APIs"
+icon: /images/bubble.svg
+---
+
+# Bubble
+
+Shanone's Bubble integration gives your agent 7 tools for interacting with a no-code Bubble app's Data API (records) and Workflow API (backend workflows), plus a spec lookup to discover what's exposed.
+
+## Getting Started
+
+<Steps>
+  <Step title="Enable the Data/Workflow API">
+    In your Bubble app, go to **Settings > API** and enable the Data API (and Workflow API if you want to trigger backend workflows), then generate an API token.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to do something with your Bubble app, or add the API token and your app's base URL proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `bubble_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **7 tools** for Bubble:
+
+<AccordionGroup>
+  <Accordion title="Records">
+    `bubble_list_records`, `bubble_get_record`, `bubble_create_record`, `bubble_update_record`, `bubble_delete_record`
+  </Accordion>
+  <Accordion title="Workflows">
+    `bubble_trigger_workflow` — trigger a public API workflow exposed in Bubble's workflow editor
+  </Accordion>
+  <Accordion title="API discovery">
+    `bubble_get_api_spec` — fetch the app's Swagger/OpenAPI spec to discover exposed data types and workflows
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Backend data management" icon="database">
+    List, filter, and update records in a Bubble data type as part of a larger agent task
+  </Card>
+  <Card title="Workflow-triggered automation" icon="zap">
+    Trigger a Bubble backend workflow (e.g. send a notification) from an external event
+  </Card>
+  <Card title="API surface discovery" icon="compass">
+    Use `bubble_get_api_spec` before writing any queries to confirm exact data type and field names
+  </Card>
+  <Card title="Test vs. production data" icon="flask-conical">
+    Use the `version` parameter to validate changes against the test version before touching live data
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="bubble_list_records returns a 404 for a data type you know exists">
+    The data type may not be exposed in the Data API. In Bubble, go to **Settings > API** and confirm the type's "Data API" toggle is enabled and its name matches (case-insensitive, spaces stripped).
+  </Accordion>
+  <Accordion title="bubble_trigger_workflow returns a 404 for a workflow you know exists">
+    The workflow must be marked as an exposed API workflow in Bubble's Backend Workflows editor — internal-only workflows aren't reachable via the Workflow API.
+  </Accordion>
+  <Accordion title="Field values written via bubble_create_record or bubble_update_record don't appear as expected">
+    Bubble field names in the API often differ slightly from the display names shown in the editor. Call `bubble_get_api_spec` to confirm the exact field keys before writing.
+  </Accordion>
+</AccordionGroup>

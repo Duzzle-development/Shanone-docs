@@ -1,0 +1,103 @@
+---
+title: "Square"
+description: "Run point-of-sale commerce — orders, payments, invoices, catalog, loyalty, and bookings"
+icon: /images/square.svg
+---
+
+# Square
+
+Shanone's Square integration gives your agent 140 tools covering orders, payments, invoicing, the product catalog, loyalty, subscriptions, and appointment bookings — enough to run most of a retail or service business's day-to-day commerce operations.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Square (e.g. "list today's payments over $50"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your Square account">
+    Approve Square's OAuth consent screen for the merchant account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `square_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **140 tools** for Square, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Orders & payments">
+    `square_list_orders`, `square_list_payments`, `square_create_order`, `square_get_order`, `square_update_order`, `square_pay_order`, `square_calculate_order`, `square_batch_retrieve_orders`, `square_create_payment`, `square_get_payment`, `square_update_payment`, `square_cancel_payment`, `square_cancel_payment_by_idempotency_key`, `square_complete_payment`
+  </Accordion>
+  <Accordion title="Invoices & refunds">
+    `square_list_invoices`, `square_create_invoice`, `square_get_invoice`, `square_update_invoice`, `square_delete_invoice`, `square_publish_invoice`, `square_send_invoice`, `square_cancel_invoice`, `square_delete_invoice_attachment`, `square_search_invoices`, `square_create_refund`, `square_get_refund`, `square_list_payment_refunds`
+  </Accordion>
+  <Accordion title="Catalog">
+    `square_list_catalog_items`, `square_upsert_catalog_object`, `square_get_catalog_object`, `square_delete_catalog_object`, `square_search_catalog_objects`, `square_batch_upsert_catalog_objects`, `square_list_catalog_categories`
+  </Accordion>
+  <Accordion title="Customers & groups">
+    `square_list_customers`, `square_get_customer`, `square_search_customers`, `square_create_customer`, `square_update_customer`, `square_delete_customer`, `square_list_customer_groups`, `square_create_customer_group`, `square_get_customer_group`, `square_update_customer_group`, `square_delete_customer_group`, `square_add_group_to_customer`, `square_remove_group_from_customer`, `square_list_customer_segments`, `square_get_customer_segment`, `square_bulk_create_customers`, `square_bulk_update_customers`, `square_bulk_retrieve_customers`
+  </Accordion>
+  <Accordion title="Bookings">
+    `square_create_booking`, `square_get_booking`, `square_update_booking`, `square_cancel_booking`, `square_list_bookings`, `square_search_availability`, `square_bulk_retrieve_bookings`, `square_retrieve_business_booking_profile`, `square_list_team_member_booking_profiles`
+  </Accordion>
+  <Accordion title="Loyalty">
+    `square_create_loyalty_account`, `square_get_loyalty_account`, `square_search_loyalty_accounts`, `square_accumulate_loyalty_points`, `square_adjust_loyalty_points`, `square_create_loyalty_reward`, `square_get_loyalty_reward`, `square_redeem_loyalty_reward`, `square_delete_loyalty_reward`, `square_retrieve_loyalty_program`, `square_calculate_loyalty_points`, `square_search_loyalty_events`
+  </Accordion>
+  <Accordion title="Subscriptions">
+    `square_create_subscription`, `square_get_subscription`, `square_update_subscription`, `square_search_subscriptions`, `square_pause_subscription`, `square_resume_subscription`, `square_cancel_subscription`, `square_list_subscription_events`, `square_bulk_swap_subscription_plan`
+  </Accordion>
+  <Accordion title="Gift cards & disputes">
+    `square_create_gift_card`, `square_get_gift_card`, `square_get_gift_card_from_gan`, `square_list_gift_cards`, `square_deactivate_gift_card`, `square_create_gift_card_activity`, `square_list_gift_card_activities`, `square_get_gift_card_balance`, `square_list_disputes`, `square_get_dispute`, `square_accept_dispute`, `square_list_dispute_evidence`, `square_create_dispute_evidence_text`, `square_create_dispute_evidence_file`, `square_get_dispute_evidence`, `square_delete_dispute_evidence`, `square_submit_evidence`
+  </Accordion>
+  <Accordion title="Inventory">
+    `square_retrieve_inventory_count`, `square_batch_retrieve_inventory_counts`, `square_retrieve_inventory_changes`, `square_batch_change_inventory`, `square_retrieve_inventory_physical_count`
+  </Accordion>
+  <Accordion title="Team, locations & merchant">
+    `square_create_team_member`, `square_get_team_member`, `square_update_team_member`, `square_search_team_members`, `square_retrieve_wage_setting`, `square_create_location`, `square_get_location`, `square_update_location`, `square_get_me`, `square_list_locations`
+  </Accordion>
+  <Accordion title="Terminal & payment links">
+    `square_create_terminal_checkout`, `square_get_terminal_checkout`, `square_cancel_terminal_checkout`, `square_search_terminal_checkouts`, `square_list_devices`, `square_get_device`, `square_create_payment_link`, `square_list_payment_links`
+  </Accordion>
+  <Accordion title="Vendors & payouts">
+    `square_create_vendor`, `square_get_vendor`, `square_update_vendor`, `square_search_vendors`, `square_batch_create_vendors`, `square_list_bank_accounts`, `square_get_bank_account`, `square_get_bank_account_by_location`, `square_list_payouts`, `square_get_payout`, `square_list_payout_entries`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `square_list_webhook_subscriptions`, `square_create_webhook_subscription`, `square_get_webhook_subscription`, `square_update_webhook_subscription`, `square_delete_webhook_subscription`, `square_test_webhook_subscription`, `square_list_webhook_event_types`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Daily sales reporting" icon="chart-bar">
+    Pull today's payments and orders and summarize revenue by location or item
+  </Card>
+  <Card title="Invoice follow-ups" icon="file-text">
+    Search overdue invoices and send reminders for unpaid ones
+  </Card>
+  <Card title="Loyalty campaigns" icon="award">
+    Look up a customer's loyalty balance and apply a points adjustment for a promotion
+  </Card>
+  <Card title="Appointment scheduling" icon="calendar">
+    Check availability and create a booking for a customer request
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="square_create_payment or square_create_order fails with an idempotency error">
+    Square requires a unique `idempotency_key` per write call to prevent duplicate charges — check `shanone_get_tool_schema` for `square_create_payment` and generate a fresh key per attempt, not per retry.
+  </Accordion>
+  <Accordion title="Catalog writes via square_upsert_catalog_object don't show the expected result">
+    Square's catalog uses a graph of typed objects (ITEM, ITEM_VARIATION, CATEGORY, etc.) with client-assigned temporary IDs for new objects — mismatched or reused temporary IDs are the most common cause of unexpected catalog state.
+  </Accordion>
+  <Accordion title="square_search_availability returns no open slots">
+    Availability search depends on the business booking profile and team member schedules being configured correctly in Square first — use `square_retrieve_business_booking_profile` to confirm bookings are enabled before assuming the tool is broken.
+  </Accordion>
+  <Accordion title="A dispute action like square_accept_dispute fails">
+    Disputes have a limited window and specific required states (e.g. evidence must be submitted before certain actions) — check `square_get_dispute` for the current state before acting on it.
+  </Accordion>
+</AccordionGroup>

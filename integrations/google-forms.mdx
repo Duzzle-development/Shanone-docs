@@ -1,0 +1,76 @@
+---
+title: "Google Forms"
+description: "Create forms, manage questions, read responses, and configure publish settings and watches"
+icon: /images/google-forms.svg
+---
+
+# Google Forms
+
+Shanone's Google Forms integration gives your agent 16 tools for building forms, managing questions, reading submitted responses, and wiring up webhook-style watches for new responses.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Forms (e.g. "create a feedback form with 3 questions"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the account whose Forms Shanone should access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `google_forms_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **16 tools** for Google Forms, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Forms">
+    `google_forms_get_form`, `google_forms_create_form`, `google_forms_update_form_info`, `google_forms_update_settings`
+  </Accordion>
+  <Accordion title="Questions (items)">
+    `google_forms_add_question`, `google_forms_update_question`, `google_forms_delete_question`, `google_forms_move_question`
+  </Accordion>
+  <Accordion title="Publishing">
+    `google_forms_set_publish_settings`
+  </Accordion>
+  <Accordion title="Responses">
+    `google_forms_list_responses`, `google_forms_get_response`
+  </Accordion>
+  <Accordion title="Watches">
+    `google_forms_create_watch`, `google_forms_delete_watch`, `google_forms_list_watches`, `google_forms_renew_watch` — subscribe to push notifications when a form's responses or schema change
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Survey generation" icon="clipboard-list">
+    Draft a full form with multiple question types from a short description
+  </Card>
+  <Card title="Response summarization" icon="bar-chart-3">
+    Pull all responses to a form and summarize trends or flag notable answers
+  </Card>
+  <Card title="Publish control" icon="megaphone">
+    Open or close a form for new responses at the right time
+  </Card>
+  <Card title="Live response alerts" icon="bell-ring">
+    Watch a form for new submissions and trigger a follow-up workflow
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="google_forms_add_question fails with an invalid item structure error">
+    Check the exact payload shape with `shanone_get_tool_schema` for `google_forms_add_question` — question types (text, choice, scale, date, etc.) each require a differently shaped item body.
+  </Accordion>
+  <Accordion title="google_forms_create_watch notifications aren't arriving">
+    Watches require a Google Cloud Pub/Sub topic configured on the connected project and expire periodically — call `google_forms_renew_watch` before expiry, or re-create the watch with `google_forms_create_watch`.
+  </Accordion>
+  <Accordion title="google_forms_list_responses seems to be missing recent submissions">
+    Forms responses can take a short time to index after submission; if they're still missing, confirm the form ID is correct rather than the form's edit URL ID versus its published URL ID, which differ.
+  </Accordion>
+</AccordionGroup>

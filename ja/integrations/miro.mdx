@@ -1,0 +1,85 @@
+---
+title: "Miro"
+description: "Miroボードを作成・編集 — 付箋、図形、カード、コネクタ、フレーム、ボードメンバーシップ"
+icon: /images/miro.svg
+---
+
+# Miro
+
+ShanoneのMiro連携は、ボードをプログラムから組み立てるための47個のツールをエージェントに提供します——すべてのウィジェットタイプ(付箋、図形、カード、テキスト、画像、フレーム、コネクタ)に加えて、ボードの共有やタグも扱えます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにMiro関連の作業を依頼(例: 「ロードマップボードに付箋を追加して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Miroワークスペースを許可する">
+    Shanoneに操作させたいチーム/ワークスペースについて、MiroのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`miro_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはMiro向けに**47個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ボード">
+    `miro_list_boards`, `miro_get_board`, `miro_create_board`, `miro_update_board`, `miro_delete_board`, `miro_copy_board`, `miro_get_board_members`, `miro_share_board`, `miro_get_board_member`, `miro_update_board_member`, `miro_remove_board_member`
+  </Accordion>
+  <Accordion title="アイテム(汎用)">
+    `miro_get_items`, `miro_get_item`, `miro_update_item_position`, `miro_delete_item`, `miro_bulk_create_items`
+  </Accordion>
+  <Accordion title="付箋 & 図形">
+    `miro_create_sticky_note`, `miro_update_sticky_note`, `miro_create_shape`, `miro_update_shape`
+  </Accordion>
+  <Accordion title="カード & アプリカード">
+    `miro_create_card`, `miro_update_card`, `miro_create_app_card`, `miro_update_app_card`
+  </Accordion>
+  <Accordion title="テキスト、画像、ドキュメント & 埋め込み">
+    `miro_create_text`, `miro_update_text`, `miro_create_image`, `miro_update_image`, `miro_create_document`, `miro_update_document`, `miro_create_embed`, `miro_update_embed`
+  </Accordion>
+  <Accordion title="フレーム & コネクタ">
+    `miro_create_frame`, `miro_update_frame`, `miro_create_connector`, `miro_update_connector`
+  </Accordion>
+  <Accordion title="グループ">
+    `miro_create_group`, `miro_get_group_items`, `miro_update_group`, `miro_ungroup`, `miro_delete_group`
+  </Accordion>
+  <Accordion title="タグ">
+    `miro_list_tags`, `miro_create_tag`, `miro_get_tag`, `miro_update_tag`, `miro_delete_tag`, `miro_attach_tag_to_item`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="自動生成される振り返りボード" icon="layout-template">
+    列を持つボードを作成し、議事録から付箋を生成して配置する
+  </Card>
+  <Card title="図の自動生成" icon="git-branch">
+    説明されたプロセスに基づいて、図形とコネクタからフローチャートを組み立てる
+  </Card>
+  <Card title="コンテンツの一括インポート" icon="upload">
+    `miro_bulk_create_items`を使って、1回の呼び出しで多数のアイテムをボードに投入する
+  </Card>
+  <Card title="ボードの整理" icon="tags">
+    ステータスや担当者でアイテムにタグ付けし、関連アイテムをグループ化する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="アイテムが意図しない位置に表示される、または重なって表示される">
+    Miroボードの座標は画面上のピクセルではなく、固定のキャンバス空間上のものです——新しいアイテムを作成する前に、まず既存のボードで`miro_get_items`を呼び、使われている座標の範囲を把握してください。
+  </Accordion>
+  <Accordion title="miro_bulk_create_itemsが部分的に失敗する">
+    バルク作成は1リクエスト単位でall-or-nothingですが、1回の呼び出しあたりのアイテム数に上限があります——サイズ上限エラーが出た場合は、大きなバッチを複数の`miro_bulk_create_items`呼び出しに分割してください。
+  </Accordion>
+  <Accordion title="miro_share_boardを呼んでもアクセス権が付与されたように見えない">
+    共有はMiro自身のメール招待フローを通じて行われ、招待されたユーザーがそれを承諾する必要があります——`miro_get_board_members`でpending/active状態を確認してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,88 @@
+---
+title: "Figma"
+description: "デザインファイル、コメント、コンポーネント、スタイル、変数の読み取り — Webhook管理も対応"
+icon: /images/figma.svg
+---
+
+# Figma
+
+ShanoneのFigma連携は、デザインファイルの読み取り、コメントやデベロッパーハンドオフ用リソースの管理、ファイル/チーム全体のコンポーネント・スタイル・変数の確認を行う39個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにFigma関連の作業を依頼(例: 「このデザインファイルのコメントをまとめて」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Figmaアカウントを許可する">
+    Shanoneに操作させたいアカウント/チームについて、FigmaのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`figma_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはFigma向けに**39個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ユーザー">
+    `figma_get_me`
+  </Accordion>
+  <Accordion title="ファイル">
+    `figma_get_file`, `figma_get_file_nodes`, `figma_export_images`, `figma_get_file_versions`, `figma_get_image_fills`, `figma_get_file_meta`
+  </Accordion>
+  <Accordion title="コメント">
+    `figma_get_comments`, `figma_post_comment`, `figma_delete_comment`, `figma_get_comment_reactions`, `figma_post_comment_reaction`, `figma_delete_comment_reaction`
+  </Accordion>
+  <Accordion title="プロジェクト">
+    `figma_get_team_projects`, `figma_get_project_files`, `figma_get_component_sets`, `figma_get_styles`, `figma_get_project_meta`
+  </Accordion>
+  <Accordion title="コンポーネント & スタイル">
+    `figma_get_file_components`, `figma_get_team_components`, `figma_get_component`, `figma_get_team_component_sets`, `figma_get_component_set`, `figma_get_team_styles`, `figma_get_style`
+  </Accordion>
+  <Accordion title="Webhook">
+    `figma_list_webhooks`, `figma_create_webhook`, `figma_get_webhook`, `figma_update_webhook`, `figma_delete_webhook`, `figma_get_webhook_requests`
+  </Accordion>
+  <Accordion title="デベロッパーリソース">
+    `figma_get_dev_resources`, `figma_create_dev_resources`, `figma_update_dev_resources`, `figma_delete_dev_resource`
+  </Accordion>
+  <Accordion title="変数">
+    `figma_get_local_variables`, `figma_get_published_variables`, `figma_update_variables`
+  </Accordion>
+  <Accordion title="その他">
+    `figma_get_oembed`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="デザインレビューのトリアージ" icon="messages-square">
+    ファイル上の全コメントを取得し、未対応のフィードバックスレッドをデザインチーム向けに要約する
+  </Card>
+  <Card title="デザインからコードへのハンドオフ" icon="code">
+    コンポーネント/スタイルのメタデータとデベロッパーリソースを取得し、エンジニアに正確な仕様とアセットリンクを渡す
+  </Card>
+  <Card title="デザインシステムの監査" icon="palette">
+    チームのコンポーネント、コンポーネントセット、スタイルを一覧化してファイル間の一貫性を確認する
+  </Card>
+  <Card title="変更通知" icon="bell">
+    Webhookを登録し、ファイルが更新されたり新しいコメントが投稿されたときに通知を受け取る
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="figma_get_fileが大きなファイルで巨大かつ遅いレスポンスを返す">
+    デザインの一部だけが必要な場合は、ファイルツリー全体を取得する代わりに特定のノードIDを指定して`figma_get_file_nodes`を使用してください。
+  </Accordion>
+  <Accordion title="figma_export_imagesが空、または期限切れのURLを返す">
+    書き出された画像URLは一時的なものです。以前のレスポンスのURLをキャッシュするのではなく、`figma_export_images`を再度呼び出して新しいURLを取得してください。
+  </Accordion>
+  <Accordion title="チームレベルのツール(figma_get_team_projects、figma_get_team_components)が何も返さない">
+    これらには有効なチームIDが必要で、接続先アカウントがそのチームのメンバーである必要があります。まず`figma_get_me`やFigmaのWeb UIでチームIDを確認してください。
+  </Accordion>
+</AccordionGroup>

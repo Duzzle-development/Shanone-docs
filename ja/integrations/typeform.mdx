@@ -1,0 +1,82 @@
+---
+title: "Typeform"
+description: "フォーム、回答、テーマ、ワークスペースを管理する — 画像やWebhookも"
+icon: /images/typeform.svg
+---
+
+# Typeform
+
+ShanoneのTypeform連携は、フォームの作成・更新、回答の読み取り・削除、テーマ/画像の管理、ワークスペースの整理を行う31個のツールをエージェントに提供します——フォーム作成と回答処理をエージェント主導のタスクとして扱うことに絞り込んだセットです。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにTypeform関連の作業を依頼(例: 「フィードバックフォームの最新の回答を見せて」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Typeformアカウントを許可する">
+    Shanoneにアクセスさせたいフォームを持つアカウントで、TypeformのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`typeform_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはTypeform向けに**31個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="フォーム">
+    `typeform_list_forms`, `typeform_get_form`, `typeform_create_form`, `typeform_update_form`, `typeform_patch_form`, `typeform_delete_form`, `typeform_get_form_messages`, `typeform_update_form_messages`
+  </Accordion>
+  <Accordion title="回答">
+    `typeform_list_responses`, `typeform_delete_responses`
+  </Accordion>
+  <Accordion title="テーマ">
+    `typeform_list_themes`, `typeform_get_theme`, `typeform_create_theme`, `typeform_update_theme`, `typeform_delete_theme`
+  </Accordion>
+  <Accordion title="画像">
+    `typeform_list_images`, `typeform_get_image`, `typeform_upload_image`, `typeform_delete_image`, `typeform_get_image_by_size`
+  </Accordion>
+  <Accordion title="Webhook">
+    `typeform_list_webhooks`, `typeform_get_webhook`, `typeform_create_or_update_webhook`, `typeform_delete_webhook`, `typeform_list_webhook_deliveries`
+  </Accordion>
+  <Accordion title="ワークスペース">
+    `typeform_list_workspaces`, `typeform_get_workspace`, `typeform_create_workspace`, `typeform_update_workspace`, `typeform_delete_workspace`
+  </Accordion>
+  <Accordion title="アカウント">
+    `typeform_get_me`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="回答のダイジェスト" icon="inbox">
+    前回確認以降の新しい回答を取得し、傾向を要約したり緊急のフィードバックにフラグを立てたりする
+  </Card>
+  <Card title="フォームテンプレート化" icon="copy">
+    新しいキャンペーン用に、フォームの構造/メッセージをプログラムで複製・調整する
+  </Card>
+  <Card title="ブランドの一貫性" icon="palette">
+    ワークスペース内のすべてのフォームに共通のテーマを適用する
+  </Card>
+  <Card title="データのクリーンアップ" icon="trash-2">
+    実際の回答を分析する前に、テストやスパムの回答をまとめて削除する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="typeform_list_responsesが想定より少ない結果を返す">
+    回答はページネーションされ、日付/完了ステータスでフィルタできます——`typeform_list_responses`の`shanone_get_tool_schema`を確認し、1回の呼び出しで全件返ると考えるのではなく`since`/`until`や`completed`を明示的に指定してください。
+  </Accordion>
+  <Accordion title="typeform_update_formが意図しないフィールドまで上書きしてしまう">
+    `typeform_update_form`はフォーム定義全体を置き換えます(PUTの挙動)——特定フィールドの部分更新には代わりに`typeform_patch_form`を使ってください。
+  </Accordion>
+  <Accordion title="typeform_create_or_update_webhookが新しい回答で発火しない">
+    Webhookタグがフォームごとに一意であること、フォームが実際に回答を受信していることを確認してください——`typeform_list_webhook_deliveries`で最近の配信試行と失敗を確認できます。
+  </Accordion>
+</AccordionGroup>

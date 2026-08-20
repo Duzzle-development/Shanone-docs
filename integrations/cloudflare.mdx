@@ -1,0 +1,124 @@
+---
+title: "Cloudflare"
+description: "Manage your edge platform — DNS, Workers, Pages, R2, D1, Zero Trust Access, AI Gateway, and security"
+icon: /images/cloudflare.svg
+---
+
+# Cloudflare
+
+Shanone's Cloudflare integration gives your agent 247 tools spanning nearly all of Cloudflare's platform: DNS, zones, Workers, Pages, R2, D1, KV, queues, Zero Trust Access, AI Gateway, Workers AI, load balancing, and security/audit tooling.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create an API Token">
+    In the Cloudflare dashboard, go to **My Profile → API Tokens** and create a token scoped with the Zone/DNS/Workers/Pages/etc. permissions you need (or a broader token for full access).
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Cloudflare, and enter the API Token along with your Account ID.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `cloudflare_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **247 tools** for Cloudflare, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="DNS & Zones (11 tools)">
+    `cloudflare_list_dns_records`, `cloudflare_create_dns_record`, `cloudflare_update_dns_record`, `cloudflare_delete_dns_record`, `cloudflare_list_zones`, `cloudflare_get_zone`, `cloudflare_purge_cache`, `cloudflare_list_zone_settings`, `cloudflare_get_zone_setting`, `cloudflare_update_zone_setting`, `cloudflare_get_zone_analytics`
+  </Accordion>
+  <Accordion title="Zone Settings & Analytics (13 tools)">
+    `cloudflare_get_security_level`, `cloudflare_set_security_level`, `cloudflare_get_cache_level`, `cloudflare_set_cache_level`, `cloudflare_get_development_mode`, `cloudflare_set_development_mode`, `cloudflare_get_always_online`, `cloudflare_get_zone_analytics_by_colo`, `cloudflare_get_dns_analytics`, `cloudflare_query_analytics_graphql`, `cloudflare_get_ssl_setting`, `cloudflare_set_ssl_setting`, `cloudflare_get_ssl_verification`
+  </Accordion>
+  <Accordion title="SSL/TLS (5 tools)">
+    `cloudflare_list_ssl_certificates`, `cloudflare_get_ssl_certificate`, `cloudflare_order_ssl_certificate`, `cloudflare_get_minimum_tls_version`, `cloudflare_set_minimum_tls_version`
+  </Accordion>
+  <Accordion title="Workers (9 tools)">
+    `cloudflare_list_workers`, `cloudflare_get_worker`, `cloudflare_delete_worker`, `cloudflare_create_worker`, `cloudflare_get_worker_settings`, `cloudflare_update_worker_settings`, `cloudflare_list_worker_routes`, `cloudflare_create_worker_route`, `cloudflare_delete_worker_route`
+  </Accordion>
+  <Accordion title="Workers KV (10 tools)">
+    `cloudflare_list_kv_namespaces`, `cloudflare_get_kv_namespace`, `cloudflare_create_kv_namespace`, `cloudflare_rename_kv_namespace`, `cloudflare_delete_kv_namespace`, `cloudflare_list_kv_keys`, `cloudflare_get_kv_value`, `cloudflare_put_kv_value`, `cloudflare_delete_kv_value`, `cloudflare_bulk_write_kv`
+  </Accordion>
+  <Accordion title="Pages (12 tools)">
+    `cloudflare_list_pages_projects`, `cloudflare_get_pages_project`, `cloudflare_list_pages_deployments`, `cloudflare_get_pages_deployment`, `cloudflare_create_pages_deployment`, `cloudflare_retry_pages_deployment`, `cloudflare_rollback_pages_deployment`, `cloudflare_list_pages_domains`, `cloudflare_add_pages_domain`, `cloudflare_delete_pages_domain`, `cloudflare_create_pages_project`, `cloudflare_update_pages_project`
+  </Accordion>
+  <Accordion title="Pages Extended (5 tools)">
+    `cloudflare_delete_pages_project`, `cloudflare_get_pages_project_settings`, `cloudflare_purge_pages_cache`
+  </Accordion>
+  <Accordion title="D1 Database (12 tools)">
+    `cloudflare_list_d1_databases`, `cloudflare_get_d1_database`, `cloudflare_create_d1_database`, `cloudflare_delete_d1_database`, `cloudflare_get_d1_database_stats`, `cloudflare_update_d1_database`, `cloudflare_d1_query`, `cloudflare_d1_raw_query`, `cloudflare_d1_batch_query`, `cloudflare_list_d1_backups`, `cloudflare_create_d1_backup`, `cloudflare_restore_d1_backup`
+  </Accordion>
+  <Accordion title="R2 Storage (14 tools)">
+    `cloudflare_list_r2_buckets`, `cloudflare_get_r2_bucket`, `cloudflare_create_r2_bucket`, `cloudflare_delete_r2_bucket`, `cloudflare_get_r2_bucket_usage`, `cloudflare_update_r2_bucket_cors`, `cloudflare_list_r2_objects`, `cloudflare_get_r2_object_metadata`, `cloudflare_put_r2_object`, `cloudflare_delete_r2_object`, `cloudflare_copy_r2_object`, `cloudflare_get_r2_public_access`, `cloudflare_enable_r2_public_access`, `cloudflare_disable_r2_public_access`
+  </Accordion>
+  <Accordion title="Queues, Tunnels & Vectorize (16 tools)">
+    `cloudflare_queue_list`, `cloudflare_queue_get`, `cloudflare_queue_create`, `cloudflare_queue_update`, `cloudflare_queue_delete`, `cloudflare_list_tunnels`, `cloudflare_get_tunnel`, `cloudflare_create_tunnel`, `cloudflare_delete_tunnel`, `cloudflare_get_tunnel_token`, `cloudflare_update_tunnel_config`, `cloudflare_list_tunnel_routes`, `cloudflare_create_tunnel_route`, `cloudflare_update_tunnel_route`, `cloudflare_delete_tunnel_route`, `cloudflare_vectorize_list_indexes`
+  </Accordion>
+  <Accordion title="Workers AI & AI Gateway (25 tools)">
+    `cloudflare_ai_run_model`, `cloudflare_ai_list_models`, `cloudflare_ai_get_model`, `cloudflare_ai_text_generation`, `cloudflare_ai_text_embedding`, `cloudflare_ai_image_classification`, `cloudflare_ai_text_to_image`, `cloudflare_ai_speech_to_text`, `cloudflare_ai_translation`, `cloudflare_ai_summarization`, `cloudflare_ai_gateway_list`, `cloudflare_ai_gateway_get`, `cloudflare_ai_gateway_create`, `cloudflare_ai_gateway_update`, `cloudflare_ai_gateway_delete`, `cloudflare_ai_gateway_list_logs`, `cloudflare_ai_gateway_get_analytics`, `cloudflare_ai_gateway_list_datasets`, `cloudflare_ai_gateway_create_dataset`, `cloudflare_ai_gateway_list_evaluations`, `cloudflare_ai_gateway_create_evaluation`, `cloudflare_ai_gateway_list_provider_configs`, `cloudflare_ai_gateway_create_provider_config`, `cloudflare_ai_gateway_update_provider_config`, `cloudflare_ai_gateway_delete_provider_config`
+  </Accordion>
+  <Accordion title="Access (Zero Trust) (8 tools)">
+    `cloudflare_list_access_apps`, `cloudflare_get_access_app`, `cloudflare_create_access_app`, `cloudflare_delete_access_app`, `cloudflare_list_access_policies`, `cloudflare_get_access_policy`, `cloudflare_create_access_policy`, `cloudflare_delete_access_policy`
+  </Accordion>
+  <Accordion title="Account & Members (9 tools)">
+    `cloudflare_get_account_info`, `cloudflare_list_accounts`, `cloudflare_list_account_members`, `cloudflare_get_account_member`, `cloudflare_invite_account_member`, `cloudflare_update_account_member`, `cloudflare_remove_account_member`, `cloudflare_list_account_roles`, `cloudflare_get_account_role`
+  </Accordion>
+  <Accordion title="Firewall, Rate Limits & Rulesets (16 tools)">
+    `cloudflare_list_firewall_rules`, `cloudflare_get_firewall_rule`, `cloudflare_create_firewall_rule`, `cloudflare_update_firewall_rule`, `cloudflare_delete_firewall_rule`, `cloudflare_update_firewall_rule_priority`, `cloudflare_list_ip_access_rules`, `cloudflare_create_ip_access_rule`, `cloudflare_update_ip_access_rule`, `cloudflare_delete_ip_access_rule`, `cloudflare_list_rate_limits`, `cloudflare_get_rate_limit`, `cloudflare_create_rate_limit`, `cloudflare_delete_rate_limit`, `cloudflare_list_rulesets`, `cloudflare_get_ruleset`
+  </Accordion>
+  <Accordion title="Security Center & DLP (14 tools)">
+    `cloudflare_create_ruleset`, `cloudflare_update_ruleset`, `cloudflare_delete_ruleset`, `cloudflare_create_ruleset_rule`, `cloudflare_security_center_list_insights`, `cloudflare_security_center_get_insight`, `cloudflare_security_center_dismiss_insight`, `cloudflare_security_center_list_issue_types`, `cloudflare_security_center_get_summary`, `cloudflare_security_center_scan`, `cloudflare_security_center_list_scans`, `cloudflare_security_center_get_scan`, `cloudflare_dlp_list_profiles`, `cloudflare_dlp_get_profile`
+  </Accordion>
+  <Accordion title="Load Balancing & Monitors (16 tools)">
+    `cloudflare_dlp_create_profile`, `cloudflare_dlp_update_profile`, `cloudflare_dlp_delete_profile`, `cloudflare_dlp_list_entries`, `cloudflare_list_load_balancers`, `cloudflare_get_load_balancer`, `cloudflare_create_load_balancer`, `cloudflare_update_load_balancer`, `cloudflare_delete_load_balancer`, `cloudflare_patch_load_balancer`, `cloudflare_list_pools`, `cloudflare_get_pool`, `cloudflare_create_pool`, `cloudflare_update_pool`, `cloudflare_delete_pool`, `cloudflare_list_monitors`
+  </Accordion>
+  <Accordion title="Turnstile & Waiting Rooms (13 tools)">
+    `cloudflare_get_monitor`, `cloudflare_create_monitor`, `cloudflare_update_monitor`, `cloudflare_delete_monitor`, `cloudflare_turnstile_list_widgets`, `cloudflare_turnstile_get_widget`, `cloudflare_turnstile_create_widget`, `cloudflare_turnstile_update_widget`, `cloudflare_turnstile_delete_widget`, `cloudflare_turnstile_rotate_secret`, `cloudflare_turnstile_verify_token`, `cloudflare_turnstile_get_analytics`, `cloudflare_list_waiting_rooms`
+  </Accordion>
+  <Accordion title="Images & Stream (12 tools)">
+    `cloudflare_get_waiting_room`, `cloudflare_create_waiting_room`, `cloudflare_delete_waiting_room`, `cloudflare_list_images`, `cloudflare_get_image`, `cloudflare_upload_image`, `cloudflare_delete_image`, `cloudflare_list_image_variants`, `cloudflare_create_image_variant`, `cloudflare_list_stream_videos`, `cloudflare_get_stream_video`, `cloudflare_upload_stream_video`
+  </Accordion>
+  <Accordion title="Email Routing, Secrets & Logpush (18 tools)">
+    `cloudflare_delete_stream_video`, `cloudflare_get_stream_embed_code`, `cloudflare_create_stream_live_input`, `cloudflare_list_email_routing_rules`, `cloudflare_create_email_routing_rule`, `cloudflare_update_email_routing_rule`, `cloudflare_delete_email_routing_rule`, `cloudflare_secrets_store_list`, `cloudflare_secrets_store_get`, `cloudflare_secrets_store_create`, `cloudflare_secrets_store_delete`, `cloudflare_secrets_list`, `cloudflare_secrets_get`, `cloudflare_secrets_create`, `cloudflare_secrets_delete`, `cloudflare_list_logpush_jobs`, `cloudflare_get_logpush_job`, `cloudflare_create_logpush_job`
+  </Accordion>
+  <Accordion title="Audit Logs (4 tools)">
+    `cloudflare_list_audit_logs`, `cloudflare_get_audit_log`, `cloudflare_export_audit_logs`, `cloudflare_get_audit_log_actions`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="DNS & domain migrations" icon="globe">
+    Bulk-manage DNS records and zone settings when moving a domain onto Cloudflare
+  </Card>
+  <Card title="Serverless deployments" icon="server">
+    Deploy Workers/Pages, wire up KV/D1/R2 bindings, and roll back a bad deployment
+  </Card>
+  <Card title="Security posture review" icon="shield-check">
+    Audit firewall rules, Access policies, and Security Center insights in one pass
+  </Card>
+  <Card title="AI Gateway observability" icon="activity">
+    Inspect AI Gateway logs and analytics to debug LLM traffic routed through Cloudflare
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tools return an 'Authentication error' despite a valid token">
+    Most Cloudflare tools need both an API Token and an Account ID (and DNS/zone tools additionally need a `zone_id`) — check `shanone_get_tool_schema` for the exact required fields, since account-scoped and zone-scoped resources use different identifiers.
+  </Accordion>
+  <Accordion title="cloudflare_d1_query / cloudflare_r2_* tools return a permissions error">
+    API Tokens are scoped per-product; a token created only with DNS permissions won't be able to call D1, R2, or Workers endpoints. Create a new token with the additional scopes or use a broader account-level token.
+  </Accordion>
+  <Accordion title="Newly created DNS record isn't resolving yet">
+    DNS changes propagate through Cloudflare's edge network, which can take a short time even though the API call itself succeeds immediately — this is expected and not a tool failure.
+  </Accordion>
+  <Accordion title="cloudflare_create_pages_deployment doesn't reflect the latest code">
+    Pages deployments are tied to whatever build/artifact was pushed at trigger time; make sure the underlying Git integration or direct upload actually contains the changes before triggering a new deployment.
+  </Accordion>
+</AccordionGroup>

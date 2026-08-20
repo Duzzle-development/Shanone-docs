@@ -1,0 +1,91 @@
+---
+title: "Looker"
+description: "Query and manage Looker — looks, dashboards, explores/models, scheduled plans, embed URLs, and admin (users, roles, groups)"
+icon: /images/looker.svg
+---
+
+# Looker
+
+Shanone's Looker integration gives your agent 71 tools spanning ad-hoc querying, dashboard/look content management, conversational analytics, scheduled delivery, embedding, and admin operations.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Looker API3 credential">
+    In Looker, go to **Admin > Users**, select the service account/user Shanone should act as, and generate an API3 client ID and secret.
+  </Step>
+  <Step title="Add the credentials in Shanone">
+    Go to **Integrations > Looker** in the Shanone dashboard and enter your Looker instance's base URL, the client ID, and the client secret.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `looker_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **71 tools** for Looker, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Explores & queries">
+    `looker_list_models`, `looker_get_explore`, `looker_create_query`, `looker_run_query`, `looker_create_query_task`, `looker_get_query_task_results`, `looker_run_query_by_slug`, `looker_create_merge_query`, `looker_get_merge_query`, `looker_create_sql_query`, `looker_run_sql_query`, `looker_list_running_queries`
+  </Accordion>
+  <Accordion title="Looks">
+    `looker_list_looks`, `looker_get_look`, `looker_run_look`, `looker_create_look`, `looker_update_look`, `looker_delete_look`, `looker_move_look`, `looker_copy_look`
+  </Accordion>
+  <Accordion title="Dashboards">
+    `looker_list_dashboards`, `looker_get_dashboard`, `looker_create_dashboard`, `looker_update_dashboard`, `looker_delete_dashboard`, `looker_move_dashboard`, `looker_copy_dashboard`, `looker_create_dashboard_element`, `looker_update_dashboard_element`
+  </Accordion>
+  <Accordion title="Conversational analytics">
+    `looker_ca_create_agent`, `looker_ca_list_agents`, `looker_ca_create_conversation`, `looker_ca_send_message`, `looker_ca_get_conversation_history`, `looker_ca_delete_conversation`
+  </Accordion>
+  <Accordion title="Content governance">
+    `looker_list_folders`, `looker_search_content`, `looker_validate_content`, `looker_list_favorites`, `looker_add_favorite`, `looker_remove_favorite`, `looker_get_content_usage`, `looker_get_content_thumbnail`
+  </Accordion>
+  <Accordion title="Alerts">
+    `looker_create_alert`, `looker_search_alerts`, `looker_get_alert`, `looker_update_alert`, `looker_enable_disable_alert`, `looker_delete_alert`
+  </Accordion>
+  <Accordion title="Scheduled plans">
+    `looker_create_scheduled_plan`, `looker_list_scheduled_plans_for_dashboard`, `looker_list_my_scheduled_plans`, `looker_get_scheduled_plan`, `looker_update_scheduled_plan`, `looker_delete_scheduled_plan`
+  </Accordion>
+  <Accordion title="Render tasks">
+    `looker_create_dashboard_render_task`, `looker_create_look_render_task`, `looker_get_render_task`, `looker_get_render_task_results`
+  </Accordion>
+  <Accordion title="Embedding">
+    `looker_create_sso_embed_url`, `looker_create_embed_url_as_me`, `looker_acquire_embed_cookieless_session`
+  </Accordion>
+  <Accordion title="Admin: users, roles & groups">
+    `looker_get_me`, `looker_create_user`, `looker_update_user`, `looker_delete_user`, `looker_list_roles`, `looker_set_user_roles`, `looker_create_group`, `looker_add_group_user`, `looker_remove_group_user`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Natural-language BI" icon="message-circle">
+    Ask conversational analytics questions against a Looker Explore instead of building a query by hand
+  </Card>
+  <Card title="Scheduled report delivery" icon="calendar-clock">
+    Set up a scheduled plan to email a dashboard render on a recurring cadence
+  </Card>
+  <Card title="Embedded dashboards" icon="layout-dashboard">
+    Generate an SSO or cookieless embed URL to surface a dashboard inside another app
+  </Card>
+  <Card title="Content audits" icon="search">
+    Validate content integrity and find stale or broken looks/dashboards across folders
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="looker_run_query times out on a large result set">
+    Use `looker_create_query_task` plus `looker_get_query_task_results` for async execution instead of `looker_run_query`, which blocks until the query finishes.
+  </Accordion>
+  <Accordion title="looker_create_sso_embed_url fails with an invalid signature error">
+    SSO embedding requires the embed secret configured in Looker's Admin > Embed settings to match what Shanone is signing with — double check the embed domain allowlist too.
+  </Accordion>
+  <Accordion title="Admin tools return a 403">
+    User, role, and group management require the connected API3 credential to belong to a Looker user with Admin permissions — a viewer-level credential won't work for these calls.
+  </Accordion>
+</AccordionGroup>

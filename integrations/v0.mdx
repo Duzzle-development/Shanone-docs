@@ -1,0 +1,85 @@
+---
+title: "V0"
+description: "Generate and iterate on UI code with Vercel's v0 — chats, projects, deployments, and MCP server management"
+icon: /images/v0.svg
+---
+
+# V0
+
+Shanone's v0 integration gives your agent 42 tools for driving Vercel's v0 AI UI generator — creating and iterating on chats, managing projects and deployments, and configuring MCP servers, on top of v0's newer v2 chat/message API.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a v0 API key">
+    Generate a key from [v0.dev/settings](https://v0.dev/settings).
+  </Step>
+  <Step title="Connect via API key">
+    In the Shanone dashboard, go to **Integrations → V0** and paste the key (starts with `v0_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `v0_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **42 tools** for V0, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Chats (v1)">
+    `v0_create_chat`, `v0_get_chat`, `v0_send_message`, `v0_get_chat_messages`, `v0_list_chats`, `v0_delete_chat`, `v0_update_chat`, `v0_favorite_chat`, `v0_fork_chat`, `v0_init_chat`, `v0_restore_chat_version`, `v0_list_chat_versions`, `v0_get_chat_version`, `v0_update_chat_version_files`, `v0_download_chat_version`, `v0_delete_chat_version_files`, `v0_resolve_chat_task`, `v0_stop_chat_message`
+  </Accordion>
+  <Accordion title="Chats (v2)">
+    `v0_v2_list_chats`, `v0_v2_create_chat`, `v0_v2_create_chat_async`, `v0_v2_create_chat_from_files`, `v0_v2_create_chat_from_repo`, `v0_v2_create_chat_from_zip`, `v0_v2_get_chat`, `v0_v2_update_chat`, `v0_v2_delete_chat`, `v0_v2_duplicate_chat`, `v0_v2_get_chat_files`, `v0_v2_update_chat_files`, `v0_v2_download_chat_files`, `v0_v2_get_preview_url`, `v0_v2_deploy_chat`, `v0_v2_create_vercel_project`, `v0_v2_restore_message`, `v0_v2_get_connect_setup_status`
+  </Accordion>
+  <Accordion title="Messages (v2)">
+    `v0_v2_list_messages`, `v0_v2_get_message`, `v0_v2_send_message`, `v0_v2_send_message_async`, `v0_v2_resolve_task`, `v0_v2_resolve_task_async`, `v0_v2_stop_message`
+  </Accordion>
+  <Accordion title="Projects">
+    `v0_list_projects`, `v0_get_project`, `v0_create_project`, `v0_update_project`, `v0_delete_project`, `v0_get_project_by_chat_id`, `v0_list_project_env_vars`, `v0_get_project_env_var`, `v0_create_project_env_vars`, `v0_update_project_env_vars`, `v0_delete_project_env_vars`
+  </Accordion>
+  <Accordion title="Deployments">
+    `v0_create_deployment`, `v0_get_deployment`, `v0_list_deployments`, `v0_delete_deployment`, `v0_find_deployment_logs`, `v0_find_deployment_errors`
+  </Accordion>
+  <Accordion title="MCP Servers (v1 & v2)">
+    `v0_list_mcp_servers`, `v0_get_mcp_server`, `v0_create_mcp_server`, `v0_update_mcp_server`, `v0_delete_mcp_server`, `v0_create_mcp_server_oauth_url`, `v0_v2_list_mcp_servers`, `v0_v2_get_mcp_server`, `v0_v2_create_mcp_server`, `v0_v2_update_mcp_server`, `v0_v2_delete_mcp_server`
+  </Accordion>
+  <Accordion title="Webhooks & Hooks">
+    `v0_list_hooks`, `v0_get_hook`, `v0_create_hook`, `v0_update_hook`, `v0_delete_hook`, `v0_v2_list_webhooks`, `v0_v2_create_webhook`, `v0_v2_get_webhook`, `v0_v2_update_webhook`, `v0_v2_delete_webhook`
+  </Accordion>
+  <Accordion title="Reports, Vercel integration & user">
+    `v0_get_usage_report`, `v0_get_ai_usage_report`, `v0_get_user_activity_report`, `v0_find_vercel_projects`, `v0_create_vercel_project_link`, `v0_get_rate_limit`, `v0_get_user`, `v0_get_user_billing`, `v0_get_user_plan`, `v0_get_user_scopes`, `v0_v2_get_trusted_preview_hosts`, `v0_v2_set_trusted_preview_hosts`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Rapid UI prototyping" icon="layout-panel-left">
+    Describe a UI in chat and iterate on generated component code across versions
+  </Card>
+  <Card title="From mockup to deployed page" icon="rocket">
+    Create a chat from a repo or files, then deploy the result directly to Vercel
+  </Card>
+  <Card title="Env var and project setup" icon="settings">
+    Create a project, wire up environment variables, and link it to a Vercel project
+  </Card>
+  <Card title="Usage tracking" icon="gauge">
+    Pull usage and AI credit reports to monitor consumption across chats
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Not sure whether to use v1 or v2 chat tools">
+    `v0_v2_*` tools are v0's newer chat/message API with more creation options (from files, repo, or zip) and async variants. Prefer the `v0_v2_*` family for new integrations; the v1 `v0_create_chat`/`v0_send_message` family remains for existing chats created there.
+  </Accordion>
+  <Accordion title="v0_v2_deploy_chat or v0_v2_create_vercel_project fails">
+    Both require a valid Vercel account link — run `v0_find_vercel_projects` or `v0_create_vercel_project_link` first to confirm the v0 account is connected to a Vercel team/project.
+  </Accordion>
+  <Accordion title="Async message/task tools never seem to finish">
+    `v0_v2_send_message_async` and `v0_v2_resolve_task_async` return immediately with a task reference; poll `v0_v2_get_message` or the chat's message list rather than expecting the async call itself to block until completion.
+  </Accordion>
+</AccordionGroup>

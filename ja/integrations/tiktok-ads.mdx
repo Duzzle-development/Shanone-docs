@@ -1,0 +1,94 @@
+---
+title: "TikTok Ads"
+description: "TikTok広告キャンペーンを管理する — キャンペーン、広告グループ、広告、オーディエンス、ターゲティング、レポート"
+icon: /images/tiktok-ads.svg
+---
+
+# TikTok Ads
+
+ShanoneのTikTok Ads連携は、キャンペーン階層全体(キャンペーン → 広告グループ → 広告)、オーディエンス管理、ターゲティング辞書、クリエイティブアセット、ビジネスセンター運用、レポートをカバーする119個のツールをエージェントに提供します——TikTok広告運用をエンドツーエンドでエージェントから実行できます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにTikTok Ads関連の作業を依頼(例: 「今週のキャンペーン上位5件の成績を見せて」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="TikTok Adsアカウントを許可する">
+    Shanoneに管理させたいビジネスセンターまたは広告アカウントで、TikTokのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`tiktok_ads_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはTikTok Ads向けに**119個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="アカウント & ビジネスセンター">
+    `tiktok_ads_get_authorized_ad_accounts`, `tiktok_ads_get_advertiser_info`, `tiktok_ads_update_advertiser_info`, `tiktok_ads_get_advertiser_balance`, `tiktok_ads_get_bc_list`, `tiktok_ads_get_bc_activity_log`, `tiktok_ads_get_bc_ad_accounts`, `tiktok_ads_get_bc_members`, `tiktok_ads_get_bc_currencies_regions`, `tiktok_ads_check_access_token_permissions`
+  </Accordion>
+  <Accordion title="キャンペーン管理">
+    `tiktok_ads_create_campaign`, `tiktok_ads_update_campaign`, `tiktok_ads_list_campaigns`, `tiktok_ads_update_campaign_status`, `tiktok_ads_create_ad_group`, `tiktok_ads_update_ad_group`, `tiktok_ads_list_ad_groups`, `tiktok_ads_update_ad_group_status`, `tiktok_ads_update_ad_group_budget`, `tiktok_ads_estimate_ad_group_audience_size`, `tiktok_ads_create_ad`, `tiktok_ads_update_ad`, `tiktok_ads_list_ads`, `tiktok_ads_update_ad_status`, `tiktok_ads_get_ad_review_info`, `tiktok_ads_appeal_ad_rejection`
+  </Accordion>
+  <Accordion title="レポート">
+    `tiktok_ads_run_sync_report`, `tiktok_ads_create_async_report_task`, `tiktok_ads_get_async_report_task_status`, `tiktok_ads_download_async_report`, `tiktok_ads_cancel_async_report_task`, `tiktok_ads_get_recommended_budgets_and_bids`
+  </Accordion>
+  <Accordion title="オーディエンス管理">
+    `tiktok_ads_upload_audience_file`, `tiktok_ads_create_audience_by_file`, `tiktok_ads_create_audience_by_rule`, `tiktok_ads_create_lookalike_audience`, `tiktok_ads_refresh_lookalike_audience`, `tiktok_ads_list_audiences`, `tiktok_ads_get_audience_details`, `tiktok_ads_update_audience`, `tiktok_ads_delete_audiences`, `tiktok_ads_share_audiences`, `tiktok_ads_apply_audiences_to_ad_groups`, `tiktok_ads_get_audience_application_log`, `tiktok_ads_create_saved_audience`, `tiktok_ads_delete_saved_audiences`
+  </Accordion>
+  <Accordion title="ターゲティング辞書">
+    `tiktok_ads_search_location_targets`, `tiktok_ads_get_location_target_details`, `tiktok_ads_get_available_locations`, `tiktok_ads_get_languages`, `tiktok_ads_get_os_versions`, `tiktok_ads_get_device_models`, `tiktok_ads_get_interest_categories`, `tiktok_ads_get_additional_interest_categories`, `tiktok_ads_search_additional_interest_categories`, `tiktok_ads_get_action_categories`, `tiktok_ads_search_targeting_hashtags`, `tiktok_ads_get_targeting_hashtags_by_id`, `tiktok_ads_get_recommended_interest_and_action_categories`, `tiktok_ads_get_contextual_tags`, `tiktok_ads_get_content_exclusion_categories`, `tiktok_ads_get_carriers_and_isps`
+  </Accordion>
+  <Accordion title="クリエイティブ・アセット">
+    `tiktok_ads_upload_image`, `tiktok_ads_upload_video`, `tiktok_ads_get_images`, `tiktok_ads_get_videos`, `tiktok_ads_search_images`, `tiktok_ads_search_videos`, `tiktok_ads_create_identity`, `tiktok_ads_get_identities`, `tiktok_ads_create_creative_portfolio`, `tiktok_ads_get_creative_portfolios`, `tiktok_ads_delete_creative_portfolios`, `tiktok_ads_preview_ad`, `tiktok_ads_get_recommended_ctas`
+  </Accordion>
+  <Accordion title="ビジネスセンター運用">
+    `tiktok_ads_create_bc_ad_account`, `tiktok_ads_update_bc_ad_account`, `tiktok_ads_disable_bc_ad_account`, `tiktok_ads_get_bc_qualifications`, `tiktok_ads_invite_bc_members`, `tiktok_ads_update_bc_member`, `tiktok_ads_delete_bc_member`, `tiktok_ads_assign_asset_to_member`, `tiktok_ads_get_bc_balance`, `tiktok_ads_process_payment`, `tiktok_ads_get_transaction_records`, `tiktok_ads_create_payment_portfolio`, `tiktok_ads_get_payment_portfolios`, `tiktok_ads_create_billing_group`, `tiktok_ads_get_billing_groups`
+  </Accordion>
+  <Accordion title="自動化 & リード獲得">
+    `tiktok_ads_create_automated_rule`, `tiktok_ads_update_automated_rule`, `tiktok_ads_update_automated_rule_status`, `tiktok_ads_get_automated_rules`, `tiktok_ads_get_automated_rule_results`, `tiktok_ads_create_lead_download_task`, `tiktok_ads_download_leads`, `tiktok_ads_get_instant_form_fields`
+  </Accordion>
+  <Accordion title="商品カタログ">
+    `tiktok_ads_create_catalog`, `tiktok_ads_update_catalog_name`, `tiktok_ads_delete_catalog`, `tiktok_ads_get_catalogs`, `tiktok_ads_upload_products_via_url`, `tiktok_ads_upload_products_via_json`, `tiktok_ads_update_products`, `tiktok_ads_remove_products`, `tiktok_ads_get_products`, `tiktok_ads_create_product_set`, `tiktok_ads_get_product_sets`, `tiktok_ads_get_available_stores`, `tiktok_ads_get_store_products`
+  </Accordion>
+  <Accordion title="計測">
+    `tiktok_ads_create_pixel`, `tiktok_ads_update_pixel`, `tiktok_ads_get_pixels`, `tiktok_ads_get_pixel_event_statistics`, `tiktok_ads_create_pixel_event`, `tiktok_ads_create_custom_conversion`, `tiktok_ads_update_custom_conversion`, `tiktok_ads_get_custom_conversions`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="キャンペーン成績のレビュー" icon="chart-bar">
+    稼働中のキャンペーン全体で同期レポートを実行し、成績の悪い広告グループを検出する
+  </Card>
+  <Card title="予算管理" icon="banknote">
+    広告グループの推奨予算/入札額を取得し、それに応じて予算を更新する
+  </Card>
+  <Card title="オーディエンスの拡大" icon="users">
+    成績の良いシードオーディエンスからルックアライクオーディエンスを作成し、新しい広告グループに適用する
+  </Card>
+  <Card title="クリエイティブのローンチ" icon="video">
+    新しい動画クリエイティブをアップロードし、広告をプレビューして、公開前に審査状況を確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="tiktok_ads_get_ad_review_infoで広告が却下されている">
+    レスポンス内の却下理由を確認し、クリエイティブやターゲティングの問題を修正してください。却下が誤りだと思われる場合は、広告を作り直す代わりに`tiktok_ads_appeal_ad_rejection`を使ってください。
+  </Accordion>
+  <Accordion title="レポートツールが大きな日付範囲でタイムアウトしたり部分的なデータしか返さない">
+    大きな日付範囲や次元数の多い集計には、`tiktok_ads_run_sync_report`ではなく`tiktok_ads_create_async_report_task`を使い、`tiktok_ads_get_async_report_task_status`をポーリングして`tiktok_ads_download_async_report`で結果を取得してください。
+  </Accordion>
+  <Accordion title="アップロード後にtiktok_ads_create_audience_by_fileが失敗する">
+    オーディエンスファイルは先に`tiktok_ads_upload_audience_file`でアップロードする必要があります(個人情報はSHA-256で事前にハッシュ化)。オーディエンス作成の呼び出しでは、返されたファイルIDを参照する必要があります——正確な紐付け方法は`shanone_get_tool_schema`で確認してください。
+  </Accordion>
+  <Accordion title="ターゲティングや予算更新ツールが権限エラーで失敗する">
+    一部の操作(例: `tiktok_ads_create_bc_ad_account`、`tiktok_ads_process_payment`)には、通常の広告アカウントアクセスではなくビジネスセンターの管理者レベルのアクセスが必要です——`tiktok_ads_get_bc_members`で接続アカウントのロールを確認してください。
+  </Accordion>
+</AccordionGroup>

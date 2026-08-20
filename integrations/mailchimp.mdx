@@ -1,0 +1,100 @@
+---
+title: "Mailchimp"
+description: "Run Mailchimp email/SMS marketing and e-commerce integrations — audiences, campaigns, automations, templates, and reports"
+icon: /images/mailchimp.svg
+---
+
+# Mailchimp
+
+Shanone's Mailchimp integration gives your agent 279 tools covering nearly the entire Marketing API — audiences, campaigns, automations, SMS, e-commerce, templates, landing pages, and reporting.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Mailchimp (e.g. "list my email campaigns from this month"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your Mailchimp account">
+    Approve Mailchimp's OAuth consent screen for the account you want Shanone to act on. Mailchimp OAuth tokens don't expire or refresh — if a token is later revoked, you'll need to reconnect.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `mailchimp_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **279 tools** for Mailchimp, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Audiences & lists">
+    `mailchimp_get_lists`, `mailchimp_get_list`, `mailchimp_create_list`, `mailchimp_update_list`, `mailchimp_delete_list`, `mailchimp_get_list_activity`, `mailchimp_get_list_growth_history`, `mailchimp_get_growth_history_by_month`, `mailchimp_get_list_locations`, `mailchimp_get_list_clients`, `mailchimp_search_tag_members`, `mailchimp_batch_unsubscribe_members`, `mailchimp_get_audiences_beta`, `mailchimp_get_audience_beta`, `mailchimp_get_beta_contacts`, `mailchimp_get_beta_contact`, `mailchimp_create_beta_contact`, `mailchimp_update_beta_contact`, `mailchimp_archive_beta_contact`, `mailchimp_forget_beta_contact`, `mailchimp_get_abuse_reports`, `mailchimp_get_abuse_report`, `mailchimp_get_list_webhooks`, `mailchimp_get_list_webhook`, `mailchimp_create_list_webhook`, `mailchimp_update_list_webhook`, `mailchimp_delete_list_webhook`
+  </Accordion>
+  <Accordion title="Members">
+    `mailchimp_get_list_members`, `mailchimp_get_list_member`, `mailchimp_add_list_member`, `mailchimp_update_list_member`, `mailchimp_add_or_update_list_member`, `mailchimp_archive_list_member`, `mailchimp_delete_list_member_permanent`, `mailchimp_get_member_events`, `mailchimp_add_member_event`, `mailchimp_get_member_notes`, `mailchimp_get_member_note`, `mailchimp_add_member_note`, `mailchimp_update_member_note`, `mailchimp_delete_member_note`, `mailchimp_get_member_tags`, `mailchimp_update_member_tags`, `mailchimp_get_list_segments_for_tags`, `mailchimp_get_member_goals`, `mailchimp_get_member_activity_feed`
+  </Accordion>
+  <Accordion title="Segments, interests & merge fields">
+    `mailchimp_get_segments`, `mailchimp_get_segment`, `mailchimp_create_segment`, `mailchimp_update_segment`, `mailchimp_delete_segment`, `mailchimp_batch_add_remove_segment_members`, `mailchimp_get_segment_members`, `mailchimp_add_segment_member`, `mailchimp_remove_segment_member`, `mailchimp_get_interest_categories`, `mailchimp_get_interest_category`, `mailchimp_create_interest_category`, `mailchimp_update_interest_category`, `mailchimp_delete_interest_category`, `mailchimp_get_interests`, `mailchimp_get_interest`, `mailchimp_create_interest`, `mailchimp_update_interest`, `mailchimp_delete_interest`, `mailchimp_get_merge_fields`, `mailchimp_get_merge_field`, `mailchimp_create_merge_field`, `mailchimp_update_merge_field`, `mailchimp_delete_merge_field`, `mailchimp_get_signup_forms`, `mailchimp_customize_signup_form`
+  </Accordion>
+  <Accordion title="Campaigns">
+    `mailchimp_get_campaigns`, `mailchimp_get_campaign`, `mailchimp_create_campaign`, `mailchimp_update_campaign`, `mailchimp_delete_campaign`, `mailchimp_send_campaign`, `mailchimp_schedule_campaign`, `mailchimp_unschedule_campaign`, `mailchimp_pause_campaign`, `mailchimp_resume_campaign`, `mailchimp_cancel_campaign_send`, `mailchimp_replicate_campaign`, `mailchimp_send_test_email`, `mailchimp_resend_campaign`, `mailchimp_get_campaign_content`, `mailchimp_set_campaign_content`, `mailchimp_get_send_checklist`, `mailchimp_get_campaign_feedback_list`, `mailchimp_get_campaign_feedback`, `mailchimp_add_campaign_feedback`, `mailchimp_update_campaign_feedback`, `mailchimp_delete_campaign_feedback`, `mailchimp_get_campaign_folders`, `mailchimp_get_campaign_folder`, `mailchimp_create_campaign_folder`, `mailchimp_update_campaign_folder`, `mailchimp_delete_campaign_folder`, `mailchimp_search_campaigns`
+  </Accordion>
+  <Accordion title="SMS campaigns">
+    `mailchimp_get_sms_campaigns`, `mailchimp_get_sms_campaign`, `mailchimp_create_sms_campaign`, `mailchimp_update_sms_campaign`, `mailchimp_delete_sms_campaign`, `mailchimp_get_sms_campaign_content`, `mailchimp_set_sms_campaign_content`, `mailchimp_send_sms_campaign`, `mailchimp_schedule_sms_campaign`, `mailchimp_cancel_sms_campaign`
+  </Accordion>
+  <Accordion title="Automations">
+    `mailchimp_get_automations`, `mailchimp_get_automation`, `mailchimp_start_automation`, `mailchimp_pause_automation`, `mailchimp_archive_automation`, `mailchimp_get_automation_emails`, `mailchimp_get_automation_email`, `mailchimp_update_automation_email`, `mailchimp_delete_automation_email`, `mailchimp_pause_automation_email`, `mailchimp_start_automation_email`, `mailchimp_get_automation_email_queue`, `mailchimp_add_subscriber_to_email_queue`, `mailchimp_get_removed_subscribers`, `mailchimp_remove_subscriber_from_automation`, `mailchimp_get_queued_subscriber_detail`
+  </Accordion>
+  <Accordion title="Templates & landing pages">
+    `mailchimp_get_templates`, `mailchimp_get_template`, `mailchimp_create_template`, `mailchimp_update_template`, `mailchimp_delete_template`, `mailchimp_get_template_default_content`, `mailchimp_get_template_folders`, `mailchimp_get_template_folder`, `mailchimp_create_template_folder`, `mailchimp_update_template_folder`, `mailchimp_delete_template_folder`, `mailchimp_get_landing_pages`, `mailchimp_get_landing_page`, `mailchimp_create_landing_page`, `mailchimp_update_landing_page`, `mailchimp_delete_landing_page`, `mailchimp_get_landing_page_content`, `mailchimp_publish_landing_page`, `mailchimp_unpublish_landing_page`
+  </Accordion>
+  <Accordion title="E-commerce: stores & catalog">
+    `mailchimp_get_stores`, `mailchimp_get_store`, `mailchimp_create_store`, `mailchimp_update_store`, `mailchimp_delete_store`, `mailchimp_get_store_products`, `mailchimp_get_store_product`, `mailchimp_add_store_product`, `mailchimp_update_store_product`, `mailchimp_delete_store_product`, `mailchimp_get_product_variants`, `mailchimp_get_product_variant`, `mailchimp_add_product_variant`, `mailchimp_update_product_variant`, `mailchimp_add_or_update_product_variant`, `mailchimp_delete_product_variant`, `mailchimp_get_product_images`, `mailchimp_get_product_image`, `mailchimp_add_product_image`, `mailchimp_update_product_image`, `mailchimp_delete_product_image`
+  </Accordion>
+  <Accordion title="E-commerce: customers, carts, orders & promos">
+    `mailchimp_get_store_customers`, `mailchimp_get_store_customer`, `mailchimp_add_store_customer`, `mailchimp_update_store_customer`, `mailchimp_add_or_update_store_customer`, `mailchimp_delete_store_customer`, `mailchimp_get_store_carts`, `mailchimp_get_store_cart`, `mailchimp_add_store_cart`, `mailchimp_update_store_cart`, `mailchimp_delete_store_cart`, `mailchimp_get_cart_lines`, `mailchimp_get_cart_line`, `mailchimp_add_cart_line`, `mailchimp_update_cart_line`, `mailchimp_delete_cart_line`, `mailchimp_get_store_orders`, `mailchimp_get_store_order`, `mailchimp_add_store_order`, `mailchimp_update_store_order`, `mailchimp_delete_store_order`, `mailchimp_get_order_lines`, `mailchimp_get_order_line`, `mailchimp_add_order_line`, `mailchimp_update_order_line`, `mailchimp_delete_order_line`, `mailchimp_get_account_orders`, `mailchimp_get_order_by_campaign`, `mailchimp_get_order_by_outreach`, `mailchimp_get_promo_rules`, `mailchimp_get_promo_rule`, `mailchimp_create_promo_rule`, `mailchimp_update_promo_rule`, `mailchimp_delete_promo_rule`, `mailchimp_get_promo_codes`, `mailchimp_get_promo_code`, `mailchimp_create_promo_code`, `mailchimp_update_promo_code`, `mailchimp_delete_promo_code`
+  </Accordion>
+  <Accordion title="Reports & analytics">
+    `mailchimp_get_campaign_reports`, `mailchimp_get_campaign_report`, `mailchimp_get_campaign_open_details`, `mailchimp_get_campaign_open_detail_for_member`, `mailchimp_get_campaign_click_details`, `mailchimp_get_campaign_click_detail_for_link`, `mailchimp_get_click_detail_members`, `mailchimp_get_click_detail_member`, `mailchimp_get_sent_to_list`, `mailchimp_get_sent_to_member`, `mailchimp_get_unsubscribed_list`, `mailchimp_get_unsubscribed_member`, `mailchimp_get_abuse_complaints`, `mailchimp_get_abuse_complaint`, `mailchimp_get_advice`, `mailchimp_get_domain_performance`, `mailchimp_get_ecommerce_report`, `mailchimp_get_campaign_ecommerce_summary`, `mailchimp_get_eepurl_report`, `mailchimp_get_email_activity`, `mailchimp_get_email_activity_for_member`, `mailchimp_get_campaign_locations`, `mailchimp_get_landing_page_report`, `mailchimp_get_landing_page_reports`, `mailchimp_get_facebook_ads`, `mailchimp_get_facebook_ad`, `mailchimp_get_facebook_ad_report`, `mailchimp_get_facebook_ad_ecommerce_report`
+  </Accordion>
+  <Accordion title="Surveys">
+    `mailchimp_get_surveys`, `mailchimp_get_survey`, `mailchimp_publish_survey`, `mailchimp_unpublish_survey`, `mailchimp_get_survey_report`, `mailchimp_get_survey_question_reports`, `mailchimp_get_survey_question_report`, `mailchimp_get_survey_responses`, `mailchimp_get_survey_response`
+  </Accordion>
+  <Accordion title="Search, files, domains & connected sites">
+    `mailchimp_search_members`, `mailchimp_get_file_manager_files`, `mailchimp_get_file_manager_file`, `mailchimp_upload_file_manager_file`, `mailchimp_update_file_manager_file`, `mailchimp_delete_file_manager_file`, `mailchimp_get_file_manager_folders`, `mailchimp_get_file_manager_folder`, `mailchimp_create_file_manager_folder`, `mailchimp_update_file_manager_folder`, `mailchimp_delete_file_manager_folder`, `mailchimp_get_file_manager_folder_files`, `mailchimp_get_verified_domains`, `mailchimp_get_verified_domain`, `mailchimp_create_verified_domain`, `mailchimp_verify_domain`, `mailchimp_delete_verified_domain`, `mailchimp_get_connected_sites`, `mailchimp_get_connected_site`, `mailchimp_create_connected_site`, `mailchimp_delete_connected_site`, `mailchimp_verify_connected_site_script`
+  </Accordion>
+  <Accordion title="Batch operations, webhooks & admin">
+    `mailchimp_get_batch_operations`, `mailchimp_get_batch_operation`, `mailchimp_start_batch_operation`, `mailchimp_delete_batch_operation`, `mailchimp_wait_for_batch_completion`, `mailchimp_get_batch_webhooks`, `mailchimp_get_batch_webhook`, `mailchimp_create_batch_webhook`, `mailchimp_update_batch_webhook`, `mailchimp_delete_batch_webhook`, `mailchimp_ping`, `mailchimp_get_api_root`, `mailchimp_get_authorized_apps`, `mailchimp_get_authorized_app`, `mailchimp_get_chimp_chatter`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Campaign performance reviews" icon="bar-chart">
+    Pull open/click reports for a recent campaign and summarize what worked
+  </Card>
+  <Card title="List hygiene" icon="users">
+    Search for unengaged members and batch-unsubscribe or tag them for cleanup
+  </Card>
+  <Card title="Automation tuning" icon="repeat">
+    Pause an underperforming automation email and update its content before restarting
+  </Card>
+  <Card title="E-commerce sync" icon="shopping-cart">
+    Keep store products, orders, and customers in sync with an external system
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="mailchimp_send_campaign fails with a checklist error">
+    Call `mailchimp_get_send_checklist` first — Mailchimp blocks sending until required items (from address, subject line, content) pass its pre-send checklist.
+  </Accordion>
+  <Accordion title="Batch operations return immediately but data hasn't changed">
+    Batch operations run asynchronously on Mailchimp's side — use `mailchimp_wait_for_batch_completion` or poll `mailchimp_get_batch_operation` rather than assuming completion from the initial response.
+  </Accordion>
+  <Accordion title="A tool call suddenly returns a 401 after working fine before">
+    Mailchimp OAuth tokens have no refresh flow — if the underlying app authorization was revoked or expired, you'll need to fully reconnect Mailchimp from **Integrations** rather than expecting a silent refresh.
+  </Accordion>
+</AccordionGroup>

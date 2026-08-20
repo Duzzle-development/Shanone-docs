@@ -1,0 +1,85 @@
+---
+title: "Canva"
+description: "Create, manage, and export Canva designs — assets, folders, brand templates, autofill, and comments"
+icon: /images/canva.svg
+---
+
+# Canva
+
+Shanone's Canva integration gives your agent 36 tools for the Canva Connect API: designs, assets, folders, brand templates, autofill jobs, imports/exports, and comments.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Canva (e.g. "list my recent designs"), or connect proactively from **Integrations** in the Shanone dashboard. Either way, you'll get a `connect_link` to authorize Shanone's Canva app.
+  </Step>
+  <Step title="Authorize the Canva account">
+    Approve Canva's OAuth consent screen for the account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `canva_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **36 tools** for Canva, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Designs">
+    `canva_list_designs`, `canva_get_design`, `canva_create_design`, `canva_get_design_pages`
+  </Accordion>
+  <Accordion title="Assets">
+    `canva_list_assets`, `canva_upload_asset`, `canva_get_asset_upload_job`, `canva_create_url_asset_upload_job`, `canva_get_url_asset_upload_job`, `canva_update_asset`, `canva_delete_asset`
+  </Accordion>
+  <Accordion title="Folders">
+    `canva_create_folder`, `canva_list_folders`, `canva_get_folder`, `canva_update_folder`, `canva_delete_folder`, `canva_move_folder_item`
+  </Accordion>
+  <Accordion title="Brand Templates & Autofill">
+    `canva_list_brand_templates`, `canva_get_brand_template`, `canva_get_brand_template_dataset`, `canva_create_design_autofill_job`, `canva_get_design_autofill_job`
+  </Accordion>
+  <Accordion title="Exports & Resizes">
+    `canva_export_design`, `canva_get_export_status`, `canva_create_design_resize_job`, `canva_get_design_resize_job`
+  </Accordion>
+  <Accordion title="Imports">
+    `canva_create_design_import_job`, `canva_get_design_import_job`, `canva_create_url_import_job`, `canva_get_url_import_job`
+  </Accordion>
+  <Accordion title="Comments">
+    `canva_create_comment`, `canva_list_comments`
+  </Accordion>
+  <Accordion title="User & OAuth Management">
+    `canva_get_user_profile`, `canva_get_user_capabilities`, `canva_introspect_token`, `canva_revoke_token`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Brand-consistent asset generation" icon="palette">
+    Autofill a brand template with campaign data to produce on-brand designs at scale
+  </Card>
+  <Card title="Bulk exports" icon="download">
+    Export a batch of designs to PNG/PDF and track each export job to completion
+  </Card>
+  <Card title="Asset library curation" icon="folder-open">
+    Upload, organize, and clean up assets across shared folders
+  </Card>
+  <Card title="Design review workflows" icon="message-square">
+    List comments on a design and add follow-up notes for reviewers
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="canva_create_design_autofill_job fails with a schema mismatch">
+    The `data` payload's field names and types must exactly match the brand template's dataset — check `canva_get_brand_template_dataset` first to see the expected fields before calling autofill.
+  </Accordion>
+  <Accordion title="Export or import jobs stay in a pending state">
+    Canva Connect API jobs (export, resize, import, autofill) are asynchronous. Poll the corresponding `_get_*_job`/`_get_export_status` tool until the status is `success` or `failed` rather than expecting an immediate result.
+  </Accordion>
+  <Accordion title="Uploaded asset doesn't appear in canva_list_assets right away">
+    Asset uploads (`canva_upload_asset`, `canva_create_url_asset_upload_job`) are processed asynchronously — check `canva_get_asset_upload_job` / `canva_get_url_asset_upload_job` for completion before expecting the asset to be usable.
+  </Accordion>
+</AccordionGroup>

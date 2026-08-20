@@ -1,0 +1,100 @@
+---
+title: "Sentry"
+description: "Track errors, performance, and releases — issues, traces, profiling, session replay, and dashboards"
+icon: /images/sentry.svg
+---
+
+# Sentry
+
+Shanone's Sentry integration gives your agent 115 tools spanning issue triage, performance tracing, session replay, release health, and org administration (members, SCIM, integrations) — enough to run most day-to-day Sentry workflows without leaving the agent.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Sentry Auth Token">
+    In Sentry, go to **Settings → Developer Settings** and create an Internal Integration or Personal Auth Token with the scopes your workflows need (e.g. `project:read`, `event:read`, `org:read`).
+  </Step>
+  <Step title="Connect the API key in Shanone">
+    Ask your agent to do something with Sentry (e.g. "list unresolved issues in my project"), or add the Auth Token proactively from **Integrations** in the Shanone dashboard. An Organization Slug can optionally be set to avoid repeating it on every call.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `sentry_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **115 tools** for Sentry, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Issues & Events">
+    `sentry_list_issues`, `sentry_list_organization_issues`, `sentry_get_issue`, `sentry_update_issue`, `sentry_delete_issue`, `sentry_bulk_update_issues`, `sentry_list_issue_events`, `sentry_get_issue_hashes`, `sentry_get_issue_tags`, `sentry_search_issues`, `sentry_list_events`, `sentry_get_event`, `sentry_get_latest_event`, `sentry_get_oldest_event`, `sentry_list_event_attachments`
+  </Accordion>
+  <Accordion title="Projects & Environments">
+    `sentry_list_projects`, `sentry_get_project`, `sentry_create_project`, `sentry_update_project`, `sentry_delete_project`, `sentry_get_project_stats`, `sentry_list_project_users`, `sentry_get_project_filters`, `sentry_list_environments`, `sentry_get_environment`, `sentry_update_environment_visibility`
+  </Accordion>
+  <Accordion title="Releases & Deploys">
+    `sentry_list_releases`, `sentry_get_release`, `sentry_create_release`, `sentry_update_release`, `sentry_delete_release`, `sentry_list_release_commits`, `sentry_get_release_health`, `sentry_list_deploys`, `sentry_create_deploy`, `sentry_get_deploy`
+  </Accordion>
+  <Accordion title="Performance, Traces & Profiling">
+    `sentry_list_traces`, `sentry_get_trace`, `sentry_get_trace_meta`, `sentry_list_spans`, `sentry_list_transactions`, `sentry_get_transaction_stats`, `sentry_list_profiles`, `sentry_get_profile`, `sentry_get_profile_flamegraph`, `sentry_get_profile_functions`, `sentry_get_function_trends`, `sentry_list_profile_chunks`, `sentry_get_profiling_stats`, `sentry_get_slowest_functions`
+  </Accordion>
+  <Accordion title="Session Replay">
+    `sentry_list_replays`, `sentry_get_replay`, `sentry_list_replay_segments`, `sentry_get_replay_clicks`, `sentry_list_replay_errors`, `sentry_get_replay_count`, `sentry_list_replay_selectors`, `sentry_delete_replay`
+  </Accordion>
+  <Accordion title="Sessions & Org Stats">
+    `sentry_get_sessions`, `sentry_get_release_health_stats`, `sentry_get_organization_stats`, `sentry_get_organization_events_count`, `sentry_resolve_event_id`, `sentry_list_trusted_relays`, `sentry_get_organization_client_keys`
+  </Accordion>
+  <Accordion title="Discover & Explore">
+    `sentry_list_saved_queries`, `sentry_get_saved_query`, `sentry_create_saved_query`, `sentry_update_saved_query`, `sentry_delete_saved_query`, `sentry_run_discover_query`, `sentry_explore_events`, `sentry_explore_spans`, `sentry_get_event_facets`
+  </Accordion>
+  <Accordion title="Dashboards">
+    `sentry_list_dashboards`, `sentry_get_dashboard`, `sentry_create_dashboard`, `sentry_update_dashboard`, `sentry_delete_dashboard`, `sentry_add_dashboard_widget`, `sentry_update_dashboard_widget`
+  </Accordion>
+  <Accordion title="Client Keys & Data Forwarding">
+    `sentry_list_client_keys`, `sentry_get_client_key`, `sentry_create_client_key`, `sentry_update_client_key`, `sentry_list_data_forwarding`, `sentry_update_data_forwarding`
+  </Accordion>
+  <Accordion title="Integrations & Repositories">
+    `sentry_list_integrations`, `sentry_get_integration`, `sentry_delete_integration`, `sentry_list_integration_features`, `sentry_list_external_issues`, `sentry_create_external_issue`, `sentry_list_repositories`, `sentry_get_repository`, `sentry_list_repository_commits`, `sentry_link_repository_to_project`, `sentry_delete_repository`
+  </Accordion>
+  <Accordion title="Members & SCIM">
+    `sentry_list_organization_members`, `sentry_get_organization_member`, `sentry_add_organization_member`, `sentry_update_organization_member`, `sentry_delete_organization_member`, `sentry_list_organization_member_teams`, `sentry_scim_list_users`, `sentry_scim_get_user`, `sentry_scim_create_user`, `sentry_scim_update_user`, `sentry_scim_list_groups`, `sentry_scim_update_group`
+  </Accordion>
+  <Accordion title="Seer AI & Users">
+    `sentry_get_issue_autofix`, `sentry_trigger_issue_autofix`, `sentry_get_issue_summary`, `sentry_get_current_user`, `sentry_list_user_organizations`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Triage new issues" icon="bug">
+    List unresolved issues sorted by frequency and summarize the top offenders for standup
+  </Card>
+  <Card title="AI-assisted root-causing" icon="sparkles">
+    Trigger Seer autofix on a stuck issue and report back the suggested fix
+  </Card>
+  <Card title="Release health checks" icon="rocket">
+    Compare crash-free session rates across the last two releases before a rollout decision
+  </Card>
+  <Card title="Performance regressions" icon="gauge">
+    Pull the slowest functions/traces for a project after a deploy and flag regressions
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Calls fail with a 401/403 even though the token looks valid">
+    The Auth Token's scopes must match the endpoint — e.g. `sentry_bulk_update_issues` needs `event:write`, while `sentry_list_projects` only needs `project:read`. Regenerate the token in **Settings → Developer Settings** with the missing scope.
+  </Accordion>
+  <Accordion title="sentry_list_issues returns an empty list for a project I know has issues">
+    Most list tools default to a short time window (Sentry's `statsPeriod`) and to unresolved issues only. Pass an explicit `query`/`statsPeriod` — check `shanone_get_tool_schema` for `sentry_list_issues` for the exact parameter names.
+  </Accordion>
+  <Accordion title="Organization Slug errors on every call">
+    If it wasn't set on the connection, most tools require an explicit `organization_slug` argument per call — set it once on the integration to avoid repeating it.
+  </Accordion>
+  <Accordion title="sentry_trigger_issue_autofix doesn't return a result immediately">
+    Seer autofix runs asynchronously; poll `sentry_get_issue_autofix` for the same issue until the run status is complete.
+  </Accordion>
+</AccordionGroup>

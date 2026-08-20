@@ -1,0 +1,67 @@
+---
+title: "Linkup"
+description: "AI-optimized web search, page fetching, and deep research — with support for long-running async research tasks"
+icon: /images/linkup.svg
+---
+
+# Linkup
+
+Shanone's Linkup integration gives your agent 4 tools for AI-optimized web search, single-page fetching, and multi-step deep research, including async research tasks you can poll for results.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Linkup API key">
+    Sign up at [linkup.so](https://linkup.so) and generate an API key from the dashboard's **API Keys** page.
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations > Linkup** in the Shanone dashboard and paste the key in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `linkup_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **4 tools** for Linkup, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Search & fetch">
+    `linkup_search`, `linkup_fetch` — run a natural-language web search optimized for LLM consumption, or fetch and extract the content of a single URL
+  </Accordion>
+  <Accordion title="Deep research">
+    `linkup_research`, `linkup_tasks` — kick off a multi-step deep research task on a topic, then poll `linkup_tasks` for the async task's status and result
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Competitive research" icon="search">
+    Search the web for a competitor's recent product announcements
+  </Card>
+  <Card title="Fact-checking" icon="check-circle">
+    Fetch a specific page and verify a claim against its content
+  </Card>
+  <Card title="Deep-dive reports" icon="file-text">
+    Kick off `linkup_research` on a topic and assemble a sourced report from the result
+  </Card>
+  <Card title="Citation gathering" icon="link">
+    Pull URLs and snippets to back up statements in a document
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="linkup_research never seems to finish">
+    Deep research tasks run asynchronously — `linkup_research` returns a task ID immediately. Poll `linkup_tasks` with that ID until the status changes from running to completed.
+  </Accordion>
+  <Accordion title="linkup_fetch returns empty or truncated content">
+    Some pages block automated fetching or render content client-side via JavaScript; `linkup_fetch` works best on static, publicly accessible pages.
+  </Accordion>
+  <Accordion title="linkup_search results feel off-topic">
+    Linkup's search is tuned for natural-language queries rather than keyword strings — phrase the query as a question or descriptive sentence for better results.
+  </Accordion>
+</AccordionGroup>

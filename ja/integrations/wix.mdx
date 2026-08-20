@@ -1,0 +1,106 @@
+---
+title: "Wix"
+description: "Wixストア、予約、ブログ、コンタクト、サイトデータを管理 — 商品、注文、CMSコレクション、マーケティング"
+icon: "layout-template"
+---
+
+# Wix
+
+Shanoneのwix連携は、Shanoneのeコマース/CMS系連携の中で最大規模となる144個のツールをエージェントに提供します。オンラインストア、予約、ブログ、CRM/コンタクト、カスタムデータコレクション、マーケティング/ロイヤルティツールまで幅広くカバーします。
+
+## はじめに
+
+<Steps>
+  <Step title="WixのAPIキーとSite IDを取得する">
+    Wixダッシュボードの**設定 → API Keys**からAPIキーを発行し、**設定 → Site ID**からSite IDをコピーします。詳細は[WixのREST API認証ドキュメント](https://dev.wix.com/docs/api-reference/articles/authentication/rest-api-authentication)を参照してください。
+  </Step>
+  <Step title="APIキーで接続する">
+    Shanoneダッシュボードの**連携 → Wix**でAPIキーとSite IDの両方を入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`wix_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはwix向けに**144個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="商品 & カタログ">
+    `wix_list_products`, `wix_search_products`, `wix_get_product`, `wix_get_product_by_slug`, `wix_count_products`, `wix_create_product`, `wix_create_product_with_inventory`, `wix_update_product`, `wix_delete_product`, `wix_bulk_update_products`
+  </Accordion>
+  <Accordion title="カタログメタデータ">
+    `wix_list_categories`, `wix_get_category`, `wix_create_category`, `wix_update_category`, `wix_delete_category`, `wix_list_brands`, `wix_create_brand`, `wix_delete_brand`, `wix_get_inventory_item`, `wix_query_inventory_items`, `wix_update_inventory_item`, `wix_list_store_locations`
+  </Accordion>
+  <Accordion title="注文">
+    `wix_search_orders`, `wix_get_order`, `wix_create_order`, `wix_update_order`, `wix_cancel_order`, `wix_bulk_update_orders`, `wix_add_order_activity`, `wix_bulk_update_order_tags`, `wix_get_orders_settings`
+  </Accordion>
+  <Accordion title="ドラフト注文 & フルフィルメント">
+    `wix_create_draft_order`, `wix_get_draft_order`, `wix_query_draft_orders`, `wix_update_draft_order_line_items`, `wix_set_draft_order_shipping_info`, `wix_commit_draft_order`, `wix_delete_draft_order`, `wix_create_fulfillment`, `wix_list_fulfillments_for_order`, `wix_list_transactions_for_order`
+  </Accordion>
+  <Accordion title="予約">
+    `wix_create_booking`, `wix_query_bookings`, `wix_count_bookings`, `wix_confirm_booking`, `wix_decline_booking`, `wix_cancel_booking`, `wix_reschedule_booking`, `wix_get_service_availability`, `wix_register_to_waitlist`, `wix_list_waitlisted_entities`
+  </Accordion>
+  <Accordion title="予約カタログ">
+    `wix_list_booking_services`, `wix_get_booking_service`, `wix_create_booking_service`, `wix_update_booking_service`, `wix_delete_booking_service`, `wix_list_booking_categories`, `wix_create_booking_category`, `wix_list_booking_add_ons`, `wix_create_booking_add_on`, `wix_list_staff_members`, `wix_create_staff_member`, `wix_list_booking_resources`
+  </Accordion>
+  <Accordion title="コンタクト">
+    `wix_list_contacts`, `wix_search_contacts`, `wix_get_contact`, `wix_count_contacts`, `wix_create_contact`, `wix_upsert_contact`, `wix_update_contact`, `wix_delete_contact`, `wix_add_contact_address`, `wix_merge_contacts`
+  </Accordion>
+  <Accordion title="コンタクト(ラベル、メモ & メンバー)">
+    `wix_list_labels`, `wix_find_or_create_label`, `wix_delete_label`, `wix_update_contact_tags`, `wix_create_note`, `wix_query_notes`, `wix_delete_note`, `wix_list_extended_fields`, `wix_find_or_create_extended_field`, `wix_query_members`
+  </Accordion>
+  <Accordion title="ブログ">
+    `wix_create_draft_post`, `wix_update_draft_post`, `wix_publish_draft_post`, `wix_delete_draft_post`, `wix_query_posts`, `wix_get_post_by_slug`, `wix_create_blog_category`, `wix_query_blog_categories`, `wix_create_blog_tag`
+  </Accordion>
+  <Accordion title="マーケティング & ロイヤルティ">
+    `wix_create_coupon`, `wix_query_coupons`, `wix_update_coupon`, `wix_delete_coupon`, `wix_create_gift_card`, `wix_query_gift_cards`, `wix_disable_gift_card`, `wix_create_pricing_plan`, `wix_query_pricing_plans`, `wix_list_pricing_plan_orders`, `wix_get_loyalty_account`, `wix_earn_loyalty_points`
+  </Accordion>
+  <Accordion title="データコレクション (CMS)">
+    `wix_list_data_collections`, `wix_get_data_collection`, `wix_create_data_collection`, `wix_update_data_collection`, `wix_delete_data_collection`, `wix_create_data_collection_field`, `wix_update_data_collection_field`, `wix_delete_data_collection_field`, `wix_get_data_permissions`, `wix_update_data_permissions`
+  </Accordion>
+  <Accordion title="データアイテム (CMS)">
+    `wix_query_data_items`, `wix_search_data_items`, `wix_get_data_item`, `wix_count_data_items`, `wix_aggregate_data_items`, `wix_insert_data_item`, `wix_update_data_item`, `wix_save_data_item`, `wix_remove_data_item`
+  </Accordion>
+  <Accordion title="メディア">
+    `wix_generate_file_upload_url`, `wix_import_file`, `wix_list_media_files`, `wix_search_media_files`, `wix_get_file_descriptor`, `wix_bulk_delete_files`, `wix_create_media_folder`, `wix_list_media_folders`, `wix_list_account_sites`, `wix_list_connected_domains`
+  </Accordion>
+  <Accordion title="サイト管理">
+    `wix_get_site_properties`, `wix_update_site_properties`, `wix_get_analytics_data`, `wix_list_site_tags`, `wix_create_site_tag`, `wix_delete_site_tag`, `wix_query_automations`, `wix_create_secret`, `wix_get_secret_value`, `wix_list_secret_info`, `wix_delete_secret`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ストア運営" icon="shopping-cart">
+    注文を検索し、配送状況を更新し、商品全体の在庫を管理する
+  </Card>
+  <Card title="予約管理" icon="calendar-check">
+    予約の確定・辞退・リスケジュールを行い、スタッフの空き状況を確認する
+  </Card>
+  <Card title="コンテンツ公開" icon="pen-line">
+    カテゴリ・タグで整理されたブログ記事を作成・公開する
+  </Card>
+  <Card title="カスタムデータ駆動アプリ" icon="database">
+    サイトの動的ページを支えるカスタムCMSコレクションを検索・更新する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="有効なAPIキーでも全ての呼び出しが認証エラーになる">
+    WixのAPI呼び出しにはAPIキーと**Site ID**の両方が必要です — キーだけではリクエストをサイトにスコープできません。**連携**画面で両方が設定されているか確認してください。
+  </Accordion>
+  <Accordion title="wix_commit_draft_orderを実行しても実際の注文が作成されない">
+    ドラフト注文は準備段階のステップです — 先に`wix_update_draft_order_line_items`/`wix_set_draft_order_shipping_info`で明細と配送情報を組み立て、その後`wix_commit_draft_order`を呼んで実際の注文に変換してください。
+  </Accordion>
+  <Accordion title="データがあるはずのコレクションでwix_query_data_itemsが何も返さない">
+    カスタムコレクションは`wix_get_data_permissions`で権限モデルを確認する必要があります — 一部のコレクションはロールごとに読み取りアクセスを制限しており、APIキーベースのクエリが空の結果を返す原因になります。
+  </Accordion>
+  <Accordion title="wix_create_bookingは成功するがスロットの空き状況が他で反映されない">
+    予約の直前に`wix_get_service_availability`を呼び出してください — 特に人気の時間帯では、エージェントが確認した時点から予約する時点までの間に空き状況が変わることがあります。
+  </Accordion>
+</AccordionGroup>

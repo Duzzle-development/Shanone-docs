@@ -1,0 +1,88 @@
+---
+title: "Outlook"
+description: "Manage mail, calendars, contacts, and tasks — Microsoft 365's full messaging and scheduling surface"
+icon: /images/outlook.svg
+---
+
+# Outlook
+
+Shanone's Outlook integration gives your agent 134 tools covering mail, calendar/scheduling, contacts, to-do tasks, and the Microsoft Graph admin features (mail rules, delta sync, focused inbox, room booking) most integrations skip.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Outlook (e.g. "find my next meeting with the design team"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Microsoft account">
+    Approve Microsoft's OAuth consent screen for the mailbox and calendar Shanone should act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `outlook_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **134 tools** for Outlook, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Mail & folders">
+    `outlook_list_mail_folders`, `outlook_list_messages`, `outlook_get_message`, `outlook_search_messages`, `outlook_send_mail`, `outlook_create_draft`, `outlook_reply_to_message`, `outlook_mark_as_read`, `outlook_delete_message`, `outlook_move_message`, `outlook_copy_message`, `outlook_forward_message`, `outlook_update_message`, `outlook_create_mail_folder`, `outlook_update_mail_folder`, `outlook_delete_mail_folder`, `outlook_move_mail_folder`, `outlook_copy_mail_folder`, `outlook_list_child_folders`, `outlook_create_child_folder`, `outlook_batch_move_messages`, `outlook_batch_update_messages`, `outlook_batch_delete_messages`, `outlook_query_messages`, `outlook_query_messages_in_folder`, `outlook_search_messages_kql`, `outlook_search_all_mailboxes`, `outlook_get_mail_tips`, `outlook_get_message_mime`, `outlook_send_mime_message`, `outlook_get_mail_delta`
+  </Accordion>
+  <Accordion title="Calendars & events">
+    `outlook_list_calendars`, `outlook_get_calendar`, `outlook_create_calendar`, `outlook_list_calendar_groups`, `outlook_get_calendar_group`, `outlook_create_calendar_group`, `outlook_delete_calendar_group`, `outlook_list_calendars_in_group`, `outlook_create_calendar_in_group`, `outlook_delete_calendar_from_group`, `outlook_list_calendar_permissions`, `outlook_get_calendar_permission`, `outlook_create_calendar_permission`, `outlook_delete_calendar_permission`, `outlook_list_events`, `outlook_get_event`, `outlook_create_event`, `outlook_update_event`, `outlook_delete_event`, `outlook_list_calendar_view`, `outlook_search_events`, `outlook_accept_event`, `outlook_decline_event`, `outlook_tentatively_accept_event`, `outlook_forward_event`, `outlook_create_recurring_event`, `outlook_list_event_instances`, `outlook_update_event_instance`, `outlook_get_calendar_delta`
+  </Accordion>
+  <Accordion title="Scheduling & rooms">
+    `outlook_find_meeting_times`, `outlook_get_schedule`, `outlook_list_room_lists`, `outlook_get_room_list`, `outlook_list_rooms_in_list`, `outlook_get_room_schedule`, `outlook_find_available_rooms`, `outlook_list_places`, `outlook_get_place`, `outlook_list_workspaces`, `outlook_search_places`, `outlook_list_reminders`, `outlook_dismiss_reminder`, `outlook_snooze_reminder`
+  </Accordion>
+  <Accordion title="Contacts">
+    `outlook_list_contacts`, `outlook_get_contact`, `outlook_create_contact`, `outlook_update_contact`, `outlook_delete_contact`, `outlook_search_contacts`, `outlook_list_contact_folders`, `outlook_get_contact_folder`, `outlook_create_contact_folder`, `outlook_update_contact_folder`, `outlook_delete_contact_folder`, `outlook_list_contacts_in_folder`, `outlook_create_contact_in_folder`, `outlook_move_contact_to_folder`, `outlook_get_contact_photo`, `outlook_update_contact_photo`, `outlook_delete_contact_photo`, `outlook_get_contacts_delta`
+  </Accordion>
+  <Accordion title="To-do tasks">
+    `outlook_list_todo_lists`, `outlook_get_todo_list`, `outlook_create_todo_list`, `outlook_update_todo_list`, `outlook_delete_todo_list`, `outlook_list_todo_tasks`, `outlook_get_todo_task`, `outlook_create_todo_task`, `outlook_update_todo_task`, `outlook_delete_todo_task`, `outlook_complete_todo_task`
+  </Accordion>
+  <Accordion title="Attachments">
+    `outlook_list_attachments`, `outlook_get_attachment`, `outlook_add_attachment`, `outlook_delete_attachment`, `outlook_upload_large_attachment`, `outlook_list_event_attachments`, `outlook_get_event_attachment`, `outlook_add_event_attachment`, `outlook_delete_event_attachment`
+  </Accordion>
+  <Accordion title="Rules, categories & focused inbox">
+    `outlook_list_rules`, `outlook_create_rule`, `outlook_delete_rule`, `outlook_list_categories`, `outlook_get_category`, `outlook_create_category`, `outlook_delete_category`, `outlook_add_message_categories`, `outlook_remove_message_categories`, `outlook_get_focused_inbox_overrides`, `outlook_create_focused_inbox_override`, `outlook_delete_focused_inbox_override`
+  </Accordion>
+  <Accordion title="Mailbox settings & extensions">
+    `outlook_get_mailbox_settings`, `outlook_update_mailbox_settings`, `outlook_set_automatic_replies`, `outlook_list_extensions`, `outlook_get_extension`, `outlook_create_extension`, `outlook_delete_extension`, `outlook_list_linked_resources`, `outlook_create_linked_resource`, `outlook_delete_linked_resource`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting scheduling" icon="calendar">
+    Find open slots across attendees with `outlook_find_meeting_times` and create the event
+  </Card>
+  <Card title="Inbox triage" icon="inbox">
+    Search unread mail, summarize threads, and draft replies for review
+  </Card>
+  <Card title="Room booking" icon="door-open">
+    Find and reserve an available conference room for a new event
+  </Card>
+  <Card title="Task tracking" icon="check-square">
+    Turn action items from a meeting into Outlook to-do tasks with due dates
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="outlook_send_mail fails with an invalid recipient error">
+    Check the exact payload shape with `shanone_get_tool_schema` for `outlook_send_mail` — recipients are nested objects (`{"emailAddress": {"address": "..."}}`), not flat email strings.
+  </Accordion>
+  <Accordion title="outlook_get_mail_delta or outlook_get_calendar_delta returns a resync-required error">
+    Delta tokens expire after extended inactivity. Call the delta tool without a token to restart the sync, then persist the new `@odata.deltaLink` for subsequent calls.
+  </Accordion>
+  <Accordion title="outlook_create_recurring_event creates the series but individual instances won't update">
+    Use `outlook_list_event_instances` to find the specific instance's ID, then `outlook_update_event_instance` rather than `outlook_update_event` on the series master.
+  </Accordion>
+  <Accordion title="outlook_find_available_rooms returns no results">
+    Room availability depends on the room list/mailbox actually being provisioned as a resource mailbox in Microsoft 365 — confirm with `outlook_list_room_lists` that the expected room list exists first.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,94 @@
+---
+title: "ElevenLabs"
+description: "AI voice generation — text-to-speech, voice cloning, dubbing, music, and transcription"
+icon: /images/elevenlabs.svg
+---
+
+# ElevenLabs
+
+Shanone's ElevenLabs integration gives your agent 83 tools covering the full audio-AI surface — speech synthesis, voice design, dubbing, music generation, and transcription — not just basic text-to-speech.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get an ElevenLabs API key">
+    Create an API key from [ElevenLabs settings](https://elevenlabs.io/app/settings/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select ElevenLabs, and paste the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `elevenlabs_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **83 tools** for ElevenLabs, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Voices">
+    `elevenlabs_list_voices`, `elevenlabs_list_models`, `elevenlabs_get_voice`, `elevenlabs_add_voice`, `elevenlabs_edit_voice`, `elevenlabs_delete_voice`, `elevenlabs_get_voice_settings`, `elevenlabs_edit_voice_settings`, `elevenlabs_get_default_voice_settings`, `elevenlabs_delete_voice_sample`
+  </Accordion>
+  <Accordion title="Speech">
+    `elevenlabs_text_to_speech`, `elevenlabs_sound_effect`, `elevenlabs_speech_to_speech`, `elevenlabs_audio_isolation`
+  </Accordion>
+  <Accordion title="History">
+    `elevenlabs_get_generated_items`, `elevenlabs_get_history_item_by_id`, `elevenlabs_get_audio_from_history`, `elevenlabs_download_history_items`, `elevenlabs_delete_history_item`
+  </Accordion>
+  <Accordion title="Pronunciation dictionaries">
+    `elevenlabs_add_pronunciation_dictionary_from_file`, `elevenlabs_add_pronunciation_dictionary_from_rules`, `elevenlabs_add_rules_to_dictionary`, `elevenlabs_remove_rules_from_dictionary`, `elevenlabs_get_pronunciation_dictionaries`, `elevenlabs_get_pronunciation_dictionary_metadata`, `elevenlabs_get_pronunciation_dictionary_version`, `elevenlabs_update_pronunciation_dictionary`
+  </Accordion>
+  <Accordion title="Projects & chapters">
+    `elevenlabs_list_projects`, `elevenlabs_create_project`, `elevenlabs_get_project`, `elevenlabs_update_project`, `elevenlabs_delete_project`, `elevenlabs_convert_project`, `elevenlabs_get_project_snapshots`, `elevenlabs_list_chapters`, `elevenlabs_create_chapter`, `elevenlabs_get_chapter`, `elevenlabs_update_chapter`, `elevenlabs_delete_chapter`, `elevenlabs_convert_chapter`, `elevenlabs_get_chapter_snapshots`, `elevenlabs_download_chapter_audio`
+  </Accordion>
+  <Accordion title="Dubbing">
+    `elevenlabs_create_dubbing`, `elevenlabs_get_dubbing_metadata`, `elevenlabs_list_dubbing_projects`, `elevenlabs_delete_dubbing_project`, `elevenlabs_download_dubbed_audio`, `elevenlabs_get_dubbing_transcript`, `elevenlabs_get_dubbing_transcript_srt`, `elevenlabs_get_dubbing_transcript_webvtt`
+  </Accordion>
+  <Accordion title="Transcription & alignment">
+    `elevenlabs_transcribe_audio`, `elevenlabs_transcribe_audio_file`, `elevenlabs_forced_alignment`, `elevenlabs_forced_alignment_file`
+  </Accordion>
+  <Accordion title="Voice design & library">
+    `elevenlabs_design_voice`, `elevenlabs_create_voice_from_preview`, `elevenlabs_list_shared_voices`, `elevenlabs_add_shared_voice`, `elevenlabs_find_similar_voices`, `elevenlabs_get_voice_design_models`
+  </Accordion>
+  <Accordion title="Music">
+    `elevenlabs_generate_music`, `elevenlabs_create_composition_plan`, `elevenlabs_generate_music_from_plan`, `elevenlabs_stem_separation`, `elevenlabs_stem_separation_file`, `elevenlabs_get_music_models`
+  </Accordion>
+  <Accordion title="Dialogue">
+    `elevenlabs_create_dialogue`, `elevenlabs_create_dialogue_with_timestamps`
+  </Accordion>
+  <Accordion title="Audio Native, user & workspace">
+    `elevenlabs_create_audio_native_project`, `elevenlabs_create_audio_native_project_with_content`, `elevenlabs_get_audio_native_project`, `elevenlabs_update_audio_native_project`, `elevenlabs_get_user_info`, `elevenlabs_get_subscription_info`, `elevenlabs_get_usage_stats`, `elevenlabs_list_service_accounts`, `elevenlabs_list_api_keys`, `elevenlabs_create_api_key`, `elevenlabs_delete_api_key`, `elevenlabs_list_webhooks`, `elevenlabs_create_webhook`, `elevenlabs_update_webhook`, `elevenlabs_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Narration generation" icon="mic">
+    Convert written scripts into natural speech with `elevenlabs_text_to_speech` using a chosen voice
+  </Card>
+  <Card title="Multi-language dubbing" icon="languages">
+    Dub a video into another language and pull the aligned transcript for subtitles
+  </Card>
+  <Card title="Custom voice cloning" icon="user-round">
+    Design or clone a voice from samples, then reuse it consistently across projects
+  </Card>
+  <Card title="Long-form audiobooks" icon="book-open">
+    Organize a long-form project into chapters, convert each, and download the combined audio
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="elevenlabs_text_to_speech returns unnatural pronunciation for names or jargon">
+    Add custom rules with `elevenlabs_add_pronunciation_dictionary_from_rules` (or upload a lexicon file) and attach the dictionary to your voice/request.
+  </Accordion>
+  <Accordion title="Dubbing or project conversion tools return "processing" instead of a final result">
+    Dubbing and project/chapter conversion are asynchronous; poll `elevenlabs_get_dubbing_metadata` or `elevenlabs_get_project_snapshots` until status reflects completion before calling the download tools.
+  </Accordion>
+  <Accordion title="Voice cloning quality is poor">
+    `elevenlabs_add_voice` quality depends heavily on clean, noise-free samples — run `elevenlabs_audio_isolation` on source recordings first to strip background noise before cloning.
+  </Accordion>
+</AccordionGroup>

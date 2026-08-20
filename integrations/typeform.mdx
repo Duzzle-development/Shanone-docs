@@ -1,0 +1,82 @@
+---
+title: "Typeform"
+description: "Manage forms, responses, themes, and workspaces — plus images and webhooks"
+icon: /images/typeform.svg
+---
+
+# Typeform
+
+Shanone's Typeform integration gives your agent 31 tools for building and updating forms, reading and clearing responses, managing themes/images, and organizing workspaces — a focused set for treating form creation and response handling as agent-driven tasks.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Typeform (e.g. "show me the latest responses to my feedback form"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your Typeform account">
+    Approve Typeform's OAuth consent screen for the account whose forms you want Shanone to access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `typeform_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **31 tools** for Typeform, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Forms">
+    `typeform_list_forms`, `typeform_get_form`, `typeform_create_form`, `typeform_update_form`, `typeform_patch_form`, `typeform_delete_form`, `typeform_get_form_messages`, `typeform_update_form_messages`
+  </Accordion>
+  <Accordion title="Responses">
+    `typeform_list_responses`, `typeform_delete_responses`
+  </Accordion>
+  <Accordion title="Themes">
+    `typeform_list_themes`, `typeform_get_theme`, `typeform_create_theme`, `typeform_update_theme`, `typeform_delete_theme`
+  </Accordion>
+  <Accordion title="Images">
+    `typeform_list_images`, `typeform_get_image`, `typeform_upload_image`, `typeform_delete_image`, `typeform_get_image_by_size`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `typeform_list_webhooks`, `typeform_get_webhook`, `typeform_create_or_update_webhook`, `typeform_delete_webhook`, `typeform_list_webhook_deliveries`
+  </Accordion>
+  <Accordion title="Workspaces">
+    `typeform_list_workspaces`, `typeform_get_workspace`, `typeform_create_workspace`, `typeform_update_workspace`, `typeform_delete_workspace`
+  </Accordion>
+  <Accordion title="Account">
+    `typeform_get_me`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Response digests" icon="inbox">
+    Pull new responses since the last check and summarize themes or flag urgent feedback
+  </Card>
+  <Card title="Form templating" icon="copy">
+    Duplicate and adjust a form's structure/messages programmatically for a new campaign
+  </Card>
+  <Card title="Brand consistency" icon="palette">
+    Apply a shared theme across all forms in a workspace
+  </Card>
+  <Card title="Data hygiene" icon="trash-2">
+    Delete test or spam responses in bulk before analyzing real submissions
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="typeform_list_responses returns fewer results than expected">
+    Responses are paginated and can be filtered by date/completion status — check `shanone_get_tool_schema` for `typeform_list_responses` and pass `since`/`until` or `completed` explicitly rather than assuming a single call returns everything.
+  </Accordion>
+  <Accordion title="typeform_update_form overwrites fields I didn't intend to change">
+    `typeform_update_form` replaces the full form definition (PUT semantics) — use `typeform_patch_form` instead for partial updates to specific fields.
+  </Accordion>
+  <Accordion title="typeform_create_or_update_webhook doesn't fire on new responses">
+    Confirm the webhook tag is unique per form and that the form is actually receiving submissions — use `typeform_list_webhook_deliveries` to check recent delivery attempts and failures.
+  </Accordion>
+</AccordionGroup>

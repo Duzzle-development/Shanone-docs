@@ -1,0 +1,91 @@
+---
+title: "Jira"
+description: "課題、プロジェクト、ボード、スプリント、作業ログなど — Jira Cloudのプロジェクト管理機能全般"
+icon: /images/jira.svg
+---
+
+# Jira
+
+ShanoneのJira連携では、Jira Cloudのプロジェクト管理機能——課題、プロジェクト、ボード、スプリント、作業ログ、ダッシュボード、フィルタなどを扱う47のツールをエージェントが利用できるようになります。複数サイトを持つAtlassianアカウントにも対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにJiraで何か作業をしてもらう(例:「ログイン問題のバグチケットを作成して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="Atlassianアカウントを認可する">
+    AtlassianのOAuth同意画面を承認し、ShanoneがアクセスすべきJiraサイト(クラウドインスタンス)を選択します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`jira_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはJira用に**47のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="課題">
+    `jira_get_issue`, `jira_search_issues`, `jira_create_issue`, `jira_update_issue`, `jira_delete_issue`, `jira_bulk_create_issues`
+  </Accordion>
+  <Accordion title="プロジェクト">
+    `jira_list_projects`, `jira_get_project`, `jira_get_issue_types`, `jira_create_project`, `jira_get_recent_projects`, `jira_get_project_components`
+  </Accordion>
+  <Accordion title="コメント">
+    `jira_get_comments`, `jira_add_comment`, `jira_update_comment`, `jira_delete_comment`
+  </Accordion>
+  <Accordion title="ボード & スプリント">
+    `jira_list_boards`, `jira_create_board`, `jira_get_board_issues`, `jira_list_sprints`, `jira_create_sprint`, `jira_get_sprint`, `jira_move_issues_to_sprint`
+  </Accordion>
+  <Accordion title="遷移 & 担当者割り当て">
+    `jira_get_transitions`, `jira_transition_issue`, `jira_search_users`, `jira_assign_issue`
+  </Accordion>
+  <Accordion title="リンク & ウォッチャー">
+    `jira_create_issue_link`, `jira_get_issue_link_types`, `jira_get_issue_watchers`, `jira_add_watcher`, `jira_remove_watcher`
+  </Accordion>
+  <Accordion title="作業ログ">
+    `jira_add_worklog`, `jira_get_worklogs`, `jira_update_worklog`, `jira_delete_worklog`
+  </Accordion>
+  <Accordion title="添付ファイル">
+    `jira_add_attachment`, `jira_get_attachment_meta`, `jira_delete_attachment`
+  </Accordion>
+  <Accordion title="バージョン">
+    `jira_create_version`, `jira_get_project_versions`, `jira_delete_version`
+  </Accordion>
+  <Accordion title="ダッシュボード & フィルタ">
+    `jira_get_dashboards`, `jira_search_dashboards`, `jira_list_filters`, `jira_get_filter`, `jira_get_favorite_filters`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="バグトリアージ" icon="bug">
+    バグレポートから課題を作成・トリアージし、適切なプロジェクトとスプリントに割り当てる
+  </Card>
+  <Card title="スプリント計画" icon="calendar-range">
+    複数の課題を次のスプリントに移動し、スタンドアップ前にボードの状態を確認する
+  </Card>
+  <Card title="作業時間の集計" icon="clock">
+    複数の課題の作業ログを取得し、プロジェクトやエピックにかかった時間を要約する
+  </Card>
+  <Card title="課題間のリンク" icon="link">
+    調査中に見つかった関連課題を(ブロック、重複、関連あり等で)リンクする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="jira_create_issueが必須フィールドエラーで失敗する">
+    Jiraのプロジェクトごとに必須フィールド(カスタムフィールドやコンポーネントなど)は異なります——デフォルトのTask/Bug/Story以外の課題タイプでは特に、作成前に`jira_get_project`と`jira_get_issue_types`で何が必須かを確認してください。
+  </Accordion>
+  <Accordion title="jira_transition_issueで遷移が無効というエラーが出る">
+    利用可能な遷移は課題の現在のステータスとプロジェクトのワークフローに依存します——ステータス名が直接遷移に対応すると仮定せず、まず`jira_get_transitions`で課題の現在の状態から利用可能な正確な遷移IDを取得してください。
+  </Accordion>
+  <Accordion title="正常に接続したはずなのに401/403エラーが返る">
+    Jira Cloudのアカウントは複数のサイト(cloud_id)を持つことがあります——複数のJiraサイトにアクセス権がある場合、OAuth接続が目的のプロジェクトを含むサイトにスコープされているか確認してください。必要であればIntegrationsから再接続して別のサイトを選択してください。
+  </Accordion>
+</AccordionGroup>

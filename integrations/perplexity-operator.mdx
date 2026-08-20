@@ -1,0 +1,73 @@
+---
+title: "Perplexity Operator"
+description: "Advanced Perplexity Sonar access — reasoning, deep research, and multi-turn chat with citations"
+icon: /images/perplexity-operator.svg
+---
+
+# Perplexity Operator
+
+Shanone's Perplexity Operator integration gives your agent 4 tools for Perplexity's more advanced Sonar capabilities — step-by-step reasoning, deep multi-source research, and multi-turn conversation, alongside standard search. It uses the same API key as the base Perplexity integration but exposes a richer, model-specific toolset.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Perplexity API key">
+    Generate a key from the [Perplexity API settings page](https://www.perplexity.ai/settings/api).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Perplexity, and paste in the key (`pplx-...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `perplexity_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **4 tools** for Perplexity Operator, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Search">
+    `perplexity_sonar_search` — web-grounded AI search with domain and recency filters, using the `sonar`/`sonar-pro` models
+  </Accordion>
+  <Accordion title="Reasoning">
+    `perplexity_reasoning` — chain-of-thought analysis for complex, multi-step questions using `sonar-reasoning-pro`
+  </Accordion>
+  <Accordion title="Deep research">
+    `perplexity_deep_research` — exhaustive multi-source research reports using `sonar-deep-research`, for topics needing comprehensive synthesis
+  </Accordion>
+  <Accordion title="Chat">
+    `perplexity_chat` — multi-turn, context-aware conversation with citations across `sonar`, `sonar-pro`, and `sonar-reasoning-pro`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Market analysis reports" icon="bar-chart-3">
+    Run `perplexity_deep_research` on a market or competitor and get a cited, structured report
+  </Card>
+  <Card title="Multi-step reasoning" icon="git-merge">
+    Use `perplexity_reasoning` for problems that need explicit step-by-step logic, not just a lookup
+  </Card>
+  <Card title="Domain-filtered search" icon="filter">
+    Restrict `perplexity_sonar_search` to specific trusted domains for compliance-sensitive queries
+  </Card>
+  <Card title="Research assistant chat" icon="messages-square">
+    Hold a multi-turn conversation with `perplexity_chat` that stays grounded in live web results
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="perplexity_deep_research takes a very long time or times out">
+    Deep research intentionally runs exhaustive multi-source searches and can take several minutes for broad topics — narrow the query or increase your client-side timeout rather than assuming failure.
+  </Accordion>
+  <Accordion title="search_domain_filter doesn't seem to restrict results">
+    The filter accepts a maximum of 3 domains and only applies to `perplexity_sonar_search` and `perplexity_reasoning` — check `shanone_get_tool_schema` to confirm the exact array format expected.
+  </Accordion>
+  <Accordion title="perplexity_chat loses context from earlier turns">
+    Pass the full `messages` array (including prior assistant turns) on every call — the tool doesn't persist conversation state between separate `shanone_execute_tool` calls.
+  </Accordion>
+</AccordionGroup>

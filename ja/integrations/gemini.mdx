@@ -1,0 +1,67 @@
+---
+title: "Google Gemini"
+description: "Gemini APIによるディープリサーチと画像生成"
+icon: /images/gemini.svg
+---
+
+# Google Gemini
+
+ShanoneのGemini連携は、チャットモデル自体では扱えない2つの専門的な機能——長時間実行の複数ステップリサーチと画像生成——のための6個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="GeminiのAPIキーを取得する">
+    [Google AI Studio](https://aistudio.google.com/apikey)からAPIキーを作成します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**を開き、Google Geminiを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`gemini_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Gemini向けに**6個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ディープリサーチ">
+    `gemini_deep_research`, `gemini_get_research_status`
+  </Accordion>
+  <Accordion title="画像生成">
+    `gemini_generate_image`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="トピックの深堀り調査" icon="telescope">
+    複雑な質問に対して`gemini_deep_research`を起動し、引用付きでまとめられたレポートを取得する
+  </Card>
+  <Card title="コンセプトアート & イラスト" icon="image">
+    モックアップ、ブログ記事、プレゼンテーション用にテキストの説明から画像を生成する
+  </Card>
+  <Card title="バックグラウンドのリサーチジョブ" icon="clock">
+    リサーチタスクを開始し、エージェントが他の作業を続けている間に`gemini_get_research_status`をポーリングする
+  </Card>
+  <Card title="ビジュアル素材の下書き" icon="palette">
+    最終的なアートワークを依頼する前に、複数のビジュアルコンセプトを素早く作って比較する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="gemini_deep_researchが最終的な回答をすぐに返さない">
+    複雑なクエリに対するディープリサーチは非同期で実行されます。完了を報告するまで、返されたリサーチIDを使って`gemini_get_research_status`をポーリングしてください。
+  </Accordion>
+  <Accordion title="gemini_generate_imageがプロンプトと合わないテキストや詳細を生成する">
+    プロンプトではスタイル、構図、内容を明示的に記述してください——曖昧なプロンプトは汎用的な結果になりがちです。最初の生成が最終版だと考えず、プロンプトを調整して反復してください。
+  </Accordion>
+  <Accordion title="ツール呼び出しが無効なAPIキーエラーで失敗する">
+    Google AI StudioのGemini APIキーは、Google Cloudのサービスアカウントとは別物です。キーがaistudio.google.comで生成されたことを確認し、取り消されたり再生成された場合は再接続してください。
+  </Accordion>
+</AccordionGroup>

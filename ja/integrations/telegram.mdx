@@ -1,0 +1,76 @@
+---
+title: "Telegram"
+description: "Telegramボットを運用する — メッセージ送信、チャット管理、メンバーのモデレーション、Webhook設定"
+icon: /images/telegram.svg
+---
+
+# Telegram
+
+ShanoneのTelegram連携は、メッセージの送信・管理、チャット/グループの管理、メンバーのモデレーション、ボット自体の設定を行う38個のツールをエージェントに提供します——独自のボットコードを書く代わりに、エージェント経由でTelegramボットの日常的な動作を運用できます。
+
+## はじめに
+
+<Steps>
+  <Step title="BotFatherでボットを作成する">
+    Telegramで[@BotFather](https://t.me/BotFather)にメッセージを送り、`/newbot`を実行して案内に従うと、Bot Tokenが取得できます。
+  </Step>
+  <Step title="ShanoneでBot Tokenを接続する">
+    エージェントにTelegram関連の作業を依頼(例: 「このチャットにメッセージを送って」)するか、Shanoneダッシュボードの**連携**からBot Tokenを事前に登録しておきます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`telegram_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。操作対象のチャット/グループには、事前にボットがメンバーとして参加している必要があります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはTelegram向けに**38個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="メッセージ">
+    `telegram_send_message`, `telegram_forward_message`, `telegram_edit_message`, `telegram_delete_message`, `telegram_pin_message`, `telegram_unpin_message`, `telegram_unpin_all_messages`, `telegram_get_updates`, `telegram_copy_message`
+  </Accordion>
+  <Accordion title="チャット">
+    `telegram_get_chat`, `telegram_get_chat_member_count`, `telegram_get_chat_member`, `telegram_get_chat_administrators`, `telegram_leave_chat`, `telegram_set_chat_title`, `telegram_set_chat_description`, `telegram_export_chat_invite_link`, `telegram_set_chat_photo`, `telegram_delete_chat_photo`
+  </Accordion>
+  <Accordion title="メンバーのモデレーション">
+    `telegram_get_user_profile_photos`, `telegram_ban_chat_member`, `telegram_unban_chat_member`, `telegram_restrict_chat_member`, `telegram_promote_chat_member`, `telegram_set_chat_administrator_custom_title`
+  </Accordion>
+  <Accordion title="ボット設定">
+    `telegram_get_me`, `telegram_set_my_commands`, `telegram_get_my_commands`, `telegram_delete_my_commands`, `telegram_set_my_name`, `telegram_get_my_name`, `telegram_set_my_description`, `telegram_get_my_description`, `telegram_set_my_short_description`, `telegram_get_my_short_description`
+  </Accordion>
+  <Accordion title="Webhook">
+    `telegram_set_webhook`, `telegram_delete_webhook`, `telegram_get_webhook_info`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="通知ボット" icon="bell">
+    ワークフローが完了したときに、チャネルやグループにアラートやレポートを送信する
+  </Card>
+  <Card title="コミュニティのモデレーション" icon="shield-check">
+    問題行動のあるメンバーをBanまたは制限し、モデレーション通知をピン留めする
+  </Card>
+  <Card title="グループの告知" icon="megaphone">
+    何かが変わったときにチャットのタイトル/説明を更新し、告知をピン留めする
+  </Card>
+  <Card title="ボットの自己設定" icon="settings">
+    新しい機能が追加されたときに、ボットのコマンド一覧や説明を更新する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="Bot Tokenが有効なのにチャット対象のツールが失敗する">
+    ボットは対象のチャット/グループ/チャネルにメンバーとして(モデレーション操作の場合は多くの場合管理者として)追加されている必要があります——有効なトークンだけでは任意のチャットへのアクセス権は得られません。
+  </Accordion>
+  <Accordion title="telegram_ban_chat_member、telegram_restrict_chat_member、telegram_promote_chat_memberが失敗する">
+    これらの操作には、そのチャットでボットが該当する管理者権限(例: 「ユーザーのBan」や「新しい管理者の追加」)を持っている必要があります——チャットの設定でボットの管理者権限を確認してください。
+  </Accordion>
+  <Accordion title="telegram_get_updatesが何も返さない">
+    `telegram_set_webhook`でWebhookが既に設定されている場合、Telegramはポーリング方式の`telegram_get_updates`による更新配信を停止します——ポーリングに戻したい場合は、まず`telegram_delete_webhook`を呼び出してください。
+  </Accordion>
+</AccordionGroup>

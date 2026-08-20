@@ -1,0 +1,68 @@
+---
+title: "Base44"
+description: "Generate and edit full-stack apps from natural language, and query the data models Base44 builds for them"
+icon: /images/base44.svg
+---
+
+# Base44
+
+Shanone's Base44 integration gives your agent 5 tools for AI-generated app development — creating and editing apps from a description, and inspecting/querying the entity schemas Base44 generates for their data.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to create or edit a Base44 app, or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your Base44 account">
+    Approve Base44's OAuth consent screen. Shanone talks to Base44's MCP server on your behalf using the resulting access token.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `base44_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **5 tools** for Base44:
+
+<AccordionGroup>
+  <Accordion title="App creation & editing">
+    `base44_create_app` — generate a new full-stack app (frontend, backend, database schema, API endpoints) from a text description
+    `base44_edit_app` — modify an existing app using natural-language edit instructions
+  </Accordion>
+  <Accordion title="Apps & entities">
+    `base44_list_apps`, `base44_list_entity_schemas`, `base44_query_entities`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Rapid prototyping" icon="rocket">
+    Describe an internal tool in plain language and have Base44 generate a working app
+  </Card>
+  <Card title="Iterative app refinement" icon="wand-2">
+    Follow up on a generated app with targeted edit instructions instead of starting over
+  </Card>
+  <Card title="Data model discovery" icon="database">
+    Inspect an app's entity schemas before writing queries or building integrations against it
+  </Card>
+  <Card title="App data reporting" icon="bar-chart">
+    Query entities with filters to build a quick report on an app's data
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="base44_query_entities returns no entities found">
+    Confirm the exact `entity_name` with `base44_list_entity_schemas` first — entity names are app-specific and case-sensitive.
+  </Accordion>
+  <Accordion title="base44_edit_app makes an unexpected or overly broad change">
+    Be as specific as possible in `edit_instructions` — vague instructions can lead Base44 to reinterpret more of the app than intended. Review the change and follow up with another targeted edit if needed.
+  </Accordion>
+  <Accordion title="base44_create_app succeeds but the app takes a while to become usable">
+    App generation is asynchronous on Base44's side; the tool returns as soon as generation is accepted, not necessarily once the app is fully built and deployed.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,88 @@
+---
+title: "Confluence"
+description: "Read, write, and search Confluence — pages, blog posts, comments, labels, and attachments"
+icon: /images/confluence.svg
+---
+
+# Confluence
+
+Shanone's Confluence integration gives your agent 46 tools for Atlassian Confluence: pages, blog posts, comments, labels, attachments, spaces, tasks, and search.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an Atlassian API Token">
+    Go to [Atlassian API tokens](https://id.atlassian.com/manage-profile/security/api-tokens) and create a new token for your account.
+  </Step>
+  <Step title="Add credentials to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Confluence, and enter your Atlassian account email along with the API Token.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `confluence_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **46 tools** for Confluence, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Pages">
+    `confluence_list_pages`, `confluence_get_page`, `confluence_get_page_children`, `confluence_create_page`, `confluence_update_page`, `confluence_delete_page`, `confluence_update_page_title`, `confluence_get_page_ancestors`, `confluence_get_page_descendants`
+  </Accordion>
+  <Accordion title="Blog Posts">
+    `confluence_list_blogposts`, `confluence_get_blogpost`, `confluence_create_blogpost`, `confluence_update_blogpost`, `confluence_delete_blogpost`
+  </Accordion>
+  <Accordion title="Comments">
+    `confluence_create_comment`, `confluence_list_page_comments`, `confluence_get_comment`, `confluence_update_comment`, `confluence_delete_comment`, `confluence_create_inline_comment`, `confluence_list_inline_comments`
+  </Accordion>
+  <Accordion title="Labels">
+    `confluence_get_page_labels`, `confluence_add_label`, `confluence_remove_label`, `confluence_list_labels`, `confluence_get_label_pages`, `confluence_get_space_labels`
+  </Accordion>
+  <Accordion title="Attachments">
+    `confluence_list_attachments`, `confluence_get_attachment`, `confluence_delete_attachment`, `confluence_upload_attachment`
+  </Accordion>
+  <Accordion title="Spaces">
+    `confluence_list_spaces`, `confluence_get_space`, `confluence_create_space`
+  </Accordion>
+  <Accordion title="Tasks">
+    `confluence_list_tasks`, `confluence_get_task`, `confluence_update_task`
+  </Accordion>
+  <Accordion title="Properties, Permissions & Versions">
+    `confluence_get_page_properties`, `confluence_create_page_property`, `confluence_get_space_properties`, `confluence_get_space_permissions`, `confluence_get_page_operations`, `confluence_get_page_versions`, `confluence_get_page_version_details`
+  </Accordion>
+  <Accordion title="Search & Users">
+    `confluence_search`, `confluence_bulk_user_lookup`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Documentation upkeep" icon="file-pen">
+    Update stale pages and add version-tracked change comments
+  </Card>
+  <Card title="Knowledge search" icon="search">
+    Search across a space for prior decisions or documentation before writing new content
+  </Card>
+  <Card title="Space onboarding" icon="folder-plus">
+    Create a new space with an initial page structure and permission overview
+  </Card>
+  <Card title="Review workflows" icon="message-square">
+    Add inline comments on a page draft and resolve them once addressed
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tools fail with a 401 despite a valid-looking token">
+    Confluence Cloud requires the account **email** and API Token together (Basic Auth), not the token alone — double-check both fields were saved in the Integrations page.
+  </Accordion>
+  <Accordion title="confluence_create_page fails with a body format error">
+    Confluence's page body uses Atlassian Document Format (ADF) or storage-format XHTML depending on the API version — check `shanone_get_tool_schema` for `confluence_create_page` to confirm which format is expected before sending rich content.
+  </Accordion>
+  <Accordion title="confluence_search returns fewer results than expected">
+    `confluence_search` uses CQL (Confluence Query Language) under the hood; a plain keyword works, but for precise filtering (by space, label, or type) construct a proper CQL expression rather than free text.
+  </Accordion>
+</AccordionGroup>

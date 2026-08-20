@@ -1,0 +1,86 @@
+---
+title: "Alpaca"
+description: "Trade stocks and crypto, manage positions and watchlists, and pull market data through Alpaca's brokerage API"
+icon: "trending-up"
+---
+
+# Alpaca
+
+Shanone's Alpaca integration gives your agent 44 tools for trading — account info, orders, positions, watchlists, and both stock and crypto market data.
+
+<Warning>
+Alpaca's order and position tools can place real trades and move real money if you connect a live-trading API key. Confirm arguments carefully, and consider connecting Alpaca's paper-trading keys while you build and test agent workflows.
+</Warning>
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an API key pair">
+    In the Alpaca dashboard, go to **API Keys** and generate a key ID and secret key — for paper trading, use the paper-trading keys instead of live keys.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to do something with Alpaca (e.g. "show my open positions"), or add the key ID and secret key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the keys are stored, `shanone_execute_tool` calls for `alpaca_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **44 tools** for Alpaca, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Account">
+    `alpaca_get_account`, `alpaca_get_clock`, `alpaca_get_calendar`, `alpaca_list_assets`, `alpaca_get_asset`, `alpaca_get_account_configurations`, `alpaca_update_account_configurations`, `alpaca_get_account_activities`
+  </Accordion>
+  <Accordion title="Orders">
+    `alpaca_create_order`, `alpaca_list_orders`, `alpaca_get_order`, `alpaca_get_order_by_client_id`, `alpaca_replace_order`, `alpaca_cancel_order`, `alpaca_cancel_all_orders`
+  </Accordion>
+  <Accordion title="Positions">
+    `alpaca_list_positions`, `alpaca_get_position`, `alpaca_close_position`, `alpaca_close_all_positions`, `alpaca_get_portfolio_history`
+  </Accordion>
+  <Accordion title="Watchlists">
+    `alpaca_list_watchlists`, `alpaca_get_watchlist`, `alpaca_create_watchlist`, `alpaca_update_watchlist`, `alpaca_add_watchlist_asset`, `alpaca_remove_watchlist_asset`, `alpaca_delete_watchlist`
+  </Accordion>
+  <Accordion title="Stock market data">
+    `alpaca_get_stock_bars`, `alpaca_get_stock_latest_bars`, `alpaca_get_stock_quotes`, `alpaca_get_stock_latest_quotes`, `alpaca_get_stock_trades`, `alpaca_get_stock_latest_trades`, `alpaca_get_stock_snapshots`
+  </Accordion>
+  <Accordion title="Crypto market data">
+    `alpaca_get_crypto_bars`, `alpaca_get_crypto_latest_bars`, `alpaca_get_crypto_quotes`, `alpaca_get_crypto_latest_quotes`, `alpaca_get_crypto_trades`, `alpaca_get_crypto_latest_trades`, `alpaca_get_crypto_snapshots`
+  </Accordion>
+  <Accordion title="Market movers & news">
+    `alpaca_get_most_active_stocks`, `alpaca_get_market_movers`, `alpaca_get_news`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Portfolio check-ins" icon="pie-chart">
+    Summarize open positions, unrealized P&L, and portfolio history on demand
+  </Card>
+  <Card title="Watchlist-driven alerts" icon="eye">
+    Track a watchlist and surface notable price moves or news for its symbols
+  </Card>
+  <Card title="Order lifecycle management" icon="list-checks">
+    Place, replace, and cancel orders, then confirm fills via `alpaca_get_order`
+  </Card>
+  <Card title="Market screening" icon="search">
+    Pull the day's most active stocks and top movers before deciding what to research further
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="alpaca_create_order fails with an insufficient buying power error">
+    Check `alpaca_get_account` for current buying power and confirm the account isn't restricted (e.g. pattern day trading rules) before resizing the order.
+  </Accordion>
+  <Accordion title="Market data tools return no data outside market hours">
+    Use `alpaca_get_clock` and `alpaca_get_calendar` to confirm the market is open — some snapshot/latest endpoints only reflect data from the most recent session.
+  </Accordion>
+  <Accordion title="Trades placed with a live key don't show up in the paper dashboard (or vice versa)">
+    Paper and live trading use separate API key pairs and separate account states. Confirm which key pair is connected under **Integrations** in the Shanone dashboard.
+  </Accordion>
+</AccordionGroup>

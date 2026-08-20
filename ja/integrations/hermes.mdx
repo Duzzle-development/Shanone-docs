@@ -1,0 +1,73 @@
+---
+title: "Hermes Agent"
+description: "Hermes Agentのセッション、ジョブ、実行を管理する — メッセージ送信、ジョブトリガー、実行状況の監視"
+icon: /images/hermes.svg
+---
+
+# Hermes Agent
+
+ShanoneのHermes Agent連携では、セルフホストのHermes Agentサーバーを操作する23のツールをエージェントが利用できるようになります——セッション(エージェントとの対話)、ジョブ(スケジュール/トリガー可能な自動化)、実行(個々の実行インスタンス)、そしてスキル/機能の検出まで対応します。
+
+## はじめに
+
+<Steps>
+  <Step title="Hermes Agentサーバーをデプロイまたは確認する">
+    Hermes Agentはセルフホスト型のサーバーです([NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)プロジェクト参照)——そのAPI URL(例:`http://localhost:8642`や公開デプロイ先のURL)が必要です。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、Hermes Agentを選択してサーバーのAPI URLを入力します。APIキーはサーバー側で`API_SERVER_KEY`が設定されている場合のみ必要です。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`hermes_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはHermes Agent用に**23のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="ジョブ">
+    `hermes_list_jobs`, `hermes_get_job`, `hermes_create_job`, `hermes_update_job`, `hermes_delete_job`, `hermes_pause_job`, `hermes_resume_job`, `hermes_trigger_job`
+  </Accordion>
+  <Accordion title="実行(Run)">
+    `hermes_create_run`, `hermes_get_run`, `hermes_stop_run`, `hermes_approve_run` — 実行(run)は単一の実行インスタンスで、進行前に承認が必要になる場合があります
+  </Accordion>
+  <Accordion title="セッション">
+    `hermes_list_sessions`, `hermes_get_session`, `hermes_create_session`, `hermes_send_message`, `hermes_update_session`, `hermes_delete_session`, `hermes_fork_session`
+  </Accordion>
+  <Accordion title="スキル & サーバー情報">
+    `hermes_list_skills`, `hermes_list_toolsets`, `hermes_get_capabilities`, `hermes_health_check`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="スケジュール自動化" icon="clock">
+    Hermesのワークフローを定期的に実行するジョブを作成する
+  </Card>
+  <Card title="人間参加型の実行" icon="check-circle">
+    承認が必要な実行をトリガーし、提案されたアクションに基づいて承認または拒否する
+  </Card>
+  <Card title="会話の分岐" icon="git-fork">
+    元の会話を失わずに別のアプローチを試すためセッションをフォークする
+  </Card>
+  <Card title="機能の確認" icon="search">
+    新しいジョブを設計する前に利用可能なスキルとツールセットを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="hermes_*のツール呼び出しがすべて即座に失敗する">
+    まず`hermes_health_check`を実行してください——設定された`api_url`に到達できない、または間違っている場合、他のすべての呼び出しも同様に失敗します。サーバーが起動していること、URLに余分なパスが付いていないことを確認してください。
+  </Accordion>
+  <Accordion title="hermes_trigger_jobで実行は開始するが完了しない">
+    `hermes_get_run`で確認してください——一部の実行は`hermes_approve_run`を待って一時停止します。人間参加型の承認を前提としたジョブの場合、承認または停止されるまで保留状態が続きます。
+  </Accordion>
+  <Accordion title="hermes_create_jobでジョブは受理されるがスケジュール通りにトリガーされない">
+    ジョブが一時停止されていないか確認してください——`hermes_pause_job`は`hermes_resume_job`が呼ばれるまでスケジュールトリガーを無効化し、この状態はサーバー再起動後も保持されます。
+  </Accordion>
+</AccordionGroup>

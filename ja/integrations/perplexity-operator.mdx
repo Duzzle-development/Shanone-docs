@@ -1,0 +1,73 @@
+---
+title: "Perplexity Operator"
+description: "Perplexity Sonarの高度な機能 — 推論、ディープリサーチ、引用付きの複数ターン対話"
+icon: /images/perplexity-operator.svg
+---
+
+# Perplexity Operator
+
+ShanoneのPerplexity Operator連携は、Perplexity Sonarのより高度な機能——段階的な推論、複数ソースにわたるディープリサーチ、複数ターンの会話——を通常の検索に加えて利用するための4個のツールをエージェントに提供します。基本のPerplexity連携と同じAPIキーを使いますが、モデル特化のより豊富なツールセットを提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Perplexity APIキーを作成する">
+    [Perplexity APIの設定ページ](https://www.perplexity.ai/settings/api)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でPerplexityを選択し、キー(`pplx-...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`perplexity_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはPerplexity Operator向けに**4個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="検索">
+    `perplexity_sonar_search` — `sonar`/`sonar-pro`モデルを使い、ドメイン指定や新しさのフィルタに対応したWeb情報に基づくAI検索
+  </Accordion>
+  <Accordion title="推論">
+    `perplexity_reasoning` — `sonar-reasoning-pro`を使った、複雑で多段の質問に対するChain of Thought分析
+  </Accordion>
+  <Accordion title="ディープリサーチ">
+    `perplexity_deep_research` — `sonar-deep-research`を使った、包括的な統合が必要なトピック向けの複数ソースを網羅するリサーチレポート
+  </Accordion>
+  <Accordion title="チャット">
+    `perplexity_chat` — `sonar`、`sonar-pro`、`sonar-reasoning-pro`にわたる、引用付きの文脈を保った複数ターン会話
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="市場分析レポート" icon="bar-chart-3">
+    市場や競合企業について`perplexity_deep_research`を実行し、引用付きの構造化されたレポートを得る
+  </Card>
+  <Card title="多段の推論" icon="git-merge">
+    単純な検索ではなく、明示的な段階的ロジックが必要な問題に`perplexity_reasoning`を使う
+  </Card>
+  <Card title="ドメイン絞り込み検索" icon="filter">
+    コンプライアンス上重要なクエリに対して、`perplexity_sonar_search`を信頼できる特定ドメインに限定する
+  </Card>
+  <Card title="リサーチアシスタントとの対話" icon="messages-square">
+    `perplexity_chat`で、常にライブのWeb情報に基づいた複数ターンの会話を行う
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="perplexity_deep_researchが非常に時間がかかる・タイムアウトする">
+    ディープリサーチは意図的に複数ソースを網羅する検索を行うため、幅広いトピックでは完了までに数分かかることがあります。失敗と判断する前に、クエリを絞るかクライアント側のタイムアウトを延ばしてください。
+  </Accordion>
+  <Accordion title="search_domain_filterが結果を絞り込んでいないように見える">
+    このフィルタは最大3つのドメインまでを受け付け、`perplexity_sonar_search`と`perplexity_reasoning`にのみ適用されます。`shanone_get_tool_schema`で期待される配列形式を確認してください。
+  </Accordion>
+  <Accordion title="perplexity_chatが以前のターンの文脈を失う">
+    毎回の呼び出しで(以前のアシスタントのターンを含む)完全な`messages`配列を渡してください——このツールは個別の`shanone_execute_tool`呼び出し間で会話状態を保持しません。
+  </Accordion>
+</AccordionGroup>

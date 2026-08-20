@@ -1,0 +1,82 @@
+---
+title: "GitLab"
+description: "プロジェクト、Issue、マージリクエスト、パイプライン、リポジトリファイルの管理"
+icon: /images/gitlab.svg
+---
+
+# GitLab
+
+ShanoneのGitLab連携は、Issue、マージリクエスト、ブランチ/コミット、CI/CDパイプラインとジョブ、リポジトリファイル操作まで、開発ワークフロー全体をカバーする60個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにGitLab関連の作業を依頼(例: 「自分にアサインされている未対応のマージリクエストを一覧にして」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="GitLabアカウントを許可する">
+    Shanoneに操作させたいアカウント/グループについて、GitLabのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`gitlab_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGitLab向けに**60個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="プロジェクト & グループ">
+    `gitlab_get_current_user`, `gitlab_list_projects`, `gitlab_get_project`, `gitlab_list_groups`, `gitlab_get_group`, `gitlab_list_group_projects`, `gitlab_list_project_members`, `gitlab_add_project_member`, `gitlab_remove_project_member`
+  </Accordion>
+  <Accordion title="Issue">
+    `gitlab_list_issues`, `gitlab_get_issue`, `gitlab_create_issue`, `gitlab_update_issue`
+  </Accordion>
+  <Accordion title="マージリクエスト & ノート">
+    `gitlab_list_merge_requests`, `gitlab_get_merge_request`, `gitlab_create_merge_request`, `gitlab_list_issue_notes`, `gitlab_create_issue_note`, `gitlab_list_mr_notes`, `gitlab_create_mr_note`
+  </Accordion>
+  <Accordion title="ブランチ & コミット">
+    `gitlab_list_branches`, `gitlab_get_branch`, `gitlab_create_branch`, `gitlab_delete_branch`, `gitlab_delete_merged_branches`, `gitlab_list_commits`, `gitlab_get_commit`, `gitlab_get_commit_diff`, `gitlab_cherry_pick_commit`, `gitlab_revert_commit`
+  </Accordion>
+  <Accordion title="リポジトリファイル">
+    `gitlab_get_file`, `gitlab_get_raw_file`, `gitlab_create_file`, `gitlab_update_file`
+  </Accordion>
+  <Accordion title="パイプライン & ジョブ">
+    `gitlab_list_pipelines`, `gitlab_get_pipeline`, `gitlab_get_latest_pipeline`, `gitlab_create_pipeline`, `gitlab_retry_pipeline`, `gitlab_cancel_pipeline`, `gitlab_delete_pipeline`, `gitlab_get_pipeline_variables`, `gitlab_list_project_jobs`, `gitlab_list_pipeline_jobs`, `gitlab_get_job`, `gitlab_get_job_log`, `gitlab_cancel_job`, `gitlab_retry_job`, `gitlab_play_job`, `gitlab_erase_job`
+  </Accordion>
+  <Accordion title="ラベル & マイルストーン">
+    `gitlab_list_labels`, `gitlab_get_label`, `gitlab_create_label`, `gitlab_update_label`, `gitlab_delete_label`, `gitlab_list_milestones`, `gitlab_get_milestone`, `gitlab_create_milestone`, `gitlab_update_milestone`, `gitlab_delete_milestone`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="Issueのトリアージ" icon="list-checks">
+    未対応のIssueを一覧化し、ラベル/マイルストーンを適用し、議論のノートに基づいて優先度を更新する
+  </Card>
+  <Card title="マージリクエストレビューの支援" icon="git-pull-request">
+    マージリクエストのdiffとノートを取得し、人がレビューする前に変更内容を要約する
+  </Card>
+  <Card title="CI/CDのトラブルシューティング" icon="wrench">
+    最新のパイプラインステータスを取得し、失敗したジョブのログを確認し、再実行する
+  </Card>
+  <Card title="リポジトリのメンテナンス" icon="git-branch">
+    マージ済みブランチを整理し、プロジェクト全体の最近のコミットをレビューする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="gitlab_get_job_logが途切れた、または空の出力を返す">
+    GitLabのジョブログは非常に大きくなることがあり、ストリーミングされます。長時間実行のジョブでは、実行中の部分的なログではなく、ジョブ終了後に`gitlab_get_job_log`を再度呼び出して完全なトレースを取得してください。
+  </Accordion>
+  <Accordion title="gitlab_create_fileまたはgitlab_update_fileがブランチの競合エラーで失敗する">
+    これらの操作はブランチに直接コミットします。正しい`branch`パラメータを渡し、前回`gitlab_get_file`でファイルを読み取った後に他の人が競合する変更をプッシュしていないことを確認してください。
+  </Accordion>
+  <Accordion title="パイプラインやジョブ系のツールが403/権限エラーを返す">
+    パイプライン/ジョブの再実行、キャンセル、実行には、接続中のGitLabアカウントがそのプロジェクトで少なくともDeveloper権限を持っている必要があります。不明な場合は`gitlab_list_project_members`で確認してください。
+  </Accordion>
+</AccordionGroup>

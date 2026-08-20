@@ -1,0 +1,88 @@
+---
+title: "Calendly"
+description: "スケジューリングを管理する — イベントタイプ、予定済みイベント、参加者、空き時間、チーム、ルーティングフォーム"
+icon: /images/calendly.svg
+---
+
+# Calendly
+
+ShanoneのCalendly連携は、イベントタイプ、予定済みイベント、参加者、空き時間、組織、チーム、ルーティングフォームを管理する51個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにCalendly関連の作業を依頼(例: 「今後の予定済みイベントを一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。どちらの場合も、ShanoneをCalendlyアカウントに対して許可するための`connect_link`が発行されます。
+  </Step>
+  <Step title="Calendlyアカウントを許可する">
+    Shanoneに操作させたいアカウント(該当する場合は組織も含む)について、CalendlyのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`calendly_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはCalendly向けに**51個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="予定済みイベント & 参加者">
+    `calendly_list_scheduled_events`, `calendly_get_scheduled_event`, `calendly_cancel_scheduled_event`, `calendly_list_event_invitees`, `calendly_get_invitee`, `calendly_create_event_invitee`, `calendly_mark_invitee_no_show`, `calendly_delete_invitee_no_show`
+  </Accordion>
+  <Accordion title="イベントタイプ">
+    `calendly_list_event_types`, `calendly_get_event_type`, `calendly_create_event_type`, `calendly_update_event_type`, `calendly_create_one_off_event_type`, `calendly_get_event_type_availability`, `calendly_update_event_type_availability`, `calendly_list_event_type_hosts`, `calendly_list_group_event_types`, `calendly_get_group_event_type`, `calendly_list_group_relationships`
+  </Accordion>
+  <Accordion title="スケジューリングリンク & 空き時間">
+    `calendly_create_scheduling_link`, `calendly_create_single_use_scheduling_link`, `calendly_list_event_type_available_times`, `calendly_list_user_busy_times`, `calendly_list_user_availability_schedules`, `calendly_get_user_availability_schedule`, `calendly_update_user_availability_schedule`, `calendly_get_user_availability`
+  </Accordion>
+  <Accordion title="組織 & チーム">
+    `calendly_get_organization`, `calendly_get_organization_membership`, `calendly_list_organization_memberships`, `calendly_invite_user_to_organization`, `calendly_remove_user_from_organization`, `calendly_list_organization_invitations`, `calendly_revoke_organization_invitation`, `calendly_list_teams`, `calendly_get_team`, `calendly_list_team_memberships`, `calendly_get_team_membership`
+  </Accordion>
+  <Accordion title="ルーティングフォーム">
+    `calendly_list_routing_forms`, `calendly_get_routing_form`, `calendly_list_routing_form_submissions`, `calendly_get_routing_form_submission`
+  </Accordion>
+  <Accordion title="Webhook">
+    `calendly_list_webhook_subscriptions`, `calendly_create_webhook_subscription`, `calendly_delete_webhook_subscription`
+  </Accordion>
+  <Accordion title="共有">
+    `calendly_create_share`, `calendly_delete_share`
+  </Accordion>
+  <Accordion title="データコンプライアンス">
+    `calendly_delete_invitee_data`, `calendly_delete_scheduled_event_data`
+  </Accordion>
+  <Accordion title="アクティビティログ & プロフィール">
+    `calendly_list_activity_log_entries`, `calendly_get_current_user`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ミーティング準備" icon="calendar-clock">
+    通話の前に本日の予定済みイベントと参加者の詳細を取得する
+  </Card>
+  <Card title="ノーショー対応" icon="user-x">
+    ノーショーを検出し、スケジューリングリンクを使って再調整メールの案を作成する
+  </Card>
+  <Card title="リードのルーティング" icon="split">
+    ルーティングフォームの回答を読み取り、CRMやタスク管理ツールに整理する
+  </Card>
+  <Card title="チームアクセス管理" icon="users">
+    組織メンバーの招待・削除やチームメンバーシップの確認を行う
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="calendly_create_event_inviteeが権限エラーで失敗する">
+    参加者をプログラムで作成するにはCalendlyのEnterpriseプランが必要です。それ以外のプランでは、代わりに`calendly_create_scheduling_link`を使ってそのリンクを参加者に送ってください。
+  </Accordion>
+  <Accordion title="組織やチーム関連のツールが空の結果を返す">
+    メンバーシップ/チーム管理系のエンドポイントは、接続しているユーザーがCalendly組織の管理者またはオーナーであることを必要とします。一般メンバーのアカウントでは他ユーザーの情報を参照できません。
+  </Accordion>
+  <Accordion title="ルーティングフォームの回答が表示されない">
+    ルーティングフォームはCalendly上で公開され、実際に回答を受け付けている状態である必要があります。`calendly_list_routing_forms`は接続ユーザーまたはその組織が所有するフォームのみを返します。
+  </Accordion>
+</AccordionGroup>

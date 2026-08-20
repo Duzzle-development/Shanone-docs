@@ -1,0 +1,79 @@
+---
+title: "Google Analytics 4"
+description: "レポートのクエリ、プロパティ管理、イベント送信 — Admin API、Data API、Measurement Protocol"
+icon: /images/ga4.svg
+---
+
+# Google Analytics 4
+
+ShanoneのGA4連携は、Admin API(アカウント、プロパティ、カスタム定義)、Data API(レポート、リアルタイム、ファネル)、そしてイベントを直接送信するためのMeasurement Protocolまで、33個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにGA4関連の作業を依頼(例: 「先週のチャネル別トラフィックを見せて」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Googleアカウントを許可する">
+    Shanoneに操作させたいGA4プロパティへのアクセス権を持つアカウントについて、GoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`ga4_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGA4向けに**33個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="Admin(アカウント & プロパティ)">
+    `ga4_list_accounts`, `ga4_list_properties`, `ga4_get_property`, `ga4_list_data_streams`, `ga4_get_account_summaries`, `ga4_get_account`, `ga4_update_property`, `ga4_get_data_retention_settings`
+  </Accordion>
+  <Accordion title="レポーティング">
+    `ga4_run_report`, `ga4_run_realtime_report`, `ga4_get_metadata`, `ga4_batch_run_reports`, `ga4_run_pivot_report`, `ga4_check_compatibility`, `ga4_run_funnel_report`, `ga4_create_report_task`, `ga4_get_report_task`, `ga4_query_report_task`
+  </Accordion>
+  <Accordion title="主要イベント & カスタム定義">
+    `ga4_list_key_events`, `ga4_list_custom_dimensions`, `ga4_list_custom_metrics`, `ga4_create_custom_dimension`, `ga4_archive_custom_dimension`, `ga4_create_custom_metric`
+  </Accordion>
+  <Accordion title="オーディエンス & 連携リンク">
+    `ga4_list_audiences`, `ga4_create_audience_export`, `ga4_query_audience_export`, `ga4_list_google_ads_links`, `ga4_list_bigquery_links`
+  </Accordion>
+  <Accordion title="Measurement Protocol">
+    `ga4_send_events`, `ga4_validate_events`, `ga4_list_measurement_protocol_secrets`
+  </Accordion>
+  <Accordion title="アクセス権限">
+    `ga4_list_access_bindings`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="トラフィックレポーティング" icon="chart-line">
+    標準レポートやピボットレポートを実行して、チャネル・参照元・デバイス別にセッション/コンバージョンを分解する
+  </Card>
+  <Card title="リアルタイムモニタリング" icon="activity">
+    リリースやキャンペーン中に`ga4_run_realtime_report`でライブトラフィックを確認する
+  </Card>
+  <Card title="カスタムイベントトラッキング" icon="tag">
+    カスタムディメンション/メトリクスを定義し、Measurement Protocolでイベントを検証・送信する
+  </Card>
+  <Card title="オーディエンス & ファネル分析" icon="filter">
+    ファネルレポートを作成したり、後続のマーケティング利用のためにオーディエンスリストをエクスポートする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="ga4_run_reportが期待より少ない行数、またはサンプリング警告を返す">
+    ディメンション/メトリクスを組み合わせる前に`ga4_check_compatibility`を確認してください。一部の組み合わせは互換性がなく、GA4はエラーを出さずにデータを除外またはサンプリングします。
+  </Accordion>
+  <Accordion title="ga4_list_access_bindingsがスコープ不足のエラーで失敗する">
+    このエンドポイントはGA4 Admin APIのアルファ版機能であり、標準の読み取り/編集スコープに加えて追加のOAuthスコープが必要です。このエラーが発生した場合は連携を再接続してください。
+  </Accordion>
+  <Accordion title="ga4_send_eventsで送信したイベントがレポートに表示されない">
+    Measurement Protocolのイベントはデフォルトではサーバー側で検証されません。まず`ga4_validate_events`を実行してください。また、リアルタイム/標準レポートに新しいイベントが反映されるまで数分から数時間かかることがあります。
+  </Accordion>
+</AccordionGroup>

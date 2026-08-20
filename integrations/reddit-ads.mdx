@@ -1,0 +1,85 @@
+---
+title: "Reddit Ads"
+description: "Manage Reddit advertising — businesses, campaigns, targeting, creatives, catalogs, and reporting"
+icon: /images/reddit-ads.svg
+---
+
+# Reddit Ads
+
+Shanone's Reddit Ads integration gives your agent 90 tools covering the full ads workflow — business/ad account discovery, campaign and creative management, audience targeting, product catalogs, conversion tracking, and reporting.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Reddit Ads (e.g. "list my active campaigns"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Reddit Ads account">
+    Approve Reddit's OAuth consent screen for the business/ad account Shanone should act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `reddit_ads_*` tools will succeed. Start with `reddit_ads_get_me` to verify the connection, then `reddit_ads_list_my_businesses` to discover ad account IDs.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **90 tools** for Reddit Ads, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Business & account discovery">
+    `reddit_ads_get_me`, `reddit_ads_list_my_businesses`, `reddit_ads_get_business`, `reddit_ads_update_business`, `reddit_ads_query_ad_accounts`, `reddit_ads_list_profiles_by_business`, `reddit_ads_list_profiles_by_ad_account`, `reddit_ads_get_profile`, `reddit_ads_list_industries`, `reddit_ads_get_ad_account_history`, `reddit_ads_get_ad_account`, `reddit_ads_update_ad_account`, `reddit_ads_list_ad_accounts_by_business`
+  </Accordion>
+  <Accordion title="Campaigns, ad groups & ads">
+    `reddit_ads_list_campaigns`, `reddit_ads_get_campaign`, `reddit_ads_create_campaign`, `reddit_ads_update_campaign`, `reddit_ads_list_ad_groups`, `reddit_ads_get_ad_group`, `reddit_ads_create_ad_group`, `reddit_ads_update_ad_group`, `reddit_ads_list_ads`, `reddit_ads_get_ad`, `reddit_ads_create_ad`, `reddit_ads_update_ad`, `reddit_ads_list_saved_audiences`, `reddit_ads_get_saved_audience`, `reddit_ads_create_saved_audience`, `reddit_ads_update_saved_audience`, `reddit_ads_list_time_zones`
+  </Accordion>
+  <Accordion title="Targeting">
+    `reddit_ads_list_geolocations`, `reddit_ads_do_geolocation_validations`, `reddit_ads_list_communities`, `reddit_ads_list_communities_suggestions`, `reddit_ads_search_communities`, `reddit_ads_list_interests`, `reddit_ads_list_devices`, `reddit_ads_list_carriers`, `reddit_ads_list_3rd_party_audiences`, `reddit_ads_do_keyword_validations`, `reddit_ads_list_keyword_suggestions`, `reddit_ads_list_user_custom_audiences`, `reddit_ads_get_custom_audience`, `reddit_ads_get_sk_ad_network_availability`
+  </Accordion>
+  <Accordion title="Custom audiences & pixels">
+    `reddit_ads_create_custom_audience`, `reddit_ads_update_custom_audience_users`, `reddit_ads_delete_custom_audience`, `reddit_ads_list_pixels_by_ad_account`, `reddit_ads_list_pixels_by_business`, `reddit_ads_get_pixel_last_fired_at`, `reddit_ads_get_app_last_fired_at`, `reddit_ads_post_conversion_events`
+  </Accordion>
+  <Accordion title="Creatives & posts">
+    `reddit_ads_list_posts`, `reddit_ads_get_post`, `reddit_ads_create_post`, `reddit_ads_update_post`, `reddit_ads_list_structured_posts`, `reddit_ads_get_structured_post`, `reddit_ads_create_structured_post_creation_job`, `reddit_ads_update_structured_post`, `reddit_ads_generate_inspiration_creative_summary`
+  </Accordion>
+  <Accordion title="Product catalog">
+    `reddit_ads_list_product_catalogs`, `reddit_ads_get_product_catalog`, `reddit_ads_create_product_catalog`, `reddit_ads_update_product_catalog`, `reddit_ads_list_catalog_feeds`, `reddit_ads_get_catalog_feed`, `reddit_ads_create_catalog_feed`, `reddit_ads_update_catalog_feed`, `reddit_ads_delete_catalog_feed`, `reddit_ads_list_products`, `reddit_ads_get_product`, `reddit_ads_create_product`, `reddit_ads_delete_product`, `reddit_ads_list_product_sets`, `reddit_ads_get_product_set`, `reddit_ads_create_product_set`, `reddit_ads_update_product_set`, `reddit_ads_delete_product_set`, `reddit_ads_batch_upsert_products`, `reddit_ads_batch_delete_products`
+  </Accordion>
+  <Accordion title="Leads & billing">
+    `reddit_ads_list_lead_gen_forms`, `reddit_ads_get_lead_gen_form`, `reddit_ads_create_lead_gen_form`, `reddit_ads_list_funding_instruments`, `reddit_ads_get_funding_instruments`, `reddit_ads_list_billing_v2_invoices`
+  </Accordion>
+  <Accordion title="Reporting">
+    `reddit_ads_get_a_report`, `reddit_ads_get_channel_planning_reach`, `reddit_ads_generate_bid_suggestion`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Campaign performance review" icon="bar-chart-3">
+    Pull a report across campaigns and summarize spend, reach, and conversions
+  </Card>
+  <Card title="Audience research" icon="users">
+    Search communities and interests to build a targeting plan before launching a campaign
+  </Card>
+  <Card title="Catalog-driven ads" icon="shopping-bag">
+    Sync a product catalog and reuse it across dynamic product ad campaigns
+  </Card>
+  <Card title="Lead form management" icon="clipboard-list">
+    Create and monitor lead generation forms tied to active campaigns
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Most tools fail until I call reddit_ads_get_me first">
+    `reddit_ads_get_me` is the required entry point for verifying the connection before navigating to businesses and ad accounts — follow it with `reddit_ads_list_my_businesses` then `reddit_ads_list_ad_accounts_by_business` to get the `ad_account_id` most other tools need.
+  </Accordion>
+  <Accordion title="reddit_ads_create_campaign or reddit_ads_create_ad_group fails with a validation error">
+    Check `shanone_get_tool_schema` for the exact required fields — campaign objectives, budget types, and targeting objects have interdependent constraints that differ by campaign type.
+  </Accordion>
+  <Accordion title="reddit_ads_post_conversion_events doesn't show up in reporting immediately">
+    Conversion attribution can lag; use `reddit_ads_get_pixel_last_fired_at` or `reddit_ads_get_app_last_fired_at` to confirm events are actually being received before assuming a reporting issue.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,73 @@
+---
+title: "Zapier"
+description: "エージェントからZapierのアクションを実行し、Zap・連携済みアプリ・テンプレートを確認"
+icon: /images/zapier.svg
+---
+
+# Zapier
+
+Shanoneのzapier連携は、Zapier AI Actionsの実行と、既存のZap・連携済みアプリ・Zapテンプレートの確認を行うための9個のツールをエージェントに提供します。フルのZapier管理APIではなく、Zapierの巨大な自動化エコシステムへの軽量なブリッジという位置づけです。
+
+## はじめに
+
+<Steps>
+  <Step title="ZapierのAccess Tokenを作成する">
+    [Zapier Developer Platform](https://zapier.com/app/developer)からトークンを発行します。
+  </Step>
+  <Step title="APIキーで接続する">
+    Shanoneダッシュボードの**連携 → Zapier**でAccess Tokenを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`zapier_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはzapier向けに**9個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="アクション">
+    `zapier_list_actions`, `zapier_get_action_input_fields`, `zapier_run_action`, `zapier_get_action_run`
+  </Accordion>
+  <Accordion title="連携済みアプリ">
+    `zapier_list_apps`, `zapier_list_authentications`
+  </Accordion>
+  <Accordion title="Zap">
+    `zapier_list_zaps`, `zapier_get_zap`
+  </Accordion>
+  <Accordion title="Zapテンプレート">
+    `zapier_list_zap_templates`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="後続の自動化をトリガーする" icon="zap">
+    設定済みのAI Actionを実行し、接続先のアプリに作業を引き渡す
+  </Card>
+  <Card title="利用可能なアクションの確認" icon="list">
+    ワークフローを組む前に、利用可能なアクションと連携済みアプリを一覧する
+  </Card>
+  <Card title="アクションの実行結果を確認する" icon="check-circle">
+    特定のアクション実行をポーリングし、完了したかと出力内容を確認する
+  </Card>
+  <Card title="既存Zapの監査" icon="search">
+    連携済みアカウントに既に設定されているZapを一覧・検査する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="zapier_run_actionがフィールド不足エラーで失敗する">
+    まず`zapier_get_action_input_fields`をそのアクションに対して呼び出してください — 必須フィールドはアクションや連携先アプリによって異なるため、全アクションで固定スキーマだと仮定しないでください。
+  </Accordion>
+  <Accordion title="zapier_run_actionは即座に返るが何も起きていないように見える">
+    一部のアクションは非同期で実行されます。`zapier_run_action`が返した実行IDを使って`zapier_get_action_run`を呼び、実際に完了したか確認してください。
+  </Accordion>
+  <Accordion title="期待しているアクションがzapier_list_actionsに表示されない">
+    ここに表示されるのは、Zapierアカウントで明示的に有効化されたAI Actions(ZapierのAI Actions設定経由)のみです — まず`zapier_list_apps`/`zapier_list_authentications`で、Zapier側の該当アプリ連携が存在するか確認してください。
+  </Accordion>
+</AccordionGroup>

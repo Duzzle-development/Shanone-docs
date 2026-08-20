@@ -1,0 +1,91 @@
+---
+title: "Looker"
+description: "Lookerを照会・管理 — Look、ダッシュボード、Explore/モデル、スケジュールプラン、埋め込みURL、管理(ユーザー、ロール、グループ)"
+icon: /images/looker.svg
+---
+
+# Looker
+
+ShanoneのLooker連携は、アドホッククエリ、ダッシュボード/Lookのコンテンツ管理、対話型分析、スケジュール配信、埋め込み、管理操作にまたがる71個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Looker API3認証情報を作成する">
+    Lookerで**Admin > Users**に移動し、Shanoneに代行させたいサービスアカウント/ユーザーを選択して、API3のクライアントIDとシークレットを発行します。
+  </Step>
+  <Step title="Shanoneに認証情報を追加する">
+    Shanoneダッシュボードの**Integrations > Looker**で、LookerインスタンスのベースURL、クライアントID、クライアントシークレットを入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`looker_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはLooker向けに**71個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="Explore & クエリ">
+    `looker_list_models`, `looker_get_explore`, `looker_create_query`, `looker_run_query`, `looker_create_query_task`, `looker_get_query_task_results`, `looker_run_query_by_slug`, `looker_create_merge_query`, `looker_get_merge_query`, `looker_create_sql_query`, `looker_run_sql_query`, `looker_list_running_queries`
+  </Accordion>
+  <Accordion title="Look">
+    `looker_list_looks`, `looker_get_look`, `looker_run_look`, `looker_create_look`, `looker_update_look`, `looker_delete_look`, `looker_move_look`, `looker_copy_look`
+  </Accordion>
+  <Accordion title="ダッシュボード">
+    `looker_list_dashboards`, `looker_get_dashboard`, `looker_create_dashboard`, `looker_update_dashboard`, `looker_delete_dashboard`, `looker_move_dashboard`, `looker_copy_dashboard`, `looker_create_dashboard_element`, `looker_update_dashboard_element`
+  </Accordion>
+  <Accordion title="対話型分析">
+    `looker_ca_create_agent`, `looker_ca_list_agents`, `looker_ca_create_conversation`, `looker_ca_send_message`, `looker_ca_get_conversation_history`, `looker_ca_delete_conversation`
+  </Accordion>
+  <Accordion title="コンテンツガバナンス">
+    `looker_list_folders`, `looker_search_content`, `looker_validate_content`, `looker_list_favorites`, `looker_add_favorite`, `looker_remove_favorite`, `looker_get_content_usage`, `looker_get_content_thumbnail`
+  </Accordion>
+  <Accordion title="アラート">
+    `looker_create_alert`, `looker_search_alerts`, `looker_get_alert`, `looker_update_alert`, `looker_enable_disable_alert`, `looker_delete_alert`
+  </Accordion>
+  <Accordion title="スケジュールプラン">
+    `looker_create_scheduled_plan`, `looker_list_scheduled_plans_for_dashboard`, `looker_list_my_scheduled_plans`, `looker_get_scheduled_plan`, `looker_update_scheduled_plan`, `looker_delete_scheduled_plan`
+  </Accordion>
+  <Accordion title="レンダータスク">
+    `looker_create_dashboard_render_task`, `looker_create_look_render_task`, `looker_get_render_task`, `looker_get_render_task_results`
+  </Accordion>
+  <Accordion title="埋め込み">
+    `looker_create_sso_embed_url`, `looker_create_embed_url_as_me`, `looker_acquire_embed_cookieless_session`
+  </Accordion>
+  <Accordion title="管理: ユーザー、ロール & グループ">
+    `looker_get_me`, `looker_create_user`, `looker_update_user`, `looker_delete_user`, `looker_list_roles`, `looker_set_user_roles`, `looker_create_group`, `looker_add_group_user`, `looker_remove_group_user`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="自然言語BI" icon="message-circle">
+    クエリを手作業で組み立てる代わりに、LookerのExploreに対して対話形式で分析の質問をする
+  </Card>
+  <Card title="スケジュール配信レポート" icon="calendar-clock">
+    ダッシュボードのレンダリングを定期的にメール配信するスケジュールプランを設定する
+  </Card>
+  <Card title="埋め込みダッシュボード" icon="layout-dashboard">
+    SSOまたはcookielessの埋め込みURLを生成し、別のアプリ内にダッシュボードを表示する
+  </Card>
+  <Card title="コンテンツ監査" icon="search">
+    コンテンツの整合性を検証し、フォルダ横断で古くなった/壊れたLook・ダッシュボードを見つける
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="looker_run_queryが大きな結果セットでタイムアウトする">
+    クエリが完了するまでブロックする`looker_run_query`の代わりに、非同期実行として`looker_create_query_task`と`looker_get_query_task_results`を使ってください。
+  </Accordion>
+  <Accordion title="looker_create_sso_embed_urlが無効な署名エラーで失敗する">
+    SSO埋め込みには、LookerのAdmin > Embed設定で設定された埋め込みシークレットが、Shanoneが署名に使っているものと一致している必要があります——埋め込みドメインの許可リストも確認してください。
+  </Accordion>
+  <Accordion title="管理系ツールが403を返す">
+    ユーザー、ロール、グループの管理には、接続されたAPI3認証情報がAdmin権限を持つLookerユーザーに属している必要があります——ビューア権限の認証情報ではこれらの呼び出しは動作しません。
+  </Accordion>
+</AccordionGroup>

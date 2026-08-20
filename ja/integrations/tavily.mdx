@@ -1,0 +1,80 @@
+---
+title: "Tavily"
+description: "エージェントのワークフローに最適化されたWeb検索・抽出・クロール・リサーチ"
+icon: /images/tavily.svg
+---
+
+# Tavily
+
+ShanoneのTavily連携では、AIによる利用に最適化されたWeb検索・コンテンツ取得のための**5つのツール**をエージェントに提供します。検索結果は生のHTMLではなく、LLMが扱いやすい形にあらかじめ整形・ランキングされています。
+
+## はじめに
+
+<Steps>
+  <Step title="TavilyのAPIキーを取得">
+    [tavily.com](https://tavily.com) でサインアップし、TavilyダッシュボードからAPIキーを取得します。
+  </Step>
+  <Step title="Shanoneで接続">
+    エージェントにTavilyでのWeb検索を依頼するか、Shanoneダッシュボードの**インテグレーション**からAPIキーを事前に登録します。
+  </Step>
+  <Step title="再度リクエスト">
+    キーが保存されると、`tavily_*` ツールに対する `shanone_execute_tool` の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+<Note>
+TavilyはOAuthではなくAPIキー認証を使用します。アカウントにキーが接続されていない場合、設定によってはサーバー側の共有キーにフォールバックすることがあります。`tavily_*` の呼び出しの挙動が想定と異なる場合は管理者に確認してください。
+</Note>
+
+## 利用可能なツール
+
+Shanoneでは、Tavily向けに**5つのツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="検索">
+    `tavily_search` — 検索の深さ・トピックフィルタ・件数などを指定できる、AI最適化されたWeb検索
+  </Accordion>
+  <Accordion title="抽出">
+    `tavily_extract` — 1つ以上のURLからクリーンで構造化されたコンテンツを抽出
+  </Accordion>
+  <Accordion title="クロール">
+    `tavily_crawl` — 起点となるURLから再帰的にサイトをクロール
+  </Accordion>
+  <Accordion title="マップ">
+    `tavily_map` — コンテンツ全体を抽出せずに、サイトのURL構造を把握
+  </Accordion>
+  <Accordion title="リサーチ">
+    `tavily_research` — 検索と抽出を組み合わせた複数ステップのエージェント型リサーチで、1つの統合された回答を生成
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="競合調査" icon="magnifying-glass">
+    比較資料のために、競合サイトの料金・機能ページを検索・抽出
+  </Card>
+  <Card title="ファクトチェック" icon="circle-check">
+    ドラフト中の主張を裏付ける情報源をWeb検索で確認
+  </Card>
+  <Card title="サイト構造の把握" icon="sitemap">
+    クロール対象のページを決める前に、ドキュメントサイトの構造をマッピング
+  </Card>
+  <Card title="深いリサーチレポート" icon="file-text">
+    `tavily_research` を使って、オープンな質問に対する出典付きの統合レポートを生成
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="tavily_search の結果が古い、または関連性が低い">
+    クエリを絞り込み、ツールのスキーマが対応していれば `topic`（例: `"news"`）や `time_range` を明示的に指定してください。`shanone_get_tool_schema` で `tavily_search` の利用可能なフィルタを確認できます。
+  </Accordion>
+  <Accordion title="tavily_crawl がタイムアウトする、または結果が一部しか返らない">
+    大規模なサイトのクロールは1回の呼び出しとしては時間がかかりすぎることがあります。起点URLをより狭く絞る、深さ・件数の上限パラメータを下げる、あるいは先に `tavily_map` でクロール対象を計画してください。
+  </Accordion>
+  <Accordion title="tavily_* の呼び出しで401/403エラーが返る">
+    TavilyのAPIキーが未設定・無効、またはプランのリクエスト上限に達しています。Shanoneダッシュボードの**インテグレーション**で、Tavilyアカウント側のキーと一致しているか確認してください。
+  </Accordion>
+</AccordionGroup>

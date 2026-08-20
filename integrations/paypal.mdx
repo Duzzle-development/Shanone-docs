@@ -1,0 +1,85 @@
+---
+title: "PayPal"
+description: "Orders, invoices, subscriptions, disputes, payouts, and webhooks — PayPal's full commerce API"
+icon: /images/paypal.svg
+---
+
+# PayPal
+
+Shanone's PayPal integration gives your agent 105 tools covering the full commerce lifecycle — orders and payments, invoicing, subscriptions/billing plans, dispute resolution, payouts, and webhook management.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with PayPal (e.g. "list my unpaid invoices from this month"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the PayPal account">
+    Approve PayPal's OAuth consent screen for the business account Shanone should act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `paypal_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **105 tools** for PayPal, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Orders & payments">
+    `paypal_create_order`, `paypal_get_order`, `paypal_authorize_order`, `paypal_capture_order`, `paypal_update_order`, `paypal_confirm_order`, `paypal_add_order_tracking`, `paypal_update_order_tracking`, `paypal_get_authorization`, `paypal_capture_authorization`, `paypal_void_authorization`, `paypal_get_capture`, `paypal_refund_capture`, `paypal_get_refund`
+  </Accordion>
+  <Accordion title="Invoices">
+    `paypal_create_draft_invoice`, `paypal_get_invoice`, `paypal_list_invoices`, `paypal_send_invoice`, `paypal_cancel_invoice`, `paypal_delete_invoice`, `paypal_record_payment_for_invoice`, `paypal_update_invoice`, `paypal_send_invoice_reminder`, `paypal_generate_invoice_number`, `paypal_search_invoices`, `paypal_generate_invoice_qr_code`, `paypal_record_refund_for_invoice`, `paypal_delete_invoice_external_payment`, `paypal_create_invoice_template`, `paypal_list_invoice_templates`, `paypal_get_invoice_template`, `paypal_update_invoice_template`, `paypal_delete_invoice_template`
+  </Accordion>
+  <Accordion title="Subscriptions & plans">
+    `paypal_create_plan`, `paypal_get_plan`, `paypal_list_plans`, `paypal_activate_plan`, `paypal_deactivate_plan`, `paypal_update_plan_pricing`, `paypal_update_plan`, `paypal_get_subscription`, `paypal_cancel_subscription`, `paypal_suspend_subscription`, `paypal_activate_subscription`, `paypal_list_subscription_transactions`, `paypal_update_subscription`, `paypal_revise_subscription`, `paypal_capture_subscription_payment`
+  </Accordion>
+  <Accordion title="Disputes">
+    `paypal_list_disputes`, `paypal_get_dispute`, `paypal_accept_dispute_claim`, `paypal_send_message_to_dispute`, `paypal_escalate_dispute`, `paypal_make_dispute_offer`, `paypal_provide_dispute_evidence`, `paypal_appeal_dispute`, `paypal_acknowledge_dispute_return_item`, `paypal_accept_dispute_offer`, `paypal_deny_dispute_offer`, `paypal_provide_dispute_supporting_info`
+  </Accordion>
+  <Accordion title="Payouts & tracking">
+    `paypal_create_payout`, `paypal_get_payout_batch`, `paypal_get_payout_item`, `paypal_cancel_payout_item`, `paypal_create_referenced_payout`, `paypal_get_referenced_payout`, `paypal_get_referenced_payout_item`, `paypal_add_tracking`, `paypal_update_tracking`, `paypal_get_tracking`, `paypal_batch_add_tracking`, `paypal_list_tracking`
+  </Accordion>
+  <Accordion title="Products & web profiles">
+    `paypal_create_product`, `paypal_get_product`, `paypal_list_products`, `paypal_update_product`, `paypal_create_web_profile`, `paypal_get_web_profile`, `paypal_list_web_profiles`, `paypal_update_web_profile`, `paypal_patch_web_profile`, `paypal_delete_web_profile`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `paypal_list_webhooks`, `paypal_create_webhook`, `paypal_delete_webhook`, `paypal_list_available_events`, `paypal_verify_webhook_signature`, `paypal_get_webhook`, `paypal_update_webhook`, `paypal_simulate_webhook_event`, `paypal_list_webhook_events`, `paypal_get_webhook_event`, `paypal_resend_webhook_event`
+  </Accordion>
+  <Accordion title="Reporting, vault & account">
+    `paypal_list_transactions`, `paypal_get_balance`, `paypal_search_transactions`, `paypal_get_transaction_details`, `paypal_list_all_balances`, `paypal_create_setup_token`, `paypal_get_setup_token`, `paypal_create_payment_token`, `paypal_list_payment_tokens`, `paypal_get_payment_token`, `paypal_delete_payment_token`, `paypal_get_userinfo`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Invoice follow-ups" icon="file-text">
+    Find unpaid invoices and send reminders before they're overdue
+  </Card>
+  <Card title="Subscription management" icon="repeat">
+    Look up a customer's subscription status and pause, cancel, or revise their plan
+  </Card>
+  <Card title="Dispute response" icon="shield-alert">
+    Pull open disputes, gather the required evidence, and submit a response before the deadline
+  </Card>
+  <Card title="Payout automation" icon="send">
+    Batch-create payouts to multiple recipients and check on batch status
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="paypal_capture_order fails with an order not approved error">
+    The buyer must complete PayPal's approval flow before `paypal_capture_order` can succeed — check `paypal_get_order` for the order's current status first.
+  </Accordion>
+  <Accordion title="paypal_create_webhook events never seem to arrive">
+    Confirm the webhook URL is publicly reachable and that `paypal_list_available_events` includes the event types you subscribed to; use `paypal_simulate_webhook_event` to test the endpoint directly.
+  </Accordion>
+  <Accordion title="paypal_provide_dispute_evidence rejects the submission">
+    Check `shanone_get_tool_schema` for the exact evidence payload shape — PayPal requires specific evidence types (e.g. `PROOF_OF_FULFILLMENT`) rather than free-form text or arbitrary attachments.
+  </Accordion>
+</AccordionGroup>

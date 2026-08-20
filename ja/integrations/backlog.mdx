@@ -1,0 +1,91 @@
+---
+title: "Backlog"
+description: "Nulabのプロジェクト管理ツールBacklogで、課題・プロジェクト・Wiki・プルリクエスト・Gitリポジトリを管理"
+icon: /images/backlog.svg
+---
+
+# Backlog
+
+ShanoneのBacklog連携では、**96個のツール**をエージェントに提供します — カタログの中でも最も網羅性の高い連携の一つで、課題・プロジェクト・Wiki・Git/プルリクエストに加え、その周辺の管理機能(チーム、カスタムフィールド、通知、ウォッチ)までカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにBacklogで何か作業をしてもらう(例:「自分のプロジェクトの未対応課題を一覧表示して」)か、Shanoneダッシュボードの**インテグレーション**から事前に接続します。
+  </Step>
+  <Step title="Backlogのスペースを承認する">
+    Shanoneにアクセスさせたい特定のスペース(サブドメイン)について、BacklogのOAuth承認画面で承認します — BacklogのOAuthは組織単位ではなくスペース単位でスコープされます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`backlog_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Backlog向けに**96個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="課題(Issues)">
+    `backlog_get_issue`, `backlog_search_issues`, `backlog_count_issues`, `backlog_create_issue`, `backlog_update_issue`, `backlog_delete_issue`
+  </Accordion>
+  <Accordion title="コメント">
+    `backlog_get_issue_comments`, `backlog_add_issue_comment`, `backlog_update_issue_comment`, `backlog_delete_issue_comment`
+  </Accordion>
+  <Accordion title="プロジェクト & メンバー">
+    `backlog_list_projects`, `backlog_create_project`, `backlog_get_project`, `backlog_update_project`, `backlog_delete_project`, `backlog_get_project_users`, `backlog_add_project_user`, `backlog_remove_project_user`, `backlog_get_project_admins`, `backlog_add_project_admin`, `backlog_remove_project_admin`
+  </Accordion>
+  <Accordion title="課題設定(種別、状態、カスタムフィールド、カテゴリ、バージョン)">
+    `backlog_get_issue_types`, `backlog_create_issue_type`, `backlog_update_issue_type`, `backlog_delete_issue_type`, `backlog_get_project_statuses`, `backlog_create_project_status`, `backlog_update_project_status`, `backlog_delete_project_status`, `backlog_get_custom_fields`, `backlog_create_custom_field`, `backlog_update_custom_field`, `backlog_delete_custom_field`, `backlog_get_categories`, `backlog_create_category`, `backlog_update_category`, `backlog_delete_category`, `backlog_get_versions`, `backlog_create_version`, `backlog_update_version`, `backlog_delete_version`
+  </Accordion>
+  <Accordion title="Wiki">
+    `backlog_get_wiki_pages`, `backlog_count_wiki_pages`, `backlog_get_wiki_tags`, `backlog_get_wiki_page`, `backlog_create_wiki_page`, `backlog_update_wiki_page`, `backlog_delete_wiki_page`, `backlog_get_wiki_history`, `backlog_get_wiki_attachments`, `backlog_attach_file_to_wiki`, `backlog_delete_wiki_attachment`
+  </Accordion>
+  <Accordion title="Git & プルリクエスト">
+    `backlog_get_git_repositories`, `backlog_get_git_repository`, `backlog_get_pull_requests`, `backlog_count_pull_requests`, `backlog_create_pull_request`, `backlog_get_pull_request`, `backlog_update_pull_request`, `backlog_get_pull_request_comments`, `backlog_add_pull_request_comment`, `backlog_update_pull_request_comment`, `backlog_get_pull_request_attachments`
+  </Accordion>
+  <Accordion title="ドキュメント">
+    `backlog_get_documents`, `backlog_get_document_tree`, `backlog_get_document`, `backlog_add_document`, `backlog_delete_document`, `backlog_download_document_attachment`
+  </Accordion>
+  <Accordion title="チーム、ユーザー & スペース">
+    `backlog_get_teams`, `backlog_create_team`, `backlog_get_team`, `backlog_update_team`, `backlog_delete_team`, `backlog_get_users`, `backlog_get_user`, `backlog_get_myself`, `backlog_get_recently_viewed_issues`, `backlog_get_recently_viewed_projects`, `backlog_get_recently_viewed_wikis`, `backlog_get_space`, `backlog_get_space_notification`, `backlog_get_space_disk_usage`
+  </Accordion>
+  <Accordion title="通知、ウォッチ & スター">
+    `backlog_get_notifications`, `backlog_count_notifications`, `backlog_mark_notification_read`, `backlog_mark_all_notifications_read`, `backlog_get_watching_list`, `backlog_count_watching`, `backlog_add_watching`, `backlog_update_watching`, `backlog_delete_watching`, `backlog_add_star`, `backlog_remove_star`
+  </Accordion>
+  <Accordion title="メタデータ">
+    `backlog_get_priorities`, `backlog_get_resolutions`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="課題のトリアージ" icon="list-checks">
+    状態・担当者で課題を検索し、優先度や状態を一括更新する
+  </Card>
+  <Card title="プルリクエストのレビュー" icon="git-pull-request">
+    オープンなプルリクエストとコメントを一覧表示し、フォローアップコメントを追加する
+  </Card>
+  <Card title="Wikiナレッジベースの維持" icon="book-open">
+    Wikiページを作成・更新し、編集履歴を追跡する
+  </Card>
+  <Card title="リリース計画" icon="flag">
+    バージョン/マイルストーンを作成し、リリース前にそこへ課題を紐づける
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="backlog_* の呼び出しがドメイン/スペースのエラーで失敗する">
+    BacklogのOAuthは接続時に1つのスペース(サブドメイン)にスコープされます — 複数のBacklogスペースを扱う必要がある場合は、それぞれ個別に連携を再接続してください。
+  </Accordion>
+  <Accordion title="backlog_create_issueが課題種別またはカテゴリ不正で失敗する">
+    課題種別・カテゴリ・カスタムフィールドはすべてプロジェクトごとに異なります。まず対象プロジェクトの`backlog_get_issue_types`や`backlog_get_categories`で有効なIDを取得してください。
+  </Accordion>
+  <Accordion title="backlog_create_pull_requestは成功するが想定した差分が表示されない">
+    `base`と`branch`の名前が`backlog_get_git_repository`にある既存のGitブランチと完全に一致しているか確認してください — Backlogはブランチ名の入力ミスを自動修正しません。
+  </Accordion>
+</AccordionGroup>

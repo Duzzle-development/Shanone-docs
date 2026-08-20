@@ -1,0 +1,70 @@
+---
+title: "Brave"
+description: "Privacy-focused web, news, image, and video search with autocomplete suggestions"
+icon: /images/brave.svg
+---
+
+# Brave
+
+Shanone's Brave integration gives your agent 6 tools for Brave Search — web, news, image, and video search, autocomplete suggestions, and a combined web+news query, all backed by Brave's independent, privacy-focused index.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Brave Search API key">
+    Sign up at [api.search.brave.com](https://api.search.brave.com/app/keys) and generate an API key.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to search the web with Brave, or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the key is stored, `shanone_execute_tool` calls for `brave_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **6 tools** for Brave:
+
+<AccordionGroup>
+  <Accordion title="Web search">
+    `brave_web_search`, `brave_search` — `brave_search` additionally returns combined web and news results in a single call
+  </Accordion>
+  <Accordion title="News, image & video search">
+    `brave_news_search`, `brave_image_search`, `brave_video_search`
+  </Accordion>
+  <Accordion title="Autocomplete">
+    `brave_suggest`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Current events research" icon="newspaper">
+    Search recent news with a freshness filter to summarize what's happened this week
+  </Card>
+  <Card title="Visual reference gathering" icon="image">
+    Pull relevant images for a topic to include in a document or presentation
+  </Card>
+  <Card title="Query expansion" icon="list">
+    Use `brave_suggest` to explore related queries before committing to a full search
+  </Card>
+  <Card title="Regional search" icon="globe">
+    Search with a specific `country` code to get results relevant to a particular market
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Any brave_* call fails with an authentication error">
+    The connected API key is missing, invalid, or expired. Check and re-enter it under **Integrations** in the Shanone dashboard.
+  </Accordion>
+  <Accordion title="brave_web_search returns a rate limit error">
+    Brave's free plan is limited to 2,000 requests/month. Space out requests or upgrade the connected plan if you're hitting this regularly.
+  </Accordion>
+  <Accordion title="freshness filter (pd/pw/pm/py) doesn't seem to narrow results">
+    Freshness filters bias ranking toward recent content but don't strictly exclude older results for every query — combine with specific date terms in the query itself for stricter recency.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,91 @@
+---
+title: "Jira"
+description: "Issues, projects, boards, sprints, worklogs, and more — full Jira Cloud project management"
+icon: /images/jira.svg
+---
+
+# Jira
+
+Shanone's Jira integration gives your agent 47 tools for Jira Cloud project management — issues, projects, boards, sprints, worklogs, dashboards, filters, and more, across multi-site Atlassian accounts.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Jira (e.g. "create a bug ticket for the login issue"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Atlassian account">
+    Approve Atlassian's OAuth consent screen and select the Jira site (cloud instance) Shanone should access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `jira_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **47 tools** for Jira, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Issues">
+    `jira_get_issue`, `jira_search_issues`, `jira_create_issue`, `jira_update_issue`, `jira_delete_issue`, `jira_bulk_create_issues`
+  </Accordion>
+  <Accordion title="Projects">
+    `jira_list_projects`, `jira_get_project`, `jira_get_issue_types`, `jira_create_project`, `jira_get_recent_projects`, `jira_get_project_components`
+  </Accordion>
+  <Accordion title="Comments">
+    `jira_get_comments`, `jira_add_comment`, `jira_update_comment`, `jira_delete_comment`
+  </Accordion>
+  <Accordion title="Boards & sprints">
+    `jira_list_boards`, `jira_create_board`, `jira_get_board_issues`, `jira_list_sprints`, `jira_create_sprint`, `jira_get_sprint`, `jira_move_issues_to_sprint`
+  </Accordion>
+  <Accordion title="Transitions & assignment">
+    `jira_get_transitions`, `jira_transition_issue`, `jira_search_users`, `jira_assign_issue`
+  </Accordion>
+  <Accordion title="Links & watchers">
+    `jira_create_issue_link`, `jira_get_issue_link_types`, `jira_get_issue_watchers`, `jira_add_watcher`, `jira_remove_watcher`
+  </Accordion>
+  <Accordion title="Worklogs">
+    `jira_add_worklog`, `jira_get_worklogs`, `jira_update_worklog`, `jira_delete_worklog`
+  </Accordion>
+  <Accordion title="Attachments">
+    `jira_add_attachment`, `jira_get_attachment_meta`, `jira_delete_attachment`
+  </Accordion>
+  <Accordion title="Versions">
+    `jira_create_version`, `jira_get_project_versions`, `jira_delete_version`
+  </Accordion>
+  <Accordion title="Dashboards & filters">
+    `jira_get_dashboards`, `jira_search_dashboards`, `jira_list_filters`, `jira_get_filter`, `jira_get_favorite_filters`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Bug triage" icon="bug">
+    Create and triage issues from a bug report, assigning them to the right project and sprint
+  </Card>
+  <Card title="Sprint planning" icon="calendar-range">
+    Move a batch of issues into the next sprint and check board state before standup
+  </Card>
+  <Card title="Time tracking rollups" icon="clock">
+    Pull worklogs across issues to summarize time spent on a project or epic
+  </Card>
+  <Card title="Cross-issue linking" icon="link">
+    Link related issues (blocks, duplicates, relates-to) as they're discovered during investigation
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="jira_create_issue fails with a required field error">
+    Different Jira projects have different required fields (e.g. custom fields, components) — call `jira_get_project` and `jira_get_issue_types` first to see what's mandatory before creating, especially for issue types beyond the default Task/Bug/Story.
+  </Accordion>
+  <Accordion title="jira_transition_issue fails saying the transition isn't valid">
+    Available transitions depend on the issue's current status and the project's workflow — call `jira_get_transitions` first to get the exact transition IDs available from the issue's current state, rather than assuming a status name maps directly to a transition.
+  </Accordion>
+  <Accordion title="Tools return a 401/403 error even though I connected successfully">
+    Jira Cloud accounts can have multiple sites (cloud_id); if you have access to more than one Jira site, confirm the OAuth connection is scoped to the site containing the project you're trying to reach — reconnect via Integrations to pick a different site if needed.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,73 @@
+---
+title: "Jina AI"
+description: "LLM-friendly web search, URL reading, deep research, and document reranking"
+icon: /images/jina.svg
+---
+
+# Jina AI
+
+Shanone's Jina AI integration gives your agent 4 tools for turning the web into LLM-ready content — search with inline extraction, single-URL reading, multi-step deep research, and relevance reranking.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Jina API Key">
+    Generate a key from the [Jina AI API page](https://jina.ai/api/).
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Jina AI, and paste in your API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `jina_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **4 tools** for Jina AI, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Search">
+    `jina_search` — web search that automatically fetches and returns the top 5 results' content in LLM-friendly markdown, optionally restricted to specific sites
+  </Accordion>
+  <Accordion title="Reading">
+    `jina_read` — convert any URL (web page, PDF, or MS Office document) to clean markdown, HTML, text, or a screenshot
+  </Accordion>
+  <Accordion title="Deep research">
+    `jina_deep_search` — an agent that reasons, searches, and iterates through multiple steps to answer complex questions with cited sources
+  </Accordion>
+  <Accordion title="Reranking">
+    `jina_rerank` — score and reorder a set of documents by relevance to a query using a cross-encoder model
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Grounded answers" icon="search">
+    Use `jina_search` to pull current information into a response instead of relying on stale knowledge
+  </Card>
+  <Card title="Clean content extraction" icon="file-text">
+    Read a specific article or PDF with `jina_read` and get clean markdown without ads or navigation
+  </Card>
+  <Card title="Complex research" icon="brain">
+    Hand off a multi-part research question to `jina_deep_search` and get a synthesized, cited answer
+  </Card>
+  <Card title="RAG quality improvement" icon="sort-desc">
+    Rerank retrieved documents with `jina_rerank` before feeding the top results to an LLM
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="jina_search or jina_read return a 401 authentication error">
+    Double-check the API Key saved in the Integrations page — Jina's free tier keys and paid keys both work, but an expired or mistyped key will fail every request.
+  </Accordion>
+  <Accordion title="jina_deep_search takes much longer than the other tools">
+    This is expected — DeepSearch reasons and searches iteratively, averaging around 56.7 seconds per query. Don't treat a long wait as a failure; only retry if it actually times out or errors.
+  </Accordion>
+  <Accordion title="jina_rerank returns fewer results than the number of documents I passed">
+    Documents must be separated with the `|||` delimiter in a single string — check that your documents don't contain that delimiter as part of their content, which would split them unexpectedly.
+  </Accordion>
+</AccordionGroup>

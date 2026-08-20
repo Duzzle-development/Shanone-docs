@@ -1,0 +1,85 @@
+---
+title: "Mixpanel"
+description: "イベントの記録、ユーザー/グループプロフィールの管理、分析クエリの実行 — セグメンテーション、リテンション、ファネル、アノテーション"
+icon: /images/mixpanel.svg
+---
+
+# Mixpanel
+
+ShanoneのMixpanel連携は、イベントの記録、ユーザー/グループプロフィールへの書き込み、多くのチームがダッシュボードの基盤とする分析クエリ(セグメンテーション、リテンション、ファネル)をカバーする46個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Mixpanelサービスアカウントを取得する">
+    Mixpanelのプロジェクト設定で**Service Accounts**に移動し、サービスアカウントを作成します——ユーザー名、パスワード、プロジェクトIDを控えておいてください。
+  </Step>
+  <Step title="Shanoneに認証情報を追加する">
+    Shanoneダッシュボードの**Integrations > Mixpanel**で、プロジェクトID、サービスアカウントのユーザー名、パスワードを入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`mixpanel_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはMixpanel向けに**46個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="分析クエリ">
+    `mixpanel_query_segmentation`, `mixpanel_query_segmentation_sum`, `mixpanel_query_segmentation_average`, `mixpanel_query_segmentation_numeric`, `mixpanel_query_retention`, `mixpanel_query_frequency`, `mixpanel_query_addiction`
+  </Accordion>
+  <Accordion title="イベント & ファネル">
+    `mixpanel_get_top_events`, `mixpanel_get_event_counts`, `mixpanel_get_top_event_properties`, `mixpanel_list_saved_funnels`, `mixpanel_query_funnel_trends`
+  </Accordion>
+  <Accordion title="イベントトラッキング">
+    `mixpanel_track_event`, `mixpanel_track_events_batch`, `mixpanel_import_events`, `mixpanel_track_revenue`
+  </Accordion>
+  <Accordion title="ユーザープロフィール">
+    `mixpanel_set_user_properties`, `mixpanel_set_user_properties_once`, `mixpanel_increment_user_property`, `mixpanel_append_to_user_list`, `mixpanel_union_to_user_list`, `mixpanel_delete_user_profile`, `mixpanel_remove_from_user_list_property`, `mixpanel_delete_user_property`, `mixpanel_update_user_profiles_batch`, `mixpanel_delete_user_profiles_batch`
+  </Accordion>
+  <Accordion title="グループプロフィール">
+    `mixpanel_set_group_properties`, `mixpanel_set_user_group`, `mixpanel_delete_group_profile`, `mixpanel_set_group_properties_once`, `mixpanel_union_to_group_list_property`, `mixpanel_remove_from_group_list_property`, `mixpanel_delete_group_property`, `mixpanel_update_group_profiles_batch`
+  </Accordion>
+  <Accordion title="アイデンティティ">
+    `mixpanel_identify_user`, `mixpanel_create_alias`, `mixpanel_merge_users`
+  </Accordion>
+  <Accordion title="アノテーション">
+    `mixpanel_list_annotations`, `mixpanel_get_annotation`, `mixpanel_create_annotation`, `mixpanel_delete_annotation`, `mixpanel_create_annotation_tag`, `mixpanel_list_annotation_tags`
+  </Accordion>
+  <Accordion title="ルックアップテーブル & プロジェクト">
+    `mixpanel_list_lookup_tables`, `mixpanel_replace_lookup_table`, `mixpanel_get_all_projects`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="リテンション分析" icon="repeat">
+    コホートのリテンションを照会し、最近の機能がユーザーの継続利用に与えた影響を確認する
+  </Card>
+  <Card title="ファネルのデバッグ" icon="filter">
+    ファネルの傾向を取得し、オンボーディングフローでユーザーが離脱するポイントを特定する
+  </Card>
+  <Card title="イベントのバックフィル" icon="upload">
+    他の分析ツールから移行する際に、過去のイベントを一括インポートする
+  </Card>
+  <Card title="リリースのアノテーション" icon="flag">
+    デプロイや実験の開始日をMixpanelのタイムラインに記録し、後で参照できるようにする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="mixpanel_track_eventは成功するがイベントがすぐに表示されない">
+    Mixpanelの取り込みパイプラインには処理の遅延があります——トラッキング呼び出し自体は即座に成功を返しますが、レポートに反映されるまで数分かかることがあります。
+  </Accordion>
+  <Accordion title="mixpanel_import_eventsが過去のデータを拒否する">
+    インポート用エンドポイントは(通常のトラッキングと異なり)イベントに有効な`time`プロパティを含めることを要求し、5年以上前のイベントや未来の日時のイベントは拒否します。
+  </Accordion>
+  <Accordion title="セグメンテーションクエリが予期せず空の結果を返す">
+    イベント名やプロパティ名が実際にトラッキングされているもの(大文字小文字を含む)と完全に一致しているか確認してください——まず`mixpanel_get_top_events`と`mixpanel_get_top_event_properties`で実際の名前を確認するとよいでしょう。
+  </Accordion>
+</AccordionGroup>

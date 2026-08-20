@@ -1,0 +1,82 @@
+---
+title: "Google Docs"
+description: "ドキュメントの作成・編集 — テキスト、テーブル、書式設定、コメント、Markdownとの相互変換"
+icon: /images/google-docs.svg
+---
+
+# Google Docs
+
+ShanoneのGoogle Docs連携は、コンテンツ・書式設定、テーブル、画像、コメント/提案、タブ、そして生のブロック操作よりもエージェントによる編集をはるかに便利にするMarkdown変換ツールまで、Docs APIの機能全体をカバーする58個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにGoogle Docs関連の作業を依頼(例: 「このアウトラインを整形されたドキュメントにして」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Googleアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、GoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`google_docs_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Docs向けに**58個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ドキュメント & コンテンツ">
+    `google_docs_get_document`, `google_docs_get_document_text`, `google_docs_create_document`, `google_docs_insert_text`, `google_docs_delete_content_range`, `google_docs_replace_all_text`, `google_docs_batch_update`
+  </Accordion>
+  <Accordion title="書式設定">
+    `google_docs_update_text_style`, `google_docs_update_paragraph_style`, `google_docs_create_paragraph_bullets`, `google_docs_delete_paragraph_bullets`, `google_docs_insert_page_break`, `google_docs_insert_section_break`, `google_docs_update_section_style`, `google_docs_update_document_style`, `google_docs_update_named_style`
+  </Accordion>
+  <Accordion title="テーブル">
+    `google_docs_insert_table`, `google_docs_insert_table_row`, `google_docs_insert_table_column`, `google_docs_delete_table_row`, `google_docs_delete_table_column`, `google_docs_update_table_column_properties`, `google_docs_update_table_cell_style`, `google_docs_update_table_row_style`, `google_docs_merge_table_cells`, `google_docs_unmerge_table_cells`, `google_docs_pin_table_header_rows`
+  </Accordion>
+  <Accordion title="画像、ヘッダー/フッター & 名前付き範囲">
+    `google_docs_insert_inline_image`, `google_docs_replace_image`, `google_docs_delete_positioned_object`, `google_docs_create_header`, `google_docs_delete_header`, `google_docs_create_footer`, `google_docs_delete_footer`, `google_docs_create_footnote`, `google_docs_create_named_range`, `google_docs_delete_named_range`
+  </Accordion>
+  <Accordion title="コメント & 提案">
+    `google_docs_insert_comment`, `google_docs_add_comment_reply`, `google_docs_update_comment_post`, `google_docs_delete_comment`, `google_docs_delete_comment_reply`, `google_docs_accept_suggestion`, `google_docs_reject_suggestion`, `google_docs_delete_suggestion`
+  </Accordion>
+  <Accordion title="リッチコンテンツ & タブ">
+    `google_docs_insert_person`, `google_docs_insert_rich_link`, `google_docs_insert_date`, `google_docs_add_document_tab`, `google_docs_delete_tab`, `google_docs_update_document_tab_properties`
+  </Accordion>
+  <Accordion title="Markdown & Drive連携">
+    `google_docs_create_document_from_markdown`, `google_docs_update_document_from_markdown`, `google_docs_update_section_from_markdown`, `google_docs_get_document_markdown`, `google_docs_copy_document`, `google_docs_export_pdf`, `google_docs_search_documents`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="Markdownネイティブな作成" icon="file-text">
+    段落/テーブルのリクエストを手作業で組み立てる代わりに、Markdownからドキュメントを作成・更新する
+  </Card>
+  <Card title="レポート生成" icon="table">
+    テーブルを挿入・整形して、構造化データを整形されたレポートに変換する
+  </Card>
+  <Card title="提案のレビュー" icon="check-check">
+    共有ドラフトを確定する前に、保留中の提案を一覧化して承認/却下する
+  </Card>
+  <Card title="PDF書き出し & 配布" icon="download">
+    完成したドキュメントをPDFに書き出し、Google Docsの外で共有する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="google_docs_update_document_from_markdownで予期しない書式になる">
+    Markdownコンバーターは一般的な要素(見出し、リスト、テーブル、太字/斜体)をサポートしていますが、Docsネイティブの機能すべてには対応していません。高度な書式設定が必要な場合は、特定の範囲に対して`google_docs_update_text_style`や`google_docs_update_paragraph_style`を後続で使用してください。
+  </Accordion>
+  <Accordion title="連続した複数の編集で変更が競合したり重複してしまう">
+    インデックスベースの操作(挿入/削除)は以降のコンテンツのオフセットをずらします。関連する変更を行う際は、複数の単発編集呼び出しを連続させるより、複数のリクエストを含む単一の`google_docs_batch_update`呼び出しを優先してください。
+  </Accordion>
+  <Accordion title="google_docs_insert_commentや提案系のツールが効果を発揮していないように見える">
+    コメントと提案はコンテンツの編集とは別物で、ファイルに対するDocsネイティブのコメント/提案権限が必要です。接続中のアカウントが少なくともコメント可能な権限を持っているか確認してください。
+  </Accordion>
+</AccordionGroup>

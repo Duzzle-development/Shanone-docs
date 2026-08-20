@@ -1,0 +1,88 @@
+---
+title: "Baseten"
+description: "Deploy and run ML models — inference, training, chains, gateway routing, and workspace administration"
+icon: "cpu"
+---
+
+# Baseten
+
+Shanone's Baseten integration gives your agent 129 tools — the largest ML infrastructure integration in the catalog, covering model deployment and inference, multi-step chains, async queues, training jobs, model gateway routing, and workspace/billing administration.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate a Baseten API key">
+    In the Baseten dashboard, go to **Settings > API Keys** and generate a new key.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to do something with Baseten (e.g. "run inference on my deployed model"), or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the key is stored, `shanone_execute_tool` calls for `baseten_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **129 tools** for Baseten, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Predict & async inference">
+    `baseten_predict_model`, `baseten_predict_chain`, `baseten_predict_model_regional`, `baseten_predict_chain_regional`, `baseten_wake_model`, `baseten_wake_model_regional`, `baseten_predict_model_async`, `baseten_predict_chain_async`, `baseten_get_async_request_status`, `baseten_cancel_async_request`, `baseten_get_async_queue_status`, `baseten_get_async_queue_status_regional`
+  </Accordion>
+  <Accordion title="Models & chains">
+    `baseten_list_models`, `baseten_get_model`, `baseten_create_model_from_source`, `baseten_delete_model`, `baseten_list_chains`, `baseten_get_chain`, `baseten_get_chainlet_logs`, `baseten_delete_chain`
+  </Accordion>
+  <Accordion title="Deployments & environments">
+    `baseten_list_deployments`, `baseten_add_deployment`, `baseten_get_production_deployment`, `baseten_get_development_deployment`, `baseten_get_deployment_by_id`, `baseten_update_deployment`, `baseten_delete_deployment`, `baseten_get_deployment_logs`, `baseten_get_deployment_metrics`, `baseten_get_deployment_config`, `baseten_get_deployment_download_url`, `baseten_terminate_deployment_replica`, `baseten_get_development_patch_state`, `baseten_get_deployment_ssh_certificate`, `baseten_update_deployment_backpressure_policy`, `baseten_list_chain_deployments`, `baseten_get_chain_deployment`, `baseten_deactivate_chain_deployment`, `baseten_create_environment`, `baseten_list_environments`, `baseten_update_environment`, `baseten_delete_environment`
+  </Accordion>
+  <Accordion title="Model APIs (managed chat/completion endpoints)">
+    `baseten_chat_completion`, `baseten_create_message`, `baseten_list_model_apis`, `baseten_get_model_api`, `baseten_get_model_apis_usage`
+  </Accordion>
+  <Accordion title="Gateway (routing, groups, keys)">
+    `baseten_gateway_create_endpoint`, `baseten_gateway_list_endpoints`, `baseten_gateway_get_endpoint`, `baseten_gateway_update_endpoint`, `baseten_gateway_delete_endpoint`, `baseten_gateway_create_group`, `baseten_gateway_list_groups`, `baseten_gateway_get_group`, `baseten_gateway_get_group_usage`, `baseten_gateway_update_group`, `baseten_gateway_delete_group`, `baseten_gateway_create_api_key`, `baseten_gateway_register_api_key`, `baseten_gateway_list_api_keys`, `baseten_gateway_get_api_key`, `baseten_gateway_revoke_api_key`
+  </Accordion>
+  <Accordion title="Training">
+    `baseten_create_training_project`, `baseten_list_training_projects`, `baseten_get_training_project`, `baseten_delete_training_project`, `baseten_create_training_job`, `baseten_list_training_jobs`, `baseten_search_training_jobs`, `baseten_get_training_job`, `baseten_stop_training_job`, `baseten_recreate_training_job`, `baseten_delete_training_job`, `baseten_get_training_job_logs`, `baseten_get_training_job_metrics`, `baseten_get_training_job_queue_context`, `baseten_get_training_project_cache_summary`, `baseten_list_training_job_checkpoints`, `baseten_get_training_job_checkpoint_files`, `baseten_download_training_job_source`
+  </Accordion>
+  <Accordion title="Loops (RL training runs)">
+    `baseten_create_loops_session`, `baseten_get_loops_session`, `baseten_get_server_capabilities`, `baseten_create_loops_run`, `baseten_create_loops_trainer`, `baseten_list_loops_runs`, `baseten_get_loops_run`, `baseten_deactivate_loops_run`, `baseten_create_loops_sampler`, `baseten_list_loops_samplers`, `baseten_get_loops_sampler`, `baseten_pair_loops_sampler_with_run`, `baseten_list_loops_checkpoints`, `baseten_validate_loops_checkpoint`, `baseten_get_loops_checkpoint_files`, `baseten_list_loops_deployments`, `baseten_get_loops_deployment`, `baseten_deactivate_loops_deployment`, `baseten_get_loops_deployment_metrics`, `baseten_get_loops_deployment_logs`
+  </Accordion>
+  <Accordion title="Infra info & model library">
+    `baseten_list_instance_types`, `baseten_get_instance_type_prices`, `baseten_list_regions`, `baseten_list_library_listings`, `baseten_create_library_listing`, `baseten_get_library_listing`, `baseten_update_library_listing`, `baseten_delete_library_listing`, `baseten_list_listing_versions`, `baseten_create_listing_version`, `baseten_get_listing_version`, `baseten_update_listing_version`, `baseten_delete_listing_version`
+  </Accordion>
+  <Accordion title="Workspace admin">
+    `baseten_list_teams`, `baseten_get_team`, `baseten_list_users`, `baseten_get_current_user`, `baseten_get_user`, `baseten_list_secrets`, `baseten_upsert_secret`, `baseten_delete_secret`, `baseten_list_api_keys`, `baseten_create_api_key`, `baseten_delete_api_key`, `baseten_get_billing_usage_summary`, `baseten_get_workspace_audit_logs`, `baseten_get_model_audit_logs`, `baseten_get_chain_audit_logs`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Model inference from agent workflows" icon="cpu">
+    Call `baseten_predict_model` or `baseten_chat_completion` against a deployed model as part of a larger agent task
+  </Card>
+  <Card title="Deployment health checks" icon="activity">
+    Pull deployment metrics and logs to diagnose a slow or failing model
+  </Card>
+  <Card title="Training job monitoring" icon="line-chart">
+    Track a training job's status, metrics, and checkpoints through to completion
+  </Card>
+  <Card title="Gateway cost control" icon="dollar-sign">
+    Review gateway group usage and rotate or revoke API keys tied to a project
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="baseten_predict_model returns a cold-start delay or timeout">
+    Scaled-to-zero deployments need to spin up before serving. Call `baseten_wake_model` first, or add a retry with backoff around `baseten_predict_model`.
+  </Accordion>
+  <Accordion title="baseten_predict_model_async never resolves">
+    Async predictions are processed via a queue; poll `baseten_get_async_request_status` with the returned request ID rather than expecting a synchronous result.
+  </Accordion>
+  <Accordion title="Regional variants (e.g. baseten_predict_model_regional) behave differently than the default tool">
+    Regional tools target a specific deployment region rather than Baseten's default routing — use them only when you need to pin inference to a particular region for latency or compliance reasons.
+  </Accordion>
+</AccordionGroup>

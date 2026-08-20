@@ -1,0 +1,79 @@
+---
+title: "Webex"
+description: "Cisco Webexでミーティングをスケジュールし、ルーム・チーム・メッセージを管理"
+icon: /images/webex.svg
+---
+
+# Webex
+
+ShanoneのWebex連携は、ミーティングのスケジューリングと、コラボレーションの場となるスペース(ルーム)・チーム・メッセージの管理のための27個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにWebex関連の作業を依頼(例: 「明日15時のミーティングをスケジュールして」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Webexアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、WebexのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`webex_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはWebex向けに**27個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ミーティング">
+    `webex_list_meetings`, `webex_get_meeting`, `webex_create_meeting`, `webex_update_meeting`, `webex_delete_meeting`
+  </Accordion>
+  <Accordion title="ルーム">
+    `webex_list_rooms`, `webex_get_room`, `webex_create_room`, `webex_update_room`, `webex_delete_room`
+  </Accordion>
+  <Accordion title="メンバーシップ">
+    `webex_list_memberships`, `webex_get_membership`, `webex_create_membership`, `webex_update_membership`, `webex_delete_membership`
+  </Accordion>
+  <Accordion title="チーム">
+    `webex_list_teams`, `webex_get_team`, `webex_create_team`, `webex_update_team`, `webex_delete_team`
+  </Accordion>
+  <Accordion title="メッセージ">
+    `webex_list_messages`, `webex_get_message`, `webex_send_message`, `webex_delete_message`
+  </Accordion>
+  <Accordion title="ユーザー">
+    `webex_get_me`, `webex_get_person`, `webex_list_people`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ミーティングのスケジューリング" icon="calendar-plus">
+    ミーティングを作成・更新し、参加者が適切にアクセスできるか確認する
+  </Card>
+  <Card title="チームスペースのセットアップ" icon="users-round">
+    新規プロジェクト用にルームを作成し、チームを追加してメンバーシップを管理する
+  </Card>
+  <Card title="一斉アップデートの共有" icon="megaphone">
+    ルームにステータス更新を投稿し、正しいスペースに届いているか確認する
+  </Card>
+  <Card title="ディレクトリ検索" icon="search">
+    メッセージ送信や追加の前に、同僚のWebexパーソンIDやメールアドレスを検索する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="webex_create_membershipやwebex_send_messageがnot foundエラーで失敗する">
+    Webexのルーム・チーム・パーソンの識別子はメールや名前ではなく不透明なIDです — 先に`webex_list_rooms`/`webex_list_people`(または`webex_get_person`)で正しいIDを解決してください。
+  </Accordion>
+  <Accordion title="webex_delete_roomやwebex_delete_teamは成功したように見えるがまだ他で表示される">
+    ルームやチームの削除はモデレーター権限が必要な操作です。接続中のアカウントがそのスペースのモデレーターでない場合、Webexの権限応答によっては呼び出しが静かに失敗することがあります — まず`webex_get_membership`で確認してください。
+  </Accordion>
+  <Accordion title="ミーティングの参加者リストが不完全に見える">
+    `webex_get_meeting`はスケジュールされたミーティングの主要フィールドを返します。招待者リストは別管理されており、`webex_list_memberships`でミーティングに紐づくルームのメンバーシップを確認する必要がある場合があります。
+  </Accordion>
+</AccordionGroup>

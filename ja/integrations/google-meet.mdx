@@ -1,0 +1,79 @@
+---
+title: "Google Meet"
+description: "会議スペースの作成と、会議記録・参加者・録画・トランスクリプト・スマートノートの読み取り"
+icon: /images/google-meet.svg
+---
+
+# Google Meet
+
+ShanoneのGoogle Meet連携では、会議スペースの作成と、過去の会議から構造化データ(参加者、録画、トランスクリプト、AI生成のスマートノート)を取得する14のツールをエージェントが利用できるようになります。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにMeetで何か作業をしてもらう(例:「昨日のスタンドアップのトランスクリプトを要約して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="Googleアカウントを認可する">
+    ShanoneがアクセスすべきMeetデータを持つアカウントでGoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`google_meet_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGoogle Meet用に**14のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="スペース">
+    `google_meet_create_space`, `google_meet_get_space`, `google_meet_end_active_conference`
+  </Accordion>
+  <Accordion title="会議記録">
+    `google_meet_list_conference_records`, `google_meet_get_conference_record`
+  </Accordion>
+  <Accordion title="参加者">
+    `google_meet_list_participants`, `google_meet_get_participant`
+  </Accordion>
+  <Accordion title="録画">
+    `google_meet_list_recordings`, `google_meet_get_recording`
+  </Accordion>
+  <Accordion title="トランスクリプト">
+    `google_meet_list_transcripts`, `google_meet_get_transcript`, `google_meet_list_transcript_entries`
+  </Accordion>
+  <Accordion title="スマートノート">
+    `google_meet_list_smart_notes`, `google_meet_get_smart_note` — Workspaceアカウントで有効化されている場合のGemini生成による会議要約
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="会議のまとめ" icon="file-text">
+    トランスクリプトやスマートノートを取得し、欠席者向けの簡潔なまとめに変換する
+  </Card>
+  <Card title="出席確認" icon="users">
+    会議記録の参加者を一覧表示して実際に参加した人を確認する
+  </Card>
+  <Card title="即席の会議作成" icon="video">
+    その場で新しいMeetスペースを立ち上げ、参加用リンクを共有する
+  </Card>
+  <Card title="録画の取得" icon="film">
+    特定の過去の会議の録画を見つけてリンクする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="google_meet_get_transcriptやgoogle_meet_get_smart_noteが何も返さない">
+    トランスクリプトとスマートノートは、会議中に録画・トランスクリプトが有効になっていた場合にのみ生成され、Workspace管理者のMeet機能設定に左右されます——有効になっていなかった会議に対して後から取得することはできません。
+  </Accordion>
+  <Accordion title="使われたはずのスペースでgoogle_meet_list_conference_recordsが空リストを返す">
+    会議記録はスペース内の会議インスタンスごとに作成されます。まず`google_meet_get_space`でスペース名/IDを確認し、グローバルな一覧を想定せずそのスペースに限定して記録を一覧表示してください。
+  </Accordion>
+  <Accordion title="google_meet_create_spaceは成功するが外部ユーザーの参加用リンクが機能しない">
+    スペースへのアクセス設定はWorkspace管理者のMeetセキュリティ設定(例:「招待されたユーザーのみノックなしで参加できる」)によって制御されます——これはShanoneの範囲外で、Google管理コンソールで設定します。
+  </Accordion>
+</AccordionGroup>

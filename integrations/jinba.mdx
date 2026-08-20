@@ -1,0 +1,64 @@
+---
+title: "Jinba"
+description: "Execute published Jinba Flow workflows — natural-language and visual no-code automations"
+icon: /images/jinba.svg
+---
+
+# Jinba
+
+Shanone's Jinba integration gives your agent 1 tool: running a published Jinba Flow workflow with custom input arguments. Jinba Flow itself is a no-code, natural-language workflow builder — Shanone's role is simply to trigger workflows you've already built and published there.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Jinba API Key">
+    Generate a key from **Settings → API** in your Jinba account.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Jinba, and paste in your API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `jinba_run_workflow` will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **1 tool** for Jinba:
+
+<AccordionGroup>
+  <Accordion title="Workflow execution">
+    `jinba_run_workflow` — execute a published Jinba Flow workflow by its UUID, optionally passing a JSON array of `{name, value}` input arguments defined by the workflow's `INPUT_` configuration
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Chat-triggered automation" icon="play">
+    Let a chat request kick off a pre-built Jinba workflow instead of rebuilding logic elsewhere
+  </Card>
+  <Card title="Parameterized runs" icon="sliders-horizontal">
+    Pass different input arguments to the same published workflow for different requests
+  </Card>
+  <Card title="Cross-tool orchestration" icon="workflow">
+    Use a Jinba workflow as one step in a larger agent task that spans multiple integrations
+  </Card>
+  <Card title="Long-running task delegation" icon="clock">
+    Hand off complex multi-step logic to a workflow built visually in Jinba rather than in-prompt
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="jinba_run_workflow fails saying the workflow can't be found">
+    The workflow must be published in Jinba Flow before it's runnable via the API — a workflow only saved as a draft in the editor won't be reachable, and double-check the UUID from the Jinba Flow dashboard.
+  </Accordion>
+  <Accordion title="jinba_run_workflow returns an error about missing or invalid arguments">
+    `args` must be a JSON string representing an array of `{"name": ..., "value": ...}` objects — check the workflow's `INPUT_` tools configuration in Jinba to see which argument names it expects.
+  </Accordion>
+  <Accordion title="jinba_run_workflow takes a long time to return">
+    Execution time depends on workflow complexity; the underlying request allows up to 120 seconds, so a complex multi-step workflow may legitimately take that long before returning a result.
+  </Accordion>
+</AccordionGroup>

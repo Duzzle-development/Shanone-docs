@@ -1,0 +1,85 @@
+---
+title: "Browserbase"
+description: "クラウドブラウザのセッション・エージェントを実行 — ページ操作、スクリーンショット、Function、セッション録画"
+icon: /images/browserbase.svg
+---
+
+# Browserbase
+
+ShanoneのBrowserbase連携では、ヘッドレスクラウドブラウザに関する**63個のツール**をエージェントに提供します — セッション/コンテキスト管理、低レベルなページ操作(クリック、遷移、スクリーンショット)、より高レベルなブラウザエージェント、そしてブラウザコンテキスト内で実行できるサーバーレスFunctionをカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="Browserbase APIキーを取得する">
+    Browserbaseダッシュボードの**Settings**で、APIキー(および任意でProject ID)をコピーします。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにページの閲覧やブラウザタスクの実行を依頼するか、Shanoneダッシュボードの**インテグレーション**からAPIキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`browserbase_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Browserbase向けに**63個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="セッション">
+    `browserbase_create_session`, `browserbase_get_session`, `browserbase_list_sessions`, `browserbase_update_session`, `browserbase_get_session_live_urls`, `browserbase_get_session_logs`, `browserbase_get_session_replay`, `browserbase_create_recording_downloads`, `browserbase_list_recording_downloads`
+  </Accordion>
+  <Accordion title="ページ操作">
+    `browserbase_page_navigate`, `browserbase_page_go_back`, `browserbase_page_go_forward`, `browserbase_page_get_elements`, `browserbase_page_click`, `browserbase_page_input`, `browserbase_page_form_fill`, `browserbase_page_scroll`, `browserbase_page_screenshot`, `browserbase_page_get_text`, `browserbase_page_get_markdown`, `browserbase_page_evaluate`
+  </Accordion>
+  <Accordion title="エージェント & 実行">
+    `browserbase_create_agent`, `browserbase_get_agent`, `browserbase_update_agent`, `browserbase_delete_agent`, `browserbase_list_agents`, `browserbase_run_agent`, `browserbase_get_run`, `browserbase_list_runs`, `browserbase_stop_run`, `browserbase_list_run_messages`, `browserbase_wait_for_run`
+  </Accordion>
+  <Accordion title="Function">
+    `browserbase_create_function`, `browserbase_get_function`, `browserbase_list_functions`, `browserbase_list_function_versions`, `browserbase_get_function_version`, `browserbase_get_function_build`, `browserbase_get_function_build_logs`, `browserbase_invoke_function`, `browserbase_get_invocation`, `browserbase_list_invocations`
+  </Accordion>
+  <Accordion title="コンテキスト & 拡張機能">
+    `browserbase_create_context`, `browserbase_get_context`, `browserbase_update_context`, `browserbase_delete_context`, `browserbase_upload_extension`, `browserbase_get_extension`, `browserbase_delete_extension`
+  </Accordion>
+  <Accordion title="証明書">
+    `browserbase_upload_certificate`, `browserbase_get_certificate`, `browserbase_list_certificates`, `browserbase_delete_certificate`
+  </Accordion>
+  <Accordion title="セッションアーティファクト(ダウンロード & アップロード)">
+    `browserbase_list_downloads`, `browserbase_get_download`, `browserbase_delete_download`, `browserbase_delete_session_downloads`, `browserbase_upload_file_to_session`
+  </Accordion>
+  <Accordion title="プロジェクト & Fetch/検索">
+    `browserbase_get_project`, `browserbase_list_projects`, `browserbase_get_project_usage`, `browserbase_fetch_page`, `browserbase_web_search`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="フォーム入力の自動化" icon="mouse-pointer-click">
+    フォームに遷移し、`browserbase_page_form_fill`で入力して送信する
+  </Card>
+  <Card title="サイトコンテンツの抽出" icon="file-text">
+    ページを取得し、`browserbase_page_get_markdown`でクリーンなMarkdownとして後続処理に渡す
+  </Card>
+  <Card title="エンドツーエンドのエージェントタスク" icon="bot">
+    複数ステップのゴール(例:「空き状況を確認して予約する」)に対してブラウザエージェントを実行し、完了までポーリングする
+  </Card>
+  <Card title="セッションのデバッグ & リプレイ" icon="video">
+    セッションログとリプレイ録画を取得し、自動化が失敗した原因を診断する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="browserbase_page_clickやbrowserbase_page_inputが対象の要素を見つけられない">
+    まず`browserbase_page_get_elements`で最新のセレクタを取得してください — 動的なページは操作の間に要素が再描画され、古いセレクタが無効になることがあります。
+  </Accordion>
+  <Accordion title="browserbase_run_agentの応答が返るまで時間がかかる">
+    エージェントの実行は非同期です。完了までブロックしたい場合は`browserbase_wait_for_run`を使い、その間に他の作業をしたい場合は`browserbase_get_run`をポーリングしてください。
+  </Accordion>
+  <Accordion title="セッション中にダウンロードしたファイルが後から見つからない">
+    そのセッションに対して`browserbase_list_downloads`でダウンロード参照を取得し、`browserbase_get_download`を使ってください — ダウンロードはセッションのアーティファクトストレージ外には自動的に永続化されません。
+  </Accordion>
+</AccordionGroup>

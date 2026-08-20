@@ -1,0 +1,85 @@
+---
+title: "HeyGen"
+description: "Generate AI avatar videos, clone voices, translate videos, and manage templates, brand kits, and webhooks"
+icon: /images/heygen.svg
+---
+
+# HeyGen
+
+Shanone's HeyGen integration gives your agent 69 tools covering nearly all of HeyGen's video generation platform — avatars, voices, lipsync, video translation, templates, batch/bulk operations, and webhooks.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your HeyGen API Key">
+    Generate a key from **Settings → API** in your HeyGen account.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select HeyGen, and paste in your API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `heygen_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **69 tools** for HeyGen, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Avatars">
+    `heygen_create_avatar`, `heygen_create_avatar_consent`, `heygen_list_avatar_groups`, `heygen_get_avatar_group`, `heygen_list_avatar_looks`, `heygen_get_avatar_look`, `heygen_update_avatar_look`
+  </Accordion>
+  <Accordion title="Videos & video agent">
+    `heygen_create_video`, `heygen_get_video`, `heygen_list_videos`, `heygen_delete_video`, `heygen_create_video_agent_session`, `heygen_get_video_agent_session`, `heygen_list_video_agent_sessions`, `heygen_list_session_videos`, `heygen_list_video_agent_styles`, `heygen_send_video_agent_message`, `heygen_stop_video_agent_session`
+  </Accordion>
+  <Accordion title="Voices">
+    `heygen_list_voices`, `heygen_get_voice`, `heygen_clone_voice`, `heygen_design_voice`, `heygen_generate_speech`
+  </Accordion>
+  <Accordion title="Lipsync">
+    `heygen_create_lipsync`, `heygen_get_lipsync`, `heygen_list_lipsyncs`, `heygen_update_lipsync`, `heygen_delete_lipsync`
+  </Accordion>
+  <Accordion title="Translation">
+    `heygen_list_supported_languages`, `heygen_list_video_translations`, `heygen_get_video_translation`, `heygen_update_video_translation`, `heygen_delete_video_translation`, `heygen_create_video_translation`
+  </Accordion>
+  <Accordion title="Templates & proofreading">
+    `heygen_list_templates`, `heygen_get_template`, `heygen_generate_video_from_template`, `heygen_create_proofread_session`, `heygen_get_proofread_session`, `heygen_download_proofread_srt`, `heygen_upload_proofread_srt`, `heygen_generate_video_from_proofread`
+  </Accordion>
+  <Accordion title="Batch & assets">
+    `heygen_upload_asset`, `heygen_create_asset_upload`, `heygen_create_asset_upload_batch`, `heygen_create_video_batch`, `heygen_get_video_batch`, `heygen_create_video_translation_batch`, `heygen_create_lipsync_batch`, `heygen_bulk_video_statuses`, `heygen_list_brand_kits`, `heygen_list_brand_glossaries`, `heygen_get_brand_glossary`
+  </Accordion>
+  <Accordion title="Webhooks & extra tools">
+    `heygen_create_webhook_endpoint`, `heygen_list_webhook_endpoints`, `heygen_update_webhook_endpoint`, `heygen_delete_webhook_endpoint`, `heygen_rotate_webhook_signing_secret`, `heygen_list_webhook_event_types`, `heygen_list_webhook_events`, `heygen_create_ai_clipping`, `heygen_get_ai_clipping`, `heygen_list_ai_clippings`, `heygen_delete_ai_clipping`, `heygen_create_filler_word_removal`, `heygen_get_filler_word_removal`, `heygen_create_hyperframes_render`, `heygen_get_hyperframes_render`, `heygen_get_current_user`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Templated video generation" icon="film">
+    Fill in a HeyGen template's variables and render a personalized video at scale
+  </Card>
+  <Card title="Multilingual video" icon="languages">
+    Translate an existing video into another language with lip-synced dubbing
+  </Card>
+  <Card title="Custom avatar creation" icon="user-round">
+    Create a talking-photo or full avatar from uploaded footage/consent
+  </Card>
+  <Card title="Bulk production" icon="layers">
+    Kick off a video batch across multiple scripts and poll for completion
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="heygen_create_video succeeds but the video stays in a processing state">
+    HeyGen renders asynchronously — poll `heygen_get_video` (or use `heygen_bulk_video_statuses` for batches) until `status` reports `completed` or `failed` rather than assuming a queued response means the video is ready.
+  </Accordion>
+  <Accordion title="heygen_clone_voice or heygen_create_avatar fails with a consent error">
+    Voice cloning and photo avatars require explicit consent recording via `heygen_create_avatar_consent` before the underlying asset can be used — this is a legal/compliance requirement on HeyGen's side, not a Shanone limitation.
+  </Accordion>
+  <Accordion title="Webhook events aren't arriving for a video that finished rendering">
+    Confirm the endpoint URL registered with `heygen_create_webhook_endpoint` is publicly reachable over HTTPS, and check `heygen_list_webhook_event_types` to make sure you subscribed to the right event type for that action.
+  </Accordion>
+</AccordionGroup>

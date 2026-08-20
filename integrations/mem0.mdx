@@ -1,0 +1,76 @@
+---
+title: "Mem0"
+description: "Give your agent persistent, searchable long-term memory — add, search, and manage memories and the entities they reference"
+icon: "plug"
+---
+
+# Mem0
+
+Shanone's Mem0 integration gives your agent 14 tools for storing, searching, and managing long-term memory across conversations, plus the entities and event status behind async memory operations.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Mem0 API key">
+    Sign up at [app.mem0.ai](https://app.mem0.ai) and copy your API key from the dashboard.
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations > Mem0** in the Shanone dashboard and paste the API key in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `mem0_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **14 tools** for Mem0, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Memories">
+    `mem0_add_memories`, `mem0_search_memories`, `mem0_get_memories`
+  </Accordion>
+  <Accordion title="Single memory operations">
+    `mem0_get_memory`, `mem0_update_memory`, `mem0_delete_memory`, `mem0_delete_all_memories`
+  </Accordion>
+  <Accordion title="Memory history & batch ops">
+    `mem0_get_memory_history`, `mem0_batch_update_memories`, `mem0_batch_delete_memories`
+  </Accordion>
+  <Accordion title="Entities">
+    `mem0_list_entities`, `mem0_get_entity`, `mem0_delete_entity`
+  </Accordion>
+  <Accordion title="Events">
+    `mem0_get_event_status` — check the status of an async memory operation (e.g. a batch add/update/delete)
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Personalized assistants" icon="user">
+    Recall a user's preferences and past requests across sessions
+  </Card>
+  <Card title="Conversation continuity" icon="message-circle">
+    Add key facts from a conversation as memories for future reference
+  </Card>
+  <Card title="Memory cleanup" icon="trash-2">
+    Batch-delete outdated or incorrect memories tied to a specific entity
+  </Card>
+  <Card title="Audit trails" icon="history">
+    Use `mem0_get_memory_history` to see how a memory has evolved over time
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="mem0_search_memories returns nothing relevant">
+    Search quality depends on how memories were added — pass enough context (user_id, agent_id, or run_id) at add time so memories are scoped correctly for later retrieval.
+  </Accordion>
+  <Accordion title="Batch operations report success but a memory wasn't affected">
+    `mem0_get_event_status` can confirm whether a batch operation fully completed; some batch add/update calls process asynchronously and may need a short delay before the result is final.
+  </Accordion>
+  <Accordion title="Deleted an entity but its memories still show up">
+    `mem0_delete_entity` removes the entity record itself; use `mem0_delete_all_memories` scoped to that entity's user/agent ID if you also need its associated memories gone.
+  </Accordion>
+</AccordionGroup>

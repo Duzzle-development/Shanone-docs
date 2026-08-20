@@ -1,0 +1,85 @@
+---
+title: "Luma"
+description: "Manage Luma events — guests, hosts, tickets, coupons, membership tiers, and webhooks"
+icon: /images/luma.svg
+---
+
+# Luma
+
+Shanone's Luma integration gives your agent 36 tools for running events end-to-end: creating and updating events, managing guests and hosts, ticketing, coupons, and calendar memberships.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Luma API key">
+    In your Luma calendar settings, generate an API key under the **API** section (requires a Luma Plus or higher plan).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations > Luma** in the Shanone dashboard and paste the API key in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `luma_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **36 tools** for Luma, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Events">
+    `luma_list_events`, `luma_get_event`, `luma_create_event`, `luma_update_event`, `luma_add_event_to_calendar`, `luma_check_event_existence`, `luma_get_event_admin_info`
+  </Accordion>
+  <Accordion title="Guests">
+    `luma_list_guests`, `luma_get_guest`, `luma_add_guests`, `luma_update_guest_status`, `luma_send_invites`
+  </Accordion>
+  <Accordion title="Hosts">
+    `luma_add_event_host`, `luma_remove_event_host`, `luma_update_event_host`
+  </Accordion>
+  <Accordion title="Tickets">
+    `luma_list_ticket_types`, `luma_get_ticket_type`, `luma_create_ticket_type`
+  </Accordion>
+  <Accordion title="Coupons">
+    `luma_list_event_coupons`, `luma_list_calendar_coupons`, `luma_create_event_coupon`, `luma_create_calendar_coupon`
+  </Accordion>
+  <Accordion title="Tags">
+    `luma_list_person_tags`, `luma_create_person_tag`, `luma_delete_person_tag`, `luma_apply_tag_to_members`, `luma_manage_event_tags`
+  </Accordion>
+  <Accordion title="Memberships & people">
+    `luma_list_membership_tiers`, `luma_add_user_to_membership`, `luma_list_people`, `luma_import_people`
+  </Accordion>
+  <Accordion title="Users, uploads & webhooks">
+    `luma_get_self`, `luma_get_user_info`, `luma_generate_upload_url`, `luma_list_webhooks`, `luma_create_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Event setup" icon="calendar-plus">
+    Create an event, add hosts, and configure ticket types in one flow
+  </Card>
+  <Card title="Guest list management" icon="users">
+    Bulk-import a guest list, tag attendees, and send invites
+  </Card>
+  <Card title="Promotions" icon="ticket">
+    Create a discount coupon scoped to a single event or the whole calendar
+  </Card>
+  <Card title="Real-time sync" icon="webhook">
+    Register a webhook so registrations flow into another system automatically
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="luma_create_ticket_type or coupon tools fail with a plan error">
+    Ticketing and coupon features require a paid Luma plan on the calendar; free calendars can still manage guests and events but not paid ticketing.
+  </Accordion>
+  <Accordion title="luma_add_guests doesn't send invite emails">
+    Adding a guest and inviting them are separate steps — call `luma_send_invites` afterward to actually email the added guests.
+  </Accordion>
+  <Accordion title="luma_import_people silently skips some rows">
+    Duplicate emails and malformed rows are skipped rather than erroring; check the returned response for skipped/failed entries rather than assuming a full import.
+  </Accordion>
+</AccordionGroup>

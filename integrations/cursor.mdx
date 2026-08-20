@@ -1,0 +1,73 @@
+---
+title: "Cursor"
+description: "Launch and monitor Cursor Cloud Agents — agent lifecycle, background runs, and artifacts"
+icon: /images/cursor.svg
+---
+
+# Cursor
+
+Shanone's Cursor integration gives your agent 17 tools for controlling Cursor's own Cloud Agents API: launching agents, monitoring runs, sending follow-ups, and retrieving artifacts.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate a Cursor API Key">
+    In Cursor, go to [cursor.com/settings](https://www.cursor.com/settings) and create an API Key.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Cursor, and paste in the API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `cursor_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **17 tools** for Cursor, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Cloud Agents">
+    `cursor_list_agents`, `cursor_get_agent_status`, `cursor_get_agent_conversation`, `cursor_launch_agent`, `cursor_add_followup`, `cursor_delete_agent`, `cursor_archive_agent`, `cursor_unarchive_agent`
+  </Accordion>
+  <Accordion title="Runs">
+    `cursor_list_runs`, `cursor_get_run`, `cursor_create_run`, `cursor_cancel_run`
+  </Accordion>
+  <Accordion title="Artifacts">
+    `cursor_list_artifacts`, `cursor_download_artifact`
+  </Accordion>
+  <Accordion title="Account Info">
+    `cursor_get_api_key_info`, `cursor_list_models`, `cursor_list_repositories`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Delegate background coding" icon="bot">
+    Launch a Cloud Agent on a repository with a task prompt and poll it to completion
+  </Card>
+  <Card title="Multi-agent orchestration" icon="git-fork">
+    Fan out several agents across repos/branches and collect their conversations for review
+  </Card>
+  <Card title="Follow-up steering" icon="message-square-plus">
+    Send a follow-up instruction to a running agent instead of starting a new one from scratch
+  </Card>
+  <Card title="Artifact retrieval" icon="download">
+    Pull generated diffs, logs, or build outputs from a completed run
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="cursor_launch_agent fails with a repository access error">
+    The target repository must be listed in `cursor_list_repositories` for the connected account — Cursor Cloud Agents can only act on repositories the API Key's account actually has access to.
+  </Accordion>
+  <Accordion title="cursor_get_agent_status stays in a running state indefinitely">
+    Long-running agents are expected to take minutes; poll `cursor_get_agent_status` periodically rather than expecting immediate completion, and check `cursor_get_agent_conversation` for intermediate progress.
+  </Accordion>
+  <Accordion title="cursor_add_followup has no effect">
+    Follow-ups can only be sent to agents that are still active (not archived, deleted, or already finished) — check `cursor_get_agent_status` first, and use `cursor_launch_agent` to start fresh if the agent has already completed.
+  </Accordion>
+</AccordionGroup>

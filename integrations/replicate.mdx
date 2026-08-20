@@ -1,0 +1,79 @@
+---
+title: "Replicate"
+description: "Run and manage AI models — predictions, trainings, deployments, and model versions"
+icon: "cpu"
+---
+
+# Replicate
+
+Shanone's Replicate integration gives your agent 31 tools for running and managing hosted AI models on [Replicate](https://replicate.com) — predictions, fine-tuning/training, deployments, and browsing the model catalog.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Replicate API token">
+    Generate a token from the [Replicate account settings](https://replicate.com/account/api-tokens).
+  </Step>
+  <Step title="Add the token in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Replicate, and paste in the token (`r8_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `replicate_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **31 tools** for Replicate, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Models">
+    `replicate_create_model`, `replicate_get_model`, `replicate_list_models`, `replicate_update_model`, `replicate_delete_model`, `replicate_search`, `replicate_list_model_examples`, `replicate_run_model`, `replicate_get_model_readme`
+  </Accordion>
+  <Accordion title="Predictions">
+    `replicate_create_prediction`, `replicate_get_prediction`, `replicate_list_predictions`, `replicate_cancel_prediction`
+  </Accordion>
+  <Accordion title="Trainings">
+    `replicate_create_training`, `replicate_get_training`, `replicate_list_trainings`, `replicate_cancel_training`
+  </Accordion>
+  <Accordion title="Deployments">
+    `replicate_create_deployment`, `replicate_get_deployment`, `replicate_list_deployments`, `replicate_update_deployment`, `replicate_delete_deployment`, `replicate_run_deployment`
+  </Accordion>
+  <Accordion title="Versions & collections">
+    `replicate_get_model_version`, `replicate_list_model_versions`, `replicate_delete_model_version`, `replicate_get_collection`, `replicate_list_collections`
+  </Accordion>
+  <Accordion title="Account">
+    `replicate_get_account`, `replicate_list_hardware`, `replicate_get_webhook_signing_secret`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Model discovery" icon="search">
+    Search Replicate's catalog for a model matching a task, then check its README for input parameters
+  </Card>
+  <Card title="On-demand inference" icon="cpu">
+    Run a model prediction directly, or against a pinned deployment for stable production behavior
+  </Card>
+  <Card title="Fine-tuning" icon="sliders">
+    Kick off a training job against a base model with a custom dataset and monitor progress
+  </Card>
+  <Card title="Webhook-driven pipelines" icon="webhook">
+    Verify incoming Replicate webhooks with the signing secret before processing prediction results
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="replicate_create_prediction returns immediately with a status of 'starting'">
+    Predictions run asynchronously — poll `replicate_get_prediction` with the returned ID until `status` becomes `succeeded` or `failed` rather than expecting output in the initial response.
+  </Accordion>
+  <Accordion title="replicate_run_model fails with an invalid input error">
+    Each model defines its own input schema; check `replicate_get_model_readme` or the model's version details for the exact expected parameters before calling `replicate_run_model`.
+  </Accordion>
+  <Accordion title="replicate_create_training runs much longer than expected">
+    Training duration depends heavily on dataset size and base model — use `replicate_get_training` to check status rather than assuming a fixed runtime, and `replicate_cancel_training` if it needs to be stopped.
+  </Accordion>
+</AccordionGroup>

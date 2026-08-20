@@ -1,0 +1,112 @@
+---
+title: "Neon"
+description: "Neonのサーバーレスpostgresを管理 — プロジェクト、ブランチ、データベース、ロール、Neon Auth、Data API、組織"
+icon: /images/neon.svg
+---
+
+# Neon
+
+ShanoneのNeon連携は、プロジェクト/ブランチのライフサイクル管理、データベース管理、バックアップ、Neon Auth、組織レベルの課金・アクセス制御にまたがる162個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Neon APIキーを取得する">
+    Neonコンソールで**Account Settings > API Keys**に移動し、新しいキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**Integrations > Neon**で、そのAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`neon_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはNeon向けに**162個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="プロジェクト & リージョン">
+    `neon_list_projects`, `neon_get_project`, `neon_create_project`, `neon_delete_project`, `neon_update_project`, `neon_recover_project`, `neon_get_connection_uri`, `neon_list_preload_libraries`, `neon_list_regions`, `neon_get_connection_string`
+  </Accordion>
+  <Accordion title="ブランチ">
+    `neon_list_branches`, `neon_create_branch`, `neon_delete_branch`, `neon_count_branches`, `neon_get_branch`, `neon_update_branch`, `neon_set_default_branch`, `neon_recover_branch`, `neon_restore_branch`, `neon_finalize_branch_restore`, `neon_get_branch_schema`, `neon_compare_branch_schema`, `neon_get_branch_storage`, `neon_get_branch_ai_gateway`
+  </Accordion>
+  <Accordion title="ブランチのデータマスキング & 匿名化">
+    `neon_create_anonymized_branch`, `neon_get_anonymized_branch_status`, `neon_start_anonymization`, `neon_get_masking_rules`, `neon_update_masking_rules`
+  </Accordion>
+  <Accordion title="データベース、ロール & エンドポイント">
+    `neon_list_databases`, `neon_get_database`, `neon_create_database`, `neon_update_database`, `neon_delete_database`, `neon_list_roles`, `neon_create_role`, `neon_get_role`, `neon_delete_role`, `neon_reveal_role_password`, `neon_reset_role_password`, `neon_list_endpoints`, `neon_start_endpoint`, `neon_get_endpoint`, `neon_create_endpoint`, `neon_update_endpoint`, `neon_delete_endpoint`, `neon_restart_endpoint`, `neon_suspend_endpoint`
+  </Accordion>
+  <Accordion title="スナップショット & バックアップ">
+    `neon_create_snapshot`, `neon_list_snapshots`, `neon_update_snapshot`, `neon_delete_snapshot`, `neon_restore_snapshot`, `neon_get_backup_schedule`, `neon_set_backup_schedule`
+  </Accordion>
+  <Accordion title="操作履歴 & 消費量">
+    `neon_list_operations`, `neon_get_operation`, `neon_get_consumption_history`, `neon_get_consumption_history_legacy`, `neon_get_branch_consumption`, `neon_get_advisor_issues`
+  </Accordion>
+  <Accordion title="Data API & サーバーレス関数">
+    `neon_get_data_api`, `neon_create_data_api`, `neon_update_data_api`, `neon_delete_data_api`, `neon_list_functions`, `neon_get_function`, `neon_update_function`, `neon_delete_function`, `neon_deploy_function`
+  </Accordion>
+  <Accordion title="Neon Auth: セットアップ & 設定">
+    `neon_enable_auth`, `neon_get_auth`, `neon_disable_auth`, `neon_update_auth_config`, `neon_get_auth_allow_localhost`, `neon_update_auth_allow_localhost`, `neon_get_auth_webhook_config`, `neon_update_auth_webhook_config`
+  </Accordion>
+  <Accordion title="Neon Auth: ドメイン、メール & OAuthプロバイダ">
+    `neon_list_auth_trusted_domains`, `neon_add_auth_trusted_domain`, `neon_delete_auth_trusted_domain`, `neon_get_auth_password_config`, `neon_update_auth_password_config`, `neon_get_auth_email_provider`, `neon_update_auth_email_provider`, `neon_send_auth_test_email`, `neon_list_auth_oauth_providers`, `neon_add_auth_oauth_provider`, `neon_update_auth_oauth_provider`, `neon_delete_auth_oauth_provider`
+  </Accordion>
+  <Accordion title="Neon Auth: プラグイン & ユーザー">
+    `neon_get_auth_plugin_configs`, `neon_update_auth_magic_link_plugin`, `neon_update_auth_organization_plugin`, `neon_get_auth_phone_plugin`, `neon_update_auth_phone_plugin`, `neon_create_auth_user`, `neon_delete_auth_user`, `neon_update_auth_user_role`
+  </Accordion>
+  <Accordion title="レガシー認証(Stack Auth)">
+    `neon_list_legacy_auth_integrations`, `neon_create_legacy_auth_integration`, `neon_delete_legacy_auth_integration`, `neon_list_legacy_oauth_providers`, `neon_add_legacy_oauth_provider`, `neon_update_legacy_oauth_provider`, `neon_delete_legacy_oauth_provider`, `neon_create_legacy_auth_user`, `neon_delete_legacy_auth_user`, `neon_create_legacy_auth_sdk_keys`, `neon_transfer_legacy_auth_provider`, `neon_get_legacy_auth_email_server`, `neon_update_legacy_auth_email_server`, `neon_list_legacy_redirect_domains`, `neon_add_legacy_redirect_domain`, `neon_delete_legacy_redirect_domain`
+  </Accordion>
+  <Accordion title="ストレージバケット">
+    `neon_list_buckets`, `neon_create_bucket`, `neon_delete_bucket`, `neon_list_bucket_objects`, `neon_delete_bucket_object`, `neon_download_bucket_object`, `neon_delete_bucket_objects_by_prefix`, `neon_presign_bucket_object`
+  </Accordion>
+  <Accordion title="APIキー & 認証情報">
+    `neon_list_api_keys`, `neon_create_api_key`, `neon_revoke_api_key`, `neon_list_credentials`, `neon_create_credential`, `neon_revoke_credential`, `neon_list_project_jwks`, `neon_add_project_jwks`, `neon_delete_project_jwks`
+  </Accordion>
+  <Accordion title="プロジェクト権限 & 移管">
+    `neon_list_project_permissions`, `neon_grant_project_permission`, `neon_revoke_project_permission`, `neon_create_project_transfer_request`, `neon_accept_project_transfer_request`, `neon_transfer_projects_between_orgs`, `neon_transfer_projects_to_org`
+  </Accordion>
+  <Accordion title="VPCエンドポイント">
+    `neon_list_project_vpc_endpoints`, `neon_set_project_vpc_endpoint`, `neon_delete_project_vpc_endpoint`, `neon_list_org_vpc_endpoints_all_regions`, `neon_list_org_vpc_endpoints`, `neon_get_org_vpc_endpoint`, `neon_assign_org_vpc_endpoint`, `neon_delete_org_vpc_endpoint`
+  </Accordion>
+  <Accordion title="組織 & ユーザー">
+    `neon_get_organization`, `neon_list_org_members`, `neon_get_org_member`, `neon_update_org_member_role`, `neon_remove_org_member`, `neon_list_org_invitations`, `neon_create_org_invitations`, `neon_get_org_spending_limit`, `neon_set_org_spending_limit`, `neon_delete_org_spending_limit`, `neon_list_org_api_keys`, `neon_create_org_api_key`, `neon_revoke_org_api_key`, `neon_get_current_user`, `neon_list_user_organizations`, `neon_get_auth_details`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="一時的なプレビューデータベース" icon="git-branch">
+    PRごとにブランチを作成してマイグレーションを実行し、マージ後に削除する
+  </Card>
+  <Card title="安全なスキーマ変更" icon="shield-check">
+    マイグレーションを本番に反映する前に、ブランチ間でスキーマを比較する
+  </Card>
+  <Card title="コスト監視" icon="gauge">
+    消費履歴を取得し、想定外の請求を避けるために組織の支出上限を設定する
+  </Card>
+  <Card title="バックエンド不要の認証" icon="lock">
+    プロジェクトでNeon Authを有効化し、別の認証サービスなしでOAuthプロバイダを管理する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="neon_create_branchは成功するが、そのブランチへのクエリが失敗する">
+    新しいブランチには稼働中のcomputeエンドポイントが必要です——接続する前に`neon_create_endpoint`を呼ぶ(または自動作成されているか確認する)、そして`neon_start_endpoint`を呼んでください。
+  </Accordion>
+  <Accordion title="neon_reveal_role_passwordがエラーを返す">
+    パスワードを表示できるのはNeonを通じて作成されたロールのみです(外部管理のロールは不可)——表示できない場合は`neon_reset_role_password`で新しいパスワードを発行してください。
+  </Accordion>
+  <Accordion title="Auth系ツールが「authが有効になっていない」エラーで失敗する">
+    Neon Authはプロジェクトごとに`neon_enable_auth`で明示的に有効化する必要があります——それより前は、ドメイン、OAuthプロバイダ、プラグインなどの関連設定を管理できません。
+  </Accordion>
+  <Accordion title="組織レベルのツールが権限エラーを返す">
+    組織メンバー、課金、VPCエンドポイント関連のツールには、Neon組織における管理者ロールが必要です——`neon_get_org_member`で自分のユーザーIDのロールを確認してください。
+  </Accordion>
+</AccordionGroup>

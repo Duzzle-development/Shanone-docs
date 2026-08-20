@@ -1,0 +1,82 @@
+---
+title: "RevenueCat"
+description: "Manage in-app subscriptions — customers, entitlements, offerings, paywalls, and analytics"
+icon: /images/revenuecat.svg
+---
+
+# RevenueCat
+
+Shanone's RevenueCat integration gives your agent 107 tools covering subscription and purchase management for mobile/web apps — customer entitlements, offerings and paywalls, products and packages, virtual currencies, and revenue analytics.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a RevenueCat Secret API key">
+    Generate a key from your project's **API Keys** settings in the [RevenueCat dashboard](https://app.revenuecat.com/settings/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select RevenueCat, and paste in the key (`sk_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `revenuecat_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **107 tools** for RevenueCat, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Customers">
+    `revenuecat_list_customers`, `revenuecat_create_customer`, `revenuecat_get_customer`, `revenuecat_delete_customer`, `revenuecat_get_customer_center_config`, `revenuecat_transfer_customer_data`, `revenuecat_grant_customer_entitlement`, `revenuecat_revoke_customer_granted_entitlement`, `revenuecat_assign_customer_offering`, `revenuecat_restore_purchase_by_order_id`, `revenuecat_list_customer_subscriptions`, `revenuecat_list_customer_purchases`, `revenuecat_list_customer_active_entitlements`, `revenuecat_list_customer_events`, `revenuecat_list_customer_aliases`, `revenuecat_list_customer_attributes`, `revenuecat_set_customer_attributes`
+  </Accordion>
+  <Accordion title="Subscriptions & purchases">
+    `revenuecat_get_subscription`, `revenuecat_search_subscriptions`, `revenuecat_get_store_subscription_transactions`, `revenuecat_refund_store_subscription_transaction`, `revenuecat_list_subscription_entitlements`, `revenuecat_cancel_subscription`, `revenuecat_extend_subscription`, `revenuecat_refund_subscription`, `revenuecat_get_subscription_management_url`, `revenuecat_get_purchase`, `revenuecat_list_purchase_entitlements`, `revenuecat_refund_purchase`, `revenuecat_search_purchases`
+  </Accordion>
+  <Accordion title="Entitlements, products & packages">
+    `revenuecat_list_entitlements`, `revenuecat_create_entitlement`, `revenuecat_get_entitlement`, `revenuecat_update_entitlement`, `revenuecat_delete_entitlement`, `revenuecat_archive_entitlement`, `revenuecat_unarchive_entitlement`, `revenuecat_list_entitlement_products`, `revenuecat_attach_products_to_entitlement`, `revenuecat_detach_products_from_entitlement`, `revenuecat_list_products`, `revenuecat_create_product`, `revenuecat_get_product`, `revenuecat_update_product`, `revenuecat_delete_product`, `revenuecat_archive_product`, `revenuecat_unarchive_product`, `revenuecat_push_product_to_store`, `revenuecat_list_packages`, `revenuecat_create_package`, `revenuecat_get_package`, `revenuecat_update_package`, `revenuecat_delete_package`, `revenuecat_list_package_products`, `revenuecat_attach_products_to_package`, `revenuecat_detach_products_from_package`
+  </Accordion>
+  <Accordion title="Offerings & paywalls">
+    `revenuecat_list_offerings`, `revenuecat_create_offering`, `revenuecat_get_offering`, `revenuecat_update_offering`, `revenuecat_delete_offering`, `revenuecat_archive_offering`, `revenuecat_unarchive_offering`, `revenuecat_upload_media_asset`, `revenuecat_list_paywalls`, `revenuecat_create_paywall`, `revenuecat_get_paywall`, `revenuecat_update_paywall`, `revenuecat_delete_paywall`, `revenuecat_publish_paywall`, `revenuecat_unpublish_paywall`, `revenuecat_create_paywall_version`, `revenuecat_get_paywall_version`
+  </Accordion>
+  <Accordion title="Virtual currencies">
+    `revenuecat_list_virtual_currencies`, `revenuecat_create_virtual_currency`, `revenuecat_get_virtual_currency`, `revenuecat_update_virtual_currency`, `revenuecat_delete_virtual_currency`, `revenuecat_archive_virtual_currency`, `revenuecat_unarchive_virtual_currency`, `revenuecat_list_customer_virtual_currencies_balances`, `revenuecat_create_virtual_currency_transaction`, `revenuecat_update_virtual_currency_balance`
+  </Accordion>
+  <Accordion title="Apps, projects & collaborators">
+    `revenuecat_list_apps`, `revenuecat_create_app`, `revenuecat_get_app`, `revenuecat_update_app`, `revenuecat_delete_app`, `revenuecat_list_app_public_api_keys`, `revenuecat_get_app_storekit_config`, `revenuecat_list_projects`, `revenuecat_create_project`, `revenuecat_list_collaborators`
+  </Accordion>
+  <Accordion title="Analytics, invoices, webhooks & audit logs">
+    `revenuecat_get_overview_metrics`, `revenuecat_get_revenue_metric`, `revenuecat_get_chart_data`, `revenuecat_get_chart_options`, `revenuecat_list_customer_invoices`, `revenuecat_get_invoice`, `revenuecat_list_webhook_integrations`, `revenuecat_create_webhook_integration`, `revenuecat_get_webhook_integration`, `revenuecat_update_webhook_integration`, `revenuecat_delete_webhook_integration`, `revenuecat_list_audit_logs`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Customer support lookups" icon="user-search">
+    Check a customer's active entitlements and purchase history before resolving a billing issue
+  </Card>
+  <Card title="Manual grants & refunds" icon="gift">
+    Grant a promotional entitlement or process a refund for a specific transaction
+  </Card>
+  <Card title="Paywall experimentation" icon="layout">
+    Create and publish a new paywall version tied to an offering, then track conversion via metrics
+  </Card>
+  <Card title="Revenue reporting" icon="trending-up">
+    Pull overview metrics and revenue charts for a project without opening the dashboard
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="revenuecat_grant_customer_entitlement doesn't reflect immediately in the app">
+    Client SDKs cache entitlement info; the grant is applied server-side immediately, but the app may need to refresh its customer info (or the user needs to relaunch) to see the change.
+  </Accordion>
+  <Accordion title="revenuecat_refund_purchase or revenuecat_refund_subscription fails">
+    RevenueCat proxies refunds to the underlying store (App Store/Play Store), which has its own refund windows and eligibility rules — a rejected refund is often a store-level policy limit, not a RevenueCat error.
+  </Accordion>
+  <Accordion title="revenuecat_search_subscriptions or revenuecat_search_purchases returns unexpected results">
+    Check `shanone_get_tool_schema` for the exact filter/query parameters — searches are typically scoped to a project and may require specific identifiers (app user ID, product ID) rather than free text.
+  </Accordion>
+</AccordionGroup>

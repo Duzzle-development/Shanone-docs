@@ -1,0 +1,88 @@
+---
+title: "OpenSea"
+description: "Browse, trade, and analyze NFTs — collections, listings, offers, orders, stats, and token swaps"
+icon: /images/opensea.svg
+---
+
+# OpenSea
+
+Shanone's OpenSea integration gives your agent 63 tools covering the full NFT marketplace surface — collection and NFT discovery, listings and offers, order fulfillment, portfolio/account stats, and on-chain token swaps.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create an OpenSea API key">
+    Generate a key from the [OpenSea Developer Portal](https://opensea.io/account/settings/developer).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select OpenSea, and paste in your API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `opensea_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **63 tools** for OpenSea, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Accounts & portfolio">
+    `opensea_get_account`, `opensea_resolve_account`, `opensea_get_portfolio_stats`, `opensea_get_portfolio_history`, `opensea_get_profile_collections`, `opensea_get_profile_favorites`, `opensea_get_profile_listings`, `opensea_get_profile_offers`, `opensea_get_profile_offers_received`
+  </Accordion>
+  <Accordion title="Collections">
+    `opensea_get_collection`, `opensea_list_collections`, `opensea_get_collections_batch`, `opensea_get_collection_by_nft`, `opensea_get_collection_traits`, `opensea_get_top_collections`, `opensea_get_trending_collections`
+  </Accordion>
+  <Accordion title="NFTs">
+    `opensea_get_nft`, `opensea_get_nfts_batch`, `opensea_get_nfts_by_account`, `opensea_get_nfts_by_collection`
+  </Accordion>
+  <Accordion title="Listings">
+    `opensea_get_best_listing_nft`, `opensea_get_best_listings_collection`, `opensea_get_all_listings_collection`, `opensea_create_listing_actions`, `opensea_create_listing`, `opensea_fulfill_listing`, `opensea_fulfill_listing_cross_chain`
+  </Accordion>
+  <Accordion title="Offers">
+    `opensea_get_best_offer_nft`, `opensea_get_offers_nft`, `opensea_get_offers_collection`, `opensea_get_trait_offers`, `opensea_get_all_offers_collection`, `opensea_build_offer`, `opensea_create_offer`, `opensea_create_criteria_offer`
+  </Accordion>
+  <Accordion title="Orders">
+    `opensea_get_order`, `opensea_cancel_order`, `opensea_fulfill_offer`
+  </Accordion>
+  <Accordion title="Stats & analytics">
+    `opensea_get_collection_stats`, `opensea_get_collection_floor_prices`, `opensea_get_collection_holders`, `opensea_get_collection_offer_aggregates`, `opensea_get_nft_analytics`, `opensea_get_nft_metadata`, `opensea_get_nft_owners`, `opensea_refresh_nft_metadata`
+  </Accordion>
+  <Accordion title="Drops & events">
+    `opensea_get_drops`, `opensea_get_drop`, `opensea_get_mint_data`, `opensea_deploy_contract`, `opensea_get_events`, `opensea_get_events_by_account`, `opensea_get_events_by_collection`, `opensea_get_events_by_nft`
+  </Accordion>
+  <Accordion title="Swaps & tokens">
+    `opensea_get_swap_quote`, `opensea_get_swap_transaction`, `opensea_get_swap_status`, `opensea_get_supported_tokens`, `opensea_get_token`, `opensea_get_token_price`, `opensea_get_token_balances`, `opensea_get_token_allowances`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Collection research" icon="search">
+    Pull floor price, holder count, and trait breakdowns before evaluating a collection
+  </Card>
+  <Card title="Portfolio tracking" icon="wallet">
+    Check an account's NFT holdings, listings, and offer activity in one pass
+  </Card>
+  <Card title="Automated bidding" icon="gavel">
+    Build and place a criteria offer across a whole collection or trait instead of a single NFT
+  </Card>
+  <Card title="Cross-chain swaps" icon="repeat">
+    Quote and execute a token swap needed to fund a purchase, then fulfill the listing
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="opensea_create_listing or opensea_create_offer fails with a signature error">
+    These tools return an unsigned order payload that must be signed by the connected wallet before submission — check `shanone_get_tool_schema` to confirm whether signing happens client-side or via `opensea_create_listing_actions`.
+  </Accordion>
+  <Accordion title="opensea_fulfill_listing fails with an insufficient funds or allowance error">
+    Confirm token allowances with `opensea_get_token_allowances` first; ERC-20 purchases (not ETH) usually require an approval transaction before the marketplace contract can spend the buyer's tokens.
+  </Accordion>
+  <Accordion title="Stats or floor price look stale">
+    `opensea_get_collection_stats` and related aggregates can lag real-time trades by a short window; use `opensea_refresh_nft_metadata` for individual NFTs if metadata specifically looks outdated.
+  </Accordion>
+</AccordionGroup>

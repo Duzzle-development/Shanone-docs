@@ -1,0 +1,70 @@
+---
+title: "Make"
+description: "Make(Integromat)のシナリオを管理 — 自動化ワークフローとその接続を有効化・実行・監視する"
+icon: /images/make.svg
+---
+
+# Make
+
+ShanoneのMake連携は、シナリオを制御し、それを支える接続・データストア・Webhookを確認する11個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Make APIキーを取得する">
+    Makeアカウントで**Profile > API**に移動し、必要なスコープ(シナリオ、接続など)を持つAPIトークンを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**Integrations > Make**で、そのAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`make_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはMake向けに**11個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="シナリオ">
+    `make_list_scenarios`, `make_get_scenario`, `make_activate_scenario`, `make_deactivate_scenario`, `make_run_scenario`, `make_delete_scenario`
+  </Accordion>
+  <Accordion title="ログ & 使用状況">
+    `make_list_scenario_logs`, `make_list_scenario_usage`
+  </Accordion>
+  <Accordion title="リソース">
+    `make_list_hooks`, `make_list_connections`, `make_list_data_stores`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="シナリオのヘルスチェック" icon="activity">
+    有効なシナリオを一覧表示し、直近の実行ログでエラーを確認する
+  </Card>
+  <Card title="オンデマンド自動化" icon="play">
+    外部イベントやエージェントの判断に応じて`make_run_scenario`を実行する
+  </Card>
+  <Card title="メンテナンス期間" icon="pause">
+    計画的な変更の前にシナリオを無効化し、変更後に再度有効化する
+  </Card>
+  <Card title="使用状況の監査" icon="bar-chart">
+    シナリオごとの操作使用量を取得し、暴走している自動化を見つける
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="make_run_scenarioは成功するが後続で何も変わらない">
+    実行直後に`make_list_scenario_logs`を確認してください——Makeのシナリオは、フィルタや空の入力によってステップがスキップされた場合でも、エラーなく完了することがあります。
+  </Accordion>
+  <Accordion title="名前でシナリオを見つけられない">
+    `make_list_scenarios`は名前によるフィルタリングをサポートしていません。すべてのシナリオを一覧表示し、クライアント側で名前やチームIDと照合してください。
+  </Accordion>
+  <Accordion title="シナリオを無効化できない">
+    現在実行中のシナリオは、その実行が完了するまで無効化できません。まず`make_list_scenario_logs`で実行中のものがないか確認してください。
+  </Accordion>
+</AccordionGroup>

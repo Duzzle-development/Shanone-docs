@@ -1,0 +1,110 @@
+---
+title: "Discord"
+description: "サーバーをエンドツーエンドで管理する — メッセージ、チャンネル、ロール、モデレーション、ボイス、イベント、Webhook"
+icon: /images/discord.svg
+---
+
+# Discord
+
+ShanoneのDiscord連携は、Discord APIのほぼ全域を扱う182個のツールをエージェントに提供します。メッセージ、チャンネル、スレッド、ロール、メンバー、モデレーション、ボイス、予定イベント、サウンドボード、スタンプ、Webhook、サーバー管理が対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにDiscord関連の作業を依頼(例: 「#generalにメッセージを投稿して」)するか、Shanoneダッシュボードの**連携**から事前に接続します。どちらの場合も、サーバー向けにShanoneのDiscordアプリを許可するための`connect_link`が発行されます。
+  </Step>
+  <Step title="サーバーにアプリを許可・追加する">
+    DiscordのOAuth同意画面で、Shanoneに管理させたいサーバー(ギルド)を選択して承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`discord_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+<Note>
+ほとんどの書き込み操作(メッセージ投稿、モデレーション、ロール管理)には、Shanoneのボットがサーバー内で該当する権限を持っている必要があります。動作するはずのツールが権限エラーを返す場合は、Discordのサーバー設定でボットのロール権限を確認してください。
+</Note>
+
+## 利用可能なツール
+
+ShanoneはDiscord向けに**182個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="メッセージ (23個)">
+    `discord_get_channel_messages`, `discord_send_message`, `discord_edit_message`, `discord_delete_message`, `discord_get_pinned_messages`, `discord_pin_message`, `discord_unpin_message`, `discord_search_messages`, `discord_get_message`, `discord_get_message_reference`, `discord_bulk_delete_messages`, `discord_crosspost_message`, `discord_get_reactions`, `discord_delete_all_reactions`, `discord_delete_emoji_reactions`, `discord_delete_user_reaction`, `discord_add_reaction`, `discord_remove_reaction`, `discord_send_with_buttons`, `discord_send_with_select_menu`, `discord_update_message_components`, `discord_disable_components`, `discord_get_poll_answer_voters`
+  </Accordion>
+  <Accordion title="埋め込み & リッチコンテンツ (5個)">
+    `discord_send_embed`, `discord_edit_embed`, `discord_send_rich_embed`, `discord_create_embed_builder`, `discord_send_file_with_embed`
+  </Accordion>
+  <Accordion title="チャンネル (17個)">
+    `discord_list_channels`, `discord_get_channel_info`, `discord_create_channel`, `discord_update_channel`, `discord_delete_channel`, `discord_clone_channel`, `discord_set_channel_position`, `discord_set_channel_parent`, `discord_get_channel_permissions`, `discord_edit_channel_permissions`, `discord_delete_channel_permissions`, `discord_sync_channel_permissions`, `discord_set_voice_channel_status`, `discord_follow_announcement_channel`, `discord_trigger_typing_indicator`, `discord_group_dm_add_recipient`, `discord_group_dm_remove_recipient`
+  </Accordion>
+  <Accordion title="スレッド & フォーラム (16個)">
+    `discord_create_thread`, `discord_create_thread_from_message`, `discord_create_thread_without_message`, `discord_join_thread`, `discord_leave_thread`, `discord_add_thread_member`, `discord_remove_thread_member`, `discord_list_thread_members`, `discord_list_active_threads`, `discord_list_archived_threads`, `discord_get_thread_member`, `discord_list_joined_private_archived_threads`, `discord_create_forum_post`, `discord_get_forum_tags`, `discord_update_forum_post_tags`, `discord_end_poll`
+  </Accordion>
+  <Accordion title="メンバー & ロール (20個)">
+    `discord_get_member`, `discord_list_members`, `discord_search_members`, `discord_update_member`, `discord_set_nickname`, `discord_add_role_to_member`, `discord_remove_role_from_member`, `discord_set_member_roles`, `discord_list_roles`, `discord_get_role`, `discord_create_role`, `discord_update_role`, `discord_delete_role`, `discord_set_role_positions`, `discord_get_guild_role_member_counts`, `discord_calculate_permissions`, `discord_check_permission`, `discord_get_role_members`, `discord_compare_roles`, `discord_get_guild_prune_count`
+  </Accordion>
+  <Accordion title="モデレーション (11個)">
+    `discord_list_bans`, `discord_get_ban`, `discord_create_ban`, `discord_remove_ban`, `discord_bulk_ban`, `discord_kick_member`, `discord_timeout_member`, `discord_remove_timeout`, `discord_begin_guild_prune`, `discord_list_automod_rules`, `discord_get_automod_rule`
+  </Accordion>
+  <Accordion title="Auto Moderation & 監査ログ (6個)">
+    `discord_create_automod_rule`, `discord_update_automod_rule`, `discord_delete_automod_rule`, `discord_get_audit_log`, `discord_search_audit_log`, `discord_modify_guild_incident_actions`
+  </Accordion>
+  <Accordion title="ギルド & サーバー設定 (23個)">
+    `discord_list_guilds`, `discord_get_guild_info`, `discord_get_guild_members`, `discord_search_guild`, `discord_get_guild_settings`, `discord_update_guild_settings`, `discord_get_guild_preview`, `discord_get_guild_widget_settings`, `discord_modify_guild_widget`, `discord_get_guild_widget`, `discord_get_guild_widget_image`, `discord_get_guild_vanity_url`, `discord_get_guild_template`, `discord_list_guild_templates`, `discord_create_guild_template`, `discord_sync_guild_template`, `discord_modify_guild_template`, `discord_delete_guild_template`, `discord_get_guild_welcome_screen`, `discord_modify_guild_welcome_screen`, `discord_get_guild_onboarding`, `discord_modify_guild_onboarding`, `discord_get_guild_integrations`
+  </Accordion>
+  <Accordion title="招待 (5個)">
+    `discord_list_guild_invites`, `discord_get_invite`, `discord_create_invite`, `discord_delete_invite`, `discord_list_channel_invites`
+  </Accordion>
+  <Accordion title="ボイス & ステージ (14個)">
+    `discord_list_voice_regions`, `discord_get_current_user_voice_state`, `discord_get_user_voice_state`, `discord_modify_current_user_voice_state`, `discord_modify_user_voice_state`, `discord_create_stage_instance`, `discord_get_stage_instance`, `discord_modify_stage_instance`, `discord_delete_stage_instance`, `discord_send_soundboard_sound`, `discord_list_default_soundboard_sounds`, `discord_list_guild_soundboard_sounds`, `discord_get_guild_soundboard_sound`, `discord_create_guild_soundboard_sound`
+  </Accordion>
+  <Accordion title="予定イベント (6個)">
+    `discord_list_scheduled_events`, `discord_get_scheduled_event`, `discord_create_scheduled_event`, `discord_update_scheduled_event`, `discord_delete_scheduled_event`, `discord_list_event_users`
+  </Accordion>
+  <Accordion title="絵文字 & スタンプ (10個)">
+    `discord_list_emojis`, `discord_get_emoji`, `discord_create_emoji`, `discord_update_emoji`, `discord_delete_emoji`, `discord_list_stickers`, `discord_get_sticker`, `discord_create_sticker`, `discord_update_sticker`, `discord_delete_sticker`
+  </Accordion>
+  <Accordion title="Webhook (10個)">
+    `discord_list_channel_webhooks`, `discord_list_guild_webhooks`, `discord_get_webhook`, `discord_create_webhook`, `discord_update_webhook`, `discord_delete_webhook`, `discord_execute_webhook`, `discord_execute_webhook_with_embed`, `discord_edit_webhook_message`, `discord_delete_webhook_message`
+  </Accordion>
+  <Accordion title="ユーザー & アプリケーション (16個)">
+    `discord_get_current_user`, `discord_get_user`, `discord_get_current_user_guilds`, `discord_get_user_connections`, `discord_modify_current_user`, `discord_get_current_user_guild_member`, `discord_leave_guild`, `discord_create_dm`, `discord_get_user_application_role_connection`, `discord_update_user_application_role_connection`, `discord_get_current_application`, `discord_edit_current_application`, `discord_get_application_activity_instance`, `discord_get_guild_integrations`, `discord_delete_guild_integration`, `discord_modify_guild_widget`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="コミュニティモデレーション" icon="shield">
+    監査ログを確認し、規約違反のメンバーをタイムアウト/バンし、Auto Moderationを設定する
+  </Card>
+  <Card title="お知らせの自動化" icon="megaphone">
+    お知らせチャンネルにリッチな埋め込みを投稿し、フォロー中のサーバーにクロスポストする
+  </Card>
+  <Card title="イベント管理" icon="calendar">
+    予定イベントを作成し、参加登録を追跡し、ロールメンションでメンバーに通知する
+  </Card>
+  <Card title="サポートチケットボット" icon="ticket">
+    サポート依頼ごとにスレッドを作成し、解決までライフサイクルを管理する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="discord_send_messageやモデレーション系のツールがMissing Permissionsエラーで失敗する">
+    Discordの権限はロールベースかつ階層的です。Shanoneのボットロールには該当する権限(例: `Send Messages`、`Ban Members`)が必要で、モデレーション操作の場合はさらにボットのロールがサーバーのロール一覧で対象のロール/メンバーより上位に位置している必要があります。
+  </Accordion>
+  <Accordion title="discord_search_messagesの結果が限定的、または何も返らない">
+    Discordのネイティブ検索APIは、ボットが見えるチャンネル内のメッセージのみをインデックス化し、複雑なクエリのサポートも限定的です。網羅的な履歴が必要な場合は、代わりに`discord_get_channel_messages`をページネーションしてください。
+  </Accordion>
+  <Accordion title="ボイス状態やサウンドボード系のツールが効果を持たない">
+    ボイス関連の書き込み操作の多くは、ボットがそのギルドの音声チャンネルに既に接続していることを前提としています。ボイス状態を変更したりサウンドボードを再生する前に、まず`discord_get_current_user_voice_state`を確認してください。
+  </Accordion>
+  <Accordion title="discord_create_scheduled_eventがバリデーションエラーで失敗する">
+    外部の場所を使うイベント(`entity_type: EXTERNAL`)には`scheduled_end_time`と`entity_metadata.location`の両方が必要です。ボイス/ステージイベントではこれらは不要ですが、有効な`channel_id`が必要です。
+  </Accordion>
+</AccordionGroup>

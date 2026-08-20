@@ -1,0 +1,98 @@
+---
+title: "Dify"
+description: "Dify AIアプリを実行・管理する — チャット/コンプリーション、ワークフロー、ナレッジベース、ドキュメント、アノテーション"
+icon: /images/dify.svg
+---
+
+# Dify
+
+ShanoneのDify連携は、Dify AIアプリケーションプラットフォームを扱う65個のツールをエージェントに提供します。チャット/コンプリーションメッセージ、ワークフロー、ナレッジベース管理、ドキュメント処理、チャンク、タグ、メタデータ、アノテーションが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="Dify AppのAPIキーを取得する">
+    Difyアプリの**API Access**で、アプリのAPIキー(`app-`で始まる)をコピーします。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Difyを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`dify_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+<Note>
+DifyのAPIキーは単一のアプリ(またはナレッジベース)にスコープされます。複数のDifyアプリを扱いたい場合は、個別の接続が必要になるか、Shanoneワークスペースで複数のDifyキーをどのように管理しているか確認してください。
+</Note>
+
+## 利用可能なツール
+
+ShanoneはDify向けに**65個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="チャット & コンプリーション">
+    `dify_chat_message`, `dify_completion_message`
+  </Accordion>
+  <Accordion title="会話">
+    `dify_list_conversations`, `dify_get_conversation_messages`, `dify_delete_conversation`, `dify_rename_conversation`, `dify_get_next_suggested_questions`, `dify_list_conversation_variables`, `dify_update_conversation_variable`
+  </Accordion>
+  <Accordion title="ワークフロー">
+    `dify_run_workflow`, `dify_stop_workflow`, `dify_get_workflow_run_detail`, `dify_list_workflow_logs`, `dify_get_workflow_events`
+  </Accordion>
+  <Accordion title="ドキュメント">
+    `dify_list_documents`, `dify_get_document`, `dify_create_document_by_text`, `dify_create_document_by_file`, `dify_update_document_by_text`, `dify_delete_document`, `dify_get_document_indexing_status`, `dify_retrieve_chunks`, `dify_download_document`, `dify_update_document_status_batch`
+  </Accordion>
+  <Accordion title="ナレッジベース">
+    `dify_list_knowledge_bases`, `dify_get_knowledge_base`, `dify_create_knowledge_base`, `dify_update_knowledge_base`, `dify_delete_knowledge_base`
+  </Accordion>
+  <Accordion title="チャンク">
+    `dify_list_chunks`, `dify_get_chunk`, `dify_create_chunks`, `dify_update_chunk`, `dify_delete_chunk`, `dify_list_child_chunks`, `dify_create_child_chunk`, `dify_delete_child_chunk`
+  </Accordion>
+  <Accordion title="メタデータ">
+    `dify_list_metadata_fields`, `dify_get_builtin_metadata_fields`, `dify_create_metadata_field`, `dify_update_metadata_field`, `dify_delete_metadata_field`, `dify_update_builtin_metadata_field`, `dify_update_document_metadata_batch`
+  </Accordion>
+  <Accordion title="タグ">
+    `dify_list_knowledge_tags`, `dify_create_knowledge_tag`, `dify_update_knowledge_tag`, `dify_delete_knowledge_tag`, `dify_bind_tags_to_knowledge_base`, `dify_unbind_tags_from_knowledge_base`
+  </Accordion>
+  <Accordion title="アノテーション">
+    `dify_list_annotations`, `dify_create_annotation`, `dify_update_annotation`, `dify_delete_annotation`, `dify_configure_annotation_reply`, `dify_get_annotation_reply_job_status`
+  </Accordion>
+  <Accordion title="アプリ情報 & フィードバック">
+    `dify_message_feedback`, `dify_get_app_parameters`, `dify_get_app_meta`, `dify_get_app_info`, `dify_get_app_webapp_settings`
+  </Accordion>
+  <Accordion title="ファイル & 音声">
+    `dify_upload_file`, `dify_download_file`, `dify_convert_audio_to_text`, `dify_convert_text_to_audio`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="対話型アプリのオーケストレーション" icon="message-circle">
+    Difyアプリにチャットメッセージを送信し、生成された会話履歴を管理する
+  </Card>
+  <Card title="ナレッジベースの整備" icon="library">
+    ドキュメントをアップロードし、インデックス状況を確認し、RAG対応アプリのチャンクを管理する
+  </Card>
+  <Card title="ワークフローの自動化" icon="workflow">
+    Difyのワークフローアプリをトリガーし、完了まで実行を監視する
+  </Card>
+  <Card title="回答品質のチューニング" icon="thumbs-up">
+    メッセージへのフィードバックを確認し、繰り返し発生する回答を修正するアノテーション応答を設定する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="dify_chat_messageがアプリタイプ不一致のエラーを返す">
+    チャットアプリとコンプリーションアプリは異なるエンドポイントを使用します。Difyアプリがチャットボットではなくテキストジェネレーター/コンプリーションアプリとして設定されている場合は、`dify_chat_message`ではなく`dify_completion_message`を使用してください。
+  </Accordion>
+  <Accordion title="アップロードしたドキュメントが「インデックス中」のまま進まない">
+    `dify_get_document_indexing_status`をポーリングしてください。大きなファイルやチャンク分割ルールが重いドキュメントは時間がかかることがあります。完了しない場合は、ナレッジベースに設定されているインデックス方式がそのファイル形式をサポートしているか確認してください。
+  </Accordion>
+  <Accordion title="dify_run_workflowが長時間実行のワークフローでタイムアウトする">
+    処理に時間のかかるステップがあるワークフローでは、最初の呼び出しだけを待たずに、返された`workflow_run_id`で`dify_get_workflow_run_detail`をポーリングし、ステータスが終了状態になるまで確認してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,106 @@
+---
+title: "Wix"
+description: "Manage your Wix store, bookings, blog, contacts, and site data — products, orders, CMS collections, and marketing"
+icon: "layout-template"
+---
+
+# Wix
+
+Shanone's Wix integration gives your agent 144 tools — the largest surface in Shanone's e-commerce/CMS integrations — spanning the online store, bookings, blog, CRM/contacts, custom data collections, and marketing/loyalty tools.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Wix API Key and Site ID">
+    Generate an API Key from the Wix Dashboard under **Settings → API Keys**, and copy the **Site ID** from **Settings → Site ID**. See [Wix's REST API authentication docs](https://dev.wix.com/docs/api-reference/articles/authentication/rest-api-authentication) for details.
+  </Step>
+  <Step title="Connect via API key">
+    In the Shanone dashboard, go to **Integrations → Wix** and enter both the API Key and Site ID.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `wix_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **144 tools** for Wix, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Products & catalog">
+    `wix_list_products`, `wix_search_products`, `wix_get_product`, `wix_get_product_by_slug`, `wix_count_products`, `wix_create_product`, `wix_create_product_with_inventory`, `wix_update_product`, `wix_delete_product`, `wix_bulk_update_products`
+  </Accordion>
+  <Accordion title="Catalog metadata">
+    `wix_list_categories`, `wix_get_category`, `wix_create_category`, `wix_update_category`, `wix_delete_category`, `wix_list_brands`, `wix_create_brand`, `wix_delete_brand`, `wix_get_inventory_item`, `wix_query_inventory_items`, `wix_update_inventory_item`, `wix_list_store_locations`
+  </Accordion>
+  <Accordion title="Orders">
+    `wix_search_orders`, `wix_get_order`, `wix_create_order`, `wix_update_order`, `wix_cancel_order`, `wix_bulk_update_orders`, `wix_add_order_activity`, `wix_bulk_update_order_tags`, `wix_get_orders_settings`
+  </Accordion>
+  <Accordion title="Draft orders & fulfillment">
+    `wix_create_draft_order`, `wix_get_draft_order`, `wix_query_draft_orders`, `wix_update_draft_order_line_items`, `wix_set_draft_order_shipping_info`, `wix_commit_draft_order`, `wix_delete_draft_order`, `wix_create_fulfillment`, `wix_list_fulfillments_for_order`, `wix_list_transactions_for_order`
+  </Accordion>
+  <Accordion title="Bookings">
+    `wix_create_booking`, `wix_query_bookings`, `wix_count_bookings`, `wix_confirm_booking`, `wix_decline_booking`, `wix_cancel_booking`, `wix_reschedule_booking`, `wix_get_service_availability`, `wix_register_to_waitlist`, `wix_list_waitlisted_entities`
+  </Accordion>
+  <Accordion title="Bookings catalog">
+    `wix_list_booking_services`, `wix_get_booking_service`, `wix_create_booking_service`, `wix_update_booking_service`, `wix_delete_booking_service`, `wix_list_booking_categories`, `wix_create_booking_category`, `wix_list_booking_add_ons`, `wix_create_booking_add_on`, `wix_list_staff_members`, `wix_create_staff_member`, `wix_list_booking_resources`
+  </Accordion>
+  <Accordion title="Contacts">
+    `wix_list_contacts`, `wix_search_contacts`, `wix_get_contact`, `wix_count_contacts`, `wix_create_contact`, `wix_upsert_contact`, `wix_update_contact`, `wix_delete_contact`, `wix_add_contact_address`, `wix_merge_contacts`
+  </Accordion>
+  <Accordion title="Contacts (labels, notes & members)">
+    `wix_list_labels`, `wix_find_or_create_label`, `wix_delete_label`, `wix_update_contact_tags`, `wix_create_note`, `wix_query_notes`, `wix_delete_note`, `wix_list_extended_fields`, `wix_find_or_create_extended_field`, `wix_query_members`
+  </Accordion>
+  <Accordion title="Blog">
+    `wix_create_draft_post`, `wix_update_draft_post`, `wix_publish_draft_post`, `wix_delete_draft_post`, `wix_query_posts`, `wix_get_post_by_slug`, `wix_create_blog_category`, `wix_query_blog_categories`, `wix_create_blog_tag`
+  </Accordion>
+  <Accordion title="Marketing & loyalty">
+    `wix_create_coupon`, `wix_query_coupons`, `wix_update_coupon`, `wix_delete_coupon`, `wix_create_gift_card`, `wix_query_gift_cards`, `wix_disable_gift_card`, `wix_create_pricing_plan`, `wix_query_pricing_plans`, `wix_list_pricing_plan_orders`, `wix_get_loyalty_account`, `wix_earn_loyalty_points`
+  </Accordion>
+  <Accordion title="Data collections (CMS)">
+    `wix_list_data_collections`, `wix_get_data_collection`, `wix_create_data_collection`, `wix_update_data_collection`, `wix_delete_data_collection`, `wix_create_data_collection_field`, `wix_update_data_collection_field`, `wix_delete_data_collection_field`, `wix_get_data_permissions`, `wix_update_data_permissions`
+  </Accordion>
+  <Accordion title="Data items (CMS)">
+    `wix_query_data_items`, `wix_search_data_items`, `wix_get_data_item`, `wix_count_data_items`, `wix_aggregate_data_items`, `wix_insert_data_item`, `wix_update_data_item`, `wix_save_data_item`, `wix_remove_data_item`
+  </Accordion>
+  <Accordion title="Media">
+    `wix_generate_file_upload_url`, `wix_import_file`, `wix_list_media_files`, `wix_search_media_files`, `wix_get_file_descriptor`, `wix_bulk_delete_files`, `wix_create_media_folder`, `wix_list_media_folders`, `wix_list_account_sites`, `wix_list_connected_domains`
+  </Accordion>
+  <Accordion title="Site management">
+    `wix_get_site_properties`, `wix_update_site_properties`, `wix_get_analytics_data`, `wix_list_site_tags`, `wix_create_site_tag`, `wix_delete_site_tag`, `wix_query_automations`, `wix_create_secret`, `wix_get_secret_value`, `wix_list_secret_info`, `wix_delete_secret`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Store operations" icon="shopping-cart">
+    Search orders, update fulfillment status, and manage inventory across products
+  </Card>
+  <Card title="Booking management" icon="calendar-check">
+    Confirm, decline, or reschedule appointments and check staff availability
+  </Card>
+  <Card title="Content publishing" icon="pen-line">
+    Draft and publish blog posts, organized by category and tag
+  </Card>
+  <Card title="Custom data-driven apps" icon="database">
+    Query and update custom CMS collections powering a site's dynamic pages
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Every call fails with an authentication error even with a valid API key">
+    Wix API calls require both the API Key **and** the Site ID — a key alone isn't enough to scope the request to your site. Confirm both are set in **Integrations**.
+  </Accordion>
+  <Accordion title="wix_commit_draft_order doesn't create a real order">
+    Draft orders are a staging step — build up line items and shipping info with `wix_update_draft_order_line_items`/`wix_set_draft_order_shipping_info` first, then call `wix_commit_draft_order` to convert it into a real order.
+  </Accordion>
+  <Accordion title="wix_query_data_items returns nothing for a collection I know has data">
+    Custom collections need their permission model checked with `wix_get_data_permissions` — some collections restrict read access by role, which can cause an API-key-based query to return an empty result set.
+  </Accordion>
+  <Accordion title="wix_create_booking succeeds but the slot doesn't reflect availability elsewhere">
+    Call `wix_get_service_availability` immediately before booking — availability can change between when your agent checked and when it books, especially for popular time slots.
+  </Accordion>
+</AccordionGroup>

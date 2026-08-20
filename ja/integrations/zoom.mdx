@@ -1,0 +1,97 @@
+---
+title: "Zoom"
+description: "Zoomでミーティング・ウェビナーをスケジュールし、録画/文字起こしを取得、参加者を管理"
+icon: /images/zoom.svg
+---
+
+# Zoom
+
+Shanoneのzoom連携は、ミーティングとウェビナー — スケジューリング、参加登録者、録画/文字起こし、投票/アンケート、そして他の連携ではあまり扱われないレポート機能まで含む67個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにZoom関連の作業を依頼(例: 「明日14時のミーティングをスケジュールして」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Zoomアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、ZoomのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`zoom_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはzoom向けに**67個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ウェビナー">
+    `zoom_list_webinars`, `zoom_get_webinar`, `zoom_create_webinar`, `zoom_update_webinar`, `zoom_delete_webinar`, `zoom_add_webinar_registrant`, `zoom_list_webinar_registrants`, `zoom_add_webinar_panelist`, `zoom_list_webinar_panelists`, `zoom_delete_webinar_panelist`, `zoom_list_webinar_participants`
+  </Accordion>
+  <Accordion title="ミーティング">
+    `zoom_list_meetings`, `zoom_get_meeting`, `zoom_create_meeting`, `zoom_update_meeting`, `zoom_delete_meeting`
+  </Accordion>
+  <Accordion title="録画">
+    `zoom_list_recordings`, `zoom_get_meeting_recordings`, `zoom_get_recording_analytics_summary`, `zoom_get_recording_analytics_details`, `zoom_delete_meeting_recordings`, `zoom_delete_recording_file`, `zoom_get_recording_settings`, `zoom_update_recording_settings`
+  </Accordion>
+  <Accordion title="参加登録者">
+    `zoom_add_meeting_registrant`, `zoom_list_meeting_registrants`, `zoom_get_meeting_registrant`, `zoom_delete_meeting_registrant`, `zoom_update_registrant_status`
+  </Accordion>
+  <Accordion title="投票 & アンケート">
+    `zoom_create_meeting_poll`, `zoom_list_meeting_polls`, `zoom_get_meeting_poll`, `zoom_update_meeting_poll`, `zoom_delete_meeting_poll`, `zoom_get_past_meeting_polls`, `zoom_get_meeting_survey`, `zoom_create_meeting_survey`, `zoom_update_meeting_survey`, `zoom_delete_meeting_survey`
+  </Accordion>
+  <Accordion title="アーカイブ">
+    `zoom_list_archived_files`, `zoom_get_meeting_archived_files`, `zoom_delete_meeting_archived_files`, `zoom_get_archive_statistics`
+  </Accordion>
+  <Accordion title="レポート">
+    `zoom_get_daily_usage_report`, `zoom_get_meeting_report`, `zoom_get_meeting_participants_report`, `zoom_get_webinar_report`
+  </Accordion>
+  <Accordion title="要約 & 文字起こし">
+    `zoom_get_meeting_summary`, `zoom_list_meeting_summaries`, `zoom_delete_meeting_summary`, `zoom_list_summary_templates`, `zoom_get_meeting_transcript`, `zoom_delete_meeting_transcript`
+  </Accordion>
+  <Accordion title="過去のミーティング">
+    `zoom_get_past_meeting`, `zoom_list_past_meeting_instances`, `zoom_get_past_meeting_qa`
+  </Accordion>
+  <Accordion title="テンプレート、招待状 & ライブ配信">
+    `zoom_list_meeting_templates`, `zoom_create_meeting_template`, `zoom_get_meeting_invitation`, `zoom_create_meeting_invite_links`, `zoom_get_livestream_settings`, `zoom_update_livestream_settings`, `zoom_update_livestream_status`
+  </Accordion>
+  <Accordion title="参加者 & ユーザー">
+    `zoom_list_meeting_participants`, `zoom_get_current_user`, `zoom_get_user_settings`, `zoom_list_users`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ミーティングのスケジューリング" icon="calendar-plus">
+    適切な設定でミーティングを作成し、参加登録者に招待リンクを送る
+  </Card>
+  <Card title="ミーティング後のフォローアップ" icon="file-text">
+    AI要約や文字起こしを取得し、フォローアップメモを自動で作成する
+  </Card>
+  <Card title="ウェビナー参加登録管理" icon="users">
+    参加登録者やパネリストを追加し、実際の出席者を確認する
+  </Card>
+  <Card title="利用状況・エンゲージメントレポート" icon="bar-chart-3">
+    日次利用状況やミーティング参加者レポートを取得して利用状況を追跡する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="zoom_get_meeting_summaryやzoom_get_meeting_transcriptが何も返さない">
+    AI Companionの要約や文字起こしは、クラウド録画とAI要約機能がアカウント/ミーティングレベルで有効なミーティングに対してのみ生成されます — 最近のミーティングに要約がない場合は`zoom_get_recording_settings`を確認してください。
+  </Accordion>
+  <Accordion title="zoom_create_meetingは成功するが参加登録者が参加できない">
+    参加登録が必要なミーティングの場合、参加登録者は`zoom_add_meeting_registrant`で追加され、それぞれ固有の参加リンクを使用する必要があります — 汎用のミーティングURLだけでは参加登録必須のミーティングには使えません。
+  </Accordion>
+  <Accordion title="ミーティング終了直後にzoom_get_past_meetingが失敗する">
+    過去のミーティングデータ(参加者、投票、Q&A)は、ミーティング終了後利用可能になるまで数分かかることがあります — ミーティングIDが間違っていると決めつける前に、少し待って再試行してください。
+  </Accordion>
+  <Accordion title="zoom_delete_meeting_recordingsを実行してもストレージがすぐには解放されない">
+    削除されたクラウド録画は、アカウント設定によっては完全に消去される前に一定期間Zoomのゴミ箱に保持される場合があります。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,85 @@
+---
+title: "Asana"
+description: "Manage tasks, projects, portfolios, and goals — with full support for custom fields, dependencies, and time tracking"
+icon: /images/asana.svg
+---
+
+# Asana
+
+Shanone's Asana integration gives your agent 115 tools — one of the deepest integrations in the catalog, covering not just tasks and projects but portfolios, goals, custom fields, dependencies, time tracking, and webhooks.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Asana (e.g. "create a task in my Q3 Roadmap project"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the workspace">
+    Approve Asana's OAuth consent screen for the workspace(s) you want Shanone to access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `asana_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **115 tools** for Asana, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Tasks">
+    `asana_get_task`, `asana_list_tasks`, `asana_search_tasks`, `asana_create_task`, `asana_update_task`, `asana_complete_task`, `asana_assign_task`, `asana_add_comment`, `asana_delete_task`, `asana_add_tag`
+  </Accordion>
+  <Accordion title="Subtasks, dependencies & followers">
+    `asana_get_subtasks`, `asana_create_subtask`, `asana_set_parent`, `asana_duplicate_task`, `asana_get_dependencies`, `asana_add_dependencies`, `asana_remove_dependencies`, `asana_get_dependents`, `asana_add_dependents`, `asana_remove_dependents`, `asana_get_task_followers`, `asana_add_followers`, `asana_remove_follower`
+  </Accordion>
+  <Accordion title="Projects">
+    `asana_list_projects`, `asana_create_project`, `asana_get_project`, `asana_update_project`, `asana_delete_project`, `asana_duplicate_project`, `asana_get_task_counts`, `asana_search_projects`, `asana_get_project_memberships`, `asana_add_members_for_project`, `asana_remove_members_for_project`, `asana_add_followers_for_project`, `asana_remove_followers_for_project`, `asana_get_project_statuses`, `asana_create_project_status`, `asana_get_project_templates`, `asana_instantiate_project`
+  </Accordion>
+  <Accordion title="Sections, tags & task-project links">
+    `asana_get_sections`, `asana_get_section`, `asana_create_section`, `asana_update_section`, `asana_delete_section`, `asana_insert_section`, `asana_get_tags_for_workspace`, `asana_create_tag`, `asana_update_tag`, `asana_get_tags_for_task`, `asana_remove_tag_for_task`, `asana_get_tasks_for_tag`, `asana_get_projects_for_task`, `asana_add_project_for_task`, `asana_remove_project_for_task`, `asana_move_task_to_section`
+  </Accordion>
+  <Accordion title="Portfolios & goals">
+    `asana_get_portfolios`, `asana_get_portfolio`, `asana_create_portfolio`, `asana_update_portfolio`, `asana_delete_portfolio`, `asana_get_items_for_portfolio`, `asana_add_item_for_portfolio`, `asana_remove_item_for_portfolio`, `asana_get_goals`, `asana_get_goal`, `asana_create_goal`, `asana_update_goal`, `asana_delete_goal`, `asana_add_followers_for_goal`, `asana_remove_followers_for_goal`, `asana_get_parent_goals`, `asana_get_goal_relationships`, `asana_add_supporting_relationship`, `asana_remove_supporting_relationship`
+  </Accordion>
+  <Accordion title="Teams, workspaces & users">
+    `asana_get_teams_for_workspace`, `asana_get_teams_for_user`, `asana_get_team`, `asana_create_team`, `asana_update_team`, `asana_get_team_memberships_for_team`, `asana_get_team_memberships_for_user`, `asana_add_user_for_team`, `asana_remove_user_for_team`, `asana_get_workspaces`, `asana_get_workspace`, `asana_update_workspace`, `asana_get_workspace_memberships_for_user`, `asana_get_workspace_memberships_for_workspace`, `asana_list_users`, `asana_get_user`, `asana_get_users_for_team`, `asana_get_users_for_workspace`, `asana_get_favorites_for_user`
+  </Accordion>
+  <Accordion title="Custom fields, stories & time tracking">
+    `asana_get_custom_fields_for_workspace`, `asana_get_custom_field`, `asana_create_custom_field`, `asana_get_stories`, `asana_get_story`, `asana_update_story`, `asana_delete_story`, `asana_get_time_tracking_entries_for_task`, `asana_create_time_tracking_entry`, `asana_get_time_tracking_entry`, `asana_update_time_tracking_entry`
+  </Accordion>
+  <Accordion title="Attachments, webhooks & batch">
+    `asana_get_attachments_for_object`, `asana_get_attachment`, `asana_create_attachment`, `asana_delete_attachment`, `asana_get_webhooks`, `asana_get_webhook`, `asana_create_webhook`, `asana_delete_webhook`, `asana_create_batch_request`, `asana_typeahead_for_workspace`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Sprint/task triage" icon="list-checks">
+    Search overdue or unassigned tasks across a project and assign them out
+  </Card>
+  <Card title="Goal & portfolio rollups" icon="target">
+    Summarize progress across a portfolio's projects against their linked goals
+  </Card>
+  <Card title="Cross-team dependency mapping" icon="git-branch">
+    Trace a task's dependencies and dependents before rescheduling a milestone
+  </Card>
+  <Card title="Time tracking reports" icon="clock">
+    Pull time tracking entries for a task or project to build a billing or capacity report
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="asana_create_task fails with an invalid custom field value">
+    Custom field option IDs (for enum/dropdown fields) must match exactly what `asana_get_custom_field` returns — free-text values won't work for enum-type fields.
+  </Accordion>
+  <Accordion title="asana_search_tasks returns fewer results than expected">
+    Asana's search API only searches within a single workspace at a time and has its own field-limiting rules; confirm the `workspace` parameter matches the project's actual workspace.
+  </Accordion>
+  <Accordion title="asana_create_webhook succeeds but no events arrive">
+    Asana requires the webhook target to respond to a handshake request immediately after creation — if your endpoint doesn't complete the handshake, Asana silently disables the webhook.
+  </Accordion>
+</AccordionGroup>

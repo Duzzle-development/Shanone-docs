@@ -1,0 +1,85 @@
+---
+title: "Runway"
+description: "Generate video, image, audio, and avatars with Runway's generative AI models"
+icon: /images/runway.svg
+---
+
+# Runway
+
+Shanone's Runway integration gives your agent 43 tools for [Runway](https://runwayml.com)'s generative media stack — video generation/editing, image generation and upscaling, voice/speech tools, AI avatars, and pre-built creative "recipes" for common marketing tasks.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Runway API key">
+    Generate a key from the [Runway Developer Portal](https://dev.runwayml.com/).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Runway, and paste in the key (`key_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `runway_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **43 tools** for Runway, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Video">
+    `runway_image_to_video`, `runway_text_to_video`, `runway_video_to_video`, `runway_video_upscale`
+  </Accordion>
+  <Accordion title="Image">
+    `runway_text_to_image`, `runway_image_upscale`
+  </Accordion>
+  <Accordion title="Audio & voice">
+    `runway_text_to_speech`, `runway_sound_effect`, `runway_character_performance`, `runway_voice_isolation`, `runway_voice_dubbing`, `runway_speech_to_speech`, `runway_create_voice`, `runway_get_voice`, `runway_update_voice`, `runway_delete_voice`, `runway_preview_voice`
+  </Accordion>
+  <Accordion title="Avatars">
+    `runway_create_avatar`, `runway_get_avatar`, `runway_update_avatar`, `runway_delete_avatar`, `runway_list_avatars`, `runway_create_avatar_video`, `runway_create_realtime_session`
+  </Accordion>
+  <Accordion title="Recipes (pre-built creative workflows)">
+    `runway_recipe_ad_localization`, `runway_recipe_marketing_stock_image`, `runway_recipe_multi_shot_video`, `runway_recipe_product_ad`, `runway_recipe_product_campaign_image`, `runway_recipe_product_swap`, `runway_recipe_product_ugc`
+  </Accordion>
+  <Accordion title="Documents & workflows">
+    `runway_create_document`, `runway_get_document`, `runway_update_document`, `runway_delete_document`, `runway_list_workflows`, `runway_get_workflow`, `runway_run_workflow`
+  </Accordion>
+  <Accordion title="Tasks & organization">
+    `runway_wait_for_task`, `runway_get_task`, `runway_cancel_task`, `runway_get_organization_info`, `runway_get_organization_usage`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Product ad generation" icon="film">
+    Use `runway_recipe_product_ad` to turn a product photo into a short marketing video
+  </Card>
+  <Card title="Multilingual ad localization" icon="languages">
+    Run `runway_recipe_ad_localization` to adapt an existing ad for a new market
+  </Card>
+  <Card title="AI avatar videos" icon="user-round">
+    Create a reusable avatar and generate talking-head videos from a script
+  </Card>
+  <Card title="Voice content pipelines" icon="mic">
+    Generate narration with `runway_text_to_speech`, then isolate or dub voice tracks as needed
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="runway_text_to_video or runway_image_to_video doesn't return output immediately">
+    Generation tasks run asynchronously — use `runway_wait_for_task` or poll `runway_get_task` with the returned task ID rather than expecting synchronous output.
+  </Accordion>
+  <Accordion title="A recipe tool (runway_recipe_*) fails with a missing asset error">
+    Recipes chain multiple generation steps and expect specific input assets (e.g. a product image URL); check `shanone_get_tool_schema` for the exact required fields before calling.
+  </Accordion>
+  <Accordion title="runway_create_avatar_video doesn't match the avatar's configured voice">
+    Confirm the avatar was fully created and its voice binding saved via `runway_get_avatar` before generating video — avatars created moments earlier may not have propagated yet.
+  </Accordion>
+  <Accordion title="Tasks are taking a long time or usage looks higher than expected">
+    Check `runway_get_organization_usage` to see current consumption, and `runway_cancel_task` for any stuck or no-longer-needed generation jobs.
+  </Accordion>
+</AccordionGroup>

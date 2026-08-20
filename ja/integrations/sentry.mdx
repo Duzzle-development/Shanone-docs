@@ -1,0 +1,100 @@
+---
+title: "Sentry"
+description: "エラー、パフォーマンス、リリースを追跡 — issue、トレース、プロファイリング、セッションリプレイ、ダッシュボード"
+icon: /images/sentry.svg
+---
+
+# Sentry
+
+ShanoneのSentry連携は、issueのトリアージ、パフォーマンストレーシング、セッションリプレイ、リリースヘルス、組織管理(メンバー、SCIM、連携アプリ)にまたがる115個のツールをエージェントに提供します——日常的なSentry運用の大半をエージェントから離れずに行えます。
+
+## はじめに
+
+<Steps>
+  <Step title="Sentry Auth Tokenを作成する">
+    Sentryの**Settings → Developer Settings**で、必要なスコープ(例: `project:read`、`event:read`、`org:read`)を持つInternal IntegrationまたはPersonal Auth Tokenを作成します。
+  </Step>
+  <Step title="ShanoneでAPIキーを接続する">
+    エージェントにSentry関連の作業を依頼(例: 「プロジェクトの未解決issueを一覧表示して」)するか、Shanoneダッシュボードの**連携**からAuth Tokenを事前に登録しておきます。Organization Slugを設定しておくと、呼び出しごとに指定する必要がなくなります。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`sentry_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはSentry向けに**115個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="Issue & イベント">
+    `sentry_list_issues`, `sentry_list_organization_issues`, `sentry_get_issue`, `sentry_update_issue`, `sentry_delete_issue`, `sentry_bulk_update_issues`, `sentry_list_issue_events`, `sentry_get_issue_hashes`, `sentry_get_issue_tags`, `sentry_search_issues`, `sentry_list_events`, `sentry_get_event`, `sentry_get_latest_event`, `sentry_get_oldest_event`, `sentry_list_event_attachments`
+  </Accordion>
+  <Accordion title="プロジェクト & 環境">
+    `sentry_list_projects`, `sentry_get_project`, `sentry_create_project`, `sentry_update_project`, `sentry_delete_project`, `sentry_get_project_stats`, `sentry_list_project_users`, `sentry_get_project_filters`, `sentry_list_environments`, `sentry_get_environment`, `sentry_update_environment_visibility`
+  </Accordion>
+  <Accordion title="リリース & デプロイ">
+    `sentry_list_releases`, `sentry_get_release`, `sentry_create_release`, `sentry_update_release`, `sentry_delete_release`, `sentry_list_release_commits`, `sentry_get_release_health`, `sentry_list_deploys`, `sentry_create_deploy`, `sentry_get_deploy`
+  </Accordion>
+  <Accordion title="パフォーマンス、トレース & プロファイリング">
+    `sentry_list_traces`, `sentry_get_trace`, `sentry_get_trace_meta`, `sentry_list_spans`, `sentry_list_transactions`, `sentry_get_transaction_stats`, `sentry_list_profiles`, `sentry_get_profile`, `sentry_get_profile_flamegraph`, `sentry_get_profile_functions`, `sentry_get_function_trends`, `sentry_list_profile_chunks`, `sentry_get_profiling_stats`, `sentry_get_slowest_functions`
+  </Accordion>
+  <Accordion title="セッションリプレイ">
+    `sentry_list_replays`, `sentry_get_replay`, `sentry_list_replay_segments`, `sentry_get_replay_clicks`, `sentry_list_replay_errors`, `sentry_get_replay_count`, `sentry_list_replay_selectors`, `sentry_delete_replay`
+  </Accordion>
+  <Accordion title="セッション & 組織統計">
+    `sentry_get_sessions`, `sentry_get_release_health_stats`, `sentry_get_organization_stats`, `sentry_get_organization_events_count`, `sentry_resolve_event_id`, `sentry_list_trusted_relays`, `sentry_get_organization_client_keys`
+  </Accordion>
+  <Accordion title="Discover & Explore">
+    `sentry_list_saved_queries`, `sentry_get_saved_query`, `sentry_create_saved_query`, `sentry_update_saved_query`, `sentry_delete_saved_query`, `sentry_run_discover_query`, `sentry_explore_events`, `sentry_explore_spans`, `sentry_get_event_facets`
+  </Accordion>
+  <Accordion title="ダッシュボード">
+    `sentry_list_dashboards`, `sentry_get_dashboard`, `sentry_create_dashboard`, `sentry_update_dashboard`, `sentry_delete_dashboard`, `sentry_add_dashboard_widget`, `sentry_update_dashboard_widget`
+  </Accordion>
+  <Accordion title="クライアントキー & データ転送">
+    `sentry_list_client_keys`, `sentry_get_client_key`, `sentry_create_client_key`, `sentry_update_client_key`, `sentry_list_data_forwarding`, `sentry_update_data_forwarding`
+  </Accordion>
+  <Accordion title="連携アプリ & リポジトリ">
+    `sentry_list_integrations`, `sentry_get_integration`, `sentry_delete_integration`, `sentry_list_integration_features`, `sentry_list_external_issues`, `sentry_create_external_issue`, `sentry_list_repositories`, `sentry_get_repository`, `sentry_list_repository_commits`, `sentry_link_repository_to_project`, `sentry_delete_repository`
+  </Accordion>
+  <Accordion title="メンバー & SCIM">
+    `sentry_list_organization_members`, `sentry_get_organization_member`, `sentry_add_organization_member`, `sentry_update_organization_member`, `sentry_delete_organization_member`, `sentry_list_organization_member_teams`, `sentry_scim_list_users`, `sentry_scim_get_user`, `sentry_scim_create_user`, `sentry_scim_update_user`, `sentry_scim_list_groups`, `sentry_scim_update_group`
+  </Accordion>
+  <Accordion title="Seer AI & ユーザー">
+    `sentry_get_issue_autofix`, `sentry_trigger_issue_autofix`, `sentry_get_issue_summary`, `sentry_get_current_user`, `sentry_list_user_organizations`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="新規issueのトリアージ" icon="bug">
+    発生頻度順に未解決issueを一覧表示し、スタンドアップ用に上位の問題を要約する
+  </Card>
+  <Card title="AIによる根本原因の特定" icon="sparkles">
+    停滞しているissueに対してSeer autofixを実行し、提案された修正内容を報告する
+  </Card>
+  <Card title="リリースヘルスの確認" icon="rocket">
+    ロールアウト判断の前に、直近2リリース間のクラッシュフリーセッション率を比較する
+  </Card>
+  <Card title="パフォーマンス劣化の検知" icon="gauge">
+    デプロイ後にプロジェクトの最も遅い関数/トレースを取得し、劣化を検出する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="トークンが有効なはずなのに401/403エラーになる">
+    Auth Tokenのスコープはエンドポイントごとに一致している必要があります——例えば`sentry_bulk_update_issues`には`event:write`が必要ですが、`sentry_list_projects`には`project:read`のみで十分です。**Settings → Developer Settings**で不足しているスコープを追加してトークンを再生成してください。
+  </Accordion>
+  <Accordion title="issueがあるはずのプロジェクトでsentry_list_issuesが空になる">
+    多くの一覧系ツールはデフォルトで短い期間(Sentryの`statsPeriod`)かつ未解決issueのみを対象にしています。明示的に`query`/`statsPeriod`を指定してください——正確なパラメータ名は`sentry_list_issues`の`shanone_get_tool_schema`で確認できます。
+  </Accordion>
+  <Accordion title="呼び出しごとにOrganization Slugのエラーが出る">
+    接続時に設定していない場合、多くのツールは呼び出しごとに明示的な`organization_slug`引数を要求します——連携アプリ側で一度設定しておけば、毎回指定する必要がなくなります。
+  </Accordion>
+  <Accordion title="sentry_trigger_issue_autofixがすぐに結果を返さない">
+    Seer autofixは非同期で実行されます。実行状態が完了するまで、同じissueに対して`sentry_get_issue_autofix`をポーリングしてください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,79 @@
+---
+title: "Stability AI"
+description: "Stable DiffusionとStable Audioで画像・音声を生成・編集・アップスケールする"
+icon: /images/stability.svg
+---
+
+# Stability AI
+
+ShanoneのStability AI連携は、画像生成、編集(インペインティング、アウトペインティング、背景除去)、コントロール誘導生成、アップスケール、3Dアセット生成、テキストから音声への変換をカバーする28個のツールをエージェントに提供します——StabilityのジェネレーティブメディアAPIの大部分をカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="APIキーを発行する">
+    Stability AI Platformで**Account → API Keys**からキーを作成します。
+  </Step>
+  <Step title="ShanoneでAPIキーを接続する">
+    エージェントにStability関連の作業を依頼(例: 「夕日の灯台の画像を生成して」)するか、Shanoneダッシュボードの**連携**からAPIキーを事前に登録しておきます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`stability_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはStability AI向けに**28個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="生成">
+    `stability_generate_ultra`, `stability_generate_core`, `stability_generate_sd3`
+  </Accordion>
+  <Accordion title="編集">
+    `stability_remove_background`, `stability_search_and_replace`, `stability_outpaint`, `stability_erase`, `stability_inpaint`, `stability_search_and_recolor`, `stability_replace_background_relight`
+  </Accordion>
+  <Accordion title="コントロール誘導生成">
+    `stability_control_sketch`, `stability_control_structure`, `stability_control_style`, `stability_control_style_transfer`
+  </Accordion>
+  <Accordion title="アップスケール">
+    `stability_upscale_fast`, `stability_upscale_conservative`, `stability_upscale_creative`
+  </Accordion>
+  <Accordion title="3D & 音声メディア">
+    `stability_generate_3d`, `stability_generate_3d_spar3d`, `stability_audio_text_to_audio`, `stability_audio_audio_to_audio`, `stability_audio_inpaint`, `stability_audio_3_text_to_audio`, `stability_audio_3_audio_to_audio`, `stability_audio_3_inpaint`
+  </Accordion>
+  <Accordion title="アカウント & 結果取得">
+    `stability_get_balance`, `stability_fetch_image_result`, `stability_fetch_audio_result`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="マーケティング素材の生成" icon="image">
+    キャンペーン用に、テキストプロンプトから商品のヒーロー画像をまとめて生成する
+  </Card>
+  <Card title="写真のクリーンアップ" icon="eraser">
+    アップロードした写真から背景を除去したり、不要なオブジェクトを消したりする
+  </Card>
+  <Card title="スタイルを揃えたバリエーション生成" icon="palette">
+    control-styleやstyle-transferを使い、既存のブランドの見た目に合わせたバリエーションを生成する
+  </Card>
+  <Card title="低解像度素材のアップスケール" icon="maximize">
+    古い、または低解像度の画像を高解像度レイアウトで再利用するためにアップスケールする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="生成呼び出しが402エラーや残高エラーを返す">
+    Stability AIは生成ごとにクレジットを消費して課金します。大量のバッチを実行する前に`stability_get_balance`で残高を確認し、途中での失敗を避けてください。
+  </Accordion>
+  <Accordion title="stability_generate_3dや音声系ツールがすぐにアセットを返さない">
+    3Dや一部の音声生成は非同期で実行され、ジョブ/生成IDが返されます——そのIDを使って`stability_fetch_image_result`や`stability_fetch_audio_result`をアセットが準備できるまでポーリングしてください。
+  </Accordion>
+  <Accordion title="stability_inpaintやstability_eraseが予期しない結果になる">
+    これらのツールは元画像の寸法に合わせたマスク画像に依存します——`stability_inpaint`の`shanone_get_tool_schema`で、期待されるマスク形式(グレースケール、解像度の一致)を確認してください。
+  </Accordion>
+</AccordionGroup>

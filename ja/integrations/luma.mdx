@@ -1,0 +1,85 @@
+---
+title: "Luma"
+description: "Lumaのイベントを管理 — ゲスト、ホスト、チケット、クーポン、メンバーシップ階層、Webhook"
+icon: /images/luma.svg
+---
+
+# Luma
+
+ShanoneのLuma連携は、イベント運営を一貫して行う36個のツールをエージェントに提供します——イベントの作成・更新、ゲストとホストの管理、チケット、クーポン、カレンダーメンバーシップまでカバーします。
+
+## はじめに
+
+<Steps>
+  <Step title="Luma APIキーを取得する">
+    Lumaのカレンダー設定で、**API**セクションからAPIキーを発行します(Luma Plus以上のプランが必要です)。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**Integrations > Luma**で、そのAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`luma_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはLuma向けに**36個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="イベント">
+    `luma_list_events`, `luma_get_event`, `luma_create_event`, `luma_update_event`, `luma_add_event_to_calendar`, `luma_check_event_existence`, `luma_get_event_admin_info`
+  </Accordion>
+  <Accordion title="ゲスト">
+    `luma_list_guests`, `luma_get_guest`, `luma_add_guests`, `luma_update_guest_status`, `luma_send_invites`
+  </Accordion>
+  <Accordion title="ホスト">
+    `luma_add_event_host`, `luma_remove_event_host`, `luma_update_event_host`
+  </Accordion>
+  <Accordion title="チケット">
+    `luma_list_ticket_types`, `luma_get_ticket_type`, `luma_create_ticket_type`
+  </Accordion>
+  <Accordion title="クーポン">
+    `luma_list_event_coupons`, `luma_list_calendar_coupons`, `luma_create_event_coupon`, `luma_create_calendar_coupon`
+  </Accordion>
+  <Accordion title="タグ">
+    `luma_list_person_tags`, `luma_create_person_tag`, `luma_delete_person_tag`, `luma_apply_tag_to_members`, `luma_manage_event_tags`
+  </Accordion>
+  <Accordion title="メンバーシップ & 参加者">
+    `luma_list_membership_tiers`, `luma_add_user_to_membership`, `luma_list_people`, `luma_import_people`
+  </Accordion>
+  <Accordion title="ユーザー、アップロード & Webhook">
+    `luma_get_self`, `luma_get_user_info`, `luma_generate_upload_url`, `luma_list_webhooks`, `luma_create_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="イベントセットアップ" icon="calendar-plus">
+    イベントを作成し、ホストを追加し、チケットタイプを一連の流れで設定する
+  </Card>
+  <Card title="ゲストリスト管理" icon="users">
+    ゲストリストを一括インポートし、参加者にタグ付けして招待を送る
+  </Card>
+  <Card title="プロモーション" icon="ticket">
+    単一イベントまたはカレンダー全体に適用される割引クーポンを作成する
+  </Card>
+  <Card title="リアルタイム連携" icon="webhook">
+    Webhookを登録し、登録情報が自動的に別システムへ流れるようにする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="luma_create_ticket_typeやクーポン系ツールがプランエラーで失敗する">
+    チケットやクーポン機能は、カレンダーが有料のLumaプランであることが必要です——無料カレンダーでもゲストやイベントの管理はできますが、有料チケット機能は使えません。
+  </Accordion>
+  <Accordion title="luma_add_guestsで招待メールが送られない">
+    ゲストの追加と招待の送信は別のステップです——追加したゲストに実際にメールを送るには、その後に`luma_send_invites`を呼び出してください。
+  </Accordion>
+  <Accordion title="luma_import_peopleが一部の行を黙ってスキップする">
+    重複したメールアドレスや不正な形式の行はエラーにならずスキップされます。完全にインポートされたと決めつけず、レスポンスでスキップ/失敗したエントリを確認してください。
+  </Accordion>
+</AccordionGroup>

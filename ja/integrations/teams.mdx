@@ -1,0 +1,88 @@
+---
+title: "Microsoft Teams"
+description: "チーム、チャネル、チャット、会議、ファイルを管理する — メッセージング、リアクション、カレンダー連携"
+icon: /images/teams.svg
+---
+
+# Microsoft Teams
+
+ShanoneのMicrosoft Teams連携は、チーム/チャネル、チャットとメッセージング、会議とカレンダー、ファイル、タブ、分析をカバーする97個のツールをエージェントに提供します——Teamsクライアントを開かずに、コラボレーション業務の大半を実行できます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにTeams関連の作業を依頼(例: 「#generalチャネルに要約を投稿して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Microsoftアカウントを許可する">
+    Shanoneにアクセスさせたいチームやチャットを持つアカウントで、MicrosoftのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`teams_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはMicrosoft Teams向けに**97個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="チーム & チャネル">
+    `teams_list_teams`, `teams_list_channels`, `teams_get_team`, `teams_create_team`, `teams_update_team`, `teams_archive_team`, `teams_unarchive_team`, `teams_delete_team`, `teams_get_channel`, `teams_create_channel`, `teams_update_channel`, `teams_delete_channel`, `teams_get_primary_channel`, `teams_list_private_channels`, `teams_list_tags`, `teams_get_tag`, `teams_create_tag`, `teams_delete_tag`
+  </Accordion>
+  <Accordion title="メンバー">
+    `teams_list_members`, `teams_get_member`, `teams_add_member`, `teams_remove_member`, `teams_update_member_role`, `teams_list_channel_members`
+  </Accordion>
+  <Accordion title="チャネルメッセージ">
+    `teams_get_channel_messages`, `teams_send_channel_message`, `teams_get_message`, `teams_update_message`, `teams_delete_message`, `teams_send_html_message`, `teams_send_card_message`, `teams_send_message_with_mention`, `teams_send_message_with_attachment`, `teams_get_message_delta`
+  </Accordion>
+  <Accordion title="返信 & リアクション">
+    `teams_list_replies`, `teams_get_reply`, `teams_send_reply`, `teams_update_reply`, `teams_list_reactions`, `teams_add_reaction`, `teams_remove_reaction`, `teams_get_reaction_users`
+  </Accordion>
+  <Accordion title="チャット(1対1 & グループ)">
+    `teams_list_chats`, `teams_send_chat_message`, `teams_get_chat_messages`, `teams_get_chat`, `teams_create_chat`, `teams_update_chat`, `teams_delete_chat`, `teams_hide_chat`, `teams_unhide_chat`, `teams_mark_chat_read`, `teams_mark_chat_unread`, `teams_list_chat_members`, `teams_get_chat_member`, `teams_add_chat_member`, `teams_remove_chat_member`, `teams_update_chat_member_role`, `teams_add_chat_members_bulk`
+  </Accordion>
+  <Accordion title="会議 & カレンダー">
+    `teams_list_meetings`, `teams_get_meeting`, `teams_create_meeting`, `teams_update_meeting`, `teams_delete_meeting`, `teams_get_meeting_attendance`, `teams_get_meeting_transcript`, `teams_get_meeting_recording`, `teams_create_meeting_for_user`, `teams_get_join_url`, `teams_list_calendar_events`, `teams_get_calendar_event`, `teams_create_calendar_event_with_meeting`, `teams_update_calendar_event`, `teams_delete_calendar_event`, `teams_get_calendar_view`
+  </Accordion>
+  <Accordion title="ファイル">
+    `teams_get_files_folder`, `teams_list_files`, `teams_get_file`, `teams_upload_file`, `teams_download_file`, `teams_delete_file`
+  </Accordion>
+  <Accordion title="アプリ & タブ">
+    `teams_list_installed_apps`, `teams_get_installed_app`, `teams_install_app`, `teams_uninstall_app`, `teams_list_tabs`, `teams_get_tab`, `teams_add_tab`, `teams_remove_tab`
+  </Accordion>
+  <Accordion title="Webhook & 分析">
+    `teams_list_webhooks`, `teams_create_webhook`, `teams_send_webhook_message`, `teams_delete_webhook`, `teams_get_team_activity`, `teams_get_user_activity`, `teams_get_device_usage`, `teams_get_team_counts`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="スタンドアップの自動化" icon="megaphone">
+    日次サマリーカードをチャネルに投稿し、当番のメンバーにメンションする
+  </Card>
+  <Card title="会議のフォローアップ" icon="calendar-check">
+    会議の文字起こしと出席状況を取得し、アクションアイテムを作成する
+  </Card>
+  <Card title="チャットのトリアージ" icon="messages-square">
+    接続中のアカウントの未読チャットをスキャンし、返信が必要なものを要約する
+  </Card>
+  <Card title="オンボーディングの自動化" icon="user-plus">
+    新入社員を適切なチーム/チャネルに追加し、ウェルカムメッセージを投稿する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="teams_get_meeting_transcriptやteams_get_meeting_recordingが何も返さない">
+    文字起こしと録画は対象の会議で有効化されている必要があり(主催者側の設定であることが多い)、会議終了後の処理に時間がかかることがあります——有効化した直後は、少し待ってから再試行してください。
+  </Accordion>
+  <Accordion title="teams_send_channel_messageは成功するがメッセージの見た目が想定と違う">
+    通常の`teams_send_channel_message`は基本的なテキストのみをサポートします——書式付きコンテンツには`teams_send_html_message`、リッチなカードには`teams_send_card_message`、ユーザーへの正しい@メンションには`teams_send_message_with_mention`を使ってください(テキスト内に生の`@名前`を書くだけでは誰にも通知されません)。
+  </Accordion>
+  <Accordion title="teams_create_teamやteams_add_memberが権限エラーで失敗する">
+    チーム/メンバーに対するほとんどの書き込み操作には、通常のメンバーが持つ以上の管理者レベルのMicrosoft Graph権限が接続アカウントに必要です——継続的に失敗する場合はMicrosoft 365の管理者に確認してください。
+  </Accordion>
+</AccordionGroup>

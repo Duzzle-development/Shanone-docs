@@ -1,0 +1,64 @@
+---
+title: "Jinba"
+description: "公開済みのJinba Flowワークフローを実行する — 自然言語とビジュアルによるノーコード自動化"
+icon: /images/jinba.svg
+---
+
+# Jinba
+
+ShanoneのJinba連携では、公開済みのJinba Flowワークフローをカスタム入力引数付きで実行する1のツールをエージェントが利用できるようになります。Jinba Flow自体はノーコードの自然言語ワークフロービルダーであり、Shanoneの役割はそこで既に構築・公開されたワークフローをトリガーすることに限られます。
+
+## はじめに
+
+<Steps>
+  <Step title="Jinba APIキーを取得する">
+    Jinbaアカウントの**Settings → API**からキーを生成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、Jinbaを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`jinba_run_workflow`への`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはJinba用に**1のツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="ワークフロー実行">
+    `jinba_run_workflow` — UUIDを指定して公開済みのJinba Flowワークフローを実行し、ワークフローの`INPUT_`設定で定義された`{name, value}`形式の入力引数のJSON配列を任意で渡す
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="チャット起点の自動化" icon="play">
+    ロジックを別の場所で再構築せず、チャットからの依頼で構築済みのJinbaワークフローを起動する
+  </Card>
+  <Card title="パラメータ化された実行" icon="sliders-horizontal">
+    同じ公開済みワークフローにリクエストごとに異なる入力引数を渡す
+  </Card>
+  <Card title="複数ツールをまたぐオーケストレーション" icon="workflow">
+    複数の連携をまたぐより大きなエージェントタスクの1ステップとしてJinbaワークフローを利用する
+  </Card>
+  <Card title="長時間タスクの委任" icon="clock">
+    複雑な複数ステップのロジックを、プロンプト内ではなくJinbaでビジュアルに構築したワークフローに委ねる
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="jinba_run_workflowでワークフローが見つからないというエラーが出る">
+    ワークフローはAPI経由で実行する前にJinba Flowで公開されている必要があります——エディタ上でドラフト保存されているだけのワークフローには到達できません。Jinba Flowダッシュボードに表示されているUUIDを再確認してください。
+  </Accordion>
+  <Accordion title="jinba_run_workflowで引数が不足または無効というエラーが返る">
+    `args`は`{"name": ..., "value": ...}`形式のオブジェクトの配列を表すJSON文字列である必要があります——Jinba側でそのワークフローの`INPUT_`ツール設定を確認し、期待される引数名を確認してください。
+  </Accordion>
+  <Accordion title="jinba_run_workflowの応答に時間がかかる">
+    実行時間はワークフローの複雑さに依存します。内部のリクエストは最大120秒まで許容されているため、複数ステップの複雑なワークフローでは結果が返るまでそれだけの時間がかかることがあります。
+  </Accordion>
+</AccordionGroup>

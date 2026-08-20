@@ -1,0 +1,91 @@
+---
+title: "Fireworks AI"
+description: "オープンモデル向けの高速推論、ファインチューニング、デプロイ管理 — チャット、埋め込み、LoRA、評価"
+icon: /images/fireworks.svg
+---
+
+# Fireworks AI
+
+ShanoneのFireworks AI連携は、推論・モデル/LoRA管理・オンデマンドデプロイ・ファインチューニング(SFT/DPO)・評価・アカウント管理まで、96個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Fireworks AIのAPIキーを取得する">
+    [Fireworks AIダッシュボード](https://app.fireworks.ai/settings/users/api-keys)からAPIキーを作成します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**を開き、Fireworks AIを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`fireworks_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはFireworks AI向けに**96個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="推論">
+    `fireworks_chat_completion`, `fireworks_create_completion`, `fireworks_create_message`, `fireworks_create_embedding`, `fireworks_rerank_documents`, `fireworks_list_models`
+  </Accordion>
+  <Accordion title="バッチ & Responses API">
+    `fireworks_create_batch_inference_job`, `fireworks_list_batch_inference_jobs`, `fireworks_get_batch_inference_job`, `fireworks_delete_batch_inference_job`, `fireworks_create_response`, `fireworks_list_responses`, `fireworks_get_response`, `fireworks_delete_response`
+  </Accordion>
+  <Accordion title="モデル & LoRA">
+    `fireworks_get_model`, `fireworks_create_model`, `fireworks_update_model`, `fireworks_delete_model`, `fireworks_get_model_upload_endpoint`, `fireworks_validate_model_upload`, `fireworks_get_model_download_endpoint`, `fireworks_prepare_model_precision`, `fireworks_load_lora`, `fireworks_list_loras`, `fireworks_get_lora`, `fireworks_update_lora`, `fireworks_unload_lora`
+  </Accordion>
+  <Accordion title="デプロイ">
+    `fireworks_create_deployment`, `fireworks_list_deployments`, `fireworks_get_deployment`, `fireworks_update_deployment`, `fireworks_scale_deployment`, `fireworks_delete_deployment`, `fireworks_undelete_deployment`, `fireworks_list_deployment_shapes`, `fireworks_get_deployment_shape`, `fireworks_list_deployment_shape_versions`
+  </Accordion>
+  <Accordion title="データセット">
+    `fireworks_create_dataset`, `fireworks_upload_dataset_files`, `fireworks_get_dataset_upload_endpoint`, `fireworks_validate_dataset_upload`, `fireworks_get_dataset_download_endpoint`, `fireworks_list_datasets`, `fireworks_get_dataset`, `fireworks_update_dataset`, `fireworks_delete_dataset`
+  </Accordion>
+  <Accordion title="ファインチューニング(SFT / DPO)">
+    `fireworks_create_sft_job`, `fireworks_list_sft_jobs`, `fireworks_get_sft_job`, `fireworks_resume_sft_job`, `fireworks_delete_sft_job`, `fireworks_create_dpo_job`, `fireworks_list_dpo_jobs`, `fireworks_get_dpo_job`, `fireworks_get_dpo_job_metrics_file_endpoint`, `fireworks_resume_dpo_job`, `fireworks_delete_dpo_job`
+  </Accordion>
+  <Accordion title="評価">
+    `fireworks_create_evaluator`, `fireworks_get_evaluator_upload_endpoint`, `fireworks_validate_evaluator_upload`, `fireworks_get_evaluator_build_log_endpoint`, `fireworks_get_evaluator_source_code_endpoint`, `fireworks_list_evaluators`, `fireworks_get_evaluator`, `fireworks_update_evaluator`, `fireworks_delete_evaluator`, `fireworks_create_evaluation_job`, `fireworks_list_evaluation_jobs`, `fireworks_get_evaluation_job`, `fireworks_get_evaluation_job_log_endpoint`, `fireworks_delete_evaluation_job`
+  </Accordion>
+  <Accordion title="アカウント(クォータ、請求、APIキー)">
+    `fireworks_list_quotas`, `fireworks_get_quota`, `fireworks_update_quota`, `fireworks_get_billing_usage`, `fireworks_get_billing_summary`, `fireworks_query_usage_costs`, `fireworks_create_api_key`, `fireworks_list_api_keys`, `fireworks_delete_api_key`
+  </Accordion>
+  <Accordion title="管理(シークレット、ユーザー、アカウント)">
+    `fireworks_create_secret`, `fireworks_list_secrets`, `fireworks_update_secret`, `fireworks_delete_secret`, `fireworks_create_user`, `fireworks_list_users`, `fireworks_get_user`, `fireworks_update_user`, `fireworks_delete_user`, `fireworks_get_account`, `fireworks_update_account`
+  </Accordion>
+  <Accordion title="ルーター">
+    `fireworks_create_router`, `fireworks_list_routers`, `fireworks_get_router`, `fireworks_update_router`, `fireworks_delete_router`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="高速なオープンモデル推論" icon="zap">
+    GPUを管理せずにオープンウェイトモデルに対してチャット補完や埋め込みを実行する
+  </Card>
+  <Card title="カスタムファインチューニング" icon="sliders-horizontal">
+    データセットをアップロードしてSFTまたはDPOファインチューニングジョブを起動し、生成されたモデルをデプロイする
+  </Card>
+  <Card title="オンデマンドGPUデプロイ" icon="server">
+    一貫した低レイテンシが必要なモデル向けに専用デプロイを作成・スケールする
+  </Card>
+  <Card title="コスト & 利用状況トラッキング" icon="receipt">
+    請求サマリと利用コストを取得し、プロジェクト間の支出を監視する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="fireworks_create_sft_jobまたはfireworks_create_dpo_jobが起動に失敗する">
+    まずデータセットのアップロードと検証が完了しているか確認してください。ファインチューニングジョブで参照する前に`fireworks_validate_dataset_upload`を使い、`fireworks_get_dataset`のステータスをチェックしてください。
+  </Accordion>
+  <Accordion title="fireworks_load_loraがデプロイ互換性に関するエラーを返す">
+    LoRAアダプターは、ファインチューニング元と全く同じベースモデルを実行しているデプロイにロードする必要があります。`fireworks_get_lora`/`fireworks_get_deployment`でLoRAと対象デプロイの両方のベースモデルを確認してください。
+  </Accordion>
+  <Accordion title="管理系ツール(fireworks_create_user、fireworks_update_account)が権限エラーを返す">
+    これらには接続中のAPIキーがアカウント管理者に属していることが必要で、一部の管理系エンドポイントは加えて`account_id`の設定が必要です。推論専用のツールはこれがなくても動作します。
+  </Accordion>
+</AccordionGroup>

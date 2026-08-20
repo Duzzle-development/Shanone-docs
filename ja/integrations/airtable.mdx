@@ -1,0 +1,85 @@
+---
+title: "Airtable"
+description: "Airtableのベースを読み書き・管理 — レコード、テーブル、ビュー、フィールド、コメント、Webhook"
+icon: /images/airtable.svg
+---
+
+# Airtable
+
+ShanoneのAirtable連携では、ベースを構造化データベースとして操作するための**55個のツール**をエージェントに提供します。レコード・テーブル・フィールド・ビューといった基本操作に加え、単純なAirtableラッパーでは省略されがちなコラボレーション機能(コメント、ベースのコラボレーター管理、Webhook)まで一通りカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにAirtableで何か作業をしてもらう(例:「Projectsテーブルのレコードを一覧表示して」)か、Shanoneダッシュボードの**インテグレーション**から事前に接続します。
+  </Step>
+  <Step title="対象のベースを承認する">
+    AirtableのOAuth承認画面では、アクセスを許可するベースやワークスペースを個別に選べます — Shanoneに読み書きさせたいベースにアクセスを許可してください。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、承認したベースに対する`airtable_*`ツールの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Airtable向けに**55個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="レコード">
+    `airtable_list_records`, `airtable_get_record`, `airtable_create_record`, `airtable_create_records`, `airtable_update_record`, `airtable_delete_record`, `airtable_search_records`, `airtable_update_records`, `airtable_upsert_records`, `airtable_delete_records`, `airtable_list_records_paginated`, `airtable_list_all_records`, `airtable_filter_records`, `airtable_sort_records`, `airtable_select_fields`
+  </Accordion>
+  <Accordion title="テーブル & フィールド">
+    `airtable_list_tables`, `airtable_get_table`, `airtable_create_table`, `airtable_update_table`, `airtable_delete_table`, `airtable_list_fields`, `airtable_get_field`, `airtable_create_field`, `airtable_update_field`, `airtable_delete_field`
+  </Accordion>
+  <Accordion title="ビュー">
+    `airtable_list_views`, `airtable_get_view`, `airtable_create_view`, `airtable_update_view`, `airtable_delete_view`, `airtable_list_records_in_view`, `airtable_get_view_metadata`, `airtable_duplicate_view`
+  </Accordion>
+  <Accordion title="ベース & ワークスペース">
+    `airtable_list_bases`, `airtable_get_base_schema`, `airtable_list_workspaces`, `airtable_get_workspace`, `airtable_create_base`, `airtable_list_workspace_collaborators`
+  </Accordion>
+  <Accordion title="コメント & アクティビティ">
+    `airtable_list_comments`, `airtable_get_comment`, `airtable_create_comment`, `airtable_update_comment`, `airtable_delete_comment`, `airtable_list_record_activity`
+  </Accordion>
+  <Accordion title="添付ファイル">
+    `airtable_upload_attachment`, `airtable_get_attachment_url`, `airtable_delete_attachment`
+  </Accordion>
+  <Accordion title="ユーザー & コラボレーター">
+    `airtable_get_current_user`, `airtable_list_base_collaborators`, `airtable_add_base_collaborator`, `airtable_remove_base_collaborator`
+  </Accordion>
+  <Accordion title="Webhook">
+    `airtable_list_webhooks`, `airtable_create_webhook`, `airtable_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="CRMの同期" icon="refresh-cw">
+    他ツールから取得したデータで、リードや取引先のベースを同期させ続ける
+  </Card>
+  <Card title="レコードの一括クリーンアップ" icon="broom">
+    条件(必須フィールドの欠落など)に一致するレコードを絞り込み・並び替え・一括更新する
+  </Card>
+  <Card title="ベーススキーマの点検" icon="table">
+    自動化を組む前に、ベースのテーブル・フィールド・ビューを確認する
+  </Card>
+  <Card title="レビューワークフロー" icon="message-square">
+    フラグの立ったレコードにコメントを追加し、コラボレーターに対応を促す
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="airtable_create_recordが不明なフィールドエラーで失敗する">
+    フィールド名は大文字小文字を区別し、完全に一致させる必要があります。書き込む前に`airtable_get_table`または`airtable_get_base_schema`で正確なフィールド名と型を確認してください。
+  </Accordion>
+  <Accordion title="airtable_list_recordsが100件しか返さない">
+    Airtableはデフォルトで結果をページ分割します。返されたoffsetを使って`airtable_list_records_paginated`を呼ぶか、`airtable_list_all_records`を使えば全ページを自動で辿れます。
+  </Accordion>
+  <Accordion title="Airtable上では見えているベースがairtable_list_basesに出てこない">
+    OAuthのアクセス権限は接続時にベースごとに設定されます。Shanoneダッシュボードの**インテグレーション**から連携を再接続し、該当のベースへのアクセスを許可してください。
+  </Accordion>
+</AccordionGroup>

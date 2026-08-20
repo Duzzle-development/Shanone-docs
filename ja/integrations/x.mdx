@@ -1,0 +1,88 @@
+---
+title: "X"
+description: "X(旧Twitter)への投稿・検索・エンゲージメント — 投稿、タイムライン、リスト、DM、スペース、フォロー関係"
+icon: /images/x.svg
+---
+
+# X
+
+Shanoneのx連携は、投稿・エンゲージメント、タイムライン・検索、リスト、ダイレクトメッセージ、Spacesをカバーする67個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにX関連の作業を依頼(例: 「新機能のリリースについて投稿して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Xアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、XのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`x_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはx向けに**67個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="投稿">
+    `x_create_post`, `x_delete_post`, `x_get_post`, `x_search_posts`, `x_get_user_posts`, `x_get_posts_by_ids`, `x_get_quote_posts`, `x_get_reposted_by`, `x_get_liking_users`, `x_get_liked_posts`, `x_get_post_counts`, `x_hide_reply`
+  </Accordion>
+  <Accordion title="リスト">
+    `x_create_list`, `x_get_list`, `x_update_list`, `x_delete_list`, `x_add_list_member`, `x_remove_list_member`, `x_get_list_members`, `x_get_list_followers`, `x_get_list_posts`, `x_follow_list`, `x_unfollow_list`, `x_pin_list`, `x_unpin_list`, `x_get_owned_lists`, `x_get_followed_lists`
+  </Accordion>
+  <Accordion title="フォロー関係">
+    `x_follow_user`, `x_unfollow_user`, `x_get_followers`, `x_get_following`, `x_block_user`, `x_unblock_user`, `x_mute_user`, `x_unmute_user`, `x_get_blocked_users`, `x_get_muted_users`
+  </Accordion>
+  <Accordion title="ダイレクトメッセージ">
+    `x_send_dm`, `x_send_dm_to_conversation`, `x_create_group_dm`, `x_get_dm_events`, `x_get_dm_conversation_events`, `x_get_dm_event`, `x_delete_dm`
+  </Accordion>
+  <Accordion title="Spaces">
+    `x_search_spaces`, `x_get_space`, `x_get_spaces_by_ids`, `x_get_spaces_by_creators`, `x_get_space_posts`, `x_get_space_buyers`
+  </Accordion>
+  <Accordion title="メディア">
+    `x_upload_media`, `x_upload_media_init`, `x_upload_media_append`, `x_upload_media_finalize`, `x_get_media_upload_status`
+  </Accordion>
+  <Accordion title="エンゲージメント & ブックマーク">
+    `x_like_post`, `x_unlike_post`, `x_repost`, `x_undo_repost`, `x_bookmark_post`, `x_remove_bookmark`, `x_get_bookmarks`
+  </Accordion>
+  <Accordion title="タイムライン & ユーザー">
+    `x_get_home_timeline`, `x_get_mentions`, `x_get_me`, `x_get_user_by_username`, `x_get_users_by_ids`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="コンテンツのスケジューリング & 投稿" icon="send">
+    投稿を作成し、必要に応じてアップロードしたメディアと共に公開する
+  </Card>
+  <Card title="ブランドメンション監視" icon="bell">
+    最近の投稿を検索したりメンションを確認し、会話を見つけて対応する
+  </Card>
+  <Card title="コミュニティリストの整備" icon="list-checks">
+    ターゲットとするエンゲージメント用にアカウント(顧客、パートナーなど)のリストを構築・維持する
+  </Card>
+  <Card title="DMでのサポート対応" icon="mail">
+    サポートやコミュニティ用アカウントに届いたダイレクトメッセージを読んで返信する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="x_upload_mediaで大きな動画ファイルが失敗する">
+    大きなメディアはチャンクアップロードフローが必要です — `x_upload_media_init`を呼び、続けて1回以上`x_upload_media_append`を呼び、`x_upload_media_finalize`を呼んでから、投稿にメディアIDを添付する前に`x_get_media_upload_status`でポーリングしてください。
+  </Accordion>
+  <Accordion title="メディアを添付したx_create_postが拒否される">
+    メディアの処理が完了(`x_get_media_upload_status`で確認)してから、そのメディアIDを`x_create_post`で参照できます — 処理中のアップロードを添付すると失敗します。
+  </Accordion>
+  <Accordion title="x_search_postsの結果が期待より少ない">
+    Xの検索APIは標準ティアで保存期間・レート制限があります。非常に古い投稿や大量のクエリでは結果が部分的になることがあります。クエリを絞るか、`x_get_post_counts`で想定される件数を事前に確認してください。
+  </Accordion>
+  <Accordion title="しばらくするとOAuth接続が機能しなくなる">
+    XのOAuth 2.0アクセストークンには有効期限があります。呼び出しが認証エラーで失敗し始めた場合は、接続が永続すると考えず**連携**画面から再接続してトークンを更新してください。
+  </Accordion>
+</AccordionGroup>

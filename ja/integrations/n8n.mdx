@@ -1,0 +1,70 @@
+---
+title: "n8n"
+description: "n8nのワークフローと実行を確認・操作 — 有効化・無効化・リトライ、タグ/変数の管理"
+icon: /images/n8n.svg
+---
+
+# n8n
+
+Shanoneのn8n連携は、セルフホストまたはn8n Cloud上のインスタンスでワークフローとその実行を管理する15個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="n8n APIキーを発行する">
+    n8nインスタンスで**Settings > n8n API**に移動し、APIキーを作成します。
+  </Step>
+  <Step title="ShanoneにキーとベースURLを追加する">
+    Shanoneダッシュボードの**Integrations > n8n**で、APIキーとインスタンスのベースURL(例: `https://your-instance.app.n8n.cloud`)の両方を入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`n8n_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはn8n向けに**15個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ワークフロー">
+    `n8n_list_workflows`, `n8n_get_workflow`, `n8n_activate_workflow`, `n8n_deactivate_workflow`, `n8n_delete_workflow`
+  </Accordion>
+  <Accordion title="実行">
+    `n8n_list_executions`, `n8n_get_execution`, `n8n_retry_execution`, `n8n_delete_execution`
+  </Accordion>
+  <Accordion title="タグ & 変数">
+    `n8n_list_tags`, `n8n_create_tag`, `n8n_delete_tag`, `n8n_list_variables`, `n8n_create_variable`, `n8n_delete_variable`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="失敗のトリアージ" icon="alert-triangle">
+    直近の失敗した実行を一覧表示し、一時的なエラーによるものをリトライする
+  </Card>
+  <Card title="ワークフロー展開の制御" icon="toggle-right">
+    段階的なロールアウトの一環としてワークフローを有効化/無効化する
+  </Card>
+  <Card title="環境設定" icon="settings">
+    n8nのUIを開かずに、ワークフロー間で共有される変数を管理する
+  </Card>
+  <Card title="ワークフローの整理" icon="tag">
+    チームや用途ごとにワークフローにタグを付け、絞り込みやすくする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="n8n_retry_executionがすぐに失敗する">
+    リトライできるのは失敗した実行のみで、かつ元の実行以降にワークフローが変更されていない場合に限られます——まず`n8n_get_execution`でステータスを確認してください。
+  </Accordion>
+  <Accordion title="ツールが接続エラーを返す">
+    Shanoneに設定したベースURLが、n8nインスタンスのAPIルート(エディタUIのURLではない)を指しているか、セルフホストの場合はインターネットから到達可能かを確認してください。
+  </Accordion>
+  <Accordion title="n8n_delete_variableが権限エラーで失敗する">
+    特定のn8nプロジェクトに紐づく変数には、そのプロジェクトへのアクセス権を持つキーが必要です。`n8n_list_variables`でその変数がどのプロジェクトに属しているかを確認してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,85 @@
+---
+title: "Devin"
+description: "Devin AIソフトウェアエンジニアのセッションを管理する — セッション、プレイブック、ナレッジ、スケジュール、PRレビュー"
+icon: /images/devin.svg
+---
+
+# Devin
+
+ShanoneのDevin連携は、Cognition社のDevin AIソフトウェアエンジニアを扱う38個のツールをエージェントに提供します。セッション、プレイブック、ナレッジノート、スケジュール、シークレット、PRレビュー、ファイル、セッションインサイトが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="APIキーと組織IDを取得する">
+    Devinの**Settings → Service Users**でサービスユーザーを作成し、APIキーと組織IDを取得します。
+  </Step>
+  <Step title="認証情報をShanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Devinを選択してAPIキーと組織IDの両方を入力します(両方が必須です)。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`devin_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはDevin向けに**38個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="セッション">
+    `devin_list_sessions`, `devin_get_session`, `devin_create_session`, `devin_send_message`, `devin_update_session_tags`, `devin_terminate_session`, `devin_archive_session`, `devin_get_session_messages`, `devin_get_session_tags`, `devin_append_session_tags`, `devin_create_session_advanced`
+  </Accordion>
+  <Accordion title="ナレッジノート">
+    `devin_list_knowledge_notes`, `devin_get_knowledge_note`, `devin_create_knowledge_note`, `devin_update_knowledge_note`, `devin_delete_knowledge_note`, `devin_list_knowledge_folders`
+  </Accordion>
+  <Accordion title="プレイブック">
+    `devin_list_playbooks`, `devin_get_playbook`, `devin_create_playbook`, `devin_update_playbook`, `devin_delete_playbook`
+  </Accordion>
+  <Accordion title="スケジュール">
+    `devin_list_schedules`, `devin_get_schedule`, `devin_create_schedule`, `devin_update_schedule`, `devin_delete_schedule`
+  </Accordion>
+  <Accordion title="ファイル & 添付ファイル">
+    `devin_upload_file`, `devin_get_session_files`, `devin_download_attachment`
+  </Accordion>
+  <Accordion title="セッションインサイト">
+    `devin_get_session_insights`, `devin_generate_session_insights`, `devin_list_sessions_with_insights`
+  </Accordion>
+  <Accordion title="シークレット">
+    `devin_list_secrets`, `devin_create_secret`, `devin_delete_secret`
+  </Accordion>
+  <Accordion title="PRレビュー">
+    `devin_trigger_pr_review`, `devin_get_pr_review_status`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="コーディングタスクの委任" icon="bot">
+    タスク内容を指定してDevinセッションを作成し、進行中に補足指示を送る
+  </Card>
+  <Card title="再利用可能なプレイブック" icon="book-open">
+    繰り返し発生するワークフローをプレイブックとして定義し、以降のセッションで再利用する
+  </Card>
+  <Card title="PRレビューの自動化" icon="git-pull-request">
+    新しいプルリクエストに対してDevinのPRレビューをトリガーし、マージ前にステータスを確認する
+  </Card>
+  <Card title="定期メンテナンス" icon="calendar-clock">
+    Devinが定期的なメンテナンスや依存関係の更新を実行するスケジュールを設定する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="有効なAPIキーがあるにもかかわらずすべてのツールが認証エラーで失敗する">
+    Devinのv3 APIでは、APIキーと組織IDの**両方**が必要です。連携ページで両方のフィールドが正しく保存されているか確認してください。APIキー単体では、どの組織のセッションを操作するのか解決できません。
+  </Accordion>
+  <Accordion title="devin_send_messageが見た目上何も起こらない">
+    メッセージは`status_detail`が`waiting_for_user`のセッションにのみ送信できます。まず`devin_get_session`で確認してください。Devinがまだ`working`状態の場合、メッセージはキューに入りますが、入力を受け付けられる状態になるまで処理されません。
+  </Accordion>
+  <Accordion title="devin_create_sessionは成功するがセッションが即座にエラーになる">
+    `devin_get_session`で`status: error`を確認し、`devin_get_session_messages`を調べてください。多くの場合、タスク内容がアクセスできないリソース(組織のDevinインスタンスが接続されていないリポジトリなど)を参照していることが原因です。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,73 @@
+---
+title: "Mintlify"
+description: "Mintlifyドキュメントサイトを管理 — デプロイのトリガー、ドキュメントAIエージェントの実行、コンテンツ検索、分析の取得"
+icon: /images/mintlify.svg
+---
+
+# Mintlify
+
+ShanoneのMintlify連携は、デプロイ、ドキュメントAIエージェント/アシスタント、コンテンツ検索、サイト分析にまたがる16個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Mintlify APIキーを取得する">
+    Mintlifyダッシュボードで**Admin API key**(デプロイ、分析用)を発行し、ドキュメントAIアシスタントを使う場合は**Assistant API key**も発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**Integrations > Mintlify**で、手元にあるキーを貼り付けます——多くのツールはAdminキーだけで動作します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`mintlify_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはMintlify向けに**16個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="デプロイ">
+    `mintlify_trigger_preview`, `mintlify_trigger_deploy`, `mintlify_get_deploy_status`
+  </Accordion>
+  <Accordion title="AIエージェント">
+    `mintlify_create_agent_job`, `mintlify_get_agent_job`, `mintlify_send_agent_message` — MintlifyのドキュメントAIエージェントに対してバックグラウンドジョブを実行する(例: コンテンツのレビューや更新)
+  </Accordion>
+  <Accordion title="検索 & チャット">
+    `mintlify_search`, `mintlify_get_page`, `mintlify_chat`
+  </Accordion>
+  <Accordion title="分析">
+    `mintlify_get_page_views`, `mintlify_get_visitors`, `mintlify_get_searches`, `mintlify_get_feedback`, `mintlify_get_feedback_by_page`, `mintlify_get_conversations`, `mintlify_get_caller_stats`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ドキュメントデプロイの自動化" icon="rocket">
+    コンテンツ変更後にプレビューデプロイをトリガーし、本番に反映する
+  </Card>
+  <Card title="コンテンツギャップ分析" icon="search">
+    人気の検索キーワードやフィードバックを取得し、改善が必要なページを見つける
+  </Card>
+  <Card title="AI支援による編集" icon="bot">
+    ドキュメントの一部をスタイルガイドラインに照らしてレビューするエージェントジョブを実行する
+  </Card>
+  <Card title="利用状況レポート" icon="bar-chart">
+    週次のドキュメントレポート用にページビューや訪問者の傾向を要約する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="mintlify_trigger_deployは成功するがサイトに変化がない">
+    `mintlify_get_deploy_status`をポーリングしてください——デプロイは非同期で1分以上かかることがあり、ツール呼び出しが返ってきてもビルドが完了したことを意味しません。
+  </Accordion>
+  <Accordion title="フィードバックがあるはずのページでmintlify_get_feedback_by_pageが何も返さない">
+    ページパスが`docs.json`に登録されているものと完全に一致しているか確認してください(先頭のスラッシュや末尾の`.mdx`拡張子の有無に注意)。
+  </Accordion>
+  <Accordion title="エージェントジョブ系ツールが認証エラーで失敗する">
+    エージェントジョブ系のツール(`mintlify_create_agent_job`など)には特にAssistant API keyが必要です——Adminキーだけでは認証されません。
+  </Accordion>
+</AccordionGroup>

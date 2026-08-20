@@ -1,0 +1,79 @@
+---
+title: "freee"
+description: "日本の会計・人事労務プラットフォーム — 取引、請求書、給与、経費申請ワークフロー、口座照合"
+icon: /images/freee.svg
+---
+
+# freee
+
+Shanoneのfreee連携は、freeeの会計・人事労務プラットフォーム全体をカバーする125個のツールをエージェントに提供します。取引、請求書/見積書、給与、経費・申請ワークフロー、口座照合まで対応します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにfreee関連の作業を依頼(例: 「先月の未払い請求書を一覧にして」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="freeeアカウントを許可する">
+    Shanoneに操作させたい事業所について、freeeのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`freee_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはfreee向けに**125個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="基礎機能(ユーザー、事業所、取引、取引先)">
+    `freee_get_me`, `freee_list_users`, `freee_list_companies`, `freee_get_company`, `freee_list_deals`, `freee_get_deal`, `freee_create_deal`, `freee_update_deal`, `freee_delete_deal`, `freee_list_partners`, `freee_get_partner`, `freee_create_partner`, `freee_update_partner`, `freee_delete_partner`
+  </Accordion>
+  <Accordion title="会計マスタデータ">
+    `freee_list_account_items`, `freee_get_account_item`, `freee_create_account_item`, `freee_update_account_item`, `freee_delete_account_item`, `freee_list_sections`, `freee_get_section`, `freee_create_section`, `freee_update_section`, `freee_delete_section`, `freee_list_items`, `freee_get_item`, `freee_create_item`, `freee_update_item`, `freee_delete_item`, `freee_list_tags`, `freee_get_tag`, `freee_create_tag`, `freee_update_tag`, `freee_delete_tag`, `freee_list_taxes`
+  </Accordion>
+  <Accordion title="仕訳帳、振替、試算表">
+    `freee_request_journal_download`, `freee_get_journal_status`, `freee_download_journal`, `freee_list_manual_journals`, `freee_get_manual_journal`, `freee_create_manual_journal`, `freee_update_manual_journal`, `freee_delete_manual_journal`, `freee_list_transfers`, `freee_get_transfer`, `freee_create_transfer`, `freee_update_transfer`, `freee_delete_transfer`, `freee_get_trial_bs`, `freee_get_trial_bs_two_years`, `freee_get_trial_pl`, `freee_get_trial_pl_two_years`, `freee_get_trial_pl_sections`, `freee_get_trial_cr`, `freee_list_receipts`, `freee_get_receipt`, `freee_upload_receipt`, `freee_update_receipt`, `freee_delete_receipt`
+  </Accordion>
+  <Accordion title="ワークフロー & 承認">
+    `freee_list_expense_applications`, `freee_get_expense_application`, `freee_create_expense_application`, `freee_update_expense_application`, `freee_delete_expense_application`, `freee_action_expense_application`, `freee_list_approval_requests`, `freee_get_approval_request`, `freee_create_approval_request`, `freee_update_approval_request`, `freee_delete_approval_request`, `freee_action_approval_request`, `freee_list_approval_request_forms`, `freee_list_approval_flow_routes`, `freee_get_approval_flow_route`, `freee_list_payment_requests`, `freee_get_payment_request`, `freee_create_payment_request`, `freee_update_payment_request`, `freee_delete_payment_request`, `freee_action_payment_request`
+  </Accordion>
+  <Accordion title="人事労務 & 給与">
+    `freee_hr_get_me`, `freee_hr_list_employees`, `freee_hr_list_all_employees`, `freee_hr_get_employee`, `freee_hr_create_employee`, `freee_hr_update_employee`, `freee_hr_delete_employee`, `freee_hr_get_work_record`, `freee_hr_update_work_record`, `freee_hr_delete_work_record`, `freee_hr_list_time_clocks`, `freee_hr_get_time_clock`, `freee_hr_create_time_clock`, `freee_hr_get_available_types`, `freee_hr_get_work_record_summary`, `freee_hr_update_work_record_summary`, `freee_hr_list_payroll_statements`, `freee_hr_get_payroll_statement`, `freee_hr_list_bonus_statements`, `freee_hr_get_bonus_statement`
+  </Accordion>
+  <Accordion title="請求書 & 口座">
+    `freee_iv_list_invoices`, `freee_iv_get_invoice`, `freee_iv_create_invoice`, `freee_iv_update_invoice`, `freee_iv_list_invoice_templates`, `freee_iv_list_quotations`, `freee_iv_get_quotation`, `freee_iv_create_quotation`, `freee_iv_update_quotation`, `freee_iv_list_quotation_templates`, `freee_iv_list_delivery_slips`, `freee_iv_get_delivery_slip`, `freee_iv_create_delivery_slip`, `freee_iv_update_delivery_slip`, `freee_list_walletables`, `freee_get_walletable`, `freee_create_walletable`, `freee_update_walletable`, `freee_delete_walletable`, `freee_list_wallet_txns`, `freee_get_wallet_txn`, `freee_create_wallet_txn`, `freee_delete_wallet_txn`, `freee_list_banks`, `freee_get_bank`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="請求から回収までの追跡" icon="receipt">
+    請求書を作成し、口座の入出金明細を監視して支払われたタイミングを確認する
+  </Card>
+  <Card title="経費申請の承認自動化" icon="check-check">
+    未処理の経費申請をレビューし、`freee_action_expense_application`で承認/否認する
+  </Card>
+  <Card title="財務レポーティング" icon="chart-line">
+    期間を指定して試算表(BS/PL)を取得し、会社の財務状況を要約する
+  </Card>
+  <Card title="給与・勤怠レビュー" icon="calendar-clock">
+    給与計算の前に、打刻記録と勤怠サマリを照合する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="freee_create_dealがaccount_item不足のエラーで失敗する">
+    取引には有効な`account_item_id`と`partner_id`の参照が必要です。IDを推測するのではなく、まず`freee_list_account_items`と`freee_list_partners`で調べてください。
+  </Accordion>
+  <Accordion title="freee_request_journal_downloadがファイルではなくステータスを返す">
+    仕訳帳のエクスポートは非同期処理です。`freee_get_journal_status`が完了を報告するまでポーリングし、その後`freee_download_journal`で実際のファイルを取得してください。
+  </Accordion>
+  <Accordion title="人事労務系のツール(freee_hr_*)が会計系ツールと違う会社を返す">
+    freeeは同じ事業者でも会計(`company_id`)と人事労務(別のHR API配下の`company_id`)を別のスコープとして扱います。会計側の`freee_get_company`のIDではなく、`freee_hr_get_me`が返すIDを渡していることを確認してください。
+  </Accordion>
+</AccordionGroup>

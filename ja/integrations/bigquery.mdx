@@ -1,0 +1,89 @@
+---
+title: "BigQuery"
+description: "サービスアカウントキーを使って、Google BigQueryのデータセット・テーブル・ジョブ・IAMを操作"
+icon: /images/bigquery.svg
+---
+
+# BigQuery
+
+ShanoneのBigQuery連携では、Googleのデータウェアハウスに関する**40個のツール**をエージェントに提供します — クエリの実行、データセット/テーブル/モデルの管理、データのロード・エクスポート、IAMアクセス制御をカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="サービスアカウントを作成する">
+    Google Cloud Consoleで、Shanoneに持たせたいBigQuery権限(例:**BigQuery Data Editor**、**BigQuery Job User**)を付与したサービスアカウントを作成し、JSONキーを発行します。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにBigQueryへのクエリを依頼するか、Shanoneダッシュボードの**インテグレーション**にサービスアカウントキーのJSONを事前に貼り付けます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`bigquery_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+<Note>
+BigQueryはOAuthや単純なAPIキーではなく、サービスアカウントキー(JSON)を使用します。Shanoneは内部でこのキーを短命なアクセストークンに交換します。
+</Note>
+
+## 利用可能なツール
+
+Shanoneは BigQuery向けに**40個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="クエリ">
+    `bigquery_query`, `bigquery_query_and_wait`
+  </Accordion>
+  <Accordion title="テーブル">
+    `bigquery_list_tables`, `bigquery_get_table`, `bigquery_list_partitions`, `bigquery_schema_to_json`, `bigquery_update_table`, `bigquery_create_table`, `bigquery_delete_table`, `bigquery_list_rows`, `bigquery_preview_table`
+  </Accordion>
+  <Accordion title="データセット">
+    `bigquery_list_datasets`, `bigquery_get_dataset`, `bigquery_list_projects`, `bigquery_get_service_account_email`, `bigquery_update_dataset`, `bigquery_create_dataset`, `bigquery_delete_dataset`
+  </Accordion>
+  <Accordion title="ジョブ">
+    `bigquery_list_jobs`, `bigquery_get_job`, `bigquery_cancel_job`, `bigquery_delete_job_metadata`
+  </Accordion>
+  <Accordion title="ロード、コピー & エクスポート">
+    `bigquery_load_table_from_uri`, `bigquery_load_table_from_json`, `bigquery_copy_table`, `bigquery_extract_table`, `bigquery_insert_rows`, `bigquery_insert_rows_json`
+  </Accordion>
+  <Accordion title="モデル">
+    `bigquery_list_models`, `bigquery_get_model`, `bigquery_update_model`, `bigquery_delete_model`
+  </Accordion>
+  <Accordion title="ルーチン(ストアドプロシージャ & UDF)">
+    `bigquery_list_routines`, `bigquery_get_routine`, `bigquery_create_routine`, `bigquery_update_routine`, `bigquery_delete_routine`
+  </Accordion>
+  <Accordion title="IAM">
+    `bigquery_get_iam_policy`, `bigquery_set_iam_policy`, `bigquery_test_iam_permissions`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="アドホックなデータ分析" icon="bar-chart-3">
+    データセットに対してSQLクエリを実行し、結果を平易な言葉でまとめる
+  </Card>
+  <Card title="データパイプライン運用" icon="workflow">
+    GCSのURIからテーブルにデータをロードし、ロードジョブの完了まで監視する
+  </Card>
+  <Card title="スキーマ & アクセスの点検" icon="shield-check">
+    新しいチームにデータセットへのアクセスを許可する前に、テーブルスキーマとIAMポリシーを確認する
+  </Card>
+  <Card title="MLモデルの管理" icon="brain">
+    レポーティングパイプラインで使われているBigQuery MLモデルを一覧・確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="bigquery_queryが権限拒否エラーで失敗する">
+    `bigquery_test_iam_permissions`でサービスアカウントのIAMロールを確認してください — ほとんどの読み取り操作には、対象データセットへの`bigquery.jobs.create`と`bigquery.tables.getData`が最低限必要です。
+  </Accordion>
+  <Accordion title="bigquery_queryが完了しないジョブを返す">
+    長時間実行されるクエリはブロッキングせず、ジョブ参照を返します。短いクエリでブロッキングが問題ない場合は`bigquery_query_and_wait`を使い、それ以外は`status.state`が`DONE`になるまで`bigquery_get_job`をポーリングしてください。
+  </Accordion>
+  <Accordion title="bigquery_load_table_from_uriが静かに失敗する、または一部しかロードされない">
+    ロードジョブの`errorResult`と`errors`フィールドを`bigquery_get_job`で確認してください — スキーマの不一致やソースファイル内の不正な行が最も多い原因です。
+  </Accordion>
+</AccordionGroup>

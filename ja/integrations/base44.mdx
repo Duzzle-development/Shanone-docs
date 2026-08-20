@@ -1,0 +1,68 @@
+---
+title: "Base44"
+description: "自然言語からフルスタックアプリを生成・編集し、Base44が構築したデータモデルを問い合わせる"
+icon: /images/base44.svg
+---
+
+# Base44
+
+ShanoneのBase44連携では、AIによるアプリ開発のための**5個のツール**をエージェントに提供します — 説明文からのアプリ作成・編集、そしてBase44が生成するエンティティスキーマの確認・クエリを行えます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにBase44アプリの作成や編集を依頼するか、Shanoneダッシュボードの**インテグレーション**から事前に接続します。
+  </Step>
+  <Step title="Base44アカウントを承認する">
+    Base44のOAuth承認画面を承認します。Shanoneはこのアクセストークンを使って、あなたに代わってBase44のMCPサーバーと通信します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`base44_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Base44向けに**5個のツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="アプリの作成 & 編集">
+    `base44_create_app` — テキストの説明からフルスタックアプリ(フロントエンド、バックエンド、データベーススキーマ、APIエンドポイント)を新規生成する
+    `base44_edit_app` — 自然言語の編集指示で既存アプリを変更する
+  </Accordion>
+  <Accordion title="アプリ & エンティティ">
+    `base44_list_apps`, `base44_list_entity_schemas`, `base44_query_entities`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="ラピッドプロトタイピング" icon="rocket">
+    社内ツールを平易な言葉で説明し、Base44に動作するアプリを生成させる
+  </Card>
+  <Card title="アプリの反復的な改善" icon="wand-2">
+    生成されたアプリに対して、最初からやり直すのではなく的を絞った編集指示で追加調整する
+  </Card>
+  <Card title="データモデルの把握" icon="database">
+    クエリを書いたり連携を構築する前に、アプリのエンティティスキーマを確認する
+  </Card>
+  <Card title="アプリデータのレポート作成" icon="bar-chart">
+    条件を指定してエンティティをクエリし、アプリのデータについて簡易レポートを作成する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="base44_query_entitiesがエンティティが見つからないと返す">
+    まず`base44_list_entity_schemas`で正確な`entity_name`を確認してください — エンティティ名はアプリごとに異なり、大文字小文字を区別します。
+  </Accordion>
+  <Accordion title="base44_edit_appが想定外または広範囲な変更を行う">
+    `edit_instructions`はできるだけ具体的に記述してください — 曖昧な指示は、意図した以上の範囲をBase44が再解釈してしまう原因になります。変更内容を確認し、必要であれば的を絞った編集を追加で行ってください。
+  </Accordion>
+  <Accordion title="base44_create_appは成功するがアプリが使えるようになるまで時間がかかる">
+    アプリ生成はBase44側で非同期に処理されます。ツールは生成リクエストが受理された時点で応答を返すため、アプリが完全に構築・デプロイされた時点とは限りません。
+  </Accordion>
+</AccordionGroup>

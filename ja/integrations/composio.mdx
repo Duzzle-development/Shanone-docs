@@ -1,0 +1,85 @@
+---
+title: "Composio"
+description: "1000以上の外部サービスへの統合アクセス — ツールキット、ツール実行、接続済みアカウント、トリガー"
+icon: /images/composio.svg
+---
+
+# Composio
+
+ShanoneのComposio連携は、Composio自体を扱う60個のツールをエージェントに提供します。Composioは、GitHub・Gmail・Slackなど1000以上の外部サービスに対するツールを、管理されたOAuth/APIキー接続を通じて発見・実行するメタレイヤーです。
+
+## はじめに
+
+<Steps>
+  <Step title="Composio APIキーを取得する">
+    [app.composio.dev](https://app.composio.dev)にサインインし、**Settings**からAPIキーをコピーします。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Composioを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`composio_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはComposio向けに**60個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="Tool Router(セッション)">
+    `composio_create_router_session`, `composio_get_router_session`, `composio_update_router_session`, `composio_attach_to_session`, `composio_search_session_tools`, `composio_list_session_tools`, `composio_execute_session_tool`, `composio_execute_session_meta_tool`, `composio_create_session_link`, `composio_list_session_toolkits`, `composio_get_session_config_history`, `composio_execute_session_proxy`
+  </Accordion>
+  <Accordion title="トリガー">
+    `composio_list_active_triggers`, `composio_upsert_trigger`, `composio_delete_trigger`, `composio_enable_trigger`, `composio_disable_trigger`, `composio_list_trigger_types`, `composio_get_trigger_type`, `composio_list_trigger_type_enums`, `composio_search_trigger_types`, `composio_get_trigger_status`
+  </Accordion>
+  <Accordion title="接続済みアカウント">
+    `composio_list_connected_accounts`, `composio_get_connected_account`, `composio_create_connected_account`, `composio_update_connected_account`, `composio_delete_connected_account`, `composio_refresh_connected_account`, `composio_revoke_connected_account`, `composio_enable_connected_account`, `composio_disable_connected_account`
+  </Accordion>
+  <Accordion title="ツールキット">
+    `composio_list_toolkits`, `composio_get_toolkit`, `composio_list_toolkit_categories`, `composio_get_multiple_toolkits`, `composio_get_toolkit_changelog`, `composio_search_toolkits`, `composio_list_toolkit_tools`, `composio_get_toolkit_auth_methods`
+  </Accordion>
+  <Accordion title="認証設定 (Auth Configs)">
+    `composio_list_auth_configs`, `composio_get_auth_config`, `composio_create_auth_config`, `composio_update_auth_config`, `composio_delete_auth_config`, `composio_enable_auth_config`, `composio_disable_auth_config`, `composio_get_session_info`
+  </Accordion>
+  <Accordion title="ツール">
+    `composio_list_tools`, `composio_get_tool`, `composio_execute_tool`, `composio_execute_tool_with_text`, `composio_generate_tool_input`, `composio_execute_proxy`, `composio_get_required_scopes`
+  </Accordion>
+  <Accordion title="ツール検索">
+    `composio_search_tools`, `composio_get_tools_enum`, `composio_find_tool_for_task`
+  </Accordion>
+  <Accordion title="認証リンク (Auth Link)">
+    `composio_create_auth_link`, `composio_get_auth_link_status`, `composio_wait_for_connection`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="メタオーケストレーション" icon="workflow">
+    Shanoneがまだネイティブに連携していないサービスを呼び出す橋渡しとしてComposioを使う
+  </Card>
+  <Card title="動的なツール発見" icon="search">
+    1000以上のツールキットを実行時に検索し、タスクに最も合ったツールを実行する
+  </Card>
+  <Card title="サードパーティ向けの管理OAuth" icon="link">
+    認証リンクを発行し、エンドユーザーが外部アカウントを接続するのを待ってから実行する
+  </Card>
+  <Card title="イベント駆動の自動化" icon="zap">
+    外部サービスにトリガーを設定し、発火時に対応する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="composio_execute_toolが接続済みアカウント不在のエラーで失敗する">
+    対象のツールキットにはまず専用の接続済みアカウントが必要です。`composio_create_auth_link`で認証URLを取得し、エンドユーザーに完了してもらい、実行前に`composio_wait_for_connection`でポーリングしてください。
+  </Accordion>
+  <Accordion title="composio_search_toolsが無関係な結果を多く返す">
+    `toolkit_slug`フィルタでクエリを絞り込むか、自然言語のタスク記述に対して最も適した1件を返すよう調整されている`composio_find_tool_for_task`を代わりに使用してください。
+  </Accordion>
+  <Accordion title="Tool Routerセッションのツールが一定時間後に消える">
+    ルーターセッション(`composio_create_router_session`)には有効期限があります。`composio_get_router_session`で期限を確認し、期限切れの場合は`composio_update_router_session`を呼ぶか新しいセッションを作成してください。
+  </Accordion>
+</AccordionGroup>

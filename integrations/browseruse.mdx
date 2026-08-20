@@ -1,0 +1,76 @@
+---
+title: "BrowserUse"
+description: "Run AI browser-automation sessions in the cloud — profiles, browsers, workspaces, and billing"
+icon: /images/browseruse.svg
+---
+
+# BrowserUse
+
+Shanone's BrowserUse integration gives your agent 27 tools for cloud browser automation — sessions driven by BrowserUse's own browsing agent, reusable browser profiles, workspace file storage, and billing visibility.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a BrowserUse Cloud API key">
+    In the [BrowserUse Cloud dashboard](https://cloud.browser-use.com/settings/api-keys), generate an API key.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to run a browser automation task, or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the key is stored, `shanone_execute_tool` calls for `browseruse_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **27 tools** for BrowserUse, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Sessions">
+    `browseruse_create_session`, `browseruse_get_session`, `browseruse_list_sessions`, `browseruse_stop_session`, `browseruse_delete_session`, `browseruse_list_session_messages`, `browseruse_wait_for_session`
+  </Accordion>
+  <Accordion title="Browsers">
+    `browseruse_create_browser`, `browseruse_get_browser`, `browseruse_list_browsers`, `browseruse_update_browser`, `browseruse_list_browser_downloads`
+  </Accordion>
+  <Accordion title="Profiles">
+    `browseruse_create_profile`, `browseruse_get_profile`, `browseruse_list_profiles`, `browseruse_update_profile`, `browseruse_delete_profile`
+  </Accordion>
+  <Accordion title="Workspaces & files">
+    `browseruse_create_workspace`, `browseruse_list_workspaces`, `browseruse_get_workspace`, `browseruse_update_workspace`, `browseruse_delete_workspace`, `browseruse_list_workspace_files`, `browseruse_delete_workspace_file`, `browseruse_get_workspace_size`, `browseruse_upload_workspace_file`
+  </Accordion>
+  <Accordion title="Billing">
+    `browseruse_get_billing_account`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Agentic browsing tasks" icon="bot">
+    Describe a goal in natural language and let a session drive the browser end-to-end
+  </Card>
+  <Card title="Reusable login profiles" icon="key-round">
+    Create a profile with saved cookies/auth state so repeat sessions skip manual login
+  </Card>
+  <Card title="Batch automation monitoring" icon="list-checks">
+    Kick off multiple sessions and poll them via `browseruse_wait_for_session` until each completes
+  </Card>
+  <Card title="Workspace file handoff" icon="folder-open">
+    Upload input files to a workspace before a session, then retrieve output files afterward
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="browseruse_create_session takes a long time to complete a task">
+    Sessions run asynchronously against a real goal description. Use `browseruse_wait_for_session` with a reasonable timeout, or poll `browseruse_get_session` and check `browseruse_list_session_messages` for progress.
+  </Accordion>
+  <Accordion title="A session repeats a login flow instead of reusing saved credentials">
+    Attach an existing `profile_id` (from `browseruse_create_profile`) when creating the session — sessions without a profile always start with a clean browser state.
+  </Accordion>
+  <Accordion title="browseruse_upload_workspace_file fails or the file isn't visible to a session">
+    Confirm the workspace ID matches the one the session is configured to use, and check `browseruse_get_workspace_size` for any storage quota issues.
+  </Accordion>
+</AccordionGroup>

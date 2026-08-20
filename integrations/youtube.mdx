@@ -1,0 +1,94 @@
+---
+title: "YouTube"
+description: "Manage videos, live streams, playlists, comments, and channel analytics on YouTube"
+icon: /images/youtube.svg
+---
+
+# YouTube
+
+Shanone's YouTube integration gives your agent 82 tools covering the YouTube Data API's full surface — videos, live streaming, playlists, comments/moderation, captions, analytics, and reporting.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with YouTube (e.g. "list my recent video comments"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the YouTube channel you want Shanone to act on. YouTube uses its own dedicated Google Cloud OAuth client, separate from Gmail and other Google integrations.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `youtube_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **82 tools** for YouTube, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Live streaming">
+    `youtube_create_live_broadcast`, `youtube_list_live_broadcasts`, `youtube_update_live_broadcast`, `youtube_delete_live_broadcast`, `youtube_bind_live_broadcast`, `youtube_transition_live_broadcast`, `youtube_insert_live_cuepoint`, `youtube_create_live_stream`, `youtube_list_live_streams`, `youtube_update_live_stream`, `youtube_delete_live_stream`, `youtube_list_live_chat_messages`, `youtube_post_live_chat_message`, `youtube_delete_live_chat_message`, `youtube_ban_live_chat_user`, `youtube_unban_live_chat_user`, `youtube_add_live_chat_moderator`, `youtube_list_live_chat_moderators`, `youtube_remove_live_chat_moderator`, `youtube_list_super_chat_events`
+  </Accordion>
+  <Accordion title="Videos">
+    `youtube_get_video`, `youtube_rate_video`, `youtube_upload_video`, `youtube_update_video`, `youtube_delete_video`, `youtube_get_video_rating`, `youtube_report_video_abuse`, `youtube_set_thumbnail`
+  </Accordion>
+  <Accordion title="Analytics">
+    `youtube_analytics_query`, `youtube_analytics_list_groups`, `youtube_analytics_create_group`, `youtube_analytics_update_group`, `youtube_analytics_delete_group`, `youtube_analytics_list_group_items`, `youtube_analytics_add_group_item`, `youtube_analytics_delete_group_item`
+  </Accordion>
+  <Accordion title="Channels">
+    `youtube_get_channel`, `youtube_get_my_channel`, `youtube_update_channel`, `youtube_upload_channel_banner`, `youtube_list_channel_sections`, `youtube_create_channel_section`, `youtube_update_channel_section`, `youtube_delete_channel_section`
+  </Accordion>
+  <Accordion title="Playlists">
+    `youtube_list_playlists`, `youtube_get_playlist_items`, `youtube_create_playlist`, `youtube_add_video_to_playlist`, `youtube_delete_playlist`, `youtube_update_playlist`, `youtube_update_playlist_item`, `youtube_delete_playlist_item`, `youtube_list_playlist_items_by_ids`
+  </Accordion>
+  <Accordion title="Comments">
+    `youtube_list_comments`, `youtube_post_comment`, `youtube_list_comment_replies`, `youtube_reply_to_comment`, `youtube_update_comment`, `youtube_delete_comment`, `youtube_set_moderation_status`
+  </Accordion>
+  <Accordion title="Reporting">
+    `youtube_reporting_list_report_types`, `youtube_reporting_list_jobs`, `youtube_reporting_create_job`, `youtube_reporting_get_job`, `youtube_reporting_delete_job`, `youtube_reporting_list_reports`, `youtube_reporting_download_report`
+  </Accordion>
+  <Accordion title="Captions">
+    `youtube_list_captions`, `youtube_get_caption`, `youtube_upload_caption`, `youtube_update_caption`, `youtube_delete_caption`
+  </Accordion>
+  <Accordion title="Misc & reference data">
+    `youtube_list_members`, `youtube_list_membership_levels`, `youtube_list_activities`, `youtube_list_video_categories`, `youtube_list_i18n_languages`, `youtube_list_i18n_regions`
+  </Accordion>
+  <Accordion title="Search & subscriptions">
+    `youtube_search_videos`, `youtube_list_subscriptions`, `youtube_subscribe_channel`, `youtube_unsubscribe_channel`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Live chat moderation" icon="shield-check">
+    Monitor live chat, ban abusive users, and manage moderators during a stream
+  </Card>
+  <Card title="Comment engagement" icon="message-circle">
+    Reply to top comments and moderate spam across recent uploads
+  </Card>
+  <Card title="Channel analytics reporting" icon="bar-chart-3">
+    Query watch-time and engagement metrics to summarize channel performance
+  </Card>
+  <Card title="Playlist curation" icon="list-video">
+    Build and maintain themed playlists from newly uploaded or existing videos
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="youtube_upload_video succeeds but the video isn't visible">
+    Check the video's privacy status in the upload payload — new uploads without an explicit `status.privacyStatus` may default to `private`, so set it explicitly if you expect `public` or `unlisted`.
+  </Accordion>
+  <Accordion title="youtube_post_live_chat_message fails during a broadcast">
+    Live chat messages require an active, live broadcast with chat enabled — verify the broadcast's `lifeCycleStatus` via `youtube_list_live_broadcasts` is `live`, not `ready` or `complete`.
+  </Accordion>
+  <Accordion title="youtube_analytics_query returns no data for recent dates">
+    YouTube Analytics data typically has a processing delay of 1-2 days; querying for "today" or "yesterday" often returns incomplete or empty results.
+  </Accordion>
+  <Accordion title="OAuth connection works for Gmail but not YouTube">
+    YouTube uses its own dedicated Google Cloud OAuth client (separate from Gmail, Drive, etc.) for scope isolation — connect YouTube independently from **Integrations** even if other Google services are already connected.
+  </Accordion>
+</AccordionGroup>

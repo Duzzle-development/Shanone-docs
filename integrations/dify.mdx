@@ -1,0 +1,98 @@
+---
+title: "Dify"
+description: "Run and manage Dify AI apps — chat/completion, workflows, knowledge bases, documents, and annotations"
+icon: /images/dify.svg
+---
+
+# Dify
+
+Shanone's Dify integration gives your agent 65 tools for the Dify AI application platform: chat/completion messages, workflows, knowledge base management, document processing, chunks, tags, metadata, and annotations.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Dify App API Key">
+    In your Dify app, go to **API Access** and copy the app's API Key (starts with `app-`).
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Dify, and paste in the API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `dify_*` tools will succeed.
+  </Step>
+</Steps>
+
+<Note>
+Dify API Keys are scoped to a single app (or knowledge base). If you need to work across multiple Dify apps, you may need separate connections or check how your Shanone workspace manages multiple Dify keys.
+</Note>
+
+## Available Tools
+
+Shanone provides **65 tools** for Dify, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Chat & Completion">
+    `dify_chat_message`, `dify_completion_message`
+  </Accordion>
+  <Accordion title="Conversations">
+    `dify_list_conversations`, `dify_get_conversation_messages`, `dify_delete_conversation`, `dify_rename_conversation`, `dify_get_next_suggested_questions`, `dify_list_conversation_variables`, `dify_update_conversation_variable`
+  </Accordion>
+  <Accordion title="Workflows">
+    `dify_run_workflow`, `dify_stop_workflow`, `dify_get_workflow_run_detail`, `dify_list_workflow_logs`, `dify_get_workflow_events`
+  </Accordion>
+  <Accordion title="Documents">
+    `dify_list_documents`, `dify_get_document`, `dify_create_document_by_text`, `dify_create_document_by_file`, `dify_update_document_by_text`, `dify_delete_document`, `dify_get_document_indexing_status`, `dify_retrieve_chunks`, `dify_download_document`, `dify_update_document_status_batch`
+  </Accordion>
+  <Accordion title="Knowledge Base">
+    `dify_list_knowledge_bases`, `dify_get_knowledge_base`, `dify_create_knowledge_base`, `dify_update_knowledge_base`, `dify_delete_knowledge_base`
+  </Accordion>
+  <Accordion title="Chunks">
+    `dify_list_chunks`, `dify_get_chunk`, `dify_create_chunks`, `dify_update_chunk`, `dify_delete_chunk`, `dify_list_child_chunks`, `dify_create_child_chunk`, `dify_delete_child_chunk`
+  </Accordion>
+  <Accordion title="Metadata">
+    `dify_list_metadata_fields`, `dify_get_builtin_metadata_fields`, `dify_create_metadata_field`, `dify_update_metadata_field`, `dify_delete_metadata_field`, `dify_update_builtin_metadata_field`, `dify_update_document_metadata_batch`
+  </Accordion>
+  <Accordion title="Tags">
+    `dify_list_knowledge_tags`, `dify_create_knowledge_tag`, `dify_update_knowledge_tag`, `dify_delete_knowledge_tag`, `dify_bind_tags_to_knowledge_base`, `dify_unbind_tags_from_knowledge_base`
+  </Accordion>
+  <Accordion title="Annotations">
+    `dify_list_annotations`, `dify_create_annotation`, `dify_update_annotation`, `dify_delete_annotation`, `dify_configure_annotation_reply`, `dify_get_annotation_reply_job_status`
+  </Accordion>
+  <Accordion title="App Info & Feedback">
+    `dify_message_feedback`, `dify_get_app_parameters`, `dify_get_app_meta`, `dify_get_app_info`, `dify_get_app_webapp_settings`
+  </Accordion>
+  <Accordion title="Files & Audio">
+    `dify_upload_file`, `dify_download_file`, `dify_convert_audio_to_text`, `dify_convert_text_to_audio`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Conversational app orchestration" icon="message-circle">
+    Send chat messages to a Dify app and manage the resulting conversation history
+  </Card>
+  <Card title="Knowledge base curation" icon="library">
+    Upload documents, review indexing status, and manage chunks for RAG-backed apps
+  </Card>
+  <Card title="Workflow automation" icon="workflow">
+    Trigger a Dify workflow app and monitor its run through completion
+  </Card>
+  <Card title="Answer quality tuning" icon="thumbs-up">
+    Review message feedback and configure annotation replies to correct recurring answers
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="dify_chat_message returns an app-type mismatch error">
+    Chat apps and Completion apps use different endpoints — use `dify_completion_message` instead of `dify_chat_message` if your Dify app is configured as a Text Generator / Completion app rather than a Chatbot.
+  </Accordion>
+  <Accordion title="Uploaded document stays stuck at 'indexing'">
+    Poll `dify_get_document_indexing_status` — large files or documents with heavy chunking rules can take a while; if it never finishes, check the file format is supported by the knowledge base's configured indexing method.
+  </Accordion>
+  <Accordion title="dify_run_workflow times out on a long-running workflow">
+    For workflows with slow steps, don't wait on the initial call alone — poll `dify_get_workflow_run_detail` with the returned `workflow_run_id` until the status is terminal.
+  </Accordion>
+</AccordionGroup>

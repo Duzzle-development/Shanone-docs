@@ -1,0 +1,67 @@
+---
+title: "Fireflies"
+description: "Meeting transcription and analysis — transcripts, bites, live meetings, and channel management"
+icon: /images/fireflies.svg
+---
+
+# Fireflies
+
+Shanone's Fireflies integration gives your agent 21 tools for working with meeting transcripts and summaries via Fireflies.ai's GraphQL API — searching transcripts, clipping highlights ("Bites"), and managing live meetings and channels.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Fireflies API key">
+    In Fireflies, go to Settings → Integrations → API Access and generate an API key.
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select Fireflies, and paste the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `fireflies_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **21 tools** for Fireflies, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Queries">
+    `fireflies_get_user`, `fireflies_list_users`, `fireflies_get_user_groups`, `fireflies_get_transcript`, `fireflies_list_transcripts`, `fireflies_get_bite`, `fireflies_list_bites`, `fireflies_list_channels`, `fireflies_get_channel`, `fireflies_list_contacts`, `fireflies_get_ai_app_outputs`, `fireflies_list_active_meetings`
+  </Accordion>
+  <Accordion title="Mutations">
+    `fireflies_upload_audio`, `fireflies_add_to_live_meeting`, `fireflies_delete_transcript`, `fireflies_set_user_role`, `fireflies_update_meeting_title`, `fireflies_update_meeting_privacy`, `fireflies_update_meeting_channel`, `fireflies_create_bite`, `fireflies_share_meeting`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting summary distribution" icon="file-text">
+    Pull a transcript and its AI app outputs (summary, action items) right after a meeting ends
+  </Card>
+  <Card title="Highlight clipping" icon="scissors">
+    Create a "Bite" from a key moment in a transcript to share with people who missed the meeting
+  </Card>
+  <Card title="Live meeting bot management" icon="video">
+    Add the Fireflies notetaker bot to an in-progress meeting via `fireflies_add_to_live_meeting`
+  </Card>
+  <Card title="Transcript governance" icon="shield-check">
+    Audit meeting privacy settings and channel assignments, or delete transcripts that shouldn't be retained
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="fireflies_upload_audio doesn't return a transcript immediately">
+    Transcription is asynchronous — poll `fireflies_get_transcript` or `fireflies_list_transcripts` with the returned meeting ID until processing completes.
+  </Accordion>
+  <Accordion title="Hitting rate limits on queries">
+    Fireflies enforces per-plan rate limits (Free: 50/day, Pro: 500/day, Business/Enterprise: 60/min) — batch `fireflies_list_transcripts` calls rather than polling individual transcripts in a tight loop.
+  </Accordion>
+  <Accordion title="fireflies_set_user_role or admin tools return a permissions error">
+    Role management and some org-level queries require the connected API key to belong to a Fireflies admin account, not a regular member.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,67 @@
+---
+title: "Google Tasks"
+description: "Manage task lists and tasks — create, complete, reopen, move, and clear completed items"
+icon: "list-checks"
+---
+
+# Google Tasks
+
+Shanone's Google Tasks integration gives your agent 14 tools for managing task lists and the tasks within them, including completion state, ordering/nesting via move, and bulk clearing of finished items.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Tasks (e.g. "add 'renew domain' to my Admin list due Friday"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the account whose Tasks Shanone should access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `google_tasks_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **14 tools** for Google Tasks, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Task lists">
+    `google_tasks_list_tasklists`, `google_tasks_get_tasklist`, `google_tasks_create_tasklist`, `google_tasks_update_tasklist`, `google_tasks_delete_tasklist`
+  </Accordion>
+  <Accordion title="Tasks">
+    `google_tasks_list_tasks`, `google_tasks_get_task`, `google_tasks_create_task`, `google_tasks_update_task`, `google_tasks_delete_task`, `google_tasks_move_task`, `google_tasks_clear_completed_tasks`, `google_tasks_complete_task`, `google_tasks_reopen_task`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Quick capture" icon="pencil-line">
+    Turn a spoken request or email action item straight into a task with a due date
+  </Card>
+  <Card title="List cleanup" icon="list-x">
+    Clear completed tasks from a list to keep it focused on what's still open
+  </Card>
+  <Card title="Sub-task organization" icon="git-branch">
+    Move tasks to nest them under a parent task or reorder them within a list
+  </Card>
+  <Card title="Daily review" icon="calendar-check">
+    List open tasks across lists and summarize what's due today
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="google_tasks_move_task doesn't seem to reorder as expected">
+    `google_tasks_move_task` takes optional `parent` and `previous` parameters to control nesting and position — omitting both moves the task to the top level at the end of the list rather than leaving its position unchanged.
+  </Accordion>
+  <Accordion title="Completed tasks still show up in google_tasks_list_tasks">
+    By default, `google_tasks_list_tasks` includes completed tasks; pass `show_completed=False` (check the exact parameter name with `shanone_get_tool_schema`) to filter them out, or use `google_tasks_clear_completed_tasks` to remove them from the list entirely.
+  </Accordion>
+  <Accordion title="google_tasks_create_task ignores the due date">
+    Due dates must be RFC 3339 timestamps (date-only values are accepted but time-of-day is ignored by the Tasks UI) — double-check the format if a task shows up without the expected due date.
+  </Accordion>
+</AccordionGroup>

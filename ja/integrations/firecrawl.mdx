@@ -1,0 +1,82 @@
+---
+title: "Firecrawl"
+description: "Webのスクレイピング、クロール、検索、構造化データの抽出 — サンドボックス化されたブラウザ操作も対応"
+icon: /images/firecrawl.svg
+---
+
+# Firecrawl
+
+ShanoneのFirecrawl連携は、Webをクリーンな構造化データに変換する22個のツールをエージェントに提供します。単一ページのスクレイピング、サイト全体のクロール、AIによる抽出、さらには対話的なページを操作するためのサンドボックス化されたブラウザまでカバーします。
+
+## はじめに
+
+<Steps>
+  <Step title="FirecrawlのAPIキーを取得する">
+    [Firecrawlダッシュボード](https://www.firecrawl.dev/app/api-keys)からAPIキーを作成します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**を開き、Firecrawlを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`firecrawl_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはFirecrawl向けに**22個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="スクレイプ & 検索">
+    `firecrawl_scrape`, `firecrawl_search`
+  </Accordion>
+  <Accordion title="クロール">
+    `firecrawl_crawl`, `firecrawl_check_crawl_status`
+  </Accordion>
+  <Accordion title="抽出 & マップ">
+    `firecrawl_extract`, `firecrawl_map`
+  </Accordion>
+  <Accordion title="インタラクト">
+    `firecrawl_interact`, `firecrawl_interact_stop`
+  </Accordion>
+  <Accordion title="ブラウザサンドボックス">
+    `firecrawl_create_browser`, `firecrawl_execute_browser`, `firecrawl_list_browsers`, `firecrawl_delete_browser`
+  </Accordion>
+  <Accordion title="エージェント">
+    `firecrawl_agent`, `firecrawl_get_job_status`
+  </Accordion>
+  <Accordion title="モニター(変更検知)">
+    `firecrawl_monitor_create`, `firecrawl_monitor_list`, `firecrawl_monitor_get`, `firecrawl_monitor_update`, `firecrawl_monitor_delete`, `firecrawl_monitor_run`, `firecrawl_monitor_check`, `firecrawl_monitor_checks`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="クリーンなMarkdown抽出" icon="file-text">
+    JavaScriptが多用されたページをスクレイピングし、生のHTMLではなくクリーンなMarkdownを取得する
+  </Card>
+  <Card title="サイト全体のナレッジベース取り込み" icon="database">
+    ドキュメントサイト全体をクロールし、取得したページをナレッジベースに投入する
+  </Card>
+  <Card title="スキーマベースのデータ抽出" icon="table">
+    JSONスキーマを使ってURLリストから構造化されたフィールド(価格、仕様、連絡先など)を抽出する
+  </Card>
+  <Card title="価格/コンテンツの変更監視" icon="bell">
+    競合ページにモニターを設定し、価格やコンテンツが変更されたら通知を受け取る
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="firecrawl_crawlやfirecrawl_extractが結果ではなくジョブIDを返す">
+    これらはデフォルトで非同期処理です。`wait_for_completion=True`を設定するか、返されたジョブIDを使って`firecrawl_check_crawl_status`や`firecrawl_get_job_status`をポーリングしてください。
+  </Accordion>
+  <Accordion title="firecrawl_scrapeがレート制限や認証エラーで失敗する">
+    エラーメッセージが「rate limit」(バックオフして再試行)か「API key」(接続中のFirecrawl APIキーが無効/期限切れで再接続が必要)かを確認してください。
+  </Accordion>
+  <Accordion title="スクレイピング前にボタンのクリックやフォーム入力が必要">
+    単純な`firecrawl_scrape`はページを操作できません。まずスクレイプして`scrapeId`を取得し、`firecrawl_interact`に`prompt`または`code`を指定して操作を実行し、完了したら`firecrawl_interact_stop`を呼んでください。
+  </Accordion>
+</AccordionGroup>

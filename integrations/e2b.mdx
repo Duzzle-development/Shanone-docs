@@ -1,0 +1,76 @@
+---
+title: "E2B"
+description: "Run code in isolated cloud sandboxes — commands, filesystem, code interpreter, and snapshots"
+icon: /images/e2b.svg
+---
+
+# E2B
+
+Shanone's E2B integration gives your agent 27 tools for spinning up isolated cloud sandboxes and running commands, files, and code inside them — useful whenever an agent needs to safely execute untrusted or exploratory code.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get an E2B API key">
+    Create an API key from the [E2B dashboard](https://e2b.dev/dashboard).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select E2B, and paste the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `e2b_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **27 tools** for E2B, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Sandbox management">
+    `e2b_create_sandbox`, `e2b_list_sandboxes`, `e2b_get_sandbox`, `e2b_connect_sandbox`, `e2b_kill_sandbox`, `e2b_set_timeout`, `e2b_is_running`
+  </Accordion>
+  <Accordion title="Commands">
+    `e2b_run_command`, `e2b_run_command_background`, `e2b_list_processes`, `e2b_kill_process`, `e2b_send_stdin`
+  </Accordion>
+  <Accordion title="Filesystem">
+    `e2b_read_file`, `e2b_write_file`, `e2b_list_directory`, `e2b_make_directory`, `e2b_remove_file`, `e2b_rename_file`, `e2b_file_exists`, `e2b_watch_directory`
+  </Accordion>
+  <Accordion title="Code interpreter">
+    `e2b_run_python`, `e2b_run_javascript`, `e2b_run_code`
+  </Accordion>
+  <Accordion title="Snapshots">
+    `e2b_create_snapshot`, `e2b_list_snapshots`, `e2b_create_from_snapshot`, `e2b_delete_snapshot`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Data analysis scratchpad" icon="chart-line">
+    Run `e2b_run_python` to analyze a dataset and return computed results without touching local infrastructure
+  </Card>
+  <Card title="Safe code execution" icon="shield-check">
+    Execute agent-generated or user-supplied code in an isolated sandbox instead of the host machine
+  </Card>
+  <Card title="Reproducible environments" icon="camera">
+    Snapshot a configured sandbox and spin up fresh copies for repeatable test runs
+  </Card>
+  <Card title="Long-running background jobs" icon="terminal">
+    Kick off a long shell command with `e2b_run_command_background` and poll or send input while it runs
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="A sandbox stops responding after a period of inactivity">
+    Sandboxes have a timeout that auto-terminates them; call `e2b_set_timeout` to extend the lifetime before running long jobs, and use `e2b_is_running` to check status before reconnecting.
+  </Accordion>
+  <Accordion title="Losing sandbox state between requests">
+    Each `e2b_create_sandbox` call starts a fresh environment. Use `e2b_connect_sandbox` with a known sandbox ID to reuse an existing one, or `e2b_create_snapshot` / `e2b_create_from_snapshot` to persist and restore state.
+  </Accordion>
+  <Accordion title="e2b_run_command hangs on an interactive command">
+    Commands expecting stdin (prompts, REPLs) will block; run them with `e2b_run_command_background` and feed input with `e2b_send_stdin` instead of a blocking `e2b_run_command` call.
+  </Accordion>
+</AccordionGroup>

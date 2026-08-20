@@ -1,0 +1,85 @@
+---
+title: "Todoist"
+description: "タスク、プロジェクト、ラベルを管理する — コメント、リマインダー、アクティビティ履歴も"
+icon: /images/todoist.svg
+---
+
+# Todoist
+
+ShanoneのTodoist連携は、タスク、プロジェクト、セクション、ラベル、コメント、リマインダーに加え、コラボレーションやアクティビティ追跡もカバーする48個のツールをエージェントに提供します——個人でもチームでも、タスク管理をエージェント経由で完全に運用できます。
+
+## はじめに
+
+<Steps>
+  <Step title="APIトークンを発行する">
+    Todoistの**Settings → Integrations → Developer**でAPIトークンをコピーします。
+  </Step>
+  <Step title="ShanoneでAPIキーを接続する">
+    エージェントにTodoist関連の作業を依頼(例: 「明日期限で買い物のタスクを追加して」)するか、Shanoneダッシュボードの**連携**からAPIトークンを事前に登録しておきます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`todoist_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはTodoist向けに**48個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="タスク">
+    `todoist_get_tasks`, `todoist_get_task`, `todoist_create_task`, `todoist_update_task`, `todoist_complete_task`, `todoist_reopen_task`, `todoist_delete_task`, `todoist_move_task`, `todoist_quick_add`, `todoist_get_tasks_by_filter`, `todoist_close_task`, `todoist_get_completed_tasks`
+  </Accordion>
+  <Accordion title="プロジェクト">
+    `todoist_get_projects`, `todoist_get_project`, `todoist_create_project`, `todoist_update_project`, `todoist_delete_project`, `todoist_archive_project`, `todoist_unarchive_project`, `todoist_get_archived_projects`, `todoist_search_projects`
+  </Accordion>
+  <Accordion title="セクション & ラベル">
+    `todoist_get_sections`, `todoist_create_section`, `todoist_update_section`, `todoist_delete_section`, `todoist_get_labels`, `todoist_create_label`, `todoist_get_label`, `todoist_update_label`, `todoist_delete_label`, `todoist_search_labels`
+  </Accordion>
+  <Accordion title="コメント">
+    `todoist_get_comments`, `todoist_create_comment`, `todoist_get_comment`, `todoist_update_comment`, `todoist_delete_comment`
+  </Accordion>
+  <Accordion title="リマインダー">
+    `todoist_get_reminders`, `todoist_get_reminder`, `todoist_create_reminder`, `todoist_delete_reminder`
+  </Accordion>
+  <Accordion title="コラボレーション">
+    `todoist_get_collaborators`, `todoist_share_project`, `todoist_remove_collaborator`
+  </Accordion>
+  <Accordion title="アクティビティ & バックアップ">
+    `todoist_get_activity_logs`, `todoist_get_backups`, `todoist_download_backup`
+  </Accordion>
+  <Accordion title="ユーザー">
+    `todoist_get_user`, `todoist_get_productivity_stats`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="タスクのすばやい記録" icon="check-square">
+    自然言語のquick-addを使い、口頭のリクエストを期限日やラベル付きのタスクに変換する
+  </Card>
+  <Card title="日次プランニング" icon="calendar">
+    フィルタで今日/期限切れのタスクを取得し、優先度付けした計画を要約する
+  </Card>
+  <Card title="プロジェクトの引き継ぎ" icon="users">
+    プロジェクトを共同編集者と共有し、現在の状況をまとめたコメントを投稿する
+  </Card>
+  <Card title="生産性のレビュー" icon="chart-bar">
+    生産性統計と完了済みタスクを確認して、1週間の進捗を振り返る
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="存在するはずのタスクがtodoist_get_tasksに表示されない">
+    デフォルトのタスク一覧は完了済みタスクを除外し、プロジェクト/フィルタで絞り込まれます——Todoistのフィルタ構文(例: `today`、`p1`、`#Work`)を使う`todoist_get_tasks_by_filter`、または完了済みタスク用の`todoist_get_completed_tasks`を使ってください。
+  </Accordion>
+  <Accordion title="todoist_quick_addが期限日やラベルを想定通りに解析しない">
+    Quick-addはテキスト引数(例: `Submit report @work tomorrow p1`)に対するTodoistの自然言語パーサーに依存しています——構造化されたフィールドを渡すのではなく、`todoist_quick_add`の`shanone_get_tool_schema`を確認してその構文に従ってください。
+  </Accordion>
+  <Accordion title="todoist_delete_projectやtodoist_delete_labelが予期せず失敗する">
+    削除は永続的で、カスケードされます(プロジェクトを削除するとそのタスクも削除されます)——Todoistはデフォルトでこれをブロックしないため、削除系のツールを呼ぶ前に対象IDを再確認してください。
+  </Accordion>
+</AccordionGroup>

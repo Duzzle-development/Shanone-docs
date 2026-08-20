@@ -1,0 +1,94 @@
+---
+title: "Google Sheets"
+description: "The full Sheets API surface — spreadsheets, cells, formatting, charts, filters, tables, and more"
+icon: /images/google-sheets.svg
+---
+
+# Google Sheets
+
+Shanone's Google Sheets integration gives your agent 88 tools covering nearly the entire Sheets API — not just reading and writing values, but formatting, charts, filters, protected ranges, tables, and dimension management that most integrations leave out.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Sheets (e.g. "add a chart to my Q3 budget sheet"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the account whose Sheets Shanone should access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `google_sheets_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **88 tools** for Google Sheets, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Spreadsheets">
+    `google_sheets_create`, `google_sheets_get_spreadsheet`, `google_sheets_get_values`, `google_sheets_update_values`, `google_sheets_append_values`, `google_sheets_clear_values`, `google_sheets_batch_get_values`, `google_sheets_batch_update_values`, `google_sheets_batch_clear_values`
+  </Accordion>
+  <Accordion title="Sheets & tabs">
+    `google_sheets_add_sheet`, `google_sheets_delete_sheet`, `google_sheets_duplicate_sheet`, `google_sheets_copy_sheet_to`, `google_sheets_update_sheet_properties`, `google_sheets_update_spreadsheet_properties`, `google_sheets_get_sheet_names`
+  </Accordion>
+  <Accordion title="Cells & data operations">
+    `google_sheets_update_cells`, `google_sheets_append_cells`, `google_sheets_repeat_cell`, `google_sheets_insert_range`, `google_sheets_delete_range`, `google_sheets_cut_paste`, `google_sheets_copy_paste`, `google_sheets_paste_data`, `google_sheets_text_to_columns`, `google_sheets_trim_whitespace`, `google_sheets_sort_range`, `google_sheets_find_replace`, `google_sheets_remove_duplicates`
+  </Accordion>
+  <Accordion title="Formatting & banding">
+    `google_sheets_format_cells`, `google_sheets_update_borders`, `google_sheets_merge_cells`, `google_sheets_unmerge_cells`, `google_sheets_auto_fill`, `google_sheets_add_banding`, `google_sheets_update_banding`, `google_sheets_delete_banding`, `google_sheets_add_conditional_format_rule`, `google_sheets_update_conditional_format_rule`, `google_sheets_delete_conditional_format_rule`
+  </Accordion>
+  <Accordion title="Charts & slicers">
+    `google_sheets_add_chart`, `google_sheets_update_chart_spec`, `google_sheets_delete_embedded_object`, `google_sheets_update_embedded_object_position`, `google_sheets_add_slicer`, `google_sheets_update_slicer_spec`, `google_sheets_delete_slicer`
+  </Accordion>
+  <Accordion title="Filters & views">
+    `google_sheets_set_basic_filter`, `google_sheets_clear_basic_filter`, `google_sheets_add_filter_view`, `google_sheets_update_filter_view`, `google_sheets_delete_filter_view`, `google_sheets_duplicate_filter_view`, `google_sheets_batch_get_values_by_data_filter`, `google_sheets_batch_update_values_by_data_filter`
+  </Accordion>
+  <Accordion title="Tables & ranges">
+    `google_sheets_add_table`, `google_sheets_update_table`, `google_sheets_delete_table`, `google_sheets_add_named_range`, `google_sheets_update_named_range`, `google_sheets_delete_named_range`, `google_sheets_add_protected_range`, `google_sheets_update_protected_range`, `google_sheets_delete_protected_range`
+  </Accordion>
+  <Accordion title="Rows, columns & dimensions">
+    `google_sheets_insert_dimension`, `google_sheets_delete_dimension`, `google_sheets_move_dimension`, `google_sheets_append_dimension`, `google_sheets_update_dimension_properties`, `google_sheets_auto_resize_dimensions`, `google_sheets_add_dimension_group`, `google_sheets_delete_dimension_group`, `google_sheets_update_dimension_group`
+  </Accordion>
+  <Accordion title="Comments">
+    `google_sheets_list_comments`, `google_sheets_create_comment`, `google_sheets_reply_to_comment`, `google_sheets_resolve_comment`
+  </Accordion>
+  <Accordion title="Validation & developer metadata">
+    `google_sheets_set_data_validation`, `google_sheets_get_data_validation_rules`, `google_sheets_create_developer_metadata`, `google_sheets_search_developer_metadata`, `google_sheets_get_developer_metadata`, `google_sheets_update_developer_metadata`
+  </Accordion>
+  <Accordion title="Drive integration">
+    `google_sheets_search_spreadsheets`, `google_sheets_copy_spreadsheet`, `google_sheets_export_spreadsheet`, `google_sheets_share_spreadsheet`, `google_sheets_delete_spreadsheet`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Automated reporting" icon="table">
+    Pull fresh data into a sheet, reformat it, and add a chart in one pass
+  </Card>
+  <Card title="Data cleanup" icon="broom">
+    Trim whitespace, remove duplicates, and find/replace across a large range
+  </Card>
+  <Card title="Access-controlled templates" icon="lock">
+    Protect key ranges and share a spreadsheet with the right permission level
+  </Card>
+  <Card title="Dashboard building" icon="layout-dashboard">
+    Add named ranges, filter views, and slicers to turn raw data into a usable dashboard
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="google_sheets_update_values silently overwrites the wrong cells">
+    Double-check the A1 notation range (e.g. `Sheet1!B2:D10`) — a missing sheet name defaults to the first sheet, which is a common source of accidental overwrites.
+  </Accordion>
+  <Accordion title="google_sheets_add_chart or google_sheets_add_table fails with an invalid range error">
+    Most structural tools (charts, tables, banding, protected ranges) require `sheetId` (a numeric ID) rather than the sheet name — call `google_sheets_get_spreadsheet` or `google_sheets_get_sheet_names` first to resolve it.
+  </Accordion>
+  <Accordion title="Batch operations only partially apply">
+    Batch tools like `google_sheets_batch_update_values` process each range independently; check the response for per-range errors rather than assuming an overall success means every range succeeded.
+  </Accordion>
+</AccordionGroup>

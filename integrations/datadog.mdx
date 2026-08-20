@@ -1,0 +1,88 @@
+---
+title: "Datadog"
+description: "Monitor infrastructure and applications — metrics, monitors, dashboards, logs, traces, and SLOs"
+icon: /images/datadog.svg
+---
+
+# Datadog
+
+Shanone's Datadog integration gives your agent 39 tools for observability: metrics, monitors, dashboards, logs, traces, hosts, SLOs, downtimes, and synthetics.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an API Key and Application Key">
+    In Datadog, go to **Organization Settings → API Keys** to create an API Key, and **Organization Settings → Application Keys** for an Application Key. Both are required together.
+  </Step>
+  <Step title="Add credentials to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Datadog, and enter both the API Key and Application Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `datadog_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **39 tools** for Datadog, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Monitors">
+    `datadog_create_monitor`, `datadog_get_monitor`, `datadog_list_monitors`, `datadog_update_monitor`, `datadog_delete_monitor`, `datadog_mute_monitor`, `datadog_unmute_monitor`
+  </Accordion>
+  <Accordion title="Dashboards">
+    `datadog_create_dashboard`, `datadog_get_dashboard`, `datadog_list_dashboards`, `datadog_update_dashboard`, `datadog_delete_dashboard`
+  </Accordion>
+  <Accordion title="Metrics">
+    `datadog_query_metrics`, `datadog_list_metrics`, `datadog_submit_metrics`, `datadog_get_metric_metadata`, `datadog_update_metric_metadata`
+  </Accordion>
+  <Accordion title="Logs">
+    `datadog_search_logs`, `datadog_list_log_indexes`, `datadog_aggregate_logs`
+  </Accordion>
+  <Accordion title="Traces & APM">
+    `datadog_search_traces`, `datadog_get_trace_by_id`, `datadog_search_spans_analytics`, `datadog_list_apm_services`, `datadog_get_service_dependencies`, `datadog_get_service_summary`
+  </Accordion>
+  <Accordion title="Downtimes & Events">
+    `datadog_create_downtime`, `datadog_list_downtimes`, `datadog_cancel_downtime`, `datadog_create_event`, `datadog_list_events`
+  </Accordion>
+  <Accordion title="SLOs & Synthetics">
+    `datadog_create_slo`, `datadog_list_slos`, `datadog_create_synthetic_api_test`, `datadog_list_synthetics`, `datadog_get_synthetics_locations`
+  </Accordion>
+  <Accordion title="Hosts & Tags">
+    `datadog_list_hosts`, `datadog_get_host_tags`, `datadog_list_all_tags`, `datadog_update_host_tags`
+  </Accordion>
+  <Accordion title="Webhooks & Usage">
+    `datadog_create_webhook`, `datadog_list_webhooks`, `datadog_get_usage_summary`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Incident triage" icon="siren">
+    Pull firing monitors, correlate with recent logs/traces, and summarize likely root cause
+  </Card>
+  <Card title="Dashboard-as-code" icon="layout-dashboard">
+    Programmatically create or update dashboards to reflect a new service's SLIs
+  </Card>
+  <Card title="Maintenance windows" icon="calendar-clock">
+    Schedule a downtime before a deploy and cancel it early if the deploy finishes ahead of schedule
+  </Card>
+  <Card title="Cost & usage tracking" icon="receipt">
+    Pull usage summaries to understand where Datadog billing is concentrated
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tools fail even though one of API Key or Application Key is set">
+    Datadog requires **both** an API Key and an Application Key together — a monitoring-only API Key alone isn't sufficient for most read/write operations exposed here. Check both fields are saved in Integrations.
+  </Accordion>
+  <Accordion title="datadog_query_metrics returns no data points">
+    Confirm the metric name and tags exist by checking `datadog_list_metrics` first, and make sure the time range (`from`/`to`) actually overlaps with when the metric was reported.
+  </Accordion>
+  <Accordion title="datadog_search_logs returns fewer results than expected">
+    Log retention and indexing are governed by the target log index's retention policy — check `datadog_list_log_indexes` to confirm the index being searched actually retains logs for the requested time range.
+  </Accordion>
+</AccordionGroup>

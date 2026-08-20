@@ -1,0 +1,82 @@
+---
+title: "GitHub Copilot"
+description: "Manage GitHub Copilot for your organization — seats, billing, metrics, cloud agents, and policies"
+icon: /images/copilot.svg
+---
+
+# GitHub Copilot
+
+Shanone's GitHub Copilot integration gives your agent 37 tools for admin/enterprise-facing Copilot management: seats, billing, usage metrics, custom agents, content exclusion, and Copilot Cloud Agent policies.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate a fine-grained Personal Access Token">
+    In GitHub, go to **Settings → Developer settings → Fine-grained tokens** and create a token with Copilot-related organization permissions.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select GitHub Copilot, and paste in the token.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `copilot_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **37 tools** for GitHub Copilot, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Seats & Billing">
+    `copilot_get_org_billing`, `copilot_list_org_seats`, `copilot_add_teams`, `copilot_remove_teams`, `copilot_add_users`, `copilot_remove_users`, `copilot_get_user_seat`
+  </Accordion>
+  <Accordion title="Usage Metrics — Organization">
+    `copilot_get_org_metrics_daily`, `copilot_get_org_metrics_28day`, `copilot_get_org_users_metrics_daily`, `copilot_get_org_users_metrics_28day`, `copilot_get_org_user_teams_daily`
+  </Accordion>
+  <Accordion title="Usage Metrics — Enterprise">
+    `copilot_get_enterprise_metrics_daily`, `copilot_get_enterprise_metrics_28day`, `copilot_get_enterprise_users_metrics_daily`, `copilot_get_enterprise_users_metrics_28day`, `copilot_get_enterprise_user_teams_daily`
+  </Accordion>
+  <Accordion title="Cloud Agent — Organization">
+    `copilot_get_org_agent_permissions`, `copilot_set_org_agent_permissions`, `copilot_list_org_agent_repositories`, `copilot_set_org_agent_repositories`, `copilot_enable_org_agent_repository`, `copilot_disable_org_agent_repository`
+  </Accordion>
+  <Accordion title="Cloud Agent — Enterprise">
+    `copilot_set_enterprise_agent_policy`, `copilot_add_enterprise_agent_orgs`, `copilot_remove_enterprise_agent_orgs`
+  </Accordion>
+  <Accordion title="Custom Agents & Content Exclusion">
+    `copilot_list_custom_agents`, `copilot_get_custom_agents_source`, `copilot_set_custom_agents_source`, `copilot_delete_custom_agents_source`, `copilot_get_content_exclusion`, `copilot_set_content_exclusion`
+  </Accordion>
+  <Accordion title="Tasks">
+    `copilot_list_repo_tasks`, `copilot_start_task`, `copilot_get_repo_task`, `copilot_list_user_tasks`, `copilot_get_task`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Seat management" icon="users">
+    Add or remove teams/users from Copilot Business seats and track billing impact
+  </Card>
+  <Card title="Adoption reporting" icon="chart-line">
+    Pull daily/28-day usage metrics to report on Copilot adoption across teams
+  </Card>
+  <Card title="Agent policy rollout" icon="shield">
+    Enable Copilot Cloud Agent on specific repositories with controlled permissions
+  </Card>
+  <Card title="Autonomous task triggering" icon="bot">
+    Start a Copilot coding task on a repo and track it through to completion
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Enterprise-scoped tools return a 404">
+    `copilot_get_enterprise_*` and `copilot_*_enterprise_agent_*` tools only work for organizations that are part of a GitHub Enterprise account — for a plain organization, use the `_org_` equivalents instead.
+  </Accordion>
+  <Accordion title="copilot_add_users or copilot_add_teams fails with a permissions error">
+    Managing Copilot seats requires organization owner or Copilot admin permissions on the token's account; a token from a regular member can read usage but not modify seat assignments.
+  </Accordion>
+  <Accordion title="Metrics tools return an empty array for a recent date">
+    GitHub Copilot usage metrics are aggregated with roughly a one-to-two day delay; very recent activity may not show up in `copilot_get_org_metrics_daily` yet.
+  </Accordion>
+</AccordionGroup>

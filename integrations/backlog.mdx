@@ -1,0 +1,91 @@
+---
+title: "Backlog"
+description: "Manage issues, projects, wikis, pull requests, and Git repositories in Backlog — Nulab's project management tool"
+icon: /images/backlog.svg
+---
+
+# Backlog
+
+Shanone's Backlog integration gives your agent 96 tools — one of the deepest integrations in the catalog, covering issues, projects, wikis, Git/pull requests, and the administrative surface (teams, custom fields, notifications, watching) around them.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Backlog (e.g. "list open issues in my project"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your Backlog space">
+    Approve Backlog's OAuth consent screen for the specific space (subdomain) you want Shanone to access — Backlog's OAuth is scoped per-space rather than per-organization.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `backlog_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **96 tools** for Backlog, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Issues">
+    `backlog_get_issue`, `backlog_search_issues`, `backlog_count_issues`, `backlog_create_issue`, `backlog_update_issue`, `backlog_delete_issue`
+  </Accordion>
+  <Accordion title="Comments">
+    `backlog_get_issue_comments`, `backlog_add_issue_comment`, `backlog_update_issue_comment`, `backlog_delete_issue_comment`
+  </Accordion>
+  <Accordion title="Projects & members">
+    `backlog_list_projects`, `backlog_create_project`, `backlog_get_project`, `backlog_update_project`, `backlog_delete_project`, `backlog_get_project_users`, `backlog_add_project_user`, `backlog_remove_project_user`, `backlog_get_project_admins`, `backlog_add_project_admin`, `backlog_remove_project_admin`
+  </Accordion>
+  <Accordion title="Issue configuration (types, statuses, custom fields, categories, versions)">
+    `backlog_get_issue_types`, `backlog_create_issue_type`, `backlog_update_issue_type`, `backlog_delete_issue_type`, `backlog_get_project_statuses`, `backlog_create_project_status`, `backlog_update_project_status`, `backlog_delete_project_status`, `backlog_get_custom_fields`, `backlog_create_custom_field`, `backlog_update_custom_field`, `backlog_delete_custom_field`, `backlog_get_categories`, `backlog_create_category`, `backlog_update_category`, `backlog_delete_category`, `backlog_get_versions`, `backlog_create_version`, `backlog_update_version`, `backlog_delete_version`
+  </Accordion>
+  <Accordion title="Wiki">
+    `backlog_get_wiki_pages`, `backlog_count_wiki_pages`, `backlog_get_wiki_tags`, `backlog_get_wiki_page`, `backlog_create_wiki_page`, `backlog_update_wiki_page`, `backlog_delete_wiki_page`, `backlog_get_wiki_history`, `backlog_get_wiki_attachments`, `backlog_attach_file_to_wiki`, `backlog_delete_wiki_attachment`
+  </Accordion>
+  <Accordion title="Git & pull requests">
+    `backlog_get_git_repositories`, `backlog_get_git_repository`, `backlog_get_pull_requests`, `backlog_count_pull_requests`, `backlog_create_pull_request`, `backlog_get_pull_request`, `backlog_update_pull_request`, `backlog_get_pull_request_comments`, `backlog_add_pull_request_comment`, `backlog_update_pull_request_comment`, `backlog_get_pull_request_attachments`
+  </Accordion>
+  <Accordion title="Documents">
+    `backlog_get_documents`, `backlog_get_document_tree`, `backlog_get_document`, `backlog_add_document`, `backlog_delete_document`, `backlog_download_document_attachment`
+  </Accordion>
+  <Accordion title="Teams, users & space">
+    `backlog_get_teams`, `backlog_create_team`, `backlog_get_team`, `backlog_update_team`, `backlog_delete_team`, `backlog_get_users`, `backlog_get_user`, `backlog_get_myself`, `backlog_get_recently_viewed_issues`, `backlog_get_recently_viewed_projects`, `backlog_get_recently_viewed_wikis`, `backlog_get_space`, `backlog_get_space_notification`, `backlog_get_space_disk_usage`
+  </Accordion>
+  <Accordion title="Notifications, watching & stars">
+    `backlog_get_notifications`, `backlog_count_notifications`, `backlog_mark_notification_read`, `backlog_mark_all_notifications_read`, `backlog_get_watching_list`, `backlog_count_watching`, `backlog_add_watching`, `backlog_update_watching`, `backlog_delete_watching`, `backlog_add_star`, `backlog_remove_star`
+  </Accordion>
+  <Accordion title="Metadata">
+    `backlog_get_priorities`, `backlog_get_resolutions`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Issue triage" icon="list-checks">
+    Search open issues by status/assignee and update priorities or statuses in bulk
+  </Card>
+  <Card title="PR review workflows" icon="git-pull-request">
+    List open pull requests, review comments, and add follow-up comments
+  </Card>
+  <Card title="Wiki knowledge base upkeep" icon="book-open">
+    Create or update wiki pages and track their edit history
+  </Card>
+  <Card title="Release planning" icon="flag">
+    Create versions/milestones and file issues against them ahead of a release
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Any backlog_* call fails with a domain/space error">
+    Backlog's OAuth is scoped to a single space (subdomain) at connection time — if you need to work across multiple Backlog spaces, reconnect the integration for each one.
+  </Accordion>
+  <Accordion title="backlog_create_issue fails with an invalid issue type or category">
+    Issue types, categories, and custom fields are all project-specific. Call `backlog_get_issue_types` or `backlog_get_categories` for the target project first to get valid IDs.
+  </Accordion>
+  <Accordion title="backlog_create_pull_request succeeds but doesn't show the expected diff">
+    Confirm the `base` and `branch` names exactly match existing Git branches in `backlog_get_git_repository` — Backlog won't auto-correct a mistyped branch name.
+  </Accordion>
+</AccordionGroup>

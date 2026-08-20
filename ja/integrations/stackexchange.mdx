@@ -1,0 +1,91 @@
+---
+title: "Stack Exchange"
+description: "Stack Overflowをはじめとするスタックエクスチェンジネットワーク全体のQ&Aを検索・閲覧し、投稿・投票を行う"
+icon: "message-circle-question"
+---
+
+# Stack Exchange
+
+ShanoneのStack Exchange連携は、質問の検索、回答/コメント/バッジの閲覧、タグの参照、そして(認証済みの書き込みアクセスがある場合の)質問/回答/コメントの投稿と投票を、Stack Overflowをはじめとする任意のStack Exchangeサイトに対して行う82個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにStack Exchange関連の作業を依頼(例: 「Reactフックをデバウンスする方法をStack Overflowで検索して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Stack Exchangeアカウントを許可する">
+    OAuth同意画面を承認します。Application KeyとDefault Site(例: `stackoverflow`)を任意で設定できます——キーを設定すると、1日あたりのリクエスト上限が300から10,000に上がります。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`stackexchange_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。Application Keyが設定されていれば、完全なOAuthなしでも読み取り専用ツールは動作します。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはStack Exchange向けに**82個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="質問">
+    `stackexchange_search_questions`, `stackexchange_advanced_search_questions`, `stackexchange_get_similar_questions`, `stackexchange_search_excerpts`, `stackexchange_list_questions`, `stackexchange_get_questions_by_ids`, `stackexchange_get_unanswered_questions`, `stackexchange_get_no_answer_questions`, `stackexchange_get_featured_questions`, `stackexchange_get_related_questions`
+  </Accordion>
+  <Accordion title="回答">
+    `stackexchange_list_answers`, `stackexchange_get_answers_by_ids`, `stackexchange_get_answers_for_questions`, `stackexchange_get_questions_by_answer_ids`, `stackexchange_get_comments_on_answers`
+  </Accordion>
+  <Accordion title="投稿 & コメント">
+    `stackexchange_list_posts`, `stackexchange_get_posts_by_ids`, `stackexchange_get_comments_on_posts`, `stackexchange_list_comments`, `stackexchange_get_comments_by_ids`, `stackexchange_get_revisions_by_post_ids`, `stackexchange_get_revisions_by_guids`, `stackexchange_get_suggested_edits_on_posts`, `stackexchange_list_suggested_edits`
+  </Accordion>
+  <Accordion title="投稿の作成">
+    `stackexchange_create_question`, `stackexchange_edit_question`, `stackexchange_delete_question`, `stackexchange_create_answer`, `stackexchange_edit_answer`, `stackexchange_delete_answer`, `stackexchange_create_comment`, `stackexchange_delete_comment`, `stackexchange_edit_comment`, `stackexchange_render_answer_preview`
+  </Accordion>
+  <Accordion title="投票">
+    `stackexchange_upvote_post`, `stackexchange_downvote_post`, `stackexchange_undo_vote`, `stackexchange_favorite_question`, `stackexchange_accept_answer`
+  </Accordion>
+  <Accordion title="タグ">
+    `stackexchange_list_tags`, `stackexchange_get_tags_info`, `stackexchange_get_moderator_only_tags`, `stackexchange_get_required_tags`, `stackexchange_get_tag_synonyms`, `stackexchange_get_synonyms_by_tags`, `stackexchange_get_related_tags`, `stackexchange_get_tag_wikis`, `stackexchange_get_top_answerers_on_tags`, `stackexchange_get_top_askers_on_tags`, `stackexchange_get_faqs_by_tags`, `stackexchange_get_top_user_answers_in_tags`
+  </Accordion>
+  <Accordion title="ユーザー">
+    `stackexchange_list_users`, `stackexchange_get_users_by_ids`, `stackexchange_get_user_answers`, `stackexchange_get_user_questions`, `stackexchange_get_user_badges`, `stackexchange_get_user_comments`, `stackexchange_get_user_favorites`, `stackexchange_get_user_reputation`, `stackexchange_get_user_reputation_history`, `stackexchange_get_user_tags`, `stackexchange_get_user_timeline`, `stackexchange_get_top_tags_on_users`, `stackexchange_get_moderators`
+  </Accordion>
+  <Accordion title="バッジ">
+    `stackexchange_list_badges`, `stackexchange_get_badges_by_ids`, `stackexchange_get_badges_by_name`, `stackexchange_get_badge_recipients`
+  </Accordion>
+  <Accordion title="自分のアカウント(me)">
+    `stackexchange_get_me`, `stackexchange_get_my_answers`, `stackexchange_get_my_questions`, `stackexchange_get_my_reputation`, `stackexchange_get_my_favorites`, `stackexchange_get_my_inbox`, `stackexchange_get_my_notifications`, `stackexchange_get_my_achievements`
+  </Accordion>
+  <Accordion title="サイト & メタ情報">
+    `stackexchange_list_sites`, `stackexchange_get_site_info`, `stackexchange_create_filter`, `stackexchange_read_filters`, `stackexchange_list_privileges`, `stackexchange_list_errors`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="回答前のリサーチ" icon="search">
+    新しいコードを書く前に、既存の回答をStack Overflowで検索する
+  </Card>
+  <Card title="コミュニティのモニタリング" icon="bell">
+    チームが担当するタグの未回答質問を監視し、レビュー用の回答案を作成する
+  </Card>
+  <Card title="レピュテーションの追跡" icon="trophy">
+    大きな貢献の後に、ユーザーのレピュテーション履歴と最近のバッジを確認する
+  </Card>
+  <Card title="タグ調査" icon="tags">
+    トピックに関連するタグとトップ回答者を見つけ、その分野の専門家を特定する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="スロットリングや日次クォータエラーが発生する">
+    Application Keyを設定していない場合、Stack Exchangeは1日300リクエストに制限されます。連携アプリにキーを設定すると上限が1日10,000に上がります。
+  </Accordion>
+  <Accordion title="検索ツールが想定と異なるサイトの結果を返す">
+    多くの読み取りツールは`site`パラメータを受け取ります(デフォルトは設定済みのDefault Site)——Stack Overflow以外のサイト(例: `superuser`や`serverfault`)を検索する場合は明示的に指定してください。
+  </Accordion>
+  <Accordion title="stackexchange_create_answerやstackexchange_upvote_postなどの書き込みツールが失敗する">
+    書き込みや投票操作には、Application Keyだけでなく完全なOAuth認証と、対象サイトでの十分なレピュテーションが必要です——Stack ExchangeはShanoneとは独立して、投稿や投票に自身のレピュテーション閾値を適用します。
+  </Accordion>
+</AccordionGroup>

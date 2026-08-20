@@ -1,0 +1,85 @@
+---
+title: "Airtable"
+description: "Read, write, and manage Airtable bases — records, tables, views, fields, comments, and webhooks"
+icon: /images/airtable.svg
+---
+
+# Airtable
+
+Shanone's Airtable integration gives your agent 55 tools for working with bases as structured databases — records, tables, fields, and views, plus the collaboration layer (comments, base collaborators, webhooks) that most simple Airtable wrappers skip.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Airtable (e.g. "list the records in my Projects table"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the requested bases">
+    Airtable's OAuth consent screen lets you scope access to specific bases and workspaces — grant access to whichever ones you want Shanone to read or write.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `airtable_*` tools will succeed for the bases you authorized.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **55 tools** for Airtable, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Records">
+    `airtable_list_records`, `airtable_get_record`, `airtable_create_record`, `airtable_create_records`, `airtable_update_record`, `airtable_delete_record`, `airtable_search_records`, `airtable_update_records`, `airtable_upsert_records`, `airtable_delete_records`, `airtable_list_records_paginated`, `airtable_list_all_records`, `airtable_filter_records`, `airtable_sort_records`, `airtable_select_fields`
+  </Accordion>
+  <Accordion title="Tables & fields">
+    `airtable_list_tables`, `airtable_get_table`, `airtable_create_table`, `airtable_update_table`, `airtable_delete_table`, `airtable_list_fields`, `airtable_get_field`, `airtable_create_field`, `airtable_update_field`, `airtable_delete_field`
+  </Accordion>
+  <Accordion title="Views">
+    `airtable_list_views`, `airtable_get_view`, `airtable_create_view`, `airtable_update_view`, `airtable_delete_view`, `airtable_list_records_in_view`, `airtable_get_view_metadata`, `airtable_duplicate_view`
+  </Accordion>
+  <Accordion title="Bases & workspaces">
+    `airtable_list_bases`, `airtable_get_base_schema`, `airtable_list_workspaces`, `airtable_get_workspace`, `airtable_create_base`, `airtable_list_workspace_collaborators`
+  </Accordion>
+  <Accordion title="Comments & activity">
+    `airtable_list_comments`, `airtable_get_comment`, `airtable_create_comment`, `airtable_update_comment`, `airtable_delete_comment`, `airtable_list_record_activity`
+  </Accordion>
+  <Accordion title="Attachments">
+    `airtable_upload_attachment`, `airtable_get_attachment_url`, `airtable_delete_attachment`
+  </Accordion>
+  <Accordion title="Users & collaborators">
+    `airtable_get_current_user`, `airtable_list_base_collaborators`, `airtable_add_base_collaborator`, `airtable_remove_base_collaborator`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `airtable_list_webhooks`, `airtable_create_webhook`, `airtable_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="CRM sync" icon="refresh-cw">
+    Keep a base of leads or accounts in sync with data pulled from another tool
+  </Card>
+  <Card title="Bulk record cleanup" icon="broom">
+    Filter, sort, and batch-update records that match a condition (e.g. missing a required field)
+  </Card>
+  <Card title="Base schema audits" icon="table">
+    Inspect a base's tables, fields, and views before building automation on top of it
+  </Card>
+  <Card title="Review workflows" icon="message-square">
+    Add comments on flagged records and notify collaborators to take action
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="airtable_create_record fails with an unknown field error">
+    Field names are case-sensitive and must match exactly. Call `airtable_get_table` or `airtable_get_base_schema` first to confirm the exact field names and types before writing.
+  </Accordion>
+  <Accordion title="airtable_list_records only returns 100 records">
+    Airtable paginates results by default. Use `airtable_list_records_paginated` with the returned offset, or `airtable_list_all_records` to automatically walk every page.
+  </Accordion>
+  <Accordion title="A base I can see in Airtable doesn't show up in airtable_list_bases">
+    OAuth access is scoped per-base at connection time. Reconnect the integration from **Integrations** in the Shanone dashboard and grant access to the missing base.
+  </Accordion>
+</AccordionGroup>

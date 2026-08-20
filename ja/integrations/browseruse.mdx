@@ -1,0 +1,76 @@
+---
+title: "BrowserUse"
+description: "クラウドでAIブラウザ自動化セッションを実行 — プロファイル、ブラウザ、ワークスペース、請求管理"
+icon: /images/browseruse.svg
+---
+
+# BrowserUse
+
+ShanoneのBrowserUse連携では、クラウドブラウザ自動化に関する**27個のツール**をエージェントに提供します — BrowserUse独自のブラウジングエージェントによるセッション、再利用可能なブラウザプロファイル、ワークスペースのファイルストレージ、請求状況の確認をカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="BrowserUse Cloud APIキーを取得する">
+    [BrowserUse Cloudダッシュボード](https://cloud.browser-use.com/settings/api-keys)でAPIキーを発行します。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにブラウザ自動化タスクの実行を依頼するか、Shanoneダッシュボードの**インテグレーション**からAPIキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`browseruse_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは BrowserUse向けに**27個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="セッション">
+    `browseruse_create_session`, `browseruse_get_session`, `browseruse_list_sessions`, `browseruse_stop_session`, `browseruse_delete_session`, `browseruse_list_session_messages`, `browseruse_wait_for_session`
+  </Accordion>
+  <Accordion title="ブラウザ">
+    `browseruse_create_browser`, `browseruse_get_browser`, `browseruse_list_browsers`, `browseruse_update_browser`, `browseruse_list_browser_downloads`
+  </Accordion>
+  <Accordion title="プロファイル">
+    `browseruse_create_profile`, `browseruse_get_profile`, `browseruse_list_profiles`, `browseruse_update_profile`, `browseruse_delete_profile`
+  </Accordion>
+  <Accordion title="ワークスペース & ファイル">
+    `browseruse_create_workspace`, `browseruse_list_workspaces`, `browseruse_get_workspace`, `browseruse_update_workspace`, `browseruse_delete_workspace`, `browseruse_list_workspace_files`, `browseruse_delete_workspace_file`, `browseruse_get_workspace_size`, `browseruse_upload_workspace_file`
+  </Accordion>
+  <Accordion title="請求">
+    `browseruse_get_billing_account`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="エージェント型ブラウジングタスク" icon="bot">
+    自然言語でゴールを説明し、セッションにブラウザ操作をエンドツーエンドで任せる
+  </Card>
+  <Card title="再利用可能なログインプロファイル" icon="key-round">
+    Cookieや認証状態を保存したプロファイルを作成し、繰り返しのセッションで手動ログインを省く
+  </Card>
+  <Card title="一括自動化の監視" icon="list-checks">
+    複数のセッションを起動し、`browseruse_wait_for_session`で各セッションの完了までポーリングする
+  </Card>
+  <Card title="ワークスペースファイルの受け渡し" icon="folder-open">
+    セッション前に入力ファイルをワークスペースにアップロードし、後で出力ファイルを取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="browseruse_create_sessionのタスク完了に時間がかかる">
+    セッションは実際のゴール記述に対して非同期に実行されます。適切なタイムアウトを設定して`browseruse_wait_for_session`を使うか、`browseruse_get_session`をポーリングし、`browseruse_list_session_messages`で進行状況を確認してください。
+  </Accordion>
+  <Accordion title="保存済みの認証情報を再利用せず、セッションがログインフローを繰り返す">
+    セッション作成時に既存の`profile_id`(`browseruse_create_profile`で作成)を指定してください — プロファイルを指定しないセッションは常にクリーンなブラウザ状態から始まります。
+  </Accordion>
+  <Accordion title="browseruse_upload_workspace_fileが失敗する、またはセッションからファイルが見えない">
+    ワークスペースIDがセッションの設定と一致しているか確認し、`browseruse_get_workspace_size`でストレージの容量制限に達していないか確認してください。
+  </Accordion>
+</AccordionGroup>

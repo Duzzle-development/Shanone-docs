@@ -1,0 +1,67 @@
+---
+title: "Fireflies"
+description: "会議の文字起こしと分析 — トランスクリプト、Bite、ライブ会議、チャンネル管理"
+icon: /images/fireflies.svg
+---
+
+# Fireflies
+
+ShanoneのFireflies連携は、Fireflies.aiのGraphQL APIを通じて会議のトランスクリプトや要約を扱う21個のツールをエージェントに提供します。トランスクリプトの検索、ハイライトの切り出し(「Bite」)、ライブ会議やチャンネルの管理などが行えます。
+
+## はじめに
+
+<Steps>
+  <Step title="FirefliesのAPIキーを取得する">
+    Fireflies内で、設定 → Integrations → API Accessに移動し、APIキーを生成します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**を開き、Firefliesを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`fireflies_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはFireflies向けに**21個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="クエリ">
+    `fireflies_get_user`, `fireflies_list_users`, `fireflies_get_user_groups`, `fireflies_get_transcript`, `fireflies_list_transcripts`, `fireflies_get_bite`, `fireflies_list_bites`, `fireflies_list_channels`, `fireflies_get_channel`, `fireflies_list_contacts`, `fireflies_get_ai_app_outputs`, `fireflies_list_active_meetings`
+  </Accordion>
+  <Accordion title="ミューテーション">
+    `fireflies_upload_audio`, `fireflies_add_to_live_meeting`, `fireflies_delete_transcript`, `fireflies_set_user_role`, `fireflies_update_meeting_title`, `fireflies_update_meeting_privacy`, `fireflies_update_meeting_channel`, `fireflies_create_bite`, `fireflies_share_meeting`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="会議要約の配布" icon="file-text">
+    会議終了直後にトランスクリプトとAIアプリの出力(要約、アクションアイテム)を取得する
+  </Card>
+  <Card title="ハイライトの切り出し" icon="scissors">
+    トランスクリプト内の重要な場面から「Bite」を作成し、会議に参加できなかった人に共有する
+  </Card>
+  <Card title="ライブ会議ボットの管理" icon="video">
+    `fireflies_add_to_live_meeting`を使って、進行中の会議にFirefliesのノートテイカーボットを追加する
+  </Card>
+  <Card title="トランスクリプトのガバナンス" icon="shield-check">
+    会議のプライバシー設定やチャンネル割り当てを監査したり、保持すべきでないトランスクリプトを削除する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="fireflies_upload_audioがすぐにトランスクリプトを返さない">
+    文字起こしは非同期処理です。処理が完了するまで、返された会議IDを使って`fireflies_get_transcript`や`fireflies_list_transcripts`をポーリングしてください。
+  </Accordion>
+  <Accordion title="クエリでレート制限に達してしまう">
+    Firefliesはプランごとにレート制限を課しています(Free: 50件/日、Pro: 500件/日、Business/Enterprise: 60件/分)。個々のトランスクリプトを短いループでポーリングするのではなく、`fireflies_list_transcripts`の呼び出しをまとめてください。
+  </Accordion>
+  <Accordion title="fireflies_set_user_roleや管理系のツールが権限エラーを返す">
+    ロール管理や一部の組織レベルのクエリは、接続中のAPIキーが通常メンバーではなくFirefliesの管理者アカウントに属していることを要求します。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,73 @@
+---
+title: "Hacker News"
+description: "Browse top, new, best, Ask HN, Show HN, and job stories, plus individual stories with comments"
+icon: /images/hackernews.svg
+---
+
+# Hacker News
+
+Shanone's Hacker News integration gives your agent 7 tools for browsing every story feed Hacker News offers and drilling into a specific story's comments — all against the free, public Hacker News API, so there's nothing to authenticate.
+
+## Getting Started
+
+<Steps>
+  <Step title="No connection needed">
+    Hacker News's API is free and keyless — there's no account to connect or API key to configure.
+  </Step>
+  <Step title="Just ask">
+    Ask your agent to do something with Hacker News (e.g. "what's trending on HN right now?") and it will call `hackernews_*` tools directly.
+  </Step>
+  <Step title="Optionally verify from Integrations">
+    You can confirm the integration is listed as available under **Integrations** in the Shanone dashboard, though no setup step is required there.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **7 tools** for Hacker News, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Story feeds">
+    `hackernews_top_stories`, `hackernews_new_stories`, `hackernews_best_stories` — the front page, newest submissions, and all-time highly-rated stories
+  </Accordion>
+  <Accordion title="Community feeds">
+    `hackernews_ask_stories`, `hackernews_show_stories` — Ask HN discussion threads and Show HN project/product launches
+  </Accordion>
+  <Accordion title="Jobs">
+    `hackernews_job_stories` — YC and tech company job postings
+  </Accordion>
+  <Accordion title="Story detail">
+    `hackernews_get_story` — a specific story by ID, optionally with its top-level comments
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Daily tech digest" icon="newspaper">
+    Summarize the current top stories into a short morning briefing
+  </Card>
+  <Card title="Launch research" icon="rocket">
+    Scan Show HN for recent launches in a specific space to track competitors
+  </Card>
+  <Card title="Discussion deep-dives" icon="message-circle">
+    Pull a specific story's comments to summarize community sentiment on a topic
+  </Card>
+  <Card title="Job market scan" icon="briefcase">
+    Check job stories for hiring trends at YC-backed and tech companies
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Story counts are lower than the count parameter I passed">
+    `count` is capped at 30 per call, and any item that fails to load (deleted, or a transient API error) is silently skipped rather than retried — expect slightly fewer results than requested on a flaky connection.
+  </Accordion>
+  <Accordion title="hackernews_get_story returns comments but some are missing text">
+    Deleted or flagged comments are filtered out entirely, and comment text is truncated at 500 characters — request the story again with a smaller `max_comments` if you want to reduce noise.
+  </Accordion>
+  <Accordion title="A story's url field is empty">
+    Ask HN and some other self-post story types don't have an external URL — use the `hn_url` (or `text` field for Ask HN posts) instead of assuming every story links out.
+  </Accordion>
+</AccordionGroup>

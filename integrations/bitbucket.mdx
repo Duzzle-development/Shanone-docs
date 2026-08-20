@@ -1,0 +1,76 @@
+---
+title: "Bitbucket"
+description: "Manage repositories, pull requests, and issues, and search code across your Bitbucket workspaces"
+icon: /images/bitbucket.svg
+---
+
+# Bitbucket
+
+Shanone's Bitbucket integration gives your agent 15 tools covering the everyday code-review workflow — repositories and branches, pull requests, issues, and code search.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Bitbucket (e.g. "list open pull requests in my-workspace/my-repo"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the requested scopes">
+    Approve Bitbucket's OAuth consent screen for the workspaces and repositories you want Shanone to access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `bitbucket_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **15 tools** for Bitbucket, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Pull requests">
+    `bitbucket_list_pull_requests`, `bitbucket_get_pull_request`, `bitbucket_create_pull_request`, `bitbucket_create_pull_request_comment`
+  </Accordion>
+  <Accordion title="Issues">
+    `bitbucket_list_issues`, `bitbucket_get_issue`, `bitbucket_create_issue`, `bitbucket_create_issue_comment`
+  </Accordion>
+  <Accordion title="Repositories">
+    `bitbucket_list_repositories`, `bitbucket_get_repository`, `bitbucket_list_branches`, `bitbucket_list_commits`
+  </Accordion>
+  <Accordion title="Search">
+    `bitbucket_search_code`
+  </Accordion>
+  <Accordion title="User & workspaces">
+    `bitbucket_get_current_user`, `bitbucket_list_workspaces`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="PR review triage" icon="git-pull-request">
+    List open pull requests across a repo and comment on ones that need attention
+  </Card>
+  <Card title="Cross-repo code search" icon="search">
+    Search for a function or string usage across repositories in a workspace
+  </Card>
+  <Card title="Issue backlog grooming" icon="list-checks">
+    List and comment on open issues to keep a backlog current
+  </Card>
+  <Card title="Branch/commit auditing" icon="git-branch">
+    List branches and recent commits to check what's diverged from main before merging
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="bitbucket_list_repositories returns fewer repos than expected">
+    Results are scoped to the workspace(s) authorized during OAuth. Call `bitbucket_list_workspaces` to confirm which workspaces are connected, and reconnect if a workspace is missing.
+  </Accordion>
+  <Accordion title="bitbucket_search_code returns no results for code you know exists">
+    Bitbucket's code search indexes asynchronously after pushes — very recent commits may not be searchable yet. Try `bitbucket_list_commits` on the specific branch instead if you need up-to-the-minute results.
+  </Accordion>
+  <Accordion title="bitbucket_create_pull_request fails with a branch not found error">
+    Confirm the source and destination branch names with `bitbucket_list_branches` first — Bitbucket requires both branches to already exist in the repository.
+  </Accordion>
+</AccordionGroup>

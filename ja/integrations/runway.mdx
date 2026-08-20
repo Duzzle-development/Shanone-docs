@@ -1,0 +1,85 @@
+---
+title: "Runway"
+description: "Runwayの生成AIモデルによる動画・画像・音声・アバターの生成"
+icon: /images/runway.svg
+---
+
+# Runway
+
+ShanoneのRunway連携は、[Runway](https://runwayml.com)の生成メディア機能全体を利用するための43個のツールをエージェントに提供します。動画の生成/編集、画像生成とアップスケーリング、音声/スピーチツール、AIアバター、よくあるマーケティング作業向けの構築済み「レシピ」に対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="Runway APIキーを作成する">
+    [Runway開発者ポータル](https://dev.runwayml.com/)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でRunwayを選択し、キー(`key_...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`runway_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはRunway向けに**43個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="動画">
+    `runway_image_to_video`, `runway_text_to_video`, `runway_video_to_video`, `runway_video_upscale`
+  </Accordion>
+  <Accordion title="画像">
+    `runway_text_to_image`, `runway_image_upscale`
+  </Accordion>
+  <Accordion title="音声 & ボイス">
+    `runway_text_to_speech`, `runway_sound_effect`, `runway_character_performance`, `runway_voice_isolation`, `runway_voice_dubbing`, `runway_speech_to_speech`, `runway_create_voice`, `runway_get_voice`, `runway_update_voice`, `runway_delete_voice`, `runway_preview_voice`
+  </Accordion>
+  <Accordion title="アバター">
+    `runway_create_avatar`, `runway_get_avatar`, `runway_update_avatar`, `runway_delete_avatar`, `runway_list_avatars`, `runway_create_avatar_video`, `runway_create_realtime_session`
+  </Accordion>
+  <Accordion title="レシピ(構築済みクリエイティブワークフロー)">
+    `runway_recipe_ad_localization`, `runway_recipe_marketing_stock_image`, `runway_recipe_multi_shot_video`, `runway_recipe_product_ad`, `runway_recipe_product_campaign_image`, `runway_recipe_product_swap`, `runway_recipe_product_ugc`
+  </Accordion>
+  <Accordion title="ドキュメント & ワークフロー">
+    `runway_create_document`, `runway_get_document`, `runway_update_document`, `runway_delete_document`, `runway_list_workflows`, `runway_get_workflow`, `runway_run_workflow`
+  </Accordion>
+  <Accordion title="タスク & 組織">
+    `runway_wait_for_task`, `runway_get_task`, `runway_cancel_task`, `runway_get_organization_info`, `runway_get_organization_usage`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="商品広告の生成" icon="film">
+    `runway_recipe_product_ad`を使って商品写真を短いマーケティング動画に変換する
+  </Card>
+  <Card title="多言語広告のローカライズ" icon="languages">
+    `runway_recipe_ad_localization`を実行して、既存の広告を新しい市場向けに調整する
+  </Card>
+  <Card title="AIアバター動画" icon="user-round">
+    再利用可能なアバターを作成し、スクリプトから話すアバター動画を生成する
+  </Card>
+  <Card title="音声コンテンツパイプライン" icon="mic">
+    `runway_text_to_speech`でナレーションを生成し、必要に応じて音声トラックを分離・吹き替えする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="runway_text_to_videoやrunway_image_to_videoが出力を即座に返さない">
+    生成タスクは非同期に実行されます。同期的な出力を期待するのではなく、`runway_wait_for_task`を使うか、返されたタスクIDで`runway_get_task`をポーリングしてください。
+  </Accordion>
+  <Accordion title="レシピツール(runway_recipe_*)がアセット不足のエラーで失敗する">
+    レシピは複数の生成ステップを連結し、特定の入力アセット(例: 商品画像のURL)を期待します。呼び出す前に`shanone_get_tool_schema`で正確な必須フィールドを確認してください。
+  </Accordion>
+  <Accordion title="runway_create_avatar_videoがアバターに設定した音声と一致しない">
+    動画を生成する前に、`runway_get_avatar`でアバターが完全に作成され、音声の紐づけが保存されているか確認してください——作成直後のアバターはまだ反映が完了していない場合があります。
+  </Accordion>
+  <Accordion title="タスクの実行に時間がかかる・使用量が想定より多い">
+    `runway_get_organization_usage`で現在の消費量を確認し、停止した、または不要になった生成ジョブは`runway_cancel_task`で取り消してください。
+  </Accordion>
+</AccordionGroup>

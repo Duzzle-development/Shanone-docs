@@ -1,0 +1,82 @@
+---
+title: "WordPress"
+description: "セルフホストのWordPressサイトで投稿、ページ、メディア、コメント、ユーザーをREST API経由で管理"
+icon: "newspaper"
+---
+
+# WordPress
+
+Shanoneのwordpress連携は、WordPress標準のREST APIを通じて、投稿・ページ・メディア・コメント・タクソノミー・ユーザーといったコンテンツ管理のための42個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="WordPressのApplication Passwordを発行する">
+    WordPress管理画面で**ユーザー → プロフィール → Application Passwords**からShanone用の新しいパスワードを作成します。詳細は[WordPressのApplication Passwordsガイド](https://wordpress.org/documentation/article/application-passwords/)を参照してください。
+  </Step>
+  <Step title="APIキーで接続する">
+    Shanoneダッシュボードの**連携 → WordPress**でサイトURL、ユーザー名、Application Passwordを入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`wordpress_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはwordpress向けに**42個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="投稿">
+    `wordpress_list_posts`, `wordpress_get_post`, `wordpress_create_post`, `wordpress_update_post`, `wordpress_delete_post`
+  </Accordion>
+  <Accordion title="ページ">
+    `wordpress_list_pages`, `wordpress_get_page`, `wordpress_create_page`, `wordpress_update_page`, `wordpress_delete_page`
+  </Accordion>
+  <Accordion title="メディア">
+    `wordpress_list_media`, `wordpress_get_media`, `wordpress_upload_media`, `wordpress_update_media`, `wordpress_delete_media`
+  </Accordion>
+  <Accordion title="コメント">
+    `wordpress_list_comments`, `wordpress_get_comment`, `wordpress_create_comment`, `wordpress_update_comment`, `wordpress_delete_comment`
+  </Accordion>
+  <Accordion title="ユーザー">
+    `wordpress_list_users`, `wordpress_get_user`, `wordpress_get_current_user`, `wordpress_create_user`, `wordpress_update_user`, `wordpress_delete_user`
+  </Accordion>
+  <Accordion title="カテゴリ & タグ">
+    `wordpress_list_categories`, `wordpress_get_category`, `wordpress_create_category`, `wordpress_update_category`, `wordpress_delete_category`, `wordpress_list_tags`, `wordpress_get_tag`, `wordpress_create_tag`, `wordpress_update_tag`, `wordpress_delete_tag`
+  </Accordion>
+  <Accordion title="サイト & タクソノミー">
+    `wordpress_search_content`, `wordpress_get_settings`, `wordpress_update_settings`, `wordpress_list_post_types`, `wordpress_list_post_statuses`, `wordpress_list_taxonomies`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="コンテンツ公開パイプライン" icon="pen-line">
+    投稿をドラフト作成し、アイキャッチ画像をアップロードして、レビュー後に公開する
+  </Card>
+  <Card title="コメントモデレーション" icon="message-square-warning">
+    保留中のコメントを一覧し、一括で承認・編集・削除する
+  </Card>
+  <Card title="サイト全体のコンテンツ検索" icon="search">
+    投稿とページを横断検索し、古くなったコンテンツを見つけて更新する
+  </Card>
+  <Card title="タクソノミーの整理" icon="tags">
+    大量の投稿アーカイブに散らばった重複カテゴリ/タグを統合する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="正しそうなパスワードでも401で接続に失敗する">
+    WordPressのApplication Passwordはスペース入り(例: `xxxx xxxx xxxx xxxx`)で表示されます — 環境によっては表示されたとおりスペースを含めて入力する必要があるため、**連携**画面に入力する際にスペースを削除しないでください。
+  </Accordion>
+  <Accordion title="ドラフトのつもりがwordpress_create_postが即座に公開してしまう">
+    `wordpress_create_post`の`shanone_get_tool_schema`でペイロード内の`status`フィールドを確認してください — 省略するとWordPressの設定によって`publish`がデフォルトになる場合があるため、`draft`を明示的に指定してください。
+  </Accordion>
+  <Accordion title="wordpress_delete_postやwordpress_delete_pageが完全削除ではなくゴミ箱に移動するだけ">
+    WordPressはデフォルトで投稿/ページを即時削除せずゴミ箱に移動します。完全削除が必要な場合はツールの`force`パラメータを確認してください。
+  </Accordion>
+</AccordionGroup>

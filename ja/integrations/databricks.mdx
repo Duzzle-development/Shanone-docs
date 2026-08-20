@@ -1,0 +1,100 @@
+---
+title: "Databricks"
+description: "SQL実行、クラスター・ジョブ管理、Unity Catalog管理 — Databricks REST APIの全体をカバー"
+icon: /images/databricks.svg
+---
+
+# Databricks
+
+ShanoneのDatabricks連携は、SQL実行、クラスター/ジョブ/パイプライン管理、Unity Catalog管理、MLflow実験管理、モデルサービング、シークレット、ワークスペースファイルを扱う155個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにDatabricks関連の作業を依頼(例: 「SQL Warehouseの一覧を表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続します。ワークスペースURL(例: `https://adb-1234567890123456.7.azuredatabricks.net`)の入力を求められた後、Shanoneを許可するための`connect_link`が発行されます。
+  </Step>
+  <Step title="ワークスペースを許可する">
+    入力した特定のワークスペースについて、DatabricksのOAuth同意画面を承認します。Databricksの認証情報はワークスペースごとに紐づくため、Shanoneに操作させたいワークスペースごとに個別に接続してください。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`databricks_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはDatabricks向けに**155個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="SQL実行 & クエリ履歴 (8個)">
+    `databricks_execute_sql`, `databricks_get_statement_status`, `databricks_get_statement_result`, `databricks_cancel_statement`, `databricks_query`, `databricks_execute_async`, `databricks_list_query_history`, `databricks_get_query`
+  </Accordion>
+  <Accordion title="SQL Warehouse (6個)">
+    `databricks_list_warehouses`, `databricks_get_warehouse`, `databricks_create_warehouse`, `databricks_start_warehouse`, `databricks_stop_warehouse`, `databricks_delete_warehouse`
+  </Accordion>
+  <Accordion title="クラスター & インスタンスプール (13個)">
+    `databricks_list_clusters`, `databricks_get_cluster`, `databricks_create_cluster`, `databricks_start_cluster`, `databricks_terminate_cluster`, `databricks_delete_cluster`, `databricks_list_instance_pools`, `databricks_get_instance_pool`, `databricks_create_instance_pool`, `databricks_edit_instance_pool`, `databricks_delete_instance_pool`, `databricks_get_instance_pool_permissions`, `databricks_set_instance_pool_permissions`
+  </Accordion>
+  <Accordion title="ジョブ & 実行 (8個)">
+    `databricks_list_jobs`, `databricks_get_job`, `databricks_create_job`, `databricks_run_job_now`, `databricks_get_run`, `databricks_list_runs`, `databricks_cancel_run`, `databricks_get_run_output`
+  </Accordion>
+  <Accordion title="パイプライン (12個)">
+    `databricks_list_pipelines`, `databricks_get_pipeline`, `databricks_create_pipeline`, `databricks_update_pipeline`, `databricks_delete_pipeline`, `databricks_clone_pipeline`, `databricks_start_pipeline`, `databricks_stop_pipeline`, `databricks_get_pipeline_update`, `databricks_list_pipeline_updates`, `databricks_list_pipeline_events`, `databricks_get_pipeline_permissions`
+  </Accordion>
+  <Accordion title="Unity Catalog — カタログ・スキーマ・テーブル (15個)">
+    `databricks_list_catalogs`, `databricks_get_catalog`, `databricks_create_catalog`, `databricks_update_catalog`, `databricks_delete_catalog`, `databricks_list_schemas`, `databricks_get_schema`, `databricks_create_schema`, `databricks_update_schema`, `databricks_delete_schema`, `databricks_list_tables`, `databricks_get_table`, `databricks_list_table_summaries`, `databricks_table_exists`, `databricks_delete_table`
+  </Accordion>
+  <Accordion title="ボリューム & DBFS (15個)">
+    `databricks_list_volumes`, `databricks_get_volume`, `databricks_create_volume`, `databricks_update_volume`, `databricks_delete_volume`, `databricks_dbfs_list`, `databricks_dbfs_get_status`, `databricks_dbfs_mkdirs`, `databricks_dbfs_put`, `databricks_dbfs_read`, `databricks_dbfs_delete`, `databricks_dbfs_move`, `databricks_dbfs_create`, `databricks_dbfs_add_block`, `databricks_dbfs_close`
+  </Accordion>
+  <Accordion title="MLflow実験 & 実行 (25個)">
+    `databricks_list_experiments`, `databricks_get_experiment`, `databricks_get_experiment_by_name`, `databricks_create_experiment`, `databricks_update_experiment`, `databricks_delete_experiment`, `databricks_restore_experiment`, `databricks_search_experiments`, `databricks_set_experiment_tag`, `databricks_get_experiment_permissions`, `databricks_set_experiment_permissions`, `databricks_update_experiment_permissions`, `databricks_create_mlflow_run`, `databricks_get_mlflow_run`, `databricks_update_mlflow_run`, `databricks_delete_mlflow_run`, `databricks_restore_mlflow_run`, `databricks_search_mlflow_runs`, `databricks_log_metric`, `databricks_log_param`, `databricks_log_batch`, `databricks_set_mlflow_tag`, `databricks_delete_mlflow_tag`, `databricks_list_artifacts`, `databricks_get_metric_history`
+  </Accordion>
+  <Accordion title="モデルサービングエンドポイント (12個)">
+    `databricks_list_serving_endpoints`, `databricks_get_serving_endpoint`, `databricks_create_serving_endpoint`, `databricks_update_serving_endpoint_config`, `databricks_delete_serving_endpoint`, `databricks_query_serving_endpoint`, `databricks_get_serving_endpoint_logs`, `databricks_export_serving_endpoint_metrics`, `databricks_get_serving_endpoint_permissions`, `databricks_set_serving_endpoint_permissions`, `databricks_put_serving_endpoint_ai_gateway`, `databricks_patch_serving_endpoint_tags`
+  </Accordion>
+  <Accordion title="コマンド実行 & ライブラリ (10個)">
+    `databricks_create_context`, `databricks_get_context_status`, `databricks_destroy_context`, `databricks_execute_command`, `databricks_get_command_status`, `databricks_cancel_command`, `databricks_list_cluster_libraries`, `databricks_list_all_cluster_libraries`, `databricks_install_cluster_libraries`, `databricks_uninstall_cluster_libraries`
+  </Accordion>
+  <Accordion title="シークレット & Git認証情報 (16個)">
+    `databricks_list_secret_scopes`, `databricks_create_secret_scope`, `databricks_delete_secret_scope`, `databricks_list_secrets`, `databricks_get_secret`, `databricks_put_secret`, `databricks_delete_secret`, `databricks_list_secret_acls`, `databricks_get_secret_acl`, `databricks_put_secret_acl`, `databricks_delete_secret_acl`, `databricks_list_git_credentials`, `databricks_get_git_credential`, `databricks_create_git_credential`, `databricks_update_git_credential`, `databricks_delete_git_credential`
+  </Accordion>
+  <Accordion title="Repos & ワークスペースファイル (15個)">
+    `databricks_list_repos`, `databricks_get_repo`, `databricks_create_repo`, `databricks_update_repo`, `databricks_delete_repo`, `databricks_get_repo_permissions`, `databricks_set_repo_permissions`, `databricks_update_repo_permissions`, `databricks_get_repo_permission_levels`, `databricks_list_workspace`, `databricks_get_workspace_status`, `databricks_export_workspace`, `databricks_import_workspace`, `databricks_mkdirs`, `databricks_delete_workspace`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="アドホックなデータ分析" icon="database">
+    Databricks UIを開かずにWarehouseに対してSQLを実行し、結果を取得する
+  </Card>
+  <Card title="パイプライン & ジョブの監視" icon="activity">
+    チャットからジョブの実行状況を確認し、失敗ログを取得して再実行をトリガーする
+  </Card>
+  <Card title="Unity Catalogのガバナンス" icon="shield-check">
+    データ資産全体のカタログ/スキーマ/テーブルを監査し、権限を管理する
+  </Card>
+  <Card title="ML実験の追跡" icon="flask-conical">
+    MLflowの実行にメトリクス/パラメータを記録し、実験結果を比較する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="以前は動いていたのにすべてのツールが接続エラーで失敗する">
+    DatabricksのOAuthトークンはワークスペースごとに紐づき、有効期限があります。長期間使われていない接続が動かなくなった場合は、**連携**からその`workspace_url`について再接続してトークンを更新してください。
+  </Accordion>
+  <Accordion title="databricks_execute_sqlが大きなクエリでハングまたはタイムアウトする">
+    代わりに`databricks_execute_async`を使用し、`databricks_get_statement_status` / `databricks_get_statement_result`をポーリングしてください。同期実行は長時間かかるクエリには向いていません。
+  </Accordion>
+  <Accordion title="Unity Catalog系のツールが権限エラーを返す">
+    Unity Catalogの操作(カタログ・スキーマ・テーブルの作成/更新/削除)には、接続しているアカウントが適切な`USE CATALOG`/`CREATE`/`OWNER`権限を持っている必要があります。動作するはずのツールが403を返す場合は、ワークスペース管理者に確認してください。
+  </Accordion>
+  <Accordion title="databricks_run_job_nowは成功するがジョブが静かに失敗する">
+    実行後のRun IDに対して`databricks_get_run_output`を呼び出し、実際のタスクエラーを確認してください。「now」の呼び出しは実行がトリガーされたことのみを確認するもので、正常に完了したことを保証するものではありません。
+  </Accordion>
+</AccordionGroup>

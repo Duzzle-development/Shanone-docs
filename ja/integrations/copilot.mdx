@@ -1,0 +1,82 @@
+---
+title: "GitHub Copilot"
+description: "組織のGitHub Copilotを管理する — シート、請求、メトリクス、クラウドエージェント、ポリシー"
+icon: /images/copilot.svg
+---
+
+# GitHub Copilot
+
+ShanoneのGitHub Copilot連携は、管理者/エンタープライズ向けのCopilot管理を扱う37個のツールをエージェントに提供します。シート、請求、利用状況メトリクス、カスタムエージェント、コンテンツ除外、Copilot Cloud Agentポリシーが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="Fine-grained Personal Access Tokenを発行する">
+    GitHubの**Settings → Developer settings → Fine-grained tokens**で、Copilot関連の組織権限を持つトークンを作成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、GitHub Copilotを選択してトークンを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`copilot_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGitHub Copilot向けに**37個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="シート & 請求">
+    `copilot_get_org_billing`, `copilot_list_org_seats`, `copilot_add_teams`, `copilot_remove_teams`, `copilot_add_users`, `copilot_remove_users`, `copilot_get_user_seat`
+  </Accordion>
+  <Accordion title="利用状況メトリクス — 組織">
+    `copilot_get_org_metrics_daily`, `copilot_get_org_metrics_28day`, `copilot_get_org_users_metrics_daily`, `copilot_get_org_users_metrics_28day`, `copilot_get_org_user_teams_daily`
+  </Accordion>
+  <Accordion title="利用状況メトリクス — エンタープライズ">
+    `copilot_get_enterprise_metrics_daily`, `copilot_get_enterprise_metrics_28day`, `copilot_get_enterprise_users_metrics_daily`, `copilot_get_enterprise_users_metrics_28day`, `copilot_get_enterprise_user_teams_daily`
+  </Accordion>
+  <Accordion title="Cloud Agent — 組織">
+    `copilot_get_org_agent_permissions`, `copilot_set_org_agent_permissions`, `copilot_list_org_agent_repositories`, `copilot_set_org_agent_repositories`, `copilot_enable_org_agent_repository`, `copilot_disable_org_agent_repository`
+  </Accordion>
+  <Accordion title="Cloud Agent — エンタープライズ">
+    `copilot_set_enterprise_agent_policy`, `copilot_add_enterprise_agent_orgs`, `copilot_remove_enterprise_agent_orgs`
+  </Accordion>
+  <Accordion title="カスタムエージェント & コンテンツ除外">
+    `copilot_list_custom_agents`, `copilot_get_custom_agents_source`, `copilot_set_custom_agents_source`, `copilot_delete_custom_agents_source`, `copilot_get_content_exclusion`, `copilot_set_content_exclusion`
+  </Accordion>
+  <Accordion title="タスク">
+    `copilot_list_repo_tasks`, `copilot_start_task`, `copilot_get_repo_task`, `copilot_list_user_tasks`, `copilot_get_task`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="シート管理" icon="users">
+    Copilot Businessシートにチーム/ユーザーを追加・削除し、請求への影響を確認する
+  </Card>
+  <Card title="導入状況レポート" icon="chart-line">
+    日次/28日間の利用状況メトリクスを取得し、チームごとのCopilot導入状況を報告する
+  </Card>
+  <Card title="エージェントポリシーの展開" icon="shield">
+    特定のリポジトリでCopilot Cloud Agentを制御された権限で有効化する
+  </Card>
+  <Card title="自律タスクの起動" icon="bot">
+    リポジトリでCopilotのコーディングタスクを開始し、完了まで追跡する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="エンタープライズ向けのツールが404を返す">
+    `copilot_get_enterprise_*`や`copilot_*_enterprise_agent_*`系のツールは、GitHub Enterpriseアカウントに属する組織でのみ動作します。通常の組織の場合は代わりに`_org_`版のツールを使用してください。
+  </Accordion>
+  <Accordion title="copilot_add_usersやcopilot_add_teamsが権限エラーで失敗する">
+    Copilotシートの管理には、トークンのアカウントに組織のオーナーまたはCopilot管理者権限が必要です。一般メンバーのトークンでは利用状況の読み取りはできますが、シート割り当ての変更はできません。
+  </Accordion>
+  <Accordion title="メトリクス系のツールが直近の日付について空の配列を返す">
+    GitHub Copilotの利用状況メトリクスはおよそ1〜2日遅れで集計されます。ごく最近の活動は`copilot_get_org_metrics_daily`にまだ反映されていない可能性があります。
+  </Accordion>
+</AccordionGroup>

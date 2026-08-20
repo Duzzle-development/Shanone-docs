@@ -1,0 +1,70 @@
+---
+title: "Kling AI"
+description: "Generate and extend AI video, with lip-sync — text-to-video, image-to-video, and video effects"
+icon: /images/kling.svg
+---
+
+# Kling AI
+
+Shanone's Kling AI integration gives your agent 6 tools for AI video generation — creating video from text or an image, extending existing clips, syncing lip movement to audio, and tracking generation tasks through to completion.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Kling AI Access Key and Secret Key">
+    Generate an API key pair from your [Kling AI](https://klingai.com/) account.
+  </Step>
+  <Step title="Add them to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Kling AI, and enter your Access Key and Secret Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `kling_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **6 tools** for Kling AI, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Video generation">
+    `kling_text_to_video`, `kling_image_to_video` — generate a video clip from a text prompt or a starting image
+  </Accordion>
+  <Accordion title="Video effects">
+    `kling_extend_video`, `kling_lip_sync` — extend a previously generated clip, or sync a character's lip movement to an audio track
+  </Accordion>
+  <Accordion title="Task tracking">
+    `kling_get_task`, `kling_wait_for_task` — check a generation task's status once, or block until it completes (or times out) and return the resulting video URL
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Text-to-video generation" icon="clapperboard">
+    Turn a scene description into a short AI-generated video clip
+  </Card>
+  <Card title="Image animation" icon="image">
+    Animate a still image into a moving video clip
+  </Card>
+  <Card title="Dubbed lip-sync" icon="mic">
+    Sync a character's mouth movement to a new audio track for localization
+  </Card>
+  <Card title="Extended sequences" icon="film">
+    Chain `kling_extend_video` calls to build a longer sequence from an initial clip
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="kling_wait_for_task times out on a longer generation">
+    Video generation can take longer than the default wait window — increase `max_wait_seconds`, or fall back to polling `kling_get_task` yourself on a longer interval rather than blocking in one call.
+  </Accordion>
+  <Accordion title="A task's status shows FAILED with no clear reason">
+    Check the `error` field returned by `kling_get_task` — common causes are prompts that violate content policy or a source image that doesn't meet Kling's resolution/format requirements.
+  </Accordion>
+  <Accordion title="kling_lip_sync produces misaligned lip movement">
+    Lip-sync quality depends on clean, isolated speech audio in the input track — background noise or overlapping speakers will degrade sync accuracy.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,82 @@
+---
+title: "Google Docs"
+description: "Create and edit documents — text, tables, formatting, comments, and Markdown-native round-trips"
+icon: /images/google-docs.svg
+---
+
+# Google Docs
+
+Shanone's Google Docs integration gives your agent 58 tools across the full Docs API surface — content and formatting, tables, images, comments/suggestions, tabs, and the Markdown conversion tools that make agent-driven editing far more convenient than raw block manipulation.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Google Docs (e.g. "turn this outline into a formatted doc"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `google_docs_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **58 tools** for Google Docs, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Documents & content">
+    `google_docs_get_document`, `google_docs_get_document_text`, `google_docs_create_document`, `google_docs_insert_text`, `google_docs_delete_content_range`, `google_docs_replace_all_text`, `google_docs_batch_update`
+  </Accordion>
+  <Accordion title="Formatting">
+    `google_docs_update_text_style`, `google_docs_update_paragraph_style`, `google_docs_create_paragraph_bullets`, `google_docs_delete_paragraph_bullets`, `google_docs_insert_page_break`, `google_docs_insert_section_break`, `google_docs_update_section_style`, `google_docs_update_document_style`, `google_docs_update_named_style`
+  </Accordion>
+  <Accordion title="Tables">
+    `google_docs_insert_table`, `google_docs_insert_table_row`, `google_docs_insert_table_column`, `google_docs_delete_table_row`, `google_docs_delete_table_column`, `google_docs_update_table_column_properties`, `google_docs_update_table_cell_style`, `google_docs_update_table_row_style`, `google_docs_merge_table_cells`, `google_docs_unmerge_table_cells`, `google_docs_pin_table_header_rows`
+  </Accordion>
+  <Accordion title="Images, headers/footers & named ranges">
+    `google_docs_insert_inline_image`, `google_docs_replace_image`, `google_docs_delete_positioned_object`, `google_docs_create_header`, `google_docs_delete_header`, `google_docs_create_footer`, `google_docs_delete_footer`, `google_docs_create_footnote`, `google_docs_create_named_range`, `google_docs_delete_named_range`
+  </Accordion>
+  <Accordion title="Comments & suggestions">
+    `google_docs_insert_comment`, `google_docs_add_comment_reply`, `google_docs_update_comment_post`, `google_docs_delete_comment`, `google_docs_delete_comment_reply`, `google_docs_accept_suggestion`, `google_docs_reject_suggestion`, `google_docs_delete_suggestion`
+  </Accordion>
+  <Accordion title="Rich content & tabs">
+    `google_docs_insert_person`, `google_docs_insert_rich_link`, `google_docs_insert_date`, `google_docs_add_document_tab`, `google_docs_delete_tab`, `google_docs_update_document_tab_properties`
+  </Accordion>
+  <Accordion title="Markdown & Drive integration">
+    `google_docs_create_document_from_markdown`, `google_docs_update_document_from_markdown`, `google_docs_update_section_from_markdown`, `google_docs_get_document_markdown`, `google_docs_copy_document`, `google_docs_export_pdf`, `google_docs_search_documents`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Markdown-native drafting" icon="file-text">
+    Draft or update a document from Markdown instead of hand-building paragraph/table requests
+  </Card>
+  <Card title="Report generation" icon="table">
+    Insert and style tables to turn structured data into a formatted report
+  </Card>
+  <Card title="Suggestion review" icon="check-check">
+    List and accept/reject pending suggestions before finalizing a shared draft
+  </Card>
+  <Card title="PDF export & distribution" icon="download">
+    Export a finished document to PDF for sharing outside of Google Docs
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="google_docs_update_document_from_markdown produces unexpected formatting">
+    The Markdown converter supports common elements (headings, lists, tables, bold/italic) but not every Docs-native feature — for advanced formatting, follow up with `google_docs_update_text_style` or `google_docs_update_paragraph_style` on the specific range.
+  </Accordion>
+  <Accordion title="Multiple edits in a row produce conflicting or overlapping changes">
+    Index-based operations (insert/delete) shift subsequent content offsets — prefer a single `google_docs_batch_update` call with multiple requests over several sequential single-edit calls when making related changes.
+  </Accordion>
+  <Accordion title="google_docs_insert_comment or suggestion tools don't seem to take effect">
+    Comments and suggestions are separate from content edits and require Docs' native commenting/suggesting permissions on the file — verify the connected account has at least commenter access.
+  </Accordion>
+</AccordionGroup>

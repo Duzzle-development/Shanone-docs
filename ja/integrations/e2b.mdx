@@ -1,0 +1,76 @@
+---
+title: "E2B"
+description: "隔離されたクラウドサンドボックスでコードを実行 — コマンド、ファイルシステム、コードインタープリタ、スナップショット"
+icon: /images/e2b.svg
+---
+
+# E2B
+
+ShanoneのE2B連携は、隔離されたクラウドサンドボックスを起動し、その中でコマンド・ファイル・コードを実行するための27個のツールをエージェントに提供します。エージェントが信頼できない、あるいは試行的なコードを安全に実行する必要がある場面で役立ちます。
+
+## はじめに
+
+<Steps>
+  <Step title="E2BのAPIキーを取得する">
+    [E2Bダッシュボード](https://e2b.dev/dashboard)からAPIキーを作成します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**を開き、E2Bを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`e2b_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはE2B向けに**27個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="サンドボックス管理">
+    `e2b_create_sandbox`, `e2b_list_sandboxes`, `e2b_get_sandbox`, `e2b_connect_sandbox`, `e2b_kill_sandbox`, `e2b_set_timeout`, `e2b_is_running`
+  </Accordion>
+  <Accordion title="コマンド">
+    `e2b_run_command`, `e2b_run_command_background`, `e2b_list_processes`, `e2b_kill_process`, `e2b_send_stdin`
+  </Accordion>
+  <Accordion title="ファイルシステム">
+    `e2b_read_file`, `e2b_write_file`, `e2b_list_directory`, `e2b_make_directory`, `e2b_remove_file`, `e2b_rename_file`, `e2b_file_exists`, `e2b_watch_directory`
+  </Accordion>
+  <Accordion title="コードインタープリタ">
+    `e2b_run_python`, `e2b_run_javascript`, `e2b_run_code`
+  </Accordion>
+  <Accordion title="スナップショット">
+    `e2b_create_snapshot`, `e2b_list_snapshots`, `e2b_create_from_snapshot`, `e2b_delete_snapshot`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="データ分析のスクラッチパッド" icon="chart-line">
+    `e2b_run_python`を実行してデータセットを分析し、ローカル環境に触れずに計算結果を返す
+  </Card>
+  <Card title="安全なコード実行" icon="shield-check">
+    エージェントが生成した、またはユーザーが提供したコードをホストマシンではなく隔離されたサンドボックスで実行する
+  </Card>
+  <Card title="再現可能な環境" icon="camera">
+    設定済みのサンドボックスをスナップショットし、再現性のあるテスト実行のために新しいコピーを起動する
+  </Card>
+  <Card title="長時間バックグラウンドジョブ" icon="terminal">
+    `e2b_run_command_background`で長時間のシェルコマンドを起動し、実行中にポーリングまたは入力を送信する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="一定時間操作がないとサンドボックスが応答しなくなる">
+    サンドボックスには自動終了させるタイムアウトが設定されています。長時間のジョブを実行する前に`e2b_set_timeout`で寿命を延ばし、再接続する前に`e2b_is_running`でステータスを確認してください。
+  </Accordion>
+  <Accordion title="リクエスト間でサンドボックスの状態が失われる">
+    `e2b_create_sandbox`を呼ぶたびに新しい環境が起動します。既知のサンドボックスIDで既存のものを再利用するには`e2b_connect_sandbox`を、状態を保存・復元するには`e2b_create_snapshot`/`e2b_create_from_snapshot`を使用してください。
+  </Accordion>
+  <Accordion title="e2b_run_commandが対話的なコマンドでハングする">
+    標準入力を待つコマンド(プロンプトやREPLなど)はブロックしてしまいます。ブロッキングする`e2b_run_command`ではなく、`e2b_run_command_background`で実行し`e2b_send_stdin`で入力を送ってください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,79 @@
+---
+title: "freee"
+description: "Japanese accounting and HR platform — deals, invoices, payroll, expense workflows, and bank reconciliation"
+icon: /images/freee.svg
+---
+
+# freee
+
+Shanone's freee integration gives your agent 125 tools across freee's accounting and HR platform — deals, invoices/quotations, payroll, expense/approval workflows, and bank account reconciliation.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with freee (e.g. "list unpaid invoices from last month"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the freee account">
+    Approve freee's OAuth consent screen for the company you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `freee_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **125 tools** for freee, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Core (users, companies, deals, partners)">
+    `freee_get_me`, `freee_list_users`, `freee_list_companies`, `freee_get_company`, `freee_list_deals`, `freee_get_deal`, `freee_create_deal`, `freee_update_deal`, `freee_delete_deal`, `freee_list_partners`, `freee_get_partner`, `freee_create_partner`, `freee_update_partner`, `freee_delete_partner`
+  </Accordion>
+  <Accordion title="Accounting master data">
+    `freee_list_account_items`, `freee_get_account_item`, `freee_create_account_item`, `freee_update_account_item`, `freee_delete_account_item`, `freee_list_sections`, `freee_get_section`, `freee_create_section`, `freee_update_section`, `freee_delete_section`, `freee_list_items`, `freee_get_item`, `freee_create_item`, `freee_update_item`, `freee_delete_item`, `freee_list_tags`, `freee_get_tag`, `freee_create_tag`, `freee_update_tag`, `freee_delete_tag`, `freee_list_taxes`
+  </Accordion>
+  <Accordion title="Journals, transfers & trial balance">
+    `freee_request_journal_download`, `freee_get_journal_status`, `freee_download_journal`, `freee_list_manual_journals`, `freee_get_manual_journal`, `freee_create_manual_journal`, `freee_update_manual_journal`, `freee_delete_manual_journal`, `freee_list_transfers`, `freee_get_transfer`, `freee_create_transfer`, `freee_update_transfer`, `freee_delete_transfer`, `freee_get_trial_bs`, `freee_get_trial_bs_two_years`, `freee_get_trial_pl`, `freee_get_trial_pl_two_years`, `freee_get_trial_pl_sections`, `freee_get_trial_cr`, `freee_list_receipts`, `freee_get_receipt`, `freee_upload_receipt`, `freee_update_receipt`, `freee_delete_receipt`
+  </Accordion>
+  <Accordion title="Workflow & approvals">
+    `freee_list_expense_applications`, `freee_get_expense_application`, `freee_create_expense_application`, `freee_update_expense_application`, `freee_delete_expense_application`, `freee_action_expense_application`, `freee_list_approval_requests`, `freee_get_approval_request`, `freee_create_approval_request`, `freee_update_approval_request`, `freee_delete_approval_request`, `freee_action_approval_request`, `freee_list_approval_request_forms`, `freee_list_approval_flow_routes`, `freee_get_approval_flow_route`, `freee_list_payment_requests`, `freee_get_payment_request`, `freee_create_payment_request`, `freee_update_payment_request`, `freee_delete_payment_request`, `freee_action_payment_request`
+  </Accordion>
+  <Accordion title="HR & payroll">
+    `freee_hr_get_me`, `freee_hr_list_employees`, `freee_hr_list_all_employees`, `freee_hr_get_employee`, `freee_hr_create_employee`, `freee_hr_update_employee`, `freee_hr_delete_employee`, `freee_hr_get_work_record`, `freee_hr_update_work_record`, `freee_hr_delete_work_record`, `freee_hr_list_time_clocks`, `freee_hr_get_time_clock`, `freee_hr_create_time_clock`, `freee_hr_get_available_types`, `freee_hr_get_work_record_summary`, `freee_hr_update_work_record_summary`, `freee_hr_list_payroll_statements`, `freee_hr_get_payroll_statement`, `freee_hr_list_bonus_statements`, `freee_hr_get_bonus_statement`
+  </Accordion>
+  <Accordion title="Invoicing & bank accounts">
+    `freee_iv_list_invoices`, `freee_iv_get_invoice`, `freee_iv_create_invoice`, `freee_iv_update_invoice`, `freee_iv_list_invoice_templates`, `freee_iv_list_quotations`, `freee_iv_get_quotation`, `freee_iv_create_quotation`, `freee_iv_update_quotation`, `freee_iv_list_quotation_templates`, `freee_iv_list_delivery_slips`, `freee_iv_get_delivery_slip`, `freee_iv_create_delivery_slip`, `freee_iv_update_delivery_slip`, `freee_list_walletables`, `freee_get_walletable`, `freee_create_walletable`, `freee_update_walletable`, `freee_delete_walletable`, `freee_list_wallet_txns`, `freee_get_wallet_txn`, `freee_create_wallet_txn`, `freee_delete_wallet_txn`, `freee_list_banks`, `freee_get_bank`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Invoice-to-cash tracking" icon="receipt">
+    Create an invoice, then monitor wallet transactions to confirm when it's been paid
+  </Card>
+  <Card title="Expense approval automation" icon="check-check">
+    Review pending expense applications and approve/reject them via `freee_action_expense_application`
+  </Card>
+  <Card title="Financial reporting" icon="chart-line">
+    Pull trial balance (BS/PL) reports for a period and summarize the company's financial position
+  </Card>
+  <Card title="Payroll & attendance review" icon="calendar-clock">
+    Cross-check time clock records against work record summaries before running payroll
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="freee_create_deal fails with a missing account_item error">
+    Deals require valid `account_item_id` and `partner_id` references — look them up first with `freee_list_account_items` and `freee_list_partners` rather than guessing IDs.
+  </Accordion>
+  <Accordion title="freee_request_journal_download returns a status instead of the file">
+    Journal exports are asynchronous — poll `freee_get_journal_status` until it reports completion, then call `freee_download_journal` to fetch the actual file.
+  </Accordion>
+  <Accordion title="HR tools (freee_hr_*) return a different company than accounting tools">
+    freee treats accounting (`company_id`) and HR (`company_id` under the separate HR API) as distinct scopes even for the same business — verify you're passing the ID returned by `freee_hr_get_me`, not the accounting `freee_get_company` ID.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,79 @@
+---
+title: "Google Calendar"
+description: "Manage calendars and events — scheduling, free/busy lookup, sharing, and smart scheduling helpers"
+icon: /images/google-calendar.svg
+---
+
+# Google Calendar
+
+Shanone's Google Calendar integration gives your agent 49 tools covering standard calendar/event management plus higher-level smart-scheduling utilities (free-slot finding, batch event creation, meeting-time suggestions) most integrations don't offer.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Calendar (e.g. "find a free 30-minute slot with Alex this week"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the calendar you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `google_calendar_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **49 tools** for Google Calendar, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Calendars">
+    `google_calendar_list_calendars`, `google_calendar_get_calendar`, `google_calendar_create_calendar`, `google_calendar_delete_calendar`, `google_calendar_update_calendar`, `google_calendar_patch_calendar`, `google_calendar_clear_calendar`, `google_calendar_transfer_calendar_ownership`, `google_calendar_get_calendar_list_entry`, `google_calendar_add_calendar_to_list`, `google_calendar_update_calendar_list_entry`, `google_calendar_patch_calendar_list_entry`, `google_calendar_remove_calendar_from_list`, `google_calendar_watch_calendar_list`
+  </Accordion>
+  <Accordion title="Events">
+    `google_calendar_list_events`, `google_calendar_get_event`, `google_calendar_search_events`, `google_calendar_create_event`, `google_calendar_quick_add_event`, `google_calendar_update_event`, `google_calendar_delete_event`, `google_calendar_move_event`, `google_calendar_patch_event`, `google_calendar_import_event`, `google_calendar_get_event_instances`, `google_calendar_watch_events`
+  </Accordion>
+  <Accordion title="ACL (access control)">
+    `google_calendar_list_acl_rules`, `google_calendar_get_acl_rule`, `google_calendar_share_calendar`, `google_calendar_update_acl_rule`, `google_calendar_patch_acl_rule`, `google_calendar_revoke_acl_rule`, `google_calendar_watch_acl`
+  </Accordion>
+  <Accordion title="Settings, colors & channels">
+    `google_calendar_get_colors`, `google_calendar_get_setting`, `google_calendar_list_settings`, `google_calendar_watch_settings`, `google_calendar_stop_channel`
+  </Accordion>
+  <Accordion title="Smart scheduling">
+    `google_calendar_batch_create_events`, `google_calendar_list_events_from_all_calendars`, `google_calendar_find_free_slots`, `google_calendar_get_current_datetime`, `google_calendar_respond_to_event`, `google_calendar_remove_attendee`, `google_calendar_suggest_meeting_times`, `google_calendar_duplicate_event`
+  </Accordion>
+  <Accordion title="Utilities">
+    `google_calendar_get_free_busy`, `google_calendar_get_upcoming_events`, `google_calendar_get_todays_events`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting scheduling" icon="calendar-plus">
+    Find a free slot across multiple calendars and create the event with attendees in one step
+  </Card>
+  <Card title="Daily/weekly briefings" icon="list">
+    Pull today's or the upcoming week's events to summarize a person's schedule
+  </Card>
+  <Card title="RSVP management" icon="check-check">
+    Respond to invitations or remove an attendee from an event on someone's behalf
+  </Card>
+  <Card title="Calendar sharing & governance" icon="users">
+    Share a calendar with a colleague or audit ACL rules to see who has access
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="google_calendar_create_event succeeds but attendees don't get notified">
+    Check the `sendUpdates` behavior in the tool schema with `shanone_get_tool_schema` — notifications are opt-in per call and default settings can vary by calendar.
+  </Accordion>
+  <Accordion title="google_calendar_find_free_slots misses busy time from a shared calendar">
+    Pass all relevant calendar IDs explicitly, or use `google_calendar_list_events_from_all_calendars` first to confirm which calendars the connected account actually has visibility into.
+  </Accordion>
+  <Accordion title="google_calendar_watch_events or watch_calendar_list stops delivering updates">
+    Push notification channels expire — call `google_calendar_stop_channel` on the old channel and re-issue a new `watch_*` call rather than assuming a channel is permanent.
+  </Accordion>
+</AccordionGroup>

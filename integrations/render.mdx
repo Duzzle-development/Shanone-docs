@@ -1,0 +1,91 @@
+---
+title: "Render"
+description: "Manage cloud infrastructure — services, deploys, databases, environments, and workflows"
+icon: "server"
+---
+
+# Render
+
+Shanone's Render integration gives your agent 171 tools covering nearly all of [Render](https://render.com)'s cloud platform — services and deploys, Postgres and Key Value databases, environment variables/secrets, custom domains and routing, background jobs, and observability.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Render API key">
+    Generate a key from the [Render Dashboard](https://dashboard.render.com/account/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Render, and paste in the key (`rnd_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `render_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **171 tools** for Render, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Services & deploys">
+    `render_list_services`, `render_get_service`, `render_create_service`, `render_update_service`, `render_delete_service`, `render_restart_service`, `render_suspend_service`, `render_resume_service`, `render_scale_service`, `render_list_service_instances`, `render_list_deploys`, `render_get_deploy`, `render_trigger_deploy`, `render_cancel_deploy`, `render_rollback_service`, `render_list_service_events`, `render_update_autoscaling`, `render_delete_autoscaling`
+  </Accordion>
+  <Accordion title="Databases: Postgres & Key Value">
+    `render_list_postgres`, `render_get_postgres`, `render_create_postgres`, `render_update_postgres`, `render_delete_postgres`, `render_restart_postgres`, `render_suspend_postgres`, `render_resume_postgres`, `render_get_postgres_connection_info`, `render_list_postgres_credentials`, `render_create_postgres_credential`, `render_delete_postgres_credential`, `render_list_postgres_exports`, `render_create_postgres_export`, `render_get_postgres_recovery_status`, `render_trigger_postgres_recovery`, `render_failover_postgres`, `render_get_postgres_processes`, `render_get_postgres_table_sizes`, `render_get_postgres_table_scans`, `render_get_postgres_top_queries`, `render_list_key_value`, `render_get_key_value`, `render_create_key_value`, `render_update_key_value`, `render_delete_key_value`, `render_get_key_value_connection_info`, `render_suspend_key_value`, `render_resume_key_value`
+  </Accordion>
+  <Accordion title="Environment & secrets">
+    `render_list_env_vars`, `render_get_env_var`, `render_set_env_var`, `render_replace_env_vars`, `render_delete_env_var`, `render_list_secret_files`, `render_get_secret_file`, `render_set_secret_file`, `render_delete_secret_file`, `render_list_env_groups`, `render_get_env_group`, `render_create_env_group`, `render_update_env_group`, `render_delete_env_group`, `render_get_env_group_var`, `render_set_env_group_var`, `render_delete_env_group_var`, `render_get_env_group_secret_file`, `render_set_env_group_secret_file`, `render_delete_env_group_secret_file`, `render_link_service_to_env_group`, `render_unlink_service_from_env_group`
+  </Accordion>
+  <Accordion title="Disks, jobs & task runs">
+    `render_list_disks`, `render_get_disk`, `render_add_disk`, `render_update_disk`, `render_delete_disk`, `render_list_disk_snapshots`, `render_restore_disk_snapshot`, `render_list_jobs`, `render_get_job`, `render_create_job`, `render_cancel_job`, `render_list_tasks`, `render_get_task`, `render_list_task_runs`, `render_run_task`, `render_get_task_run`, `render_cancel_task_run`
+  </Accordion>
+  <Accordion title="Domains, routes & networking">
+    `render_list_custom_domains`, `render_get_custom_domain`, `render_add_custom_domain`, `render_delete_custom_domain`, `render_verify_custom_domain`, `render_list_routes`, `render_add_route`, `render_replace_routes`, `render_update_route_priority`, `render_delete_route`, `render_list_headers`, `render_add_header`, `render_replace_headers`, `render_delete_header`, `render_list_dedicated_ips`, `render_get_dedicated_ip`, `render_create_dedicated_ip_set`, `render_update_dedicated_ip_set`, `render_delete_dedicated_ip_set`
+  </Accordion>
+  <Accordion title="Projects, environments & blueprints">
+    `render_list_projects`, `render_get_project`, `render_create_project`, `render_update_project`, `render_delete_project`, `render_list_environments`, `render_get_environment`, `render_create_environment`, `render_update_environment`, `render_delete_environment`, `render_add_environment_resources`, `render_remove_environment_resources`, `render_list_blueprints`, `render_get_blueprint`, `render_validate_blueprint`, `render_update_blueprint`, `render_disconnect_blueprint`, `render_list_blueprint_syncs`
+  </Accordion>
+  <Accordion title="Webhooks & notifications">
+    `render_list_webhooks`, `render_get_webhook`, `render_create_webhook`, `render_update_webhook`, `render_delete_webhook`, `render_list_webhook_events`, `render_list_notification_overrides`, `render_get_service_notification_override`, `render_update_service_notification_override`, `render_get_owner_notification_settings`, `render_update_owner_notification_settings`
+  </Accordion>
+  <Accordion title="Observability">
+    `render_get_cpu_metrics`, `render_get_memory_metrics`, `render_get_http_requests_metrics`, `render_get_http_latency_metrics`, `render_get_bandwidth_metrics`, `render_get_instance_count_metrics`, `render_get_disk_usage_metrics`, `render_get_active_connections_metrics`, `render_list_logs`, `render_get_log_filter_values`, `render_list_organization_audit_logs`, `render_list_workspace_audit_logs`, `render_list_maintenance_runs`, `render_get_maintenance_run`, `render_trigger_maintenance_run`
+  </Accordion>
+  <Accordion title="Workflows, owners & registry">
+    `render_trigger_cron_job_run`, `render_cancel_cron_job_run`, `render_list_workflows`, `render_get_workflow`, `render_create_workflow`, `render_update_workflow`, `render_delete_workflow`, `render_list_workflow_versions`, `render_get_workflow_version`, `render_deploy_workflow_version`, `render_list_owners`, `render_get_owner`, `render_list_workspace_members`, `render_update_member_role`, `render_remove_member`, `render_list_registry_credentials`, `render_get_registry_credential`, `render_create_registry_credential`, `render_update_registry_credential`, `render_delete_registry_credential`, `render_get_authenticated_user`, `render_get_event`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Deploy automation" icon="rocket">
+    Trigger a deploy after a code change and roll back automatically if it fails
+  </Card>
+  <Card title="Database maintenance" icon="database">
+    Check Postgres table sizes and top queries, then trigger an export before a migration
+  </Card>
+  <Card title="Incident response" icon="alert-triangle">
+    Pull CPU/memory metrics and recent logs for a service that's misbehaving
+  </Card>
+  <Card title="Secrets rotation" icon="key">
+    Update an env group's variables and relink it to every service that depends on it
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="render_trigger_deploy succeeds but the service doesn't update">
+    Confirm the deploy actually completed with `render_get_deploy` or `render_list_service_events` — a triggered deploy can still fail during the build step even if the trigger call itself succeeded.
+  </Accordion>
+  <Accordion title="render_create_postgres_export or render_trigger_postgres_recovery times out">
+    Large databases can take a long time to export or recover; poll `render_get_postgres_recovery_status` rather than expecting a synchronous response.
+  </Accordion>
+  <Accordion title="Environment variable changes don't seem to take effect">
+    Most env var and secret file changes require a new deploy to take effect on running instances — trigger one with `render_trigger_deploy` after calling `render_set_env_var` or `render_set_secret_file`.
+  </Accordion>
+  <Accordion title="render_add_custom_domain leaves the domain unverified">
+    DNS propagation isn't instant — call `render_verify_custom_domain` again after confirming the required CNAME/A record is in place, and allow time for DNS to propagate.
+  </Accordion>
+</AccordionGroup>

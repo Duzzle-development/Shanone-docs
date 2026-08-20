@@ -1,0 +1,91 @@
+---
+title: "ngrok"
+description: "Manage ngrok's ingress platform — endpoints, tunnels, reserved domains, TLS certs, backends, AI Gateway, and vaults"
+icon: /images/ngrok.svg
+---
+
+# ngrok
+
+Shanone's ngrok integration gives your agent 171 tools covering the full ngrok API: endpoint/tunnel management, domain and TLS administration, load-balancing backends, security policies, observability, AI Gateway, and secret vaults.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get an ngrok API key">
+    In the ngrok dashboard, go to **API Keys** and generate a new key.
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations > ngrok** in the Shanone dashboard and paste the API key in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `ngrok_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **171 tools** for ngrok, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Endpoints & tunnels">
+    `ngrok_create_endpoint`, `ngrok_list_endpoints`, `ngrok_get_endpoint`, `ngrok_update_endpoint`, `ngrok_delete_endpoint`, `ngrok_list_tunnels`, `ngrok_get_tunnel`, `ngrok_list_tunnel_sessions`, `ngrok_get_tunnel_session`, `ngrok_restart_tunnel_session`, `ngrok_stop_tunnel_session`, `ngrok_update_tunnel_session`
+  </Accordion>
+  <Accordion title="Backends (load balancing)">
+    `ngrok_create_tunnel_group_backend`, `ngrok_list_tunnel_group_backends`, `ngrok_get_tunnel_group_backend`, `ngrok_update_tunnel_group_backend`, `ngrok_delete_tunnel_group_backend`, `ngrok_create_static_backend`, `ngrok_list_static_backends`, `ngrok_get_static_backend`, `ngrok_update_static_backend`, `ngrok_delete_static_backend`, `ngrok_create_weighted_backend`, `ngrok_list_weighted_backends`, `ngrok_get_weighted_backend`, `ngrok_update_weighted_backend`, `ngrok_delete_weighted_backend`, `ngrok_create_failover_backend`, `ngrok_list_failover_backends`, `ngrok_get_failover_backend`, `ngrok_update_failover_backend`, `ngrok_delete_failover_backend`, `ngrok_create_http_response_backend`, `ngrok_list_http_response_backends`, `ngrok_get_http_response_backend`, `ngrok_update_http_response_backend`, `ngrok_delete_http_response_backend`
+  </Accordion>
+  <Accordion title="Domains, addresses & certificates">
+    `ngrok_create_reserved_domain`, `ngrok_list_reserved_domains`, `ngrok_get_reserved_domain`, `ngrok_update_reserved_domain`, `ngrok_delete_reserved_domain`, `ngrok_delete_reserved_domain_certificate`, `ngrok_delete_reserved_domain_certificate_policy`, `ngrok_create_reserved_address`, `ngrok_list_reserved_addresses`, `ngrok_get_reserved_address`, `ngrok_update_reserved_address`, `ngrok_delete_reserved_address`, `ngrok_create_tls_certificate`, `ngrok_list_tls_certificates`, `ngrok_get_tls_certificate`, `ngrok_update_tls_certificate`, `ngrok_delete_tls_certificate`, `ngrok_create_certificate_authority`, `ngrok_list_certificate_authorities`, `ngrok_get_certificate_authority`, `ngrok_update_certificate_authority`, `ngrok_delete_certificate_authority`
+  </Accordion>
+  <Accordion title="Security: credentials & IP policies">
+    `ngrok_create_agent_ingress`, `ngrok_list_agent_ingresses`, `ngrok_get_agent_ingress`, `ngrok_update_agent_ingress`, `ngrok_delete_agent_ingress`, `ngrok_create_credential`, `ngrok_list_credentials`, `ngrok_get_credential`, `ngrok_update_credential`, `ngrok_delete_credential`, `ngrok_create_ssh_credential`, `ngrok_list_ssh_credentials`, `ngrok_get_ssh_credential`, `ngrok_update_ssh_credential`, `ngrok_delete_ssh_credential`, `ngrok_create_ip_policy`, `ngrok_list_ip_policies`, `ngrok_get_ip_policy`, `ngrok_update_ip_policy`, `ngrok_delete_ip_policy`, `ngrok_create_ip_policy_rule`, `ngrok_list_ip_policy_rules`, `ngrok_get_ip_policy_rule`, `ngrok_update_ip_policy_rule`, `ngrok_delete_ip_policy_rule`, `ngrok_create_ip_restriction`, `ngrok_list_ip_restrictions`, `ngrok_get_ip_restriction`, `ngrok_update_ip_restriction`, `ngrok_delete_ip_restriction`
+  </Accordion>
+  <Accordion title="Observability: events & sessions">
+    `ngrok_create_event_destination`, `ngrok_list_event_destinations`, `ngrok_get_event_destination`, `ngrok_update_event_destination`, `ngrok_delete_event_destination`, `ngrok_create_event_subscription`, `ngrok_list_event_subscriptions`, `ngrok_get_event_subscription`, `ngrok_update_event_subscription`, `ngrok_delete_event_subscription`, `ngrok_create_event_source`, `ngrok_list_event_sources`, `ngrok_get_event_source`, `ngrok_update_event_source`, `ngrok_delete_event_source`, `ngrok_list_application_users`, `ngrok_get_application_user`, `ngrok_delete_application_user`, `ngrok_list_application_sessions`, `ngrok_get_application_session`, `ngrok_delete_application_session`, `ngrok_create_abuse_report`, `ngrok_get_abuse_report`
+  </Accordion>
+  <Accordion title="AI Gateway: access keys & usage">
+    `ngrok_create_ai_gateway_access_key_configuration`, `ngrok_list_ai_gateway_access_key_configurations`, `ngrok_get_ai_gateway_access_key_configuration`, `ngrok_update_ai_gateway_access_key_configuration`, `ngrok_delete_ai_gateway_access_key_configuration`, `ngrok_create_ai_gateway_access_key`, `ngrok_list_ai_gateway_access_keys`, `ngrok_get_ai_gateway_access_key`, `ngrok_update_ai_gateway_access_key`, `ngrok_delete_ai_gateway_access_key`, `ngrok_get_ai_gateway_config`, `ngrok_update_ai_gateway_config`, `ngrok_get_ai_gateway_credit_balance`, `ngrok_list_ai_gateway_credit_transactions`, `ngrok_create_ai_gateway_checkout_session`, `ngrok_list_ai_gateway_usage_events`, `ngrok_get_ai_gateway_usage_overview`
+  </Accordion>
+  <Accordion title="AI Gateway: providers & provider keys">
+    `ngrok_create_ai_gateway_provider`, `ngrok_list_ai_gateway_providers`, `ngrok_get_ai_gateway_provider`, `ngrok_update_ai_gateway_provider`, `ngrok_delete_ai_gateway_provider`, `ngrok_create_ai_gateway_provider_key`, `ngrok_list_ai_gateway_provider_keys`, `ngrok_get_ai_gateway_provider_key`, `ngrok_update_ai_gateway_provider_key`, `ngrok_delete_ai_gateway_provider_key`, `ngrok_rotate_ai_gateway_provider_key`, `ngrok_create_ai_gateway_api_key`, `ngrok_list_ai_gateway_api_keys`, `ngrok_get_ai_gateway_api_key`, `ngrok_update_ai_gateway_api_key`, `ngrok_delete_ai_gateway_api_key`
+  </Accordion>
+  <Accordion title="Vaults & secrets">
+    `ngrok_create_vault`, `ngrok_list_vaults`, `ngrok_get_vault`, `ngrok_update_vault`, `ngrok_delete_vault`, `ngrok_get_vault_secrets`, `ngrok_create_secret`, `ngrok_list_secrets`, `ngrok_get_secret`, `ngrok_update_secret`, `ngrok_delete_secret`
+  </Accordion>
+  <Accordion title="Account: API keys & users">
+    `ngrok_create_api_key`, `ngrok_list_api_keys`, `ngrok_get_api_key`, `ngrok_update_api_key`, `ngrok_delete_api_key`, `ngrok_create_bot_user`, `ngrok_list_bot_users`, `ngrok_get_bot_user`, `ngrok_update_bot_user`, `ngrok_delete_bot_user`, `ngrok_create_service_user`, `ngrok_list_service_users`, `ngrok_get_service_user`, `ngrok_update_service_user`, `ngrok_delete_service_user`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Stable preview URLs" icon="link">
+    Reserve a domain and TLS certificate so a demo endpoint has a consistent, trusted URL
+  </Card>
+  <Card title="Zero-trust access control" icon="shield">
+    Layer IP policies and credentials in front of an internal service exposed via ngrok
+  </Card>
+  <Card title="Traffic failover" icon="repeat">
+    Configure a failover backend so traffic reroutes automatically if a primary origin goes down
+  </Card>
+  <Card title="LLM cost governance" icon="dollar-sign">
+    Manage AI Gateway provider keys and monitor usage/credit balance across teams
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="ngrok_create_endpoint succeeds but traffic doesn't route">
+    An endpoint needs an active tunnel session behind it — check `ngrok_list_tunnel_sessions` to confirm an ngrok agent is actually connected for that endpoint's URL.
+  </Accordion>
+  <Accordion title="ngrok_create_reserved_domain fails DNS/certificate validation">
+    Reserved custom domains require a CNAME record pointing to ngrok before the certificate can be issued — check `ngrok_get_reserved_domain` for the exact validation status and required DNS record.
+  </Accordion>
+  <Accordion title="Deleting an IP policy fails while still attached">
+    Detach the policy from any endpoint or edge referencing it first — `ngrok_delete_ip_policy` fails if the policy is still in active use.
+  </Accordion>
+  <Accordion title="AI Gateway usage tools show no data">
+    Usage/credit tools require the AI Gateway to be configured with at least one provider key first — set one up via `ngrok_create_ai_gateway_provider_key` before expecting usage events.
+  </Accordion>
+</AccordionGroup>

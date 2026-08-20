@@ -1,0 +1,91 @@
+---
+title: "OneDrive"
+description: "OneDriveとSharePointのファイル管理 — ドライブ、フォルダ、共有、バージョン、同期、Microsoft 365ガバナンス"
+icon: /images/onedrive.svg
+---
+
+# OneDrive
+
+ShanoneのOneDrive連携は、日常的なファイル管理やSharePointサイトへのアクセスに加えて、他の連携ではあまり扱われないMicrosoft 365ガバナンス系のツール(保持ラベル、機密ラベル、デルタ同期)まで含む87個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにOneDrive関連の作業を依頼(例: 「Q3予算スプレッドシートの最新バージョンを探して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Microsoftアカウントを許可する">
+    ShanoneにOneDriveやSharePointサイトへアクセスさせたいアカウントについて、MicrosoftのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`onedrive_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはOneDrive向けに**87個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ファイル">
+    `onedrive_get_file_info`, `onedrive_download_file`, `onedrive_upload_file`, `onedrive_delete_file`, `onedrive_move_file`, `onedrive_copy_file`, `onedrive_search_files`, `onedrive_download_file_by_path`, `onedrive_create_upload_session`, `onedrive_download_as_format`, `onedrive_update_metadata`, `onedrive_rename_item`, `onedrive_follow_item`, `onedrive_unfollow_item`, `onedrive_preview_item`
+  </Accordion>
+  <Accordion title="フォルダ">
+    `onedrive_list_root`, `onedrive_list_folder`, `onedrive_create_folder`, `onedrive_delete_folder`, `onedrive_get_special_folder`, `onedrive_list_special_folder`, `onedrive_get_recent`, `onedrive_get_root_children`, `onedrive_list_followed`
+  </Accordion>
+  <Accordion title="共有 & 権限">
+    `onedrive_create_sharing_link`, `onedrive_grant_permission_to_link`, `onedrive_get_shared_drive_item`, `onedrive_list_link_permissions`, `onedrive_list_permissions`, `onedrive_get_permission`, `onedrive_update_permission`, `onedrive_delete_permission`, `onedrive_invite_user`, `onedrive_get_shared_item`, `onedrive_list_shared_with_me`
+  </Accordion>
+  <Accordion title="バージョン & ごみ箱">
+    `onedrive_list_versions`, `onedrive_get_version`, `onedrive_download_version`, `onedrive_restore_version`, `onedrive_restore_item`, `onedrive_permanent_delete`, `onedrive_list_recycle_bin_items`
+  </Accordion>
+  <Accordion title="同期 & サブスクリプション">
+    `onedrive_get_delta`, `onedrive_get_delta_by_token`, `onedrive_create_subscription`, `onedrive_list_subscriptions`, `onedrive_delete_subscription`, `onedrive_update_subscription`, `onedrive_get_subscription`
+  </Accordion>
+  <Accordion title="コラボレーション & バンドル">
+    `onedrive_checkout`, `onedrive_checkin`, `onedrive_discard_checkout`, `onedrive_get_publication_status`, `onedrive_list_bundles`, `onedrive_get_bundle`, `onedrive_create_bundle`, `onedrive_add_item_to_bundle`, `onedrive_remove_item_from_bundle`, `onedrive_update_bundle`, `onedrive_delete_bundle`
+  </Accordion>
+  <Accordion title="SharePointサイト">
+    `onedrive_get_site`, `onedrive_list_site_drives`, `onedrive_get_site_drive`, `onedrive_list_site_lists`, `onedrive_get_group_drive`, `onedrive_search_sites`, `onedrive_list_site_subsites`, `onedrive_list_site_columns`, `onedrive_get_site_page_content`, `onedrive_get_sharepoint_list_items`, `onedrive_list_sharepoint_list_items_delta`, `onedrive_list_site_drive_items_delta`
+  </Accordion>
+  <Accordion title="ガバナンス & コンプライアンス">
+    `onedrive_get_retention_label`, `onedrive_set_retention_label`, `onedrive_remove_retention_label`, `onedrive_lock_unlock_record`, `onedrive_extract_sensitivity_labels`, `onedrive_assign_sensitivity_label`
+  </Accordion>
+  <Accordion title="分析 & サムネイル">
+    `onedrive_get_analytics`, `onedrive_get_activities`, `onedrive_list_drive_activities`, `onedrive_get_activity_stats`, `onedrive_get_thumbnails`, `onedrive_get_thumbnail`, `onedrive_get_thumbnail_content`, `onedrive_get_my_drive`, `onedrive_get_drive_info`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="チーム間のファイル共有" icon="share-2">
+    ドキュメントを探し、共有リンクを発行して、特定のコラボレーターにアクセス権を付与する
+  </Card>
+  <Card title="SharePointサイト検索" icon="search">
+    接続済みのSharePointサイトやライブラリを横断検索し、ドキュメントの最新版を見つける
+  </Card>
+  <Card title="コンプライアンス & 保持ポリシー監査" icon="shield-check">
+    ドライブ内の機密ファイルに適用されている保持ラベルや機密ラベルを確認する
+  </Card>
+  <Card title="バージョンの復元" icon="history">
+    ファイルのバージョン履歴を確認し、意図しない編集後に以前のバージョンへ復元する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="onedrive_upload_fileが大きめのファイルで失敗する">
+    Microsoft Graphのシンプルアップロードは約4MBが上限です。それ以上のサイズには、代わりに`onedrive_create_upload_session`でレジューム可能なアップロードセッションを開始してください。
+  </Accordion>
+  <Accordion title="onedrive_get_deltaが突然再同期が必要というエラーを返す">
+    デルタトークンは期限切れやサーバー側の無効化が発生することがあります。トークンなしで`onedrive_get_delta`を呼び出して同期ループを再開し、レスポンスから新しいトークンを保存して以降の`onedrive_get_delta_by_token`呼び出しに使ってください。
+  </Accordion>
+  <Accordion title="SharePoint系ツールが空の結果や403を返す">
+    ほとんどの`onedrive_*`のSharePoint系ツールは特定のサイトIDやドライブIDが必要です。まず`onedrive_search_sites`や`onedrive_get_site`で正しいサイトを特定し、接続中のMicrosoftアカウントに実際のアクセス権があるか確認してください。
+  </Accordion>
+  <Accordion title="onedrive_delete_fileを実行しても容量が空かない">
+    削除されたアイテムはまずごみ箱に移動します。`onedrive_list_recycle_bin_items`で確認し、完全に削除したい場合は`onedrive_permanent_delete`を使ってください。
+  </Accordion>
+</AccordionGroup>

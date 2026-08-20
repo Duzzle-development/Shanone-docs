@@ -1,0 +1,88 @@
+---
+title: "Attio"
+description: "Manage companies, people, deals, and custom objects in your Attio CRM, plus lists, notes, and tasks"
+icon: /images/attio.svg
+---
+
+# Attio
+
+Shanone's Attio integration gives your agent 76 tools covering Attio's flexible object model — standard CRM records (companies, people, deals) alongside custom objects, lists, attributes, notes, comments, and tasks.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Attio (e.g. "list companies tagged as enterprise"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the workspace">
+    Approve Attio's OAuth consent screen for the workspace you want Shanone to access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `attio_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **76 tools** for Attio, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Companies">
+    `attio_list_companies`, `attio_get_company`, `attio_create_company`, `attio_update_company`, `attio_delete_company`, `attio_search_companies`
+  </Accordion>
+  <Accordion title="People">
+    `attio_list_people`, `attio_get_person`, `attio_create_person`, `attio_update_person`, `attio_delete_person`, `attio_search_people`
+  </Accordion>
+  <Accordion title="Deals">
+    `attio_list_deals`, `attio_get_deal`, `attio_create_deal`, `attio_update_deal`, `attio_delete_deal`, `attio_search_deals`
+  </Accordion>
+  <Accordion title="Records & objects (custom objects)">
+    `attio_list_records`, `attio_get_record`, `attio_create_record`, `attio_update_record`, `attio_delete_record`, `attio_assert_record`, `attio_list_objects`, `attio_get_object`, `attio_create_object`, `attio_update_object`, `attio_get_object_attributes`
+  </Accordion>
+  <Accordion title="Attributes">
+    `attio_list_attributes`, `attio_get_attribute`, `attio_create_attribute`, `attio_update_attribute`, `attio_archive_attribute`, `attio_get_select_options`, `attio_create_select_option`
+  </Accordion>
+  <Accordion title="Lists & entries">
+    `attio_list_lists`, `attio_get_list`, `attio_create_list`, `attio_update_list`, `attio_delete_list`, `attio_get_list_attributes`, `attio_list_entries`, `attio_get_entry`, `attio_create_entry`, `attio_update_entry`, `attio_delete_entry`, `attio_assert_entry`
+  </Accordion>
+  <Accordion title="Tasks">
+    `attio_list_tasks`, `attio_get_task`, `attio_create_task`, `attio_update_task`, `attio_delete_task`, `attio_complete_task`
+  </Accordion>
+  <Accordion title="Notes & comments">
+    `attio_list_notes`, `attio_get_note`, `attio_create_note`, `attio_update_note`, `attio_delete_note`, `attio_list_comments`, `attio_get_comment`, `attio_create_comment`, `attio_delete_comment`, `attio_list_threads`, `attio_create_thread`
+  </Accordion>
+  <Accordion title="Users, workspace members & webhooks">
+    `attio_list_users`, `attio_get_user`, `attio_search_users`, `attio_get_current_user`, `attio_list_workspace_members`, `attio_get_workspace_member`, `attio_list_webhooks`, `attio_get_webhook`, `attio_create_webhook`, `attio_update_webhook`, `attio_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Pipeline reviews" icon="filter">
+    List and search deals by stage, then summarize what's stalled
+  </Card>
+  <Card title="Custom object automation" icon="boxes">
+    Create or update records on a custom object (e.g. "Renewals") tied to your workspace's schema
+  </Card>
+  <Card title="List-driven workflows" icon="list">
+    Add companies or people to a curated list and track them through list-specific attributes
+  </Card>
+  <Card title="Follow-up task creation" icon="check-square">
+    Create and assign a task on a person or deal record after a call or meeting
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="attio_create_record fails with an unknown attribute error">
+    Attio's object schemas are workspace-specific and can include custom attributes. Call `attio_get_object_attributes` or `attio_list_attributes` first to confirm exact attribute slugs and types.
+  </Accordion>
+  <Accordion title="attio_assert_record / attio_assert_entry behaves unexpectedly">
+    These are upsert-style operations that match on a matching attribute (e.g. domain for companies) — if the match value is ambiguous or missing, Attio may create a duplicate instead of updating the intended record.
+  </Accordion>
+  <Accordion title="Select/status field updates are rejected">
+    Enum-style attributes (select, status) require an exact option ID or title from `attio_get_select_options` — free-text values that don't match an existing option will fail unless you first create the option with `attio_create_select_option`.
+  </Accordion>
+</AccordionGroup>

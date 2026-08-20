@@ -1,0 +1,85 @@
+---
+title: "Google Chat"
+description: "Manage spaces, messages, members, and reactions — plus availability status and custom emoji"
+icon: /images/google-chat.svg
+---
+
+# Google Chat
+
+Shanone's Google Chat integration gives your agent 49 tools covering spaces, messaging, membership, and the less common surfaces (availability status, custom emoji, read state, sections) that most integrations skip.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Google Chat (e.g. "post a summary to the #launch space"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `google_chat_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **49 tools** for Google Chat, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Spaces">
+    `google_chat_list_spaces`, `google_chat_get_space`, `google_chat_list_members`, `google_chat_find_direct_message`, `google_chat_create_space`, `google_chat_update_space`, `google_chat_delete_space`, `google_chat_setup_space`, `google_chat_find_group_chat`
+  </Accordion>
+  <Accordion title="Messages">
+    `google_chat_list_messages`, `google_chat_get_message`, `google_chat_create_message`, `google_chat_create_card_message`, `google_chat_update_message`, `google_chat_delete_message`, `google_chat_search_messages`, `google_chat_replace_message_cards`
+  </Accordion>
+  <Accordion title="Members">
+    `google_chat_add_member`, `google_chat_remove_member`, `google_chat_get_member`, `google_chat_update_member_role`
+  </Accordion>
+  <Accordion title="Reactions & pins">
+    `google_chat_add_reaction`, `google_chat_remove_reaction`, `google_chat_list_reactions`, `google_chat_pin_message`, `google_chat_unpin_message`, `google_chat_list_pinned_messages`
+  </Accordion>
+  <Accordion title="Attachments">
+    `google_chat_get_attachment`, `google_chat_download_media`, `google_chat_upload_attachment`
+  </Accordion>
+  <Accordion title="Read state & notifications">
+    `google_chat_get_space_read_state`, `google_chat_mark_space_read`, `google_chat_get_thread_read_state`, `google_chat_get_notification_setting`, `google_chat_update_notification_setting`
+  </Accordion>
+  <Accordion title="Availability">
+    `google_chat_get_user_availability`, `google_chat_set_availability_active`, `google_chat_set_availability_away`, `google_chat_set_availability_dnd`, `google_chat_update_availability`
+  </Accordion>
+  <Accordion title="Custom emoji & sections">
+    `google_chat_list_custom_emojis`, `google_chat_create_custom_emoji`, `google_chat_get_custom_emoji`, `google_chat_delete_custom_emoji`, `google_chat_list_sections`, `google_chat_create_section`, `google_chat_update_section`, `google_chat_delete_section`, `google_chat_reorder_section`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Automated status updates" icon="megaphone">
+    Post a formatted card message to a space when a deploy or build finishes
+  </Card>
+  <Card title="Space membership management" icon="users">
+    Add new teammates to a space and assign the right member role
+  </Card>
+  <Card title="Message search & triage" icon="search">
+    Search a space's message history to find and pin the decision that resolved a thread
+  </Card>
+  <Card title="Presence-aware notifications" icon="circle-dot">
+    Check a user's availability before posting a direct message that expects a quick reply
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="google_chat_create_message fails when trying to send a rich card">
+    Use `google_chat_create_card_message` instead of `google_chat_create_message` for card-formatted content — the plain message tool only accepts text.
+  </Accordion>
+  <Accordion title="google_chat_search_messages doesn't find an older message">
+    Search indexing can lag for very recent messages, and search only covers spaces the connected account is a member of — verify with `google_chat_list_spaces` first.
+  </Accordion>
+  <Accordion title="google_chat_upload_attachment succeeds but the file doesn't appear in the message">
+    Attachments must be referenced in a follow-up `google_chat_create_message` call using the returned attachment resource — uploading alone doesn't post it to the space.
+  </Accordion>
+</AccordionGroup>

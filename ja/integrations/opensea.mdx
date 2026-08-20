@@ -1,0 +1,88 @@
+---
+title: "OpenSea"
+description: "NFTの閲覧・取引・分析 — コレクション、リスティング、オファー、注文、統計、トークンスワップ"
+icon: /images/opensea.svg
+---
+
+# OpenSea
+
+ShanoneのOpenSea連携は、NFTマーケットプレイスの全体像をカバーする63個のツールをエージェントに提供します。コレクション・NFTの検索、リスティングとオファー、注文の実行、ポートフォリオ/アカウント統計、オンチェーンのトークンスワップまで対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="OpenSea APIキーを作成する">
+    [OpenSea開発者ポータル](https://opensea.io/account/settings/developer)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でOpenSeaを選択し、APIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`opensea_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはOpenSea向けに**63個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="アカウント & ポートフォリオ">
+    `opensea_get_account`, `opensea_resolve_account`, `opensea_get_portfolio_stats`, `opensea_get_portfolio_history`, `opensea_get_profile_collections`, `opensea_get_profile_favorites`, `opensea_get_profile_listings`, `opensea_get_profile_offers`, `opensea_get_profile_offers_received`
+  </Accordion>
+  <Accordion title="コレクション">
+    `opensea_get_collection`, `opensea_list_collections`, `opensea_get_collections_batch`, `opensea_get_collection_by_nft`, `opensea_get_collection_traits`, `opensea_get_top_collections`, `opensea_get_trending_collections`
+  </Accordion>
+  <Accordion title="NFT">
+    `opensea_get_nft`, `opensea_get_nfts_batch`, `opensea_get_nfts_by_account`, `opensea_get_nfts_by_collection`
+  </Accordion>
+  <Accordion title="リスティング">
+    `opensea_get_best_listing_nft`, `opensea_get_best_listings_collection`, `opensea_get_all_listings_collection`, `opensea_create_listing_actions`, `opensea_create_listing`, `opensea_fulfill_listing`, `opensea_fulfill_listing_cross_chain`
+  </Accordion>
+  <Accordion title="オファー">
+    `opensea_get_best_offer_nft`, `opensea_get_offers_nft`, `opensea_get_offers_collection`, `opensea_get_trait_offers`, `opensea_get_all_offers_collection`, `opensea_build_offer`, `opensea_create_offer`, `opensea_create_criteria_offer`
+  </Accordion>
+  <Accordion title="注文">
+    `opensea_get_order`, `opensea_cancel_order`, `opensea_fulfill_offer`
+  </Accordion>
+  <Accordion title="統計 & 分析">
+    `opensea_get_collection_stats`, `opensea_get_collection_floor_prices`, `opensea_get_collection_holders`, `opensea_get_collection_offer_aggregates`, `opensea_get_nft_analytics`, `opensea_get_nft_metadata`, `opensea_get_nft_owners`, `opensea_refresh_nft_metadata`
+  </Accordion>
+  <Accordion title="ドロップ & イベント">
+    `opensea_get_drops`, `opensea_get_drop`, `opensea_get_mint_data`, `opensea_deploy_contract`, `opensea_get_events`, `opensea_get_events_by_account`, `opensea_get_events_by_collection`, `opensea_get_events_by_nft`
+  </Accordion>
+  <Accordion title="スワップ & トークン">
+    `opensea_get_swap_quote`, `opensea_get_swap_transaction`, `opensea_get_swap_status`, `opensea_get_supported_tokens`, `opensea_get_token`, `opensea_get_token_price`, `opensea_get_token_balances`, `opensea_get_token_allowances`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="コレクション調査" icon="search">
+    コレクションを評価する前にフロア価格、ホルダー数、トレイトの内訳を取得する
+  </Card>
+  <Card title="ポートフォリオ管理" icon="wallet">
+    アカウントのNFT保有状況、リスティング、オファーの動きを一度に確認する
+  </Card>
+  <Card title="自動ビッディング" icon="gavel">
+    単一のNFTではなく、コレクションやトレイト全体に対する条件付きオファーを作成・発行する
+  </Card>
+  <Card title="クロスチェーンスワップ" icon="repeat">
+    購入資金確保に必要なトークンスワップの見積もりと実行を行い、リスティングを成立させる
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="opensea_create_listingやopensea_create_offerが署名エラーで失敗する">
+    これらのツールは送信前に接続済みウォレットで署名する必要がある未署名の注文ペイロードを返します。署名がクライアント側で行われるか`opensea_create_listing_actions`経由かを`shanone_get_tool_schema`で確認してください。
+  </Accordion>
+  <Accordion title="opensea_fulfill_listingが資金不足・許可不足のエラーで失敗する">
+    まず`opensea_get_token_allowances`でトークンの許可状況を確認してください。ERC-20での購入(ETH以外)では、マーケットプレイスコントラクトが購入者のトークンを使えるように、事前に承認トランザクションが必要になるのが通常です。
+  </Accordion>
+  <Accordion title="統計やフロア価格が古く見える">
+    `opensea_get_collection_stats`などの集計データはリアルタイムの取引から少し遅れることがあります。特定のNFTのメタデータが古く見える場合は`opensea_refresh_nft_metadata`を使ってください。
+  </Accordion>
+</AccordionGroup>

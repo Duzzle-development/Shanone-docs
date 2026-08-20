@@ -1,0 +1,94 @@
+---
+title: "Wise"
+description: "Send international transfers, manage multi-currency balances, and check exchange rates with Wise (formerly TransferWise)"
+icon: "banknote"
+---
+
+# Wise
+
+Shanone's Wise integration gives your agent 57 tools for cross-border money movement — quotes, transfers, recipients, multi-currency balances, and the profile/webhook tools needed to run it programmatically.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Wise Personal Access Token">
+    Generate a token from [wise.com/settings/api-tokens](https://wise.com/settings/api-tokens) under **Settings → API tokens → Personal access tokens**.
+  </Step>
+  <Step title="Connect via API key">
+    In the Shanone dashboard, go to **Integrations → Wise** and paste the token.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `wise_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **57 tools** for Wise, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Transfers">
+    `wise_validate_transfer_requirements`, `wise_create_transfer`, `wise_get_transfer`, `wise_list_transfers`, `wise_cancel_transfer`, `wise_fund_transfer`, `wise_get_transfer_receipt`, `wise_get_delivery_estimate`, `wise_list_transfer_payments`, `wise_get_transfer_payout_info`, `wise_get_transfer_noc`, `wise_get_transfer_us_combined_receipt`
+  </Accordion>
+  <Accordion title="Balances">
+    `wise_list_balances`, `wise_get_balance`, `wise_create_balance`, `wise_convert_balance`, `wise_get_total_funds`, `wise_delete_balance`, `wise_get_balance_capacity`, `wise_list_hold_limit_breaches`, `wise_close_hold_limit_breach`, `wise_add_excess_money_account`
+  </Accordion>
+  <Accordion title="Recipients">
+    `wise_create_recipient`, `wise_list_recipients`, `wise_get_recipient`, `wise_deactivate_recipient`, `wise_get_recipient_requirements`, `wise_check_recipient_quote_compatibility`
+  </Accordion>
+  <Accordion title="Quotes">
+    `wise_create_quote`, `wise_get_quote`, `wise_update_quote`
+  </Accordion>
+  <Accordion title="Profiles">
+    `wise_list_profiles`, `wise_get_profile`, `wise_create_personal_profile`, `wise_update_personal_profile`, `wise_update_business_profile`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `wise_create_webhook_subscription`, `wise_list_webhook_subscriptions`, `wise_get_webhook_subscription`, `wise_delete_webhook_subscription`, `wise_verify_webhook_signature`
+  </Accordion>
+  <Accordion title="Multi-currency account">
+    `wise_get_multi_currency_account`, `wise_check_mca_eligibility`, `wise_get_available_currencies`
+  </Accordion>
+  <Accordion title="Bank account details">
+    `wise_get_bank_account_details`, `wise_create_bank_account_details_order`, `wise_list_bank_account_details_orders`
+  </Accordion>
+  <Accordion title="Addresses">
+    `wise_get_address_requirements`, `wise_create_address`, `wise_list_addresses`, `wise_get_address`
+  </Accordion>
+  <Accordion title="Rates & comparison">
+    `wise_get_exchange_rates`, `wise_list_currencies`, `wise_compare_providers`
+  </Accordion>
+  <Accordion title="Activity, statements & user">
+    `wise_list_activities`, `wise_get_balance_statement`, `wise_get_current_user`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Cross-border payroll or vendor payments" icon="send">
+    Quote, create, and fund a transfer to an international recipient
+  </Card>
+  <Card title="Multi-currency treasury tracking" icon="wallet">
+    Check balances across currencies and convert funds when rates are favorable
+  </Card>
+  <Card title="Rate monitoring" icon="trending-up">
+    Pull live exchange rates to decide when to convert or send a transfer
+  </Card>
+  <Card title="Transfer status webhooks" icon="webhook">
+    Register a webhook subscription so your agent is notified when a transfer completes
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="wise_create_transfer fails after a valid quote">
+    Transfers require a funded balance or valid payment method — call `wise_fund_transfer` (or ensure sufficient balance via `wise_list_balances`) right after creation, since an unfunded transfer stays in an incomplete state.
+  </Accordion>
+  <Accordion title="wise_create_recipient rejects the payload">
+    Recipient requirements vary by currency and country. Call `wise_get_recipient_requirements` for the target currency first to see which fields (IBAN, sort code, routing number, etc.) are mandatory before submitting.
+  </Accordion>
+  <Accordion title="wise_check_recipient_quote_compatibility returns incompatible">
+    A quote is created for a specific source/target currency pair; if the recipient's currency doesn't match the quote's target currency, create a new quote for that pair rather than reusing an old one.
+  </Accordion>
+</AccordionGroup>

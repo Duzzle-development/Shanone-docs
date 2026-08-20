@@ -1,0 +1,92 @@
+---
+title: "Monday.com"
+description: "Manage monday.com boards, items, docs, and teams — items, columns, groups, updates, and workspace administration"
+icon: /images/monday.svg
+---
+
+# Monday.com
+
+Shanone's Monday.com integration gives your agent 68 tools covering boards, items/subitems, columns, docs, groups, updates, and account/team administration.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with monday.com (e.g. "list my boards"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the workspace">
+    Approve monday.com's OAuth consent screen for the workspace you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `monday_*` tools will succeed.
+  </Step>
+</Steps>
+
+<Note>
+If you'd rather not use OAuth, monday.com also accepts a personal API token (from **Admin > API** in your monday.com account) as an alternative credential in the same Integrations screen.
+</Note>
+
+## Available Tools
+
+Shanone provides **68 tools** for Monday.com, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Boards">
+    `monday_list_boards`, `monday_get_board`, `monday_create_board`, `monday_update_board`, `monday_duplicate_board`, `monday_archive_board`, `monday_delete_board`
+  </Accordion>
+  <Accordion title="Items & subitems">
+    `monday_list_items`, `monday_get_item`, `monday_create_item`, `monday_update_item`, `monday_move_item`, `monday_archive_item`, `monday_delete_item`, `monday_duplicate_item`, `monday_move_item_to_board`, `monday_change_multiple_column_values`, `monday_search_items_by_column_values`, `monday_get_items_page`, `monday_move_item_to_group`, `monday_create_subitem`
+  </Accordion>
+  <Accordion title="Columns">
+    `monday_list_columns`, `monday_create_column`, `monday_update_column`, `monday_delete_column`, `monday_change_simple_column_value`
+  </Accordion>
+  <Accordion title="Groups & folders">
+    `monday_list_groups`, `monday_create_group`, `monday_update_group`, `monday_duplicate_group`, `monday_delete_group`, `monday_get_folders`, `monday_create_folder`, `monday_update_folder`
+  </Accordion>
+  <Accordion title="Docs">
+    `monday_list_docs`, `monday_create_doc`, `monday_update_doc`, `monday_import_doc_from_html`, `monday_delete_doc`
+  </Accordion>
+  <Accordion title="Updates & notifications">
+    `monday_create_update`, `monday_get_updates`, `monday_get_update_replies`, `monday_edit_update`, `monday_like_update`, `monday_delete_update`, `monday_create_notification`
+  </Accordion>
+  <Accordion title="Teams & users">
+    `monday_get_teams`, `monday_list_team_members`, `monday_add_users_to_board`, `monday_add_teams_to_board`, `monday_add_users_to_team`, `monday_remove_users_from_team`, `monday_create_user`, `monday_get_me`, `monday_list_users`
+  </Accordion>
+  <Accordion title="Workspaces & account">
+    `monday_list_workspaces`, `monday_create_workspace`, `monday_update_workspace`, `monday_delete_workspace`, `monday_get_account_info`, `monday_get_api_version`, `monday_get_query_complexity`
+  </Accordion>
+  <Accordion title="Tags, assets & webhooks">
+    `monday_get_tags`, `monday_create_tag`, `monday_get_assets`, `monday_get_webhooks`, `monday_create_webhook`, `monday_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Status updates at scale" icon="list-checks">
+    Bulk-update column values across items matching a filter
+  </Card>
+  <Card title="Board provisioning" icon="layout-grid">
+    Duplicate a template board and populate it with items for a new project
+  </Card>
+  <Card title="Cross-board reporting" icon="bar-chart">
+    Search items by column values across boards to build a status rollup
+  </Card>
+  <Card title="Real-time sync" icon="webhook">
+    Register a webhook so item changes trigger downstream automation
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tool calls fail with a complexity budget error">
+    monday.com's GraphQL API enforces a query complexity limit per minute — check `monday_get_query_complexity` and reduce batch sizes or add delays between heavy calls like `monday_get_items_page`.
+  </Accordion>
+  <Accordion title="monday_change_multiple_column_values fails with a format error">
+    Column values must be JSON-encoded in the exact shape monday.com expects per column type; check `monday_list_columns` for each column's type before building the payload.
+  </Accordion>
+  <Accordion title="Can't find an item created moments ago">
+    monday.com's search indexing can lag slightly behind writes — retry `monday_search_items_by_column_values` after a short delay, or fetch directly via `monday_get_item` using the ID returned from creation.
+  </Accordion>
+</AccordionGroup>

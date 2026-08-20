@@ -1,0 +1,82 @@
+---
+title: "Firecrawl"
+description: "Scrape, crawl, search, and extract structured data from the web — plus sandboxed browser automation"
+icon: /images/firecrawl.svg
+---
+
+# Firecrawl
+
+Shanone's Firecrawl integration gives your agent 22 tools for turning the web into clean, structured data — single-page scraping, full-site crawling, AI-driven extraction, and even a sandboxed browser for interactive pages.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Firecrawl API key">
+    Create an API key from the [Firecrawl dashboard](https://www.firecrawl.dev/app/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select Firecrawl, and paste the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `firecrawl_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **22 tools** for Firecrawl, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Scrape & search">
+    `firecrawl_scrape`, `firecrawl_search`
+  </Accordion>
+  <Accordion title="Crawl">
+    `firecrawl_crawl`, `firecrawl_check_crawl_status`
+  </Accordion>
+  <Accordion title="Extract & map">
+    `firecrawl_extract`, `firecrawl_map`
+  </Accordion>
+  <Accordion title="Interact">
+    `firecrawl_interact`, `firecrawl_interact_stop`
+  </Accordion>
+  <Accordion title="Browser sandbox">
+    `firecrawl_create_browser`, `firecrawl_execute_browser`, `firecrawl_list_browsers`, `firecrawl_delete_browser`
+  </Accordion>
+  <Accordion title="Agent">
+    `firecrawl_agent`, `firecrawl_get_job_status`
+  </Accordion>
+  <Accordion title="Monitor (change detection)">
+    `firecrawl_monitor_create`, `firecrawl_monitor_list`, `firecrawl_monitor_get`, `firecrawl_monitor_update`, `firecrawl_monitor_delete`, `firecrawl_monitor_run`, `firecrawl_monitor_check`, `firecrawl_monitor_checks`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Clean Markdown extraction" icon="file-text">
+    Scrape a JS-heavy page and get back clean Markdown instead of raw HTML
+  </Card>
+  <Card title="Site-wide knowledge base ingestion" icon="database">
+    Crawl an entire documentation site and feed the resulting pages into a knowledge base
+  </Card>
+  <Card title="Schema-based data extraction" icon="table">
+    Extract structured fields (prices, specs, contact info) from a list of URLs using a JSON schema
+  </Card>
+  <Card title="Price/content change monitoring" icon="bell">
+    Set up a monitor on competitor pages and get notified when pricing or content changes
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="firecrawl_crawl or firecrawl_extract returns a job ID instead of results">
+    These are async operations by default — set `wait_for_completion=True`, or poll `firecrawl_check_crawl_status` / `firecrawl_get_job_status` with the returned job ID.
+  </Accordion>
+  <Accordion title="firecrawl_scrape fails with a rate limit or auth error">
+    Check the error message for "rate limit" (back off and retry) vs. "API key" (the connected Firecrawl API key is invalid or expired and needs to be reconnected).
+  </Accordion>
+  <Accordion title="Need to click a button or fill a form before scraping">
+    A plain `firecrawl_scrape` can't interact with the page — first scrape to get a `scrapeId`, then use `firecrawl_interact` with a `prompt` or `code` to perform the interaction, and call `firecrawl_interact_stop` when finished.
+  </Accordion>
+</AccordionGroup>

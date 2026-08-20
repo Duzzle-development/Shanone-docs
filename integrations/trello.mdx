@@ -1,0 +1,94 @@
+---
+title: "Trello"
+description: "Manage boards, lists, and cards — checklists, labels, custom fields, and webhooks"
+icon: /images/trello.svg
+---
+
+# Trello
+
+Shanone's Trello integration gives your agent 113 tools covering boards, lists, cards, checklists, labels, custom fields, comments, and organization/member management — enough to run Trello-based project workflows entirely from an agent.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an API Key and Token">
+    In Trello, visit **[Power-Ups Admin](https://trello.com/power-ups/admin)** to get your API Key, then generate a Token authorizing that key against your account.
+  </Step>
+  <Step title="Connect the credentials in Shanone">
+    Ask your agent to do something with Trello (e.g. "create a card in my Sprint board"), or add the API Key and Token proactively from **Integrations** in the Shanone dashboard. Both are required.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `trello_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **113 tools** for Trello, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Boards">
+    `trello_get_boards`, `trello_get_board`, `trello_create_board`, `trello_update_board`, `trello_delete_board`, `trello_get_board_lists`, `trello_get_board_cards`, `trello_get_board_members`, `trello_get_board_labels`, `trello_get_board_plugins`, `trello_get_enabled_plugins`, `trello_get_board_memberships`, `trello_update_board_membership`, `trello_invite_member_by_email`, `trello_get_board_stars`, `trello_mark_board_viewed`, `trello_get_board_checklists`
+  </Accordion>
+  <Accordion title="Lists">
+    `trello_get_list`, `trello_create_list`, `trello_update_list`, `trello_archive_list`, `trello_get_list_cards`, `trello_archive_all_cards`, `trello_move_all_cards`
+  </Accordion>
+  <Accordion title="Cards">
+    `trello_get_card`, `trello_create_card`, `trello_update_card`, `trello_delete_card`, `trello_move_card`, `trello_add_member_to_card`, `trello_remove_member_from_card`, `trello_vote_on_card`, `trello_remove_vote`, `trello_get_card_votes`, `trello_set_card_due`, `trello_set_card_due_complete`, `trello_set_card_cover`, `trello_set_card_customfield`, `trello_get_card_customfields`, `trello_add_sticker`, `trello_remove_sticker`
+  </Accordion>
+  <Accordion title="Checklists">
+    `trello_create_checklist`, `trello_get_checklists`, `trello_add_checkitem`, `trello_update_checkitem`, `trello_delete_checklist`, `trello_delete_checkitem`
+  </Accordion>
+  <Accordion title="Labels & custom fields">
+    `trello_create_label`, `trello_update_label`, `trello_delete_label`, `trello_add_label_to_card`, `trello_remove_label_from_card`, `trello_create_customfield`, `trello_get_customfield`, `trello_update_customfield`, `trello_delete_customfield`, `trello_get_board_customfields`, `trello_get_customfield_options`, `trello_add_customfield_option`, `trello_delete_customfield_option`
+  </Accordion>
+  <Accordion title="Comments & attachments">
+    `trello_add_comment`, `trello_get_comments`, `trello_update_comment`, `trello_delete_comment`, `trello_get_card_attachments`, `trello_get_attachment`, `trello_add_attachment_url`, `trello_add_attachment_file`, `trello_delete_attachment`, `trello_set_attachment_cover`
+  </Accordion>
+  <Accordion title="Members & organizations">
+    `trello_get_me`, `trello_get_member`, `trello_get_member_boards`, `trello_add_member_to_board`, `trello_remove_member_from_board`, `trello_get_organization`, `trello_create_organization`, `trello_update_organization`, `trello_delete_organization`, `trello_get_organization_boards`, `trello_get_organization_members`, `trello_add_organization_member`, `trello_remove_organization_member`, `trello_update_organization_member`, `trello_get_member_organizations`
+  </Accordion>
+  <Accordion title="Actions & notifications">
+    `trello_get_action`, `trello_get_action_board`, `trello_get_action_card`, `trello_get_action_list`, `trello_get_action_member`, `trello_get_action_organization`, `trello_get_board_actions`, `trello_get_action_reactions`, `trello_add_reaction`, `trello_delete_reaction`, `trello_get_notifications`, `trello_get_notification`, `trello_update_notification`, `trello_mark_all_notifications_read`, `trello_get_notification_board`, `trello_get_notification_card`
+  </Accordion>
+  <Accordion title="Search, batch & tokens">
+    `trello_search`, `trello_search_members`, `trello_batch_get`, `trello_batch_request`, `trello_get_token`, `trello_get_token_member`, `trello_delete_token`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `trello_create_webhook`, `trello_get_webhook`, `trello_update_webhook`, `trello_delete_webhook`, `trello_get_token_webhooks`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Sprint board management" icon="kanban">
+    Create cards for a new sprint, assign members, and set due dates in bulk
+  </Card>
+  <Card title="Checklist-driven workflows" icon="list-checks">
+    Add a standard checklist to every new card in a list to enforce a process
+  </Card>
+  <Card title="Board reporting" icon="chart-bar">
+    Pull all cards on a board grouped by list/label to build a status summary
+  </Card>
+  <Card title="Cross-board search" icon="search">
+    Search across all boards for cards mentioning a keyword or customer name
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Every call fails with an unauthorized error">
+    Trello requires both the API Key and a Token authorized against that key — a Key alone only allows very limited public reads. Regenerate the Token from **Power-Ups Admin** if it's expired or was revoked.
+  </Accordion>
+  <Accordion title="trello_create_card succeeds but custom fields aren't set">
+    Custom fields must be set in a separate call — use `trello_set_card_customfield` after creating the card, referencing the field ID from `trello_get_board_customfields`.
+  </Accordion>
+  <Accordion title="trello_search doesn't find a card I know exists">
+    By default search is scoped broadly but respects board membership — ensure the connected account is a member of the board, and check `shanone_get_tool_schema` for `trello_search` to see how to scope by board/list explicitly.
+  </Accordion>
+  <Accordion title="trello_archive_list or trello_delete_card doesn't fully remove content">
+    Trello archives rather than permanently deletes most objects by default (lists, boards) — archived items still exist and can be restored, which is expected behavior, not a bug.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,82 @@
+---
+title: "WordPress"
+description: "Manage posts, pages, media, comments, and users on your self-hosted WordPress site via the REST API"
+icon: "newspaper"
+---
+
+# WordPress
+
+Shanone's WordPress integration gives your agent 42 tools for content management — posts, pages, media, comments, taxonomies, and users, via WordPress's built-in REST API.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate a WordPress Application Password">
+    In your WordPress admin, go to **Users → Profile → Application Passwords** and create a new password for Shanone. See [WordPress's Application Passwords guide](https://wordpress.org/documentation/article/application-passwords/) for details.
+  </Step>
+  <Step title="Connect via API key">
+    In the Shanone dashboard, go to **Integrations → WordPress** and enter your site URL, username, and the Application Password.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `wordpress_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **42 tools** for WordPress, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Posts">
+    `wordpress_list_posts`, `wordpress_get_post`, `wordpress_create_post`, `wordpress_update_post`, `wordpress_delete_post`
+  </Accordion>
+  <Accordion title="Pages">
+    `wordpress_list_pages`, `wordpress_get_page`, `wordpress_create_page`, `wordpress_update_page`, `wordpress_delete_page`
+  </Accordion>
+  <Accordion title="Media">
+    `wordpress_list_media`, `wordpress_get_media`, `wordpress_upload_media`, `wordpress_update_media`, `wordpress_delete_media`
+  </Accordion>
+  <Accordion title="Comments">
+    `wordpress_list_comments`, `wordpress_get_comment`, `wordpress_create_comment`, `wordpress_update_comment`, `wordpress_delete_comment`
+  </Accordion>
+  <Accordion title="Users">
+    `wordpress_list_users`, `wordpress_get_user`, `wordpress_get_current_user`, `wordpress_create_user`, `wordpress_update_user`, `wordpress_delete_user`
+  </Accordion>
+  <Accordion title="Categories & tags">
+    `wordpress_list_categories`, `wordpress_get_category`, `wordpress_create_category`, `wordpress_update_category`, `wordpress_delete_category`, `wordpress_list_tags`, `wordpress_get_tag`, `wordpress_create_tag`, `wordpress_update_tag`, `wordpress_delete_tag`
+  </Accordion>
+  <Accordion title="Site & taxonomies">
+    `wordpress_search_content`, `wordpress_get_settings`, `wordpress_update_settings`, `wordpress_list_post_types`, `wordpress_list_post_statuses`, `wordpress_list_taxonomies`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Content publishing pipeline" icon="pen-line">
+    Draft a post, upload a featured image, and publish once reviewed
+  </Card>
+  <Card title="Comment moderation" icon="message-square-warning">
+    List pending comments and approve, edit, or delete them in bulk
+  </Card>
+  <Card title="Site-wide content search" icon="search">
+    Search across posts and pages to find and update outdated content
+  </Card>
+  <Card title="Taxonomy cleanup" icon="tags">
+    Consolidate duplicate categories/tags across a large post archive
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connection fails with a 401 even with a correct-looking password">
+    WordPress Application Passwords are shown with spaces (e.g. `xxxx xxxx xxxx xxxx`) — some setups require the password exactly as displayed, including spaces; don't strip them when entering it in **Integrations**.
+  </Accordion>
+  <Accordion title="wordpress_create_post publishes immediately when I wanted a draft">
+    Check the `status` field in the payload via `shanone_get_tool_schema` for `wordpress_create_post` — omitting it may default to `publish` depending on your WordPress configuration; set it explicitly to `draft`.
+  </Accordion>
+  <Accordion title="wordpress_delete_post or wordpress_delete_page only trashes instead of permanently deleting">
+    By default WordPress moves posts/pages to trash rather than deleting them outright; check the tool's `force` parameter if you need permanent deletion.
+  </Accordion>
+</AccordionGroup>

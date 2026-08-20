@@ -1,0 +1,85 @@
+---
+title: "npm"
+description: "Manage npm packages, orgs, teams, and tokens — access control, download stats, and security audits"
+icon: /images/npm.svg
+---
+
+# npm
+
+Shanone's npm integration gives your agent 52 tools for managing packages, organizations, teams, tokens, and security across the npm registry.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an npm access token">
+    Run `npm token create` or go to [npmjs.com](https://www.npmjs.com) **Access Tokens** settings and create a **Granular Access Token** scoped to the packages/orgs you need.
+  </Step>
+  <Step title="Add the token in Shanone">
+    Go to **Integrations > npm** in the Shanone dashboard and paste the access token in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `npm_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **52 tools** for npm, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Packages">
+    `npm_get_package`, `npm_get_package_version`, `npm_get_package_abbreviated`, `npm_search_packages`, `npm_search_packages_advanced`, `npm_get_dist_tags`, `npm_get_latest_version`, `npm_get_registry_info`
+  </Accordion>
+  <Accordion title="Access & collaborators">
+    `npm_get_package_visibility`, `npm_set_package_access`, `npm_list_package_collaborators`, `npm_add_package_collaborator`, `npm_remove_package_collaborator`, `npm_add_dist_tag`, `npm_remove_dist_tag`, `npm_list_dist_tags_auth`
+  </Accordion>
+  <Accordion title="Downloads">
+    `npm_get_download_point`, `npm_get_download_point_all`, `npm_get_download_range`, `npm_get_download_range_all`, `npm_get_download_bulk`, `npm_get_download_versions`
+  </Accordion>
+  <Accordion title="Organizations">
+    `npm_list_org_members`, `npm_add_org_member`, `npm_remove_org_member`, `npm_list_org_teams`, `npm_list_org_packages`, `npm_get_org`
+  </Accordion>
+  <Accordion title="Teams">
+    `npm_create_team`, `npm_delete_team`, `npm_list_team_members`, `npm_add_team_member`, `npm_remove_team_member`, `npm_list_team_packages`, `npm_grant_team_package_access`, `npm_revoke_team_package_access`
+  </Accordion>
+  <Accordion title="Tokens">
+    `npm_list_tokens`, `npm_create_token`, `npm_delete_token`, `npm_whoami`, `npm_validate_token`
+  </Accordion>
+  <Accordion title="Users & publishers">
+    `npm_get_user_profile`, `npm_update_user_profile`, `npm_deprecate_package`, `npm_undeprecate_package`, `npm_list_trusted_publishers`, `npm_add_trusted_publisher`, `npm_remove_trusted_publisher`, `npm_star_package`
+  </Accordion>
+  <Accordion title="Security audits">
+    `npm_audit_bulk`, `npm_get_advisory`, `npm_search_advisories`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Dependency security review" icon="shield-alert">
+    Bulk-audit a `package.json`'s dependencies and surface known advisories
+  </Card>
+  <Card title="Package hygiene" icon="package">
+    Deprecate old package versions and check download trends before removing them
+  </Card>
+  <Card title="Access management" icon="users">
+    Add a new team member and grant them access to the right packages
+  </Card>
+  <Card title="Publish monitoring" icon="trending-up">
+    Track download counts after a release to gauge adoption
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="npm_add_org_member or team tools fail with a permission error">
+    Organization and team management requires the token to belong to an npm org owner or admin — a token scoped to a single package won't work for these calls.
+  </Accordion>
+  <Accordion title="npm_audit_bulk returns fewer advisories than expected">
+    Bulk audit matches against exact package name + version ranges; ensure you're passing the resolved versions from a lockfile rather than the semver ranges in `package.json`.
+  </Accordion>
+  <Accordion title="npm_set_package_access fails for a scoped package">
+    Setting visibility (public/restricted) on scoped packages requires a paid npm org plan for private packages — free accounts can only publish scoped packages as public.
+  </Accordion>
+</AccordionGroup>

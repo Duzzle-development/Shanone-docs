@@ -1,0 +1,80 @@
+---
+title: "Tavily"
+description: "AI-optimized web search, extraction, crawling, and research — built for agent workflows"
+icon: /images/tavily.svg
+---
+
+# Tavily
+
+Shanone's Tavily integration gives your agent 5 tools for AI-optimized web search and content retrieval — search results are pre-cleaned and ranked for LLM consumption rather than raw HTML.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Tavily API key">
+    Sign up at [tavily.com](https://tavily.com) and copy an API key from your Tavily dashboard.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to search the web with Tavily, or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the key is stored, `shanone_execute_tool` calls for `tavily_*` tools will succeed.
+  </Step>
+</Steps>
+
+<Note>
+Tavily uses API key authentication rather than OAuth. If no key is connected for your account, Shanone falls back to a shared server-side key where configured — check with your admin if `tavily_*` calls behave unexpectedly.
+</Note>
+
+## Available Tools
+
+Shanone provides **5 tools** for Tavily:
+
+<AccordionGroup>
+  <Accordion title="Search">
+    `tavily_search` — AI-optimized web search with configurable depth, topic filters, and result count
+  </Accordion>
+  <Accordion title="Extract">
+    `tavily_extract` — pull clean, structured content from one or more URLs
+  </Accordion>
+  <Accordion title="Crawl">
+    `tavily_crawl` — recursively crawl a site starting from a base URL
+  </Accordion>
+  <Accordion title="Map">
+    `tavily_map` — discover a site's URL structure without extracting full content
+  </Accordion>
+  <Accordion title="Research">
+    `tavily_research` — multi-step, agentic research that combines search and extraction into a single synthesized answer
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Competitive research" icon="magnifying-glass">
+    Search and extract pricing/feature pages from competitor sites for a comparison doc
+  </Card>
+  <Card title="Fact-checking" icon="circle-check">
+    Verify a claim in a draft by searching for corroborating sources
+  </Card>
+  <Card title="Site discovery" icon="sitemap">
+    Map a documentation site's structure before deciding which pages to crawl
+  </Card>
+  <Card title="Deep research reports" icon="file-text">
+    Use `tavily_research` to produce a synthesized, cited answer to an open-ended question
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="tavily_search returns stale or irrelevant results">
+    Narrow the query and set an explicit `topic` (e.g. `"news"`) or a `time_range` if the tool schema supports it — check `shanone_get_tool_schema` for `tavily_search` to see available filters.
+  </Accordion>
+  <Accordion title="tavily_crawl times out or returns partial results">
+    Crawls of large sites can exceed reasonable single-call latency. Scope the crawl with a narrower base URL or lower depth/limit parameter, or use `tavily_map` first to plan a targeted crawl.
+  </Accordion>
+  <Accordion title="401/403 errors on any tavily_* call">
+    Your Tavily API key is missing, invalid, or has hit its plan's request quota. Re-check the key under **Integrations** in the Shanone dashboard against your Tavily account.
+  </Accordion>
+</AccordionGroup>

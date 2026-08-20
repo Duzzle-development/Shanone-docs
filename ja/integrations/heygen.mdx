@@ -1,0 +1,85 @@
+---
+title: "HeyGen"
+description: "AIアバター動画の生成、音声クローン、動画翻訳、テンプレート・ブランドキット・Webhookの管理"
+icon: /images/heygen.svg
+---
+
+# HeyGen
+
+ShanoneのHeyGen連携では、HeyGenの動画生成プラットフォームのほぼ全機能——アバター、音声、リップシンク、動画翻訳、テンプレート、バッチ/一括操作、Webhookを扱う69のツールをエージェントが利用できるようになります。
+
+## はじめに
+
+<Steps>
+  <Step title="HeyGen APIキーを取得する">
+    HeyGenアカウントの**Settings → API**からキーを生成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、HeyGenを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`heygen_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはHeyGen用に**69のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="アバター">
+    `heygen_create_avatar`, `heygen_create_avatar_consent`, `heygen_list_avatar_groups`, `heygen_get_avatar_group`, `heygen_list_avatar_looks`, `heygen_get_avatar_look`, `heygen_update_avatar_look`
+  </Accordion>
+  <Accordion title="動画 & 動画エージェント">
+    `heygen_create_video`, `heygen_get_video`, `heygen_list_videos`, `heygen_delete_video`, `heygen_create_video_agent_session`, `heygen_get_video_agent_session`, `heygen_list_video_agent_sessions`, `heygen_list_session_videos`, `heygen_list_video_agent_styles`, `heygen_send_video_agent_message`, `heygen_stop_video_agent_session`
+  </Accordion>
+  <Accordion title="音声">
+    `heygen_list_voices`, `heygen_get_voice`, `heygen_clone_voice`, `heygen_design_voice`, `heygen_generate_speech`
+  </Accordion>
+  <Accordion title="リップシンク">
+    `heygen_create_lipsync`, `heygen_get_lipsync`, `heygen_list_lipsyncs`, `heygen_update_lipsync`, `heygen_delete_lipsync`
+  </Accordion>
+  <Accordion title="翻訳">
+    `heygen_list_supported_languages`, `heygen_list_video_translations`, `heygen_get_video_translation`, `heygen_update_video_translation`, `heygen_delete_video_translation`, `heygen_create_video_translation`
+  </Accordion>
+  <Accordion title="テンプレート & 校正">
+    `heygen_list_templates`, `heygen_get_template`, `heygen_generate_video_from_template`, `heygen_create_proofread_session`, `heygen_get_proofread_session`, `heygen_download_proofread_srt`, `heygen_upload_proofread_srt`, `heygen_generate_video_from_proofread`
+  </Accordion>
+  <Accordion title="バッチ & アセット">
+    `heygen_upload_asset`, `heygen_create_asset_upload`, `heygen_create_asset_upload_batch`, `heygen_create_video_batch`, `heygen_get_video_batch`, `heygen_create_video_translation_batch`, `heygen_create_lipsync_batch`, `heygen_bulk_video_statuses`, `heygen_list_brand_kits`, `heygen_list_brand_glossaries`, `heygen_get_brand_glossary`
+  </Accordion>
+  <Accordion title="Webhook & その他のツール">
+    `heygen_create_webhook_endpoint`, `heygen_list_webhook_endpoints`, `heygen_update_webhook_endpoint`, `heygen_delete_webhook_endpoint`, `heygen_rotate_webhook_signing_secret`, `heygen_list_webhook_event_types`, `heygen_list_webhook_events`, `heygen_create_ai_clipping`, `heygen_get_ai_clipping`, `heygen_list_ai_clippings`, `heygen_delete_ai_clipping`, `heygen_create_filler_word_removal`, `heygen_get_filler_word_removal`, `heygen_create_hyperframes_render`, `heygen_get_hyperframes_render`, `heygen_get_current_user`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="テンプレートからの動画生成" icon="film">
+    HeyGenテンプレートの変数を入力し、パーソナライズされた動画を大量に生成する
+  </Card>
+  <Card title="多言語動画" icon="languages">
+    既存の動画をリップシンク付き吹き替えで別の言語に翻訳する
+  </Card>
+  <Card title="カスタムアバターの作成" icon="user-round">
+    アップロードした映像/同意情報からトーキングフォトやフルアバターを作成する
+  </Card>
+  <Card title="一括生産" icon="layers">
+    複数の台本にまたがる動画バッチを開始し、完了をポーリングする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="heygen_create_videoは成功するが動画が処理中のまま">
+    HeyGenのレンダリングは非同期です——キューに入った時点で完成したと見なさず、`status`が`completed`または`failed`を報告するまで`heygen_get_video`(バッチの場合は`heygen_bulk_video_statuses`)をポーリングしてください。
+  </Accordion>
+  <Accordion title="heygen_clone_voiceやheygen_create_avatarが同意エラーで失敗する">
+    音声クローンやフォトアバターの作成には、元のアセットを使用する前に`heygen_create_avatar_consent`による明示的な同意記録が必要です——これはHeyGen側の法的/コンプライアンス要件であり、Shanoneの制約ではありません。
+  </Accordion>
+  <Accordion title="Webhookイベントが届かない">
+    `heygen_create_webhook_endpoint`で登録したエンドポイントURLがHTTPSで公開アクセス可能であることを確認し、`heygen_list_webhook_event_types`でそのアクションに対応する正しいイベントタイプを購読しているか確認してください。
+  </Accordion>
+</AccordionGroup>

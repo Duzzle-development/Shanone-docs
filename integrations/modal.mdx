@@ -1,0 +1,82 @@
+---
+title: "Modal"
+description: "Run code on Modal's serverless cloud — sandboxes, functions, volumes, dicts, queues, and secrets"
+icon: "server"
+---
+
+# Modal
+
+Shanone's Modal integration gives your agent 49 tools for running commands and functions in sandboxes, and managing the storage primitives (volumes, dicts, queues, secrets) that back them.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Modal token">
+    In your Modal account, go to **Settings > API Tokens** and create a token — ideally a Service User token for automation. This gives you a token ID and token secret.
+  </Step>
+  <Step title="Add both values in Shanone">
+    Go to **Integrations > Modal** in the Shanone dashboard and enter both the token ID and token secret — both are required.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `modal_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **49 tools** for Modal, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Sandboxes">
+    `modal_create_sandbox`, `modal_get_sandbox`, `modal_list_sandboxes`, `modal_wait_sandbox`, `modal_terminate_sandbox`, `modal_set_sandbox_tags`, `modal_get_sandbox_tags`, `modal_lookup_app`
+  </Accordion>
+  <Accordion title="Commands & processes">
+    `modal_exec_command`, `modal_run_command_background`, `modal_get_background_output`, `modal_check_process_status`, `modal_kill_process`
+  </Accordion>
+  <Accordion title="Sandbox filesystem">
+    `modal_sandbox_list_files`, `modal_sandbox_read_file`, `modal_sandbox_write_file`, `modal_sandbox_make_directory`, `modal_sandbox_remove_file`, `modal_sandbox_stat_file`, `modal_sandbox_get_tunnels`
+  </Accordion>
+  <Accordion title="Functions">
+    `modal_call_function`, `modal_spawn_function`, `modal_get_function_call_result`, `modal_cancel_function_call`, `modal_map_function`, `modal_call_class_method`
+  </Accordion>
+  <Accordion title="Volumes">
+    `modal_create_volume`, `modal_list_volumes`, `modal_delete_volume`, `modal_volume_list_files`, `modal_volume_read_file`, `modal_volume_write_file`, `modal_volume_remove_file`, `modal_volume_copy_files`
+  </Accordion>
+  <Accordion title="Dicts & queues">
+    `modal_create_dict`, `modal_dict_put`, `modal_dict_get`, `modal_dict_pop`, `modal_delete_dict`, `modal_create_queue`, `modal_queue_put`, `modal_queue_get`, `modal_delete_queue`
+  </Accordion>
+  <Accordion title="Secrets & workspace">
+    `modal_create_secret`, `modal_list_secrets`, `modal_delete_secret`, `modal_get_workspace_billing_summary`, `modal_list_workspace_members`, `modal_list_workspace_proxy_tokens`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Ephemeral code execution" icon="terminal">
+    Spin up a sandbox, run a script, and read back its output
+  </Card>
+  <Card title="Long-running jobs" icon="clock">
+    Run a background command and poll for output instead of blocking on a single call
+  </Card>
+  <Card title="Shared state between runs" icon="database">
+    Use a dict or queue to pass data between separate sandbox/function invocations
+  </Card>
+  <Card title="Cost tracking" icon="dollar-sign">
+    Pull the workspace billing summary before scaling up a batch job
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="modal_exec_command times out on a long job">
+    Use `modal_run_command_background` instead, then poll `modal_get_background_output` and `modal_check_process_status` — `modal_exec_command` blocks for the process's full runtime.
+  </Accordion>
+  <Accordion title="modal_call_function fails with a not-found error">
+    Confirm the app is actually deployed and running with `modal_lookup_app` first; function calls target a specific deployed app/function name, not just any code in your workspace.
+  </Accordion>
+  <Accordion title="Sandbox filesystem writes disappear after the sandbox ends">
+    Sandbox filesystems are ephemeral — write anything you need to persist to a Volume via `modal_volume_write_file` instead of the sandbox's local filesystem.
+  </Accordion>
+</AccordionGroup>

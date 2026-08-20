@@ -1,0 +1,70 @@
+---
+title: "Brave"
+description: "プライバシーに配慮したWeb・ニュース・画像・動画検索と、オートコンプリート候補の取得"
+icon: /images/brave.svg
+---
+
+# Brave
+
+ShanoneのBrave連携では、Brave Searchの**6個のツール**をエージェントに提供します — Web・ニュース・画像・動画検索、オートコンプリート候補、そしてWebとニュースを組み合わせたクエリまで、Brave独自のプライバシー重視のインデックスに基づいて実行できます。
+
+## はじめに
+
+<Steps>
+  <Step title="Brave Search APIキーを取得する">
+    [api.search.brave.com](https://api.search.brave.com/app/keys)でサインアップし、APIキーを発行します。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにBraveでのWeb検索を依頼するか、Shanoneダッシュボードの**インテグレーション**からAPIキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`brave_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Brave向けに**6個のツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="Web検索">
+    `brave_web_search`, `brave_search` — `brave_search`は1回の呼び出しでWeb結果とニュース結果を組み合わせて返す
+  </Accordion>
+  <Accordion title="ニュース、画像 & 動画検索">
+    `brave_news_search`, `brave_image_search`, `brave_video_search`
+  </Accordion>
+  <Accordion title="オートコンプリート">
+    `brave_suggest`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="最新動向のリサーチ" icon="newspaper">
+    freshnessフィルターを使って直近のニュースを検索し、その週に起きた出来事をまとめる
+  </Card>
+  <Card title="視覚的な参考資料の収集" icon="image">
+    ドキュメントやプレゼンテーションに使う、あるトピックに関連する画像を取得する
+  </Card>
+  <Card title="クエリの拡張" icon="list">
+    本格的な検索を行う前に、`brave_suggest`で関連するクエリを探索する
+  </Card>
+  <Card title="地域別検索" icon="globe">
+    特定の市場に関連する結果を得るために、`country`コードを指定して検索する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="brave_* の呼び出しが認証エラーで失敗する">
+    接続されているAPIキーが未設定、無効、または期限切れです。Shanoneダッシュボードの**インテグレーション**で確認し、再入力してください。
+  </Accordion>
+  <Accordion title="brave_web_searchがレート制限エラーを返す">
+    Braveの無料プランは月間2,000リクエストに制限されています。頻繁にこの制限に達する場合は、リクエストの間隔を空けるか、接続しているプランをアップグレードしてください。
+  </Accordion>
+  <Accordion title="freshnessフィルター(pd/pw/pm/py)を指定しても結果が絞り込まれないように見える">
+    freshnessフィルターは直近のコンテンツを優先するようランキングに影響しますが、すべてのクエリで古い結果を厳密に除外するわけではありません。より厳密に絞り込みたい場合は、クエリ自体に具体的な日付表現を組み合わせてください。
+  </Accordion>
+</AccordionGroup>

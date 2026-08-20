@@ -1,0 +1,112 @@
+---
+title: "Neon"
+description: "Manage Neon serverless Postgres — projects, branches, databases, roles, Neon Auth, Data API, and organizations"
+icon: /images/neon.svg
+---
+
+# Neon
+
+Shanone's Neon integration gives your agent 162 tools spanning project/branch lifecycle management, database administration, backups, Neon Auth, and organization-level billing and access control.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Neon API key">
+    In the Neon console, go to **Account Settings > API Keys** and generate a new key.
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations > Neon** in the Shanone dashboard and paste the API key in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `neon_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **162 tools** for Neon, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Projects & regions">
+    `neon_list_projects`, `neon_get_project`, `neon_create_project`, `neon_delete_project`, `neon_update_project`, `neon_recover_project`, `neon_get_connection_uri`, `neon_list_preload_libraries`, `neon_list_regions`, `neon_get_connection_string`
+  </Accordion>
+  <Accordion title="Branches">
+    `neon_list_branches`, `neon_create_branch`, `neon_delete_branch`, `neon_count_branches`, `neon_get_branch`, `neon_update_branch`, `neon_set_default_branch`, `neon_recover_branch`, `neon_restore_branch`, `neon_finalize_branch_restore`, `neon_get_branch_schema`, `neon_compare_branch_schema`, `neon_get_branch_storage`, `neon_get_branch_ai_gateway`
+  </Accordion>
+  <Accordion title="Branch data masking & anonymization">
+    `neon_create_anonymized_branch`, `neon_get_anonymized_branch_status`, `neon_start_anonymization`, `neon_get_masking_rules`, `neon_update_masking_rules`
+  </Accordion>
+  <Accordion title="Databases, roles & endpoints">
+    `neon_list_databases`, `neon_get_database`, `neon_create_database`, `neon_update_database`, `neon_delete_database`, `neon_list_roles`, `neon_create_role`, `neon_get_role`, `neon_delete_role`, `neon_reveal_role_password`, `neon_reset_role_password`, `neon_list_endpoints`, `neon_start_endpoint`, `neon_get_endpoint`, `neon_create_endpoint`, `neon_update_endpoint`, `neon_delete_endpoint`, `neon_restart_endpoint`, `neon_suspend_endpoint`
+  </Accordion>
+  <Accordion title="Snapshots & backups">
+    `neon_create_snapshot`, `neon_list_snapshots`, `neon_update_snapshot`, `neon_delete_snapshot`, `neon_restore_snapshot`, `neon_get_backup_schedule`, `neon_set_backup_schedule`
+  </Accordion>
+  <Accordion title="Operations & consumption">
+    `neon_list_operations`, `neon_get_operation`, `neon_get_consumption_history`, `neon_get_consumption_history_legacy`, `neon_get_branch_consumption`, `neon_get_advisor_issues`
+  </Accordion>
+  <Accordion title="Data API & serverless functions">
+    `neon_get_data_api`, `neon_create_data_api`, `neon_update_data_api`, `neon_delete_data_api`, `neon_list_functions`, `neon_get_function`, `neon_update_function`, `neon_delete_function`, `neon_deploy_function`
+  </Accordion>
+  <Accordion title="Neon Auth: setup & config">
+    `neon_enable_auth`, `neon_get_auth`, `neon_disable_auth`, `neon_update_auth_config`, `neon_get_auth_allow_localhost`, `neon_update_auth_allow_localhost`, `neon_get_auth_webhook_config`, `neon_update_auth_webhook_config`
+  </Accordion>
+  <Accordion title="Neon Auth: domains, email & OAuth providers">
+    `neon_list_auth_trusted_domains`, `neon_add_auth_trusted_domain`, `neon_delete_auth_trusted_domain`, `neon_get_auth_password_config`, `neon_update_auth_password_config`, `neon_get_auth_email_provider`, `neon_update_auth_email_provider`, `neon_send_auth_test_email`, `neon_list_auth_oauth_providers`, `neon_add_auth_oauth_provider`, `neon_update_auth_oauth_provider`, `neon_delete_auth_oauth_provider`
+  </Accordion>
+  <Accordion title="Neon Auth: plugins & users">
+    `neon_get_auth_plugin_configs`, `neon_update_auth_magic_link_plugin`, `neon_update_auth_organization_plugin`, `neon_get_auth_phone_plugin`, `neon_update_auth_phone_plugin`, `neon_create_auth_user`, `neon_delete_auth_user`, `neon_update_auth_user_role`
+  </Accordion>
+  <Accordion title="Legacy Auth (Stack Auth)">
+    `neon_list_legacy_auth_integrations`, `neon_create_legacy_auth_integration`, `neon_delete_legacy_auth_integration`, `neon_list_legacy_oauth_providers`, `neon_add_legacy_oauth_provider`, `neon_update_legacy_oauth_provider`, `neon_delete_legacy_oauth_provider`, `neon_create_legacy_auth_user`, `neon_delete_legacy_auth_user`, `neon_create_legacy_auth_sdk_keys`, `neon_transfer_legacy_auth_provider`, `neon_get_legacy_auth_email_server`, `neon_update_legacy_auth_email_server`, `neon_list_legacy_redirect_domains`, `neon_add_legacy_redirect_domain`, `neon_delete_legacy_redirect_domain`
+  </Accordion>
+  <Accordion title="Storage buckets">
+    `neon_list_buckets`, `neon_create_bucket`, `neon_delete_bucket`, `neon_list_bucket_objects`, `neon_delete_bucket_object`, `neon_download_bucket_object`, `neon_delete_bucket_objects_by_prefix`, `neon_presign_bucket_object`
+  </Accordion>
+  <Accordion title="API keys & credentials">
+    `neon_list_api_keys`, `neon_create_api_key`, `neon_revoke_api_key`, `neon_list_credentials`, `neon_create_credential`, `neon_revoke_credential`, `neon_list_project_jwks`, `neon_add_project_jwks`, `neon_delete_project_jwks`
+  </Accordion>
+  <Accordion title="Project permissions & transfers">
+    `neon_list_project_permissions`, `neon_grant_project_permission`, `neon_revoke_project_permission`, `neon_create_project_transfer_request`, `neon_accept_project_transfer_request`, `neon_transfer_projects_between_orgs`, `neon_transfer_projects_to_org`
+  </Accordion>
+  <Accordion title="VPC endpoints">
+    `neon_list_project_vpc_endpoints`, `neon_set_project_vpc_endpoint`, `neon_delete_project_vpc_endpoint`, `neon_list_org_vpc_endpoints_all_regions`, `neon_list_org_vpc_endpoints`, `neon_get_org_vpc_endpoint`, `neon_assign_org_vpc_endpoint`, `neon_delete_org_vpc_endpoint`
+  </Accordion>
+  <Accordion title="Organizations & users">
+    `neon_get_organization`, `neon_list_org_members`, `neon_get_org_member`, `neon_update_org_member_role`, `neon_remove_org_member`, `neon_list_org_invitations`, `neon_create_org_invitations`, `neon_get_org_spending_limit`, `neon_set_org_spending_limit`, `neon_delete_org_spending_limit`, `neon_list_org_api_keys`, `neon_create_org_api_key`, `neon_revoke_org_api_key`, `neon_get_current_user`, `neon_list_user_organizations`, `neon_get_auth_details`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Ephemeral preview databases" icon="git-branch">
+    Create a branch per PR, run migrations, and delete it once merged
+  </Card>
+  <Card title="Safe schema changes" icon="shield-check">
+    Compare schema between branches before promoting a migration to production
+  </Card>
+  <Card title="Cost monitoring" icon="gauge">
+    Pull consumption history and set org spending limits to avoid surprise bills
+  </Card>
+  <Card title="Zero-backend auth" icon="lock">
+    Enable Neon Auth on a project and manage OAuth providers without a separate auth service
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="neon_create_branch succeeds but queries against it fail">
+    A new branch needs a running compute endpoint — call `neon_create_endpoint` (or check if one was auto-created) and `neon_start_endpoint` before connecting.
+  </Accordion>
+  <Accordion title="neon_reveal_role_password returns an error">
+    Passwords can only be revealed for roles created through Neon (not externally managed ones); use `neon_reset_role_password` to generate a new one if reveal isn't available.
+  </Accordion>
+  <Accordion title="Auth tools fail with an 'auth not enabled' error">
+    Neon Auth must be explicitly turned on per project with `neon_enable_auth` before any `neon_auth_*`-adjacent config (domains, OAuth providers, plugins) can be managed.
+  </Accordion>
+  <Accordion title="Org-level tools return a permission error">
+    Org member, billing, and VPC endpoint tools require an admin role in the Neon organization — check your role via `neon_get_org_member` for your own user ID.
+  </Accordion>
+</AccordionGroup>

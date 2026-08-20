@@ -1,0 +1,88 @@
+---
+title: "Datadog"
+description: "インフラとアプリケーションを監視する — メトリクス、モニター、ダッシュボード、ログ、トレース、SLO"
+icon: /images/datadog.svg
+---
+
+# Datadog
+
+ShanoneのDatadog連携は、可観測性を扱う39個のツールをエージェントに提供します。メトリクス、モニター、ダッシュボード、ログ、トレース、ホスト、SLO、ダウンタイム、Syntheticsが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="APIキーとApplicationキーを発行する">
+    Datadogの**Organization Settings → API Keys**でAPIキーを、**Organization Settings → Application Keys**でApplicationキーを作成します。両方が必須です。
+  </Step>
+  <Step title="認証情報をShanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Datadogを選択してAPIキーとApplicationキーの両方を入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`datadog_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはDatadog向けに**39個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="モニター">
+    `datadog_create_monitor`, `datadog_get_monitor`, `datadog_list_monitors`, `datadog_update_monitor`, `datadog_delete_monitor`, `datadog_mute_monitor`, `datadog_unmute_monitor`
+  </Accordion>
+  <Accordion title="ダッシュボード">
+    `datadog_create_dashboard`, `datadog_get_dashboard`, `datadog_list_dashboards`, `datadog_update_dashboard`, `datadog_delete_dashboard`
+  </Accordion>
+  <Accordion title="メトリクス">
+    `datadog_query_metrics`, `datadog_list_metrics`, `datadog_submit_metrics`, `datadog_get_metric_metadata`, `datadog_update_metric_metadata`
+  </Accordion>
+  <Accordion title="ログ">
+    `datadog_search_logs`, `datadog_list_log_indexes`, `datadog_aggregate_logs`
+  </Accordion>
+  <Accordion title="トレース & APM">
+    `datadog_search_traces`, `datadog_get_trace_by_id`, `datadog_search_spans_analytics`, `datadog_list_apm_services`, `datadog_get_service_dependencies`, `datadog_get_service_summary`
+  </Accordion>
+  <Accordion title="ダウンタイム & イベント">
+    `datadog_create_downtime`, `datadog_list_downtimes`, `datadog_cancel_downtime`, `datadog_create_event`, `datadog_list_events`
+  </Accordion>
+  <Accordion title="SLO & Synthetics">
+    `datadog_create_slo`, `datadog_list_slos`, `datadog_create_synthetic_api_test`, `datadog_list_synthetics`, `datadog_get_synthetics_locations`
+  </Accordion>
+  <Accordion title="ホスト & タグ">
+    `datadog_list_hosts`, `datadog_get_host_tags`, `datadog_list_all_tags`, `datadog_update_host_tags`
+  </Accordion>
+  <Accordion title="Webhook & 使用状況">
+    `datadog_create_webhook`, `datadog_list_webhooks`, `datadog_get_usage_summary`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="インシデントトリアージ" icon="siren">
+    発火中のモニターを取得し、直近のログ/トレースと関連付けて根本原因の可能性を要約する
+  </Card>
+  <Card title="Dashboard as Code" icon="layout-dashboard">
+    新しいサービスのSLIを反映するダッシュボードをプログラムで作成・更新する
+  </Card>
+  <Card title="メンテナンスウィンドウ" icon="calendar-clock">
+    デプロイ前にダウンタイムを予約し、予定より早く完了した場合は前倒しでキャンセルする
+  </Card>
+  <Card title="コスト & 使用状況の追跡" icon="receipt">
+    使用状況サマリーを取得し、Datadogの利用料がどこに集中しているか把握する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="APIキーかApplicationキーのどちらかしか設定していないとツールが失敗する">
+    Datadogでは**APIキーとApplicationキーの両方**が必要です。監視専用のAPIキーだけでは、ここで提供している読み書き操作の多くには不十分です。連携ページで両方のフィールドが保存されているか確認してください。
+  </Accordion>
+  <Accordion title="datadog_query_metricsがデータポイントを返さない">
+    まず`datadog_list_metrics`でメトリクス名とタグが実在するか確認し、時間範囲(`from`/`to`)がそのメトリクスが実際に送信されていた期間と重なっているか確認してください。
+  </Accordion>
+  <Accordion title="datadog_search_logsの結果が想定より少ない">
+    ログの保持期間とインデックス化は対象のログインデックスの保持ポリシーに依存します。`datadog_list_log_indexes`で、検索対象のインデックスが指定した時間範囲のログを実際に保持しているか確認してください。
+  </Accordion>
+</AccordionGroup>

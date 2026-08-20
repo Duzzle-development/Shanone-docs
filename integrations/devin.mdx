@@ -1,0 +1,85 @@
+---
+title: "Devin"
+description: "Manage Devin AI software engineer sessions — sessions, playbooks, knowledge, schedules, and PR reviews"
+icon: /images/devin.svg
+---
+
+# Devin
+
+Shanone's Devin integration gives your agent 38 tools for Cognition's Devin AI software engineer: sessions, playbooks, knowledge notes, schedules, secrets, PR reviews, files, and session insights.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get an API Key and Organization ID">
+    In Devin, go to **Settings → Service Users** to create a service user and get its API Key along with your Organization ID.
+  </Step>
+  <Step title="Add credentials to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Devin, and enter both the API Key and Organization ID — both are required.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `devin_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **38 tools** for Devin, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Sessions">
+    `devin_list_sessions`, `devin_get_session`, `devin_create_session`, `devin_send_message`, `devin_update_session_tags`, `devin_terminate_session`, `devin_archive_session`, `devin_get_session_messages`, `devin_get_session_tags`, `devin_append_session_tags`, `devin_create_session_advanced`
+  </Accordion>
+  <Accordion title="Knowledge Notes">
+    `devin_list_knowledge_notes`, `devin_get_knowledge_note`, `devin_create_knowledge_note`, `devin_update_knowledge_note`, `devin_delete_knowledge_note`, `devin_list_knowledge_folders`
+  </Accordion>
+  <Accordion title="Playbooks">
+    `devin_list_playbooks`, `devin_get_playbook`, `devin_create_playbook`, `devin_update_playbook`, `devin_delete_playbook`
+  </Accordion>
+  <Accordion title="Schedules">
+    `devin_list_schedules`, `devin_get_schedule`, `devin_create_schedule`, `devin_update_schedule`, `devin_delete_schedule`
+  </Accordion>
+  <Accordion title="Files & Attachments">
+    `devin_upload_file`, `devin_get_session_files`, `devin_download_attachment`
+  </Accordion>
+  <Accordion title="Session Insights">
+    `devin_get_session_insights`, `devin_generate_session_insights`, `devin_list_sessions_with_insights`
+  </Accordion>
+  <Accordion title="Secrets">
+    `devin_list_secrets`, `devin_create_secret`, `devin_delete_secret`
+  </Accordion>
+  <Accordion title="PR Reviews">
+    `devin_trigger_pr_review`, `devin_get_pr_review_status`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Delegate coding tasks" icon="bot">
+    Create a Devin session with a task description and follow up with clarifications as it works
+  </Card>
+  <Card title="Reusable playbooks" icon="book-open">
+    Codify a recurring workflow as a playbook and reuse it across future sessions
+  </Card>
+  <Card title="Automated PR reviews" icon="git-pull-request">
+    Trigger a Devin PR review on a new pull request and check its status before merging
+  </Card>
+  <Card title="Scheduled maintenance" icon="calendar-clock">
+    Set up a recurring schedule for Devin to run routine maintenance or dependency updates
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="All tools fail with an authentication error despite a valid API Key">
+    Devin's v3 API requires **both** the API Key and Organization ID together — check that both fields were saved correctly in the Integrations page, since the API Key alone can't resolve which organization's sessions to operate on.
+  </Accordion>
+  <Accordion title="devin_send_message has no visible effect">
+    Messages can only be sent to sessions with `status_detail` of `waiting_for_user` — check `devin_get_session` first; if Devin is still `working`, the message queues but won't be processed until it's ready for input.
+  </Accordion>
+  <Accordion title="devin_create_session succeeds but the session immediately errors out">
+    Check `devin_get_session` for `status: error` and inspect `devin_get_session_messages` — this usually indicates the task description referenced inaccessible resources (e.g. a repo the org's Devin instance isn't connected to).
+  </Accordion>
+</AccordionGroup>

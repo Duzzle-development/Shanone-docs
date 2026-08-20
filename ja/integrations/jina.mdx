@@ -1,0 +1,73 @@
+---
+title: "Jina AI"
+description: "LLMフレンドリーなWeb検索、URL読み取り、詳細リサーチ、ドキュメントの再ランキング"
+icon: /images/jina.svg
+---
+
+# Jina AI
+
+ShanoneのJina AI連携では、Webの内容をLLMに適した形式に変換する4のツールをエージェントが利用できるようになります——インライン抽出付き検索、単一URLの読み取り、複数ステップの詳細リサーチ、関連度による再ランキングに対応します。
+
+## はじめに
+
+<Steps>
+  <Step title="Jina APIキーを取得する">
+    [Jina AI APIページ](https://jina.ai/api/)からキーを生成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、Jina AIを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`jina_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはJina AI用に**4のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="検索">
+    `jina_search` — 上位5件の検索結果の内容を自動取得し、LLMフレンドリーなMarkdownで返すWeb検索。特定サイトへの絞り込みも可能
+  </Accordion>
+  <Accordion title="読み取り">
+    `jina_read` — 任意のURL(Webページ、PDF、MS Officeドキュメント)をクリーンなMarkdown、HTML、テキスト、またはスクリーンショットに変換する
+  </Accordion>
+  <Accordion title="詳細リサーチ">
+    `jina_deep_search` — 複数ステップの推論・検索・反復を経て、出典付きで複雑な質問に答えるエージェント
+  </Accordion>
+  <Accordion title="再ランキング">
+    `jina_rerank` — クロスエンコーダーモデルを使って、クエリに対する関連度でドキュメント群を採点・並べ替える
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="根拠のある回答" icon="search">
+    古い知識に頼らず、`jina_search`で最新情報を回答に取り込む
+  </Card>
+  <Card title="クリーンなコンテンツ抽出" icon="file-text">
+    `jina_read`で特定の記事やPDFを読み取り、広告やナビゲーションのないクリーンなMarkdownを取得する
+  </Card>
+  <Card title="複雑なリサーチ" icon="brain">
+    複数要素を持つリサーチ課題を`jina_deep_search`に委ね、出典付きで統合された回答を得る
+  </Card>
+  <Card title="RAGの品質向上" icon="sort-desc">
+    検索で取得したドキュメントをLLMに渡す前に`jina_rerank`で再ランキングする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="jina_searchやjina_readが401認証エラーを返す">
+    Integrationsページに保存したAPIキーを再確認してください——Jinaの無料プランのキーも有料プランのキーもどちらも動作しますが、失効または誤入力されたキーはすべてのリクエストで失敗します。
+  </Accordion>
+  <Accordion title="jina_deep_searchが他のツールよりかなり時間がかかる">
+    これは想定通りの動作です——DeepSearchはクエリごとに反復的な推論・検索を行い、平均で約56.7秒かかります。長い待ち時間を失敗と判断せず、実際にタイムアウトまたはエラーになった場合のみ再試行してください。
+  </Accordion>
+  <Accordion title="jina_rerankが渡したドキュメント数より少ない結果を返す">
+    ドキュメントは1つの文字列内で`|||`区切り文字を使って区切る必要があります——ドキュメントの内容にこの区切り文字が含まれていないか確認してください。含まれている場合、意図せず分割されてしまいます。
+  </Accordion>
+</AccordionGroup>

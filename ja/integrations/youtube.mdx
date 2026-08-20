@@ -1,0 +1,94 @@
+---
+title: "YouTube"
+description: "YouTubeの動画、ライブ配信、再生リスト、コメント、チャンネル分析を管理"
+icon: /images/youtube.svg
+---
+
+# YouTube
+
+Shanoneのyoutube連携は、YouTube Data APIの全機能をカバーする82個のツールをエージェントに提供します。動画、ライブ配信、再生リスト、コメント/モデレーション、字幕、分析、レポート機能まで対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにYouTube関連の作業を依頼(例: 「最近の動画コメントを一覧して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Googleアカウントを許可する">
+    Shanoneに操作させたいYouTubeチャンネルについて、GoogleのOAuth同意画面を承認します。YouTubeはGmailや他のGoogle連携とは別の、専用のGoogle Cloud OAuthクライアントを使用します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`youtube_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはyoutube向けに**82個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ライブ配信">
+    `youtube_create_live_broadcast`, `youtube_list_live_broadcasts`, `youtube_update_live_broadcast`, `youtube_delete_live_broadcast`, `youtube_bind_live_broadcast`, `youtube_transition_live_broadcast`, `youtube_insert_live_cuepoint`, `youtube_create_live_stream`, `youtube_list_live_streams`, `youtube_update_live_stream`, `youtube_delete_live_stream`, `youtube_list_live_chat_messages`, `youtube_post_live_chat_message`, `youtube_delete_live_chat_message`, `youtube_ban_live_chat_user`, `youtube_unban_live_chat_user`, `youtube_add_live_chat_moderator`, `youtube_list_live_chat_moderators`, `youtube_remove_live_chat_moderator`, `youtube_list_super_chat_events`
+  </Accordion>
+  <Accordion title="動画">
+    `youtube_get_video`, `youtube_rate_video`, `youtube_upload_video`, `youtube_update_video`, `youtube_delete_video`, `youtube_get_video_rating`, `youtube_report_video_abuse`, `youtube_set_thumbnail`
+  </Accordion>
+  <Accordion title="分析">
+    `youtube_analytics_query`, `youtube_analytics_list_groups`, `youtube_analytics_create_group`, `youtube_analytics_update_group`, `youtube_analytics_delete_group`, `youtube_analytics_list_group_items`, `youtube_analytics_add_group_item`, `youtube_analytics_delete_group_item`
+  </Accordion>
+  <Accordion title="チャンネル">
+    `youtube_get_channel`, `youtube_get_my_channel`, `youtube_update_channel`, `youtube_upload_channel_banner`, `youtube_list_channel_sections`, `youtube_create_channel_section`, `youtube_update_channel_section`, `youtube_delete_channel_section`
+  </Accordion>
+  <Accordion title="再生リスト">
+    `youtube_list_playlists`, `youtube_get_playlist_items`, `youtube_create_playlist`, `youtube_add_video_to_playlist`, `youtube_delete_playlist`, `youtube_update_playlist`, `youtube_update_playlist_item`, `youtube_delete_playlist_item`, `youtube_list_playlist_items_by_ids`
+  </Accordion>
+  <Accordion title="コメント">
+    `youtube_list_comments`, `youtube_post_comment`, `youtube_list_comment_replies`, `youtube_reply_to_comment`, `youtube_update_comment`, `youtube_delete_comment`, `youtube_set_moderation_status`
+  </Accordion>
+  <Accordion title="レポート">
+    `youtube_reporting_list_report_types`, `youtube_reporting_list_jobs`, `youtube_reporting_create_job`, `youtube_reporting_get_job`, `youtube_reporting_delete_job`, `youtube_reporting_list_reports`, `youtube_reporting_download_report`
+  </Accordion>
+  <Accordion title="字幕">
+    `youtube_list_captions`, `youtube_get_caption`, `youtube_upload_caption`, `youtube_update_caption`, `youtube_delete_caption`
+  </Accordion>
+  <Accordion title="その他 & リファレンスデータ">
+    `youtube_list_members`, `youtube_list_membership_levels`, `youtube_list_activities`, `youtube_list_video_categories`, `youtube_list_i18n_languages`, `youtube_list_i18n_regions`
+  </Accordion>
+  <Accordion title="検索 & 登録">
+    `youtube_search_videos`, `youtube_list_subscriptions`, `youtube_subscribe_channel`, `youtube_unsubscribe_channel`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ライブチャットのモデレーション" icon="shield-check">
+    ライブチャットを監視し、配信中に迷惑なユーザーをBANしモデレーターを管理する
+  </Card>
+  <Card title="コメントへのエンゲージメント" icon="message-circle">
+    最近の投稿全体で上位コメントに返信し、スパムをモデレートする
+  </Card>
+  <Card title="チャンネル分析レポート" icon="bar-chart-3">
+    視聴時間やエンゲージメント指標を取得し、チャンネルパフォーマンスを要約する
+  </Card>
+  <Card title="再生リストの整備" icon="list-video">
+    新規アップロードや既存動画からテーマ別の再生リストを構築・維持する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="youtube_upload_videoは成功するが動画が表示されない">
+    アップロードペイロード内の公開設定を確認してください — `status.privacyStatus`を明示的に指定しない新規アップロードは`private`がデフォルトになる場合があるため、`public`や`unlisted`を期待する場合は明示的に指定してください。
+  </Accordion>
+  <Accordion title="配信中にyoutube_post_live_chat_messageが失敗する">
+    ライブチャットへの投稿にはチャットが有効な進行中のライブ配信が必要です — `youtube_list_live_broadcasts`で配信の`lifeCycleStatus`が`ready`や`complete`ではなく`live`になっているか確認してください。
+  </Accordion>
+  <Accordion title="youtube_analytics_queryで最近の日付のデータが返らない">
+    YouTube Analyticsのデータは通常1〜2日の処理遅延があります。「今日」や「昨日」を指定するクエリはしばしば不完全または空の結果を返します。
+  </Accordion>
+  <Accordion title="OAuth接続がGmailでは機能するがYouTubeでは機能しない">
+    YouTubeはスコープを分離するため、Gmail・Driveなどとは別の専用のGoogle Cloud OAuthクライアントを使用します — 他のGoogleサービスが既に接続済みでも、YouTubeは**連携**画面から個別に接続してください。
+  </Accordion>
+</AccordionGroup>

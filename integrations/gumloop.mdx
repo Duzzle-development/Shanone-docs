@@ -1,0 +1,70 @@
+---
+title: "Gumloop"
+description: "Run and monitor Gumloop AI automation flows — list flows, start runs, poll status, and view history"
+icon: /images/gumloop.svg
+---
+
+# Gumloop
+
+Shanone's Gumloop integration gives your agent 6 tools for triggering and managing Gumloop flows (no-code AI automations) — from discovering what's available to running a flow and tracking it to completion.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Gumloop API Key">
+    Generate a key from **Settings** in your Gumloop account.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Gumloop, and paste in your API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `gumloop_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **6 tools** for Gumloop, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Flow discovery">
+    `gumloop_list_flows`, `gumloop_get_flow_schema` — list saved flows and inspect a flow's required/optional inputs before running it
+  </Accordion>
+  <Accordion title="Flow execution">
+    `gumloop_run_flow`, `gumloop_kill_run` — start a flow with input values, or stop one that's taking too long
+  </Accordion>
+  <Accordion title="Run monitoring">
+    `gumloop_get_run_status`, `gumloop_list_run_history` — poll a specific run for completion, or review past runs for a flow
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Automation triggering" icon="play">
+    Kick off a Gumloop flow (e.g. lead enrichment, content generation) from a chat request
+  </Card>
+  <Card title="Run polling" icon="loader">
+    Start a long-running flow and poll until it reports `DONE` before using its outputs
+  </Card>
+  <Card title="Flow input discovery" icon="list">
+    Inspect a flow's schema before running it to avoid missing required inputs
+  </Card>
+  <Card title="History review" icon="history">
+    Pull recent runs for a flow to debug a failure or check throughput
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="gumloop_run_flow returns an error about missing inputs">
+    Call `gumloop_get_flow_schema` first with the flow's `saved_item_id` to see exactly which input keys are required, then pass them in the `inputs` dict.
+  </Accordion>
+  <Accordion title="gumloop_get_run_status stays at RUNNING for a long time">
+    Some flows (especially ones involving web scraping or LLM calls) can legitimately take minutes; if it seems stuck, use `gumloop_kill_run` and re-run rather than waiting indefinitely.
+  </Accordion>
+  <Accordion title="gumloop_list_flows doesn't show a flow I can see in the Gumloop UI">
+    Only saved/published flows are returned — a flow still open only in the Gumloop canvas editor without being saved as an item won't appear until it's saved.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,121 @@
+---
+title: "LINE WORKS"
+description: "LINE WORKSを管理 — メール、カレンダー、連絡先、ドライブ、掲示板、タスク、Bot、そして本格的なディレクトリ/管理機能"
+icon: /images/lineworks.svg
+---
+
+# LINE WORKS
+
+ShanoneのLINE WORKS連携は、Shanoneのカタログの中で最大となる350個のツールをエージェントに提供します——日常的なメッセージング、メール、カレンダー、ドライブに加えて、本格的なディレクトリ管理(ユーザー、グループ、組織単位、カスタムフィールド)とBot管理までカバーします。
+
+## はじめに
+
+<Steps>
+  <Step title="LINE WORKS Developerアプリを登録する">
+    [LINE WORKS Developer Console](https://developers.worksmobile.com)でアプリを作成し、Client ID、Client Secret、およびJWTベース認証用の秘密鍵を持つService Accountを発行します。
+  </Step>
+  <Step title="Shanoneに4つすべての認証情報を追加する">
+    Shanoneダッシュボードの**Integrations > LINE WORKS**で、Client ID、Client Secret、Service Account、Private Keyを入力します——アクセストークンを発行するにはこの4つすべてが必要です。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`lineworks_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはLINE WORKS向けに**350個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ドライブ(67個のツール)">
+    自分のドライブ、共有ドライブ、グループフォルダ、チャンネルフォルダにまたがるファイル/フォルダのCRUD、共有、権限、リビジョン、リンク、ゴミ箱——例: `lineworks_upload_drive_file`, `lineworks_create_drive_permission`, `lineworks_list_drive_file_revisions`, `lineworks_create_drive_file_link`
+  </Accordion>
+  <Accordion title="ディレクトリ: ユーザー(37個のツール)">
+    メンバーのライフサイクル、プロフィール、ステータス、アカウント連携——例: `lineworks_create_member`, `lineworks_search_members`, `lineworks_suspend_member`, `lineworks_grant_member_link_to_works`, `lineworks_resolve_member_by_external_key`
+  </Accordion>
+  <Accordion title="掲示板(28個のツール)">
+    掲示板、投稿、コメント、添付ファイル——例: `lineworks_create_board`, `lineworks_create_board_post`, `lineworks_search_board_posts`, `lineworks_create_board_post_comment`
+  </Accordion>
+  <Accordion title="連絡先(25個のツール)">
+    会社/個人の連絡先、タグ、カスタムプロパティ、写真——例: `lineworks_create_contact`, `lineworks_search_user_contacts`, `lineworks_create_contact_custom_properties`
+  </Accordion>
+  <Accordion title="ディレクトリ: レベル & 職位(16個のツール)">
+    組織階層のレベルと職位——例: `lineworks_create_level`, `lineworks_create_position`, `lineworks_enable_levels`
+  </Accordion>
+  <Accordion title="カレンダー(15個のツール)">
+    個人・デフォルトカレンダーとイベント——例: `lineworks_create_calendar_event`, `lineworks_search_calendar_events`, `lineworks_update_default_calendar_event`
+  </Accordion>
+  <Accordion title="メニュー: リッチメニュー & 常時表示メニュー(15個のツール)">
+    Botのリッチメニューと常時表示メニュー——例: `lineworks_create_rich_menu`, `lineworks_set_user_rich_menu`, `lineworks_create_persistent_menu`
+  </Accordion>
+  <Accordion title="タスク(16個のツール)">
+    タスクとタスクカテゴリ——例: `lineworks_create_task`, `lineworks_complete_task`, `lineworks_create_task_category`
+  </Accordion>
+  <Accordion title="メール(18個のツール)">
+    送信、フォルダ、フィルタ、転送——例: `lineworks_send_mail`, `lineworks_create_mail_filter`, `lineworks_enable_mail_forwarding`
+  </Accordion>
+  <Accordion title="グループ(15個のツール)">
+    グループ、メンバー、管理者、外部キー——例: `lineworks_create_group`, `lineworks_add_group_administrator`, `lineworks_update_group_external_keys`
+  </Accordion>
+  <Accordion title="Bot管理(13個のツール)">
+    BotとBotドメインの作成/更新——例: `lineworks_create_bot`, `lineworks_register_bot_domain`, `lineworks_add_bot_domain_member`
+  </Accordion>
+  <Accordion title="ノート(13個のツール)">
+    グループノートとノート投稿——例: `lineworks_create_group_note`, `lineworks_create_group_note_post`, `lineworks_search_group_note_posts`
+  </Accordion>
+  <Accordion title="ディレクトリ: アクセス制限(12個のツール)">
+    メンバー、ユーザータイプ、チーム別の組織単位アクセス制限——例: `lineworks_set_member_orgunit_access_restrict`, `lineworks_set_team_orgunit_access_restrict`
+  </Accordion>
+  <Accordion title="チーム(11個のツール)">
+    チームとチームメンバーシップ——例: `lineworks_create_team`, `lineworks_get_team_members`, `lineworks_move_team`
+  </Accordion>
+  <Accordion title="ディレクトリ: カスタムフィールド(10個のツール)">
+    カスタムフィールドとメンバーカスタムプロパティ——例: `lineworks_create_custom_field`, `lineworks_create_member_custom_properties`
+  </Accordion>
+  <Accordion title="ディレクトリ: ユーザータイプ & ステータス(16個のツール)">
+    カスタムユーザータイプとプロフィールステータス——例: `lineworks_create_user_type`, `lineworks_create_profile_status`
+  </Accordion>
+  <Accordion title="ディレクトリ: 外部キー(6個のツール)">
+    レベル、職位、ユーザータイプの外部キーマッピング——例: `lineworks_update_level_external_keys`, `lineworks_list_position_external_keys`
+  </Accordion>
+  <Accordion title="メッセージ、チャンネル、Bot & ユーザー(10個のツール)">
+    ダイレクト/チャンネルメッセージングと読み取り専用のBot/ユーザー/チャンネル参照——例: `lineworks_send_message_to_user`, `lineworks_send_message_to_channel`, `lineworks_create_channel`, `lineworks_list_users`
+  </Accordion>
+  <Accordion title="添付ファイル、監査 & セキュリティ(6個のツール)">
+    Bot添付ファイル、監査/モニタリングログのダウンロード、外部ブラウザポリシー——例: `lineworks_upload_bot_attachment`, `lineworks_download_audit_logs`, `lineworks_enable_external_browser`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="従業員オンボーディング" icon="user-plus">
+    メンバーを作成し、組織単位/レベル/職位を割り当て、招待メールを送信する
+  </Card>
+  <Card title="社内ポータルの運用" icon="layout-template">
+    掲示板に会社のお知らせを投稿し、必読の既読確認を追跡する
+  </Card>
+  <Card title="コンプライアンス対応のエクスポート" icon="file-search">
+    セキュリティレビューのために監査・モニタリングログをダウンロードする
+  </Card>
+  <Card title="ドキュメントのコラボレーション" icon="folder">
+    きめ細かい権限でドライブフォルダを共有し、ファイルのリビジョンを追跡する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="lineworks_*のツール呼び出しがすべて認証エラーで失敗する">
+    LINE WORKSは単純なベアラートークンではなく、JWTベースのサービスアカウント認証を使用します——Client ID、Client Secret、Service Account、Private Keyのすべてが正しく設定されている必要があり、1つでも欠けているか誤っているとトークンが発行されません。
+  </Accordion>
+  <Accordion title="ディレクトリ管理系ツール(ユーザー、グループ、レベル)が権限エラーを返す">
+    これらのツールには、Developer Consoleでそのアプリに対してDirectory Management APIのスコープが付与されている必要があります——メッセージング専用のスコープでは不十分です。
+  </Accordion>
+  <Accordion title="lineworks_delete_memberを呼んでもユーザーが完全に削除されたように見えない">
+    通常の削除はソフトデリート/無効化にとどまることが多いです——メンバーレコードを永久かつ即座に削除する必要がある場合は`lineworks_force_delete_member`を使ってください。
+  </Accordion>
+  <Accordion title="Botは存在するのにBot関連ツールが失敗する">
+    Botメッセージング系ツールは、`lineworks_create_bot`で登録された特定のBotの認証情報の下で動作します——対象のBot IDがそのドメインで認可されているか、`lineworks_list_bot_domains`で確認してください。
+  </Accordion>
+</AccordionGroup>

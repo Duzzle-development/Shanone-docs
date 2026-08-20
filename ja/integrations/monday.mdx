@@ -1,0 +1,92 @@
+---
+title: "Monday.com"
+description: "monday.comのボード、アイテム、ドキュメント、チームを管理 — アイテム、カラム、グループ、アップデート、ワークスペース管理"
+icon: /images/monday.svg
+---
+
+# Monday.com
+
+Shanoneのmonday.com連携は、ボード、アイテム/サブアイテム、カラム、ドキュメント、グループ、アップデート、アカウント/チーム管理をカバーする68個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにmonday.com関連の作業を依頼(例: 「自分のボードを一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="ワークスペースを許可する">
+    Shanoneに操作させたいワークスペースについて、monday.comのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`monday_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+<Note>
+OAuthを使いたくない場合、monday.comアカウントの**Admin > API**から取得できるパーソナルAPIトークンを、同じIntegrations画面で代わりの認証情報として使うこともできます。
+</Note>
+
+## 利用可能なツール
+
+Shanoneはmonday.com向けに**68個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ボード">
+    `monday_list_boards`, `monday_get_board`, `monday_create_board`, `monday_update_board`, `monday_duplicate_board`, `monday_archive_board`, `monday_delete_board`
+  </Accordion>
+  <Accordion title="アイテム & サブアイテム">
+    `monday_list_items`, `monday_get_item`, `monday_create_item`, `monday_update_item`, `monday_move_item`, `monday_archive_item`, `monday_delete_item`, `monday_duplicate_item`, `monday_move_item_to_board`, `monday_change_multiple_column_values`, `monday_search_items_by_column_values`, `monday_get_items_page`, `monday_move_item_to_group`, `monday_create_subitem`
+  </Accordion>
+  <Accordion title="カラム">
+    `monday_list_columns`, `monday_create_column`, `monday_update_column`, `monday_delete_column`, `monday_change_simple_column_value`
+  </Accordion>
+  <Accordion title="グループ & フォルダ">
+    `monday_list_groups`, `monday_create_group`, `monday_update_group`, `monday_duplicate_group`, `monday_delete_group`, `monday_get_folders`, `monday_create_folder`, `monday_update_folder`
+  </Accordion>
+  <Accordion title="ドキュメント">
+    `monday_list_docs`, `monday_create_doc`, `monday_update_doc`, `monday_import_doc_from_html`, `monday_delete_doc`
+  </Accordion>
+  <Accordion title="アップデート & 通知">
+    `monday_create_update`, `monday_get_updates`, `monday_get_update_replies`, `monday_edit_update`, `monday_like_update`, `monday_delete_update`, `monday_create_notification`
+  </Accordion>
+  <Accordion title="チーム & ユーザー">
+    `monday_get_teams`, `monday_list_team_members`, `monday_add_users_to_board`, `monday_add_teams_to_board`, `monday_add_users_to_team`, `monday_remove_users_from_team`, `monday_create_user`, `monday_get_me`, `monday_list_users`
+  </Accordion>
+  <Accordion title="ワークスペース & アカウント">
+    `monday_list_workspaces`, `monday_create_workspace`, `monday_update_workspace`, `monday_delete_workspace`, `monday_get_account_info`, `monday_get_api_version`, `monday_get_query_complexity`
+  </Accordion>
+  <Accordion title="タグ、アセット & Webhook">
+    `monday_get_tags`, `monday_create_tag`, `monday_get_assets`, `monday_get_webhooks`, `monday_create_webhook`, `monday_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="大規模なステータス更新" icon="list-checks">
+    フィルタに一致するアイテムのカラム値を一括更新する
+  </Card>
+  <Card title="ボードのプロビジョニング" icon="layout-grid">
+    テンプレートボードを複製し、新しいプロジェクト用にアイテムを投入する
+  </Card>
+  <Card title="ボード横断レポート" icon="bar-chart">
+    複数のボードをまたいでカラム値でアイテムを検索し、ステータスの集計を作成する
+  </Card>
+  <Card title="リアルタイム連携" icon="webhook">
+    Webhookを登録し、アイテムの変更が後続の自動化をトリガーするようにする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="ツール呼び出しがcomplexity budgetエラーで失敗する">
+    monday.comのGraphQL APIは1分あたりのクエリ複雑度に上限を設けています——`monday_get_query_complexity`を確認し、バッチサイズを減らすか、`monday_get_items_page`のような重い呼び出しの間隔を空けてください。
+  </Accordion>
+  <Accordion title="monday_change_multiple_column_valuesがフォーマットエラーで失敗する">
+    カラム値は、monday.comが期待する形式に厳密にJSONエンコードする必要があります——ペイロードを組み立てる前に、`monday_list_columns`で各カラムの型を確認してください。
+  </Accordion>
+  <Accordion title="直前に作成したアイテムが見つからない">
+    monday.comの検索インデックスは書き込みに対してわずかに遅延することがあります——少し待ってから`monday_search_items_by_column_values`を再試行するか、作成時に返されたIDを使って`monday_get_item`で直接取得してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,76 @@
+---
+title: "Google Cloud"
+description: "Manage API enablement, IAM policies, and organization-level settings via Workload Identity Federation"
+icon: "cloud"
+---
+
+# Google Cloud
+
+Shanone's Google Cloud integration gives your agent 24 tools for operator-level GCP administration — enabling/disabling services, managing IAM policies and roles, and auditing organization-level changes — authenticated via Workload Identity Federation rather than a downloadable service account key.
+
+## Getting Started
+
+<Steps>
+  <Step title="Set up Workload Identity Federation">
+    In Google Cloud Console, create a [Workload Identity Pool and Provider](https://console.cloud.google.com/iam-admin/workload-identity-pools) that trusts Shanone's backend, and create a service account for Shanone to impersonate.
+  </Step>
+  <Step title="Add the WIF details in Shanone">
+    Open **Integrations** in the Shanone dashboard, select Google Cloud, and enter the project number, pool ID, provider ID, service account email, and target project ID. No service account key file is needed.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `gcloud_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **24 tools** for Google Cloud, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Service usage">
+    `gcloud_service_usage_list`, `gcloud_service_usage_get`, `gcloud_service_usage_batch_get`, `gcloud_service_usage_search`, `gcloud_service_usage_enable`, `gcloud_service_usage_disable`, `gcloud_service_usage_batch_enable`, `gcloud_service_usage_disable_check`
+  </Accordion>
+  <Accordion title="IAM policy & members">
+    `gcloud_iam_get_policy`, `gcloud_iam_add_binding`, `gcloud_iam_remove_binding`, `gcloud_iam_set_policy`, `gcloud_iam_list_members`
+  </Accordion>
+  <Accordion title="IAM roles & permissions">
+    `gcloud_iam_list_grantable_roles`, `gcloud_iam_get_role`, `gcloud_iam_test_permissions`, `gcloud_iam_list_service_accounts`, `gcloud_iam_search_roles`
+  </Accordion>
+  <Accordion title="Organization-level">
+    `gcloud_org_get_policy`, `gcloud_org_add_binding`, `gcloud_org_list_projects`
+  </Accordion>
+  <Accordion title="Audit">
+    `gcloud_audit_get_connection_status`, `gcloud_audit_list_recent_changes`, `gcloud_audit_export_policy_snapshot`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="API enablement rollout" icon="toggle-right">
+    Batch-enable a set of required APIs across a project before deploying a new service
+  </Card>
+  <Card title="IAM access review" icon="shield-check">
+    List IAM policy bindings and members on a project to check for overly broad access
+  </Card>
+  <Card title="Permission troubleshooting" icon="key-round">
+    Use `gcloud_iam_test_permissions` to confirm whether a service account actually has the access a failing call needs
+  </Card>
+  <Card title="Change auditing" icon="history">
+    Export a policy snapshot and list recent changes to investigate who modified IAM bindings
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Every gcloud_* call fails immediately after connecting">
+    Run `gcloud_audit_get_connection_status` first — it's the fastest way to confirm the Workload Identity Federation trust relationship and impersonated service account are configured correctly.
+  </Accordion>
+  <Accordion title="gcloud_iam_add_binding or gcloud_org_add_binding returns a permission-denied error">
+    The impersonated service account itself needs `resourcemanager.projects.setIamPolicy` (or the organization equivalent) — check its own IAM role with `gcloud_iam_get_policy` on the target resource.
+  </Accordion>
+  <Accordion title="gcloud_service_usage_enable succeeds but the API isn't usable yet">
+    Enabling a service can take a minute or two to propagate — poll `gcloud_service_usage_get` or `gcloud_service_usage_disable_check` rather than assuming it's instantly active.
+  </Accordion>
+</AccordionGroup>

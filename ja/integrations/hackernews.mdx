@@ -1,0 +1,73 @@
+---
+title: "Hacker News"
+description: "トップ・新着・ベスト・Ask HN・Show HN・求人ストーリーの閲覧と、コメント付きの個別ストーリー取得"
+icon: /images/hackernews.svg
+---
+
+# Hacker News
+
+ShanoneのHacker News連携では、Hacker Newsが提供するすべてのストーリーフィードを閲覧し、特定のストーリーのコメントまで掘り下げる7のツールをエージェントが利用できるようになります——すべて無料の公開Hacker News APIに対して動作するため、認証は一切不要です。
+
+## はじめに
+
+<Steps>
+  <Step title="接続は不要">
+    Hacker NewsのAPIは無料でキー不要です——接続するアカウントも設定するAPIキーもありません。
+  </Step>
+  <Step title="そのまま依頼するだけ">
+    エージェントにHacker Newsで何か作業をしてもらう(例:「今HNで話題になっているものは?」)と、`hackernews_*`ツールが直接呼び出されます。
+  </Step>
+  <Step title="必要であればIntegrationsで確認">
+    Shanoneダッシュボードの**Integrations**で利用可能として表示されていることを確認できますが、そこでの設定作業は不要です。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはHacker News用に**7のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="ストーリーフィード">
+    `hackernews_top_stories`, `hackernews_new_stories`, `hackernews_best_stories` — トップページ、最新の投稿、歴代の高評価ストーリー
+  </Accordion>
+  <Accordion title="コミュニティフィード">
+    `hackernews_ask_stories`, `hackernews_show_stories` — Ask HNのディスカッションスレッドとShow HNのプロジェクト/プロダクト発表
+  </Accordion>
+  <Accordion title="求人">
+    `hackernews_job_stories` — YCおよびテック企業の求人情報
+  </Accordion>
+  <Accordion title="ストーリー詳細">
+    `hackernews_get_story` — IDで特定のストーリーを取得し、任意でトップレベルのコメントも含める
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="デイリーテックダイジェスト" icon="newspaper">
+    現在のトップストーリーを短い朝のブリーフィングに要約する
+  </Card>
+  <Card title="ローンチ調査" icon="rocket">
+    特定の分野のShow HN投稿をスキャンして競合の最近のローンチを追う
+  </Card>
+  <Card title="議論の深掘り" icon="message-circle">
+    特定のストーリーのコメントを取得し、あるトピックに対するコミュニティの反応を要約する
+  </Card>
+  <Card title="求人市場のスキャン" icon="briefcase">
+    求人ストーリーを確認してYC支援企業やテック企業の採用傾向を把握する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="渡したcountパラメータより少ないストーリー数しか返らない">
+    `count`は1回の呼び出しあたり最大30に制限されており、読み込みに失敗したアイテム(削除済み、または一時的なAPIエラー)はリトライされずに無視されます——接続が不安定な場合、要求した数より少し少ない結果になることを想定してください。
+  </Accordion>
+  <Accordion title="hackernews_get_storyはコメントを返すが一部のテキストが欠けている">
+    削除済みまたはフラグ付きのコメントは完全に除外され、コメント本文は500文字で切り捨てられます——ノイズを減らしたい場合は`max_comments`を小さくして再度リクエストしてください。
+  </Accordion>
+  <Accordion title="ストーリーのurlフィールドが空になっている">
+    Ask HNなど一部の自己投稿タイプには外部URLがありません——すべてのストーリーが外部リンクを持つとは想定せず、代わりに`hn_url`(Ask HN投稿の場合は`text`フィールド)を使用してください。
+  </Accordion>
+</AccordionGroup>

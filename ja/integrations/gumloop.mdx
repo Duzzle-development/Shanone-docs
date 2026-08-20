@@ -1,0 +1,70 @@
+---
+title: "Gumloop"
+description: "GumloopのAI自動化フローを実行・監視する — フロー一覧、実行開始、状態確認、履歴表示"
+icon: /images/gumloop.svg
+---
+
+# Gumloop
+
+ShanoneのGumloop連携では、Gumloopフロー(ノーコードAI自動化)をトリガー・管理する6のツールをエージェントが利用できるようになります——利用可能なフローの確認から、実行、完了までの追跡まで対応します。
+
+## はじめに
+
+<Steps>
+  <Step title="Gumloop APIキーを取得する">
+    Gumloopアカウントの**Settings**からキーを生成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、Gumloopを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`gumloop_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGumloop用に**6のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="フロー検出">
+    `gumloop_list_flows`, `gumloop_get_flow_schema` — 保存済みフローを一覧表示し、実行前に必須/オプションの入力項目を確認する
+  </Accordion>
+  <Accordion title="フロー実行">
+    `gumloop_run_flow`, `gumloop_kill_run` — 入力値を指定してフローを開始する、または時間がかかりすぎているフローを停止する
+  </Accordion>
+  <Accordion title="実行監視">
+    `gumloop_get_run_status`, `gumloop_list_run_history` — 特定の実行の完了をポーリングする、またはフローの過去の実行履歴を確認する
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="自動化のトリガー" icon="play">
+    チャットからの依頼をきっかけにGumloopフロー(例:リード情報の拡充、コンテンツ生成)を実行する
+  </Card>
+  <Card title="実行のポーリング" icon="loader">
+    時間のかかるフローを開始し、`DONE`になるまで待って出力を利用する
+  </Card>
+  <Card title="フロー入力の確認" icon="list">
+    実行前にフローのスキーマを確認し、必須入力の見落としを防ぐ
+  </Card>
+  <Card title="履歴の確認" icon="history">
+    フローの直近の実行を取得して失敗をデバッグしたりスループットを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="gumloop_run_flowで入力不足のエラーが返る">
+    まずフローの`saved_item_id`を指定して`gumloop_get_flow_schema`を呼び出し、必要な入力キーを正確に確認してから、それらを`inputs`辞書に渡してください。
+  </Accordion>
+  <Accordion title="gumloop_get_run_statusが長時間RUNNINGのままになる">
+    WebスクレイピングやLLM呼び出しを含むフローなどは、正当に数分かかることがあります——止まっているように見える場合は、無期限に待つのではなく`gumloop_kill_run`で停止して再実行してください。
+  </Accordion>
+  <Accordion title="Gumloopの画面で見えるフローがgumloop_list_flowsに表示されない">
+    保存/公開済みのフローのみが返されます——Gumloopのキャンバスエディタで開いているだけでアイテムとして保存されていないフローは、保存されるまで表示されません。
+  </Accordion>
+</AccordionGroup>

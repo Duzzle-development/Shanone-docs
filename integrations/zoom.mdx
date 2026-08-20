@@ -1,0 +1,97 @@
+---
+title: "Zoom"
+description: "Schedule meetings and webinars, pull recordings/transcripts, and manage registrants on Zoom"
+icon: /images/zoom.svg
+---
+
+# Zoom
+
+Shanone's Zoom integration gives your agent 67 tools for meetings and webinars — scheduling, registrants, recordings/transcripts, polls/surveys, and the reporting tools most integrations skip.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Zoom (e.g. "schedule a meeting for 2pm tomorrow"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Zoom account">
+    Approve Zoom's OAuth consent screen for the account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `zoom_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **67 tools** for Zoom, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Webinars">
+    `zoom_list_webinars`, `zoom_get_webinar`, `zoom_create_webinar`, `zoom_update_webinar`, `zoom_delete_webinar`, `zoom_add_webinar_registrant`, `zoom_list_webinar_registrants`, `zoom_add_webinar_panelist`, `zoom_list_webinar_panelists`, `zoom_delete_webinar_panelist`, `zoom_list_webinar_participants`
+  </Accordion>
+  <Accordion title="Meetings">
+    `zoom_list_meetings`, `zoom_get_meeting`, `zoom_create_meeting`, `zoom_update_meeting`, `zoom_delete_meeting`
+  </Accordion>
+  <Accordion title="Recordings">
+    `zoom_list_recordings`, `zoom_get_meeting_recordings`, `zoom_get_recording_analytics_summary`, `zoom_get_recording_analytics_details`, `zoom_delete_meeting_recordings`, `zoom_delete_recording_file`, `zoom_get_recording_settings`, `zoom_update_recording_settings`
+  </Accordion>
+  <Accordion title="Registrants">
+    `zoom_add_meeting_registrant`, `zoom_list_meeting_registrants`, `zoom_get_meeting_registrant`, `zoom_delete_meeting_registrant`, `zoom_update_registrant_status`
+  </Accordion>
+  <Accordion title="Polls & surveys">
+    `zoom_create_meeting_poll`, `zoom_list_meeting_polls`, `zoom_get_meeting_poll`, `zoom_update_meeting_poll`, `zoom_delete_meeting_poll`, `zoom_get_past_meeting_polls`, `zoom_get_meeting_survey`, `zoom_create_meeting_survey`, `zoom_update_meeting_survey`, `zoom_delete_meeting_survey`
+  </Accordion>
+  <Accordion title="Archives">
+    `zoom_list_archived_files`, `zoom_get_meeting_archived_files`, `zoom_delete_meeting_archived_files`, `zoom_get_archive_statistics`
+  </Accordion>
+  <Accordion title="Reports">
+    `zoom_get_daily_usage_report`, `zoom_get_meeting_report`, `zoom_get_meeting_participants_report`, `zoom_get_webinar_report`
+  </Accordion>
+  <Accordion title="Summaries & transcripts">
+    `zoom_get_meeting_summary`, `zoom_list_meeting_summaries`, `zoom_delete_meeting_summary`, `zoom_list_summary_templates`, `zoom_get_meeting_transcript`, `zoom_delete_meeting_transcript`
+  </Accordion>
+  <Accordion title="Past meetings">
+    `zoom_get_past_meeting`, `zoom_list_past_meeting_instances`, `zoom_get_past_meeting_qa`
+  </Accordion>
+  <Accordion title="Templates, invitations & livestream">
+    `zoom_list_meeting_templates`, `zoom_create_meeting_template`, `zoom_get_meeting_invitation`, `zoom_create_meeting_invite_links`, `zoom_get_livestream_settings`, `zoom_update_livestream_settings`, `zoom_update_livestream_status`
+  </Accordion>
+  <Accordion title="Participants & user">
+    `zoom_list_meeting_participants`, `zoom_get_current_user`, `zoom_get_user_settings`, `zoom_list_users`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting scheduling" icon="calendar-plus">
+    Create meetings with the right settings and send registrants their invite links
+  </Card>
+  <Card title="Post-meeting follow-up" icon="file-text">
+    Pull the AI summary or transcript to draft follow-up notes automatically
+  </Card>
+  <Card title="Webinar registration management" icon="users">
+    Add registrants and panelists, then check who actually attended
+  </Card>
+  <Card title="Usage and engagement reporting" icon="bar-chart-3">
+    Pull daily usage or meeting participant reports to track adoption
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="zoom_get_meeting_summary or zoom_get_meeting_transcript returns nothing">
+    AI Companion summaries and transcripts are only generated for meetings with cloud recording and the AI summary feature enabled at the account/meeting level — check `zoom_get_recording_settings` if a recent meeting has no summary.
+  </Accordion>
+  <Accordion title="zoom_create_meeting succeeds but registrants can't join">
+    If the meeting requires registration, registrants must be added via `zoom_add_meeting_registrant` and use their unique join link — the generic meeting URL alone won't work for a registration-required meeting.
+  </Accordion>
+  <Accordion title="zoom_get_past_meeting fails right after a meeting ends">
+    Past-meeting data (participants, polls, Q&A) can take a few minutes to become available after a meeting ends — retry after a short delay rather than assuming the meeting ID is wrong.
+  </Accordion>
+  <Accordion title="zoom_delete_meeting_recordings doesn't free up storage immediately">
+    Deleted cloud recordings may be retained in Zoom's trash for a recovery window before being permanently purged, depending on account settings.
+  </Accordion>
+</AccordionGroup>

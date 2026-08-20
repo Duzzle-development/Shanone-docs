@@ -1,0 +1,76 @@
+---
+title: "Coincheck"
+description: "Coincheckで資産を取引・管理する — 注文、マーケットデータ、送金、引き出し"
+icon: /images/coincheck.svg
+---
+
+# Coincheck
+
+ShanoneのCoincheck連携は、日本の暗号資産取引所Coincheckを扱う24個のツールをエージェントに提供します。残高確認、マーケットデータ、注文管理、暗号資産の送金、日本円の引き出しが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="APIキーとシークレットを発行する">
+    Coincheckの**設定 → API**で、必要な権限(注文、引き出しなど)を持つAPIキー/シークレットのペアを新規作成します。
+  </Step>
+  <Step title="認証情報をShanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Coincheckを選択してAPIキーとAPIシークレットの両方を入力します(両方が必須です)。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`coincheck_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはCoincheck向けに**24個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="注文">
+    `coincheck_create_order`, `coincheck_get_open_orders`, `coincheck_cancel_order`, `coincheck_get_transactions`, `coincheck_get_order_detail`, `coincheck_get_cancel_status`, `coincheck_get_transactions_pagination`
+  </Accordion>
+  <Accordion title="マーケットデータ">
+    `coincheck_get_ticker`, `coincheck_get_order_book`, `coincheck_get_rate`, `coincheck_get_exchange_status`, `coincheck_get_trades`, `coincheck_calculate_rate`
+  </Accordion>
+  <Accordion title="引き出し & 銀行口座">
+    `coincheck_get_bank_accounts`, `coincheck_register_bank_account`, `coincheck_delete_bank_account`, `coincheck_get_withdraw_history`, `coincheck_create_withdraw`, `coincheck_cancel_withdraw`
+  </Accordion>
+  <Accordion title="送金">
+    `coincheck_send_crypto`, `coincheck_get_send_history`, `coincheck_get_deposit_history`
+  </Accordion>
+  <Accordion title="アカウント">
+    `coincheck_get_balance`, `coincheck_get_account_info`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ポートフォリオ監視" icon="wallet">
+    Coincheckアカウントの残高や直近の取引を確認する
+  </Card>
+  <Card title="レート連動の注文" icon="trending-up">
+    ティッカー/レートを監視し、目標価格に達したら指値注文を出す
+  </Card>
+  <Card title="引き出しの自動化" icon="banknote">
+    事前登録した銀行口座への日本円引き出しを開始し、状況を追跡する
+  </Card>
+  <Card title="暗号資産の送金" icon="arrow-right-left">
+    外部アドレスに暗号資産を送金し、送金履歴で確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="coincheck_create_orderやcoincheck_create_withdrawが認証エラーで失敗する">
+    CoincheckはすべてのプライベートリクエストをAPIキーとAPIシークレットの両方から生成したHMACで署名します。どちらかが欠けている場合や、(Coincheck側で設定している場合)アカウントのIP許可リストにShanoneの送信元IPが含まれていない場合、プライベートエンドポイントはリクエストを拒否します。
+  </Accordion>
+  <Accordion title="coincheck_cancel_withdrawやcoincheck_cancel_orderが直近の操作に対してエラーを返す">
+    注文や引き出しはまだ処理待ちの間のみキャンセルできます。Coincheck側で処理が開始された(約定した、または銀行/ネットワークへ送信された)後はキャンセルできません。
+  </Accordion>
+  <Accordion title="レート関連のツールが古い、または想定外の価格を返す">
+    `coincheck_get_rate`と`coincheck_calculate_rate`は外部の指標ではなく、リクエスト時点のCoincheck自身の注文簿を反映します。注文を出す直前に必ず`coincheck_get_ticker`で確認してください。
+  </Accordion>
+</AccordionGroup>

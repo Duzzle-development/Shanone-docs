@@ -1,0 +1,88 @@
+---
+title: "Pinecone"
+description: "Vector database operations — indexes, namespaces, vectors, assistants, backups, and org-level admin"
+icon: "database"
+---
+
+# Pinecone
+
+Shanone's Pinecone integration gives your agent 85 tools covering the full vector database surface — index and namespace management, vector CRUD/search, the Assistant API for RAG chat, backups/restore, and organization-level admin (users, service accounts, role bindings) most integrations skip.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Pinecone API key">
+    Generate a key from the [Pinecone Console](https://app.pinecone.io/organizations/-/keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Pinecone, and paste in the key (`pcsk_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `pinecone_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **85 tools** for Pinecone, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Indexes & namespaces">
+    `pinecone_list_indexes`, `pinecone_create_index`, `pinecone_describe_index`, `pinecone_delete_index`, `pinecone_configure_index`, `pinecone_create_index_for_model`, `pinecone_list_namespaces`, `pinecone_create_namespace`, `pinecone_describe_namespace`, `pinecone_delete_namespace`, `pinecone_upsert_records`, `pinecone_search_records`
+  </Accordion>
+  <Accordion title="Vectors">
+    `pinecone_upsert_vectors`, `pinecone_query_vectors`, `pinecone_fetch_vectors`, `pinecone_delete_vectors`, `pinecone_update_vector`, `pinecone_list_vectors`, `pinecone_describe_index_stats`, `pinecone_fetch_vectors_by_metadata`
+  </Accordion>
+  <Accordion title="Assistant (RAG chat)">
+    `pinecone_list_assistants`, `pinecone_create_assistant`, `pinecone_describe_assistant`, `pinecone_update_assistant`, `pinecone_delete_assistant`, `pinecone_chat_assistant`, `pinecone_chat_completion_assistant`, `pinecone_context_assistant`, `pinecone_upload_assistant_file`, `pinecone_list_assistant_files`, `pinecone_describe_assistant_file`, `pinecone_upsert_assistant_file`, `pinecone_delete_assistant_file`, `pinecone_list_assistant_operations`, `pinecone_describe_assistant_operation`
+  </Accordion>
+  <Accordion title="Backups & restore">
+    `pinecone_create_backup`, `pinecone_list_index_backups`, `pinecone_list_project_backups`, `pinecone_describe_backup`, `pinecone_delete_backup`, `pinecone_create_index_from_backup`, `pinecone_list_restore_jobs`, `pinecone_describe_restore_job`
+  </Accordion>
+  <Accordion title="Imports & inference">
+    `pinecone_start_import`, `pinecone_list_imports`, `pinecone_describe_import`, `pinecone_cancel_import`, `pinecone_list_models`, `pinecone_describe_model`, `pinecone_generate_embeddings`, `pinecone_rerank`
+  </Accordion>
+  <Accordion title="Collections">
+    `pinecone_list_collections`, `pinecone_create_collection`, `pinecone_describe_collection`, `pinecone_delete_collection`
+  </Accordion>
+  <Accordion title="Admin: organizations & projects">
+    `pinecone_admin_list_organizations`, `pinecone_admin_get_organization`, `pinecone_admin_update_organization`, `pinecone_admin_delete_organization`, `pinecone_admin_list_projects`, `pinecone_admin_create_project`, `pinecone_admin_get_project`, `pinecone_admin_update_project`, `pinecone_admin_delete_project`
+  </Accordion>
+  <Accordion title="Admin: users, service accounts & access">
+    `pinecone_admin_list_users`, `pinecone_admin_get_user`, `pinecone_admin_delete_user`, `pinecone_admin_list_api_keys`, `pinecone_admin_create_api_key`, `pinecone_admin_get_api_key`, `pinecone_admin_update_api_key`, `pinecone_admin_delete_api_key`, `pinecone_admin_list_invites`, `pinecone_admin_create_invite`, `pinecone_admin_get_invite`, `pinecone_admin_delete_invite`, `pinecone_admin_resend_invite`, `pinecone_admin_list_role_bindings`, `pinecone_admin_create_role_binding`, `pinecone_admin_get_role_binding`, `pinecone_admin_delete_role_binding`, `pinecone_admin_list_service_accounts`, `pinecone_admin_create_service_account`, `pinecone_admin_get_service_account`, `pinecone_admin_update_service_account`, `pinecone_admin_delete_service_account`, `pinecone_admin_rotate_service_account_secret`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Semantic search" icon="search">
+    Query an existing index for the nearest vectors to a piece of text or embedding
+  </Card>
+  <Card title="RAG assistant chat" icon="message-circle">
+    Create a Pinecone Assistant over an uploaded knowledge base and chat against it directly
+  </Card>
+  <Card title="Index lifecycle management" icon="database">
+    Provision a new index for a workload, then back it up before a risky migration
+  </Card>
+  <Card title="Bulk ingestion" icon="upload">
+    Kick off a bulk import from object storage instead of upserting vectors one batch at a time
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="pinecone_query_vectors or pinecone_upsert_vectors fails with a dimension mismatch">
+    The vector dimension must exactly match the index's configured dimension — check `pinecone_describe_index` first, especially after switching embedding models.
+  </Accordion>
+  <Accordion title="pinecone_upsert_records or pinecone_search_records behaves differently from the vector-level tools">
+    These operate on Pinecone's newer records API (namespace-scoped, with built-in embedding via integrated inference) rather than raw vectors — check `shanone_get_tool_schema` to confirm which field shapes each expects.
+  </Accordion>
+  <Accordion title="pinecone_chat_assistant gives answers that ignore uploaded files">
+    Confirm the file finished processing with `pinecone_describe_assistant_file` before chatting — newly uploaded files need to be indexed before the assistant can retrieve from them.
+  </Accordion>
+  <Accordion title="Admin tools (pinecone_admin_*) return a permissions error">
+    Admin endpoints require an API key scoped at the organization level, not a project-level key — generate a dedicated admin key from the Pinecone Console if you only have project keys configured.
+  </Accordion>
+</AccordionGroup>

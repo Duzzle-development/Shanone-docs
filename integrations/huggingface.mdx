@@ -1,0 +1,97 @@
+---
+title: "Hugging Face"
+description: "Models, datasets, spaces, inference, collections, discussions, papers, and repository management"
+icon: /images/huggingface.svg
+---
+
+# Hugging Face
+
+Shanone's Hugging Face integration gives your agent 87 tools covering nearly the entire Hub — models, datasets, spaces, serverless inference, inference endpoints, collections, discussions/PRs, papers, repository operations, security scans, and webhooks.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Hugging Face Access Token">
+    Generate a token from **Settings → Access Tokens** in your Hugging Face account.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Hugging Face, and paste in your Access Token.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `huggingface_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **87 tools** for Hugging Face, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Models">
+    `huggingface_list_models`, `huggingface_get_model_info`, `huggingface_list_user_models`, `huggingface_create_model_repo`, `huggingface_delete_model_repo`, `huggingface_update_model_settings`
+  </Accordion>
+  <Accordion title="Datasets">
+    `huggingface_list_datasets`, `huggingface_get_dataset_info`, `huggingface_create_dataset_repo`, `huggingface_delete_dataset_repo`, `huggingface_get_dataset_rows`, `huggingface_filter_dataset_rows`, `huggingface_search_dataset`, `huggingface_get_dataset_statistics`, `huggingface_get_dataset_splits`, `huggingface_get_dataset_size`, `huggingface_list_parquet_files`
+  </Accordion>
+  <Accordion title="Spaces">
+    `huggingface_list_spaces`, `huggingface_get_space_info`, `huggingface_create_space_repo`, `huggingface_delete_space_repo`, `huggingface_restart_space`, `huggingface_pause_space`
+  </Accordion>
+  <Accordion title="Inference">
+    `huggingface_text_generation`, `huggingface_text_classification`, `huggingface_feature_extraction`, `huggingface_chat_completion`, `huggingface_image_classification`, `huggingface_summarization`, `huggingface_text_to_image`, `huggingface_image_to_text`, `huggingface_translation`, `huggingface_question_answering`, `huggingface_zero_shot_classification`, `huggingface_token_classification`, `huggingface_fill_mask`, `huggingface_automatic_speech_recognition`
+  </Accordion>
+  <Accordion title="Inference endpoints">
+    `huggingface_list_inference_endpoints`, `huggingface_get_inference_endpoint`, `huggingface_create_inference_endpoint`, `huggingface_update_inference_endpoint`, `huggingface_delete_inference_endpoint`, `huggingface_pause_inference_endpoint`, `huggingface_resume_inference_endpoint`, `huggingface_scale_inference_endpoint`
+  </Accordion>
+  <Accordion title="Repository operations">
+    `huggingface_create_branch`, `huggingface_delete_branch`, `huggingface_create_tag`, `huggingface_delete_tag`, `huggingface_list_repo_refs`, `huggingface_list_commits`, `huggingface_list_repo_files`
+  </Accordion>
+  <Accordion title="Collections">
+    `huggingface_create_collection`, `huggingface_list_collections`, `huggingface_get_collection`, `huggingface_add_to_collection`, `huggingface_remove_from_collection`, `huggingface_delete_collection`
+  </Accordion>
+  <Accordion title="Discussions & pull requests">
+    `huggingface_create_discussion`, `huggingface_list_discussions`, `huggingface_get_discussion`, `huggingface_create_discussion_comment`, `huggingface_change_discussion_status`, `huggingface_merge_pull_request`
+  </Accordion>
+  <Accordion title="Papers">
+    `huggingface_search_papers`, `huggingface_get_daily_papers`, `huggingface_get_paper`, `huggingface_list_paper_comments`, `huggingface_create_paper_comment`
+  </Accordion>
+  <Accordion title="Security & access requests">
+    `huggingface_get_security_scan`, `huggingface_request_repo_access`, `huggingface_list_access_requests`, `huggingface_handle_access_request`
+  </Accordion>
+  <Accordion title="Organizations & user">
+    `huggingface_get_organization`, `huggingface_list_organization_members`, `huggingface_get_organization_repos`, `huggingface_get_user_info`
+  </Accordion>
+  <Accordion title="Webhooks & billing">
+    `huggingface_create_webhook`, `huggingface_list_webhooks`, `huggingface_get_webhook`, `huggingface_update_webhook`, `huggingface_enable_webhook`, `huggingface_disable_webhook`, `huggingface_delete_webhook`, `huggingface_get_billing_usage`, `huggingface_get_compute_usage`, `huggingface_get_storage_usage`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Model/dataset research" icon="search">
+    Search models or datasets by task/tag and summarize the best fits for a use case
+  </Card>
+  <Card title="Serverless inference" icon="cpu">
+    Run text generation, classification, or image tasks directly without hosting your own model
+  </Card>
+  <Card title="Endpoint lifecycle management" icon="server">
+    Spin up a dedicated inference endpoint, scale it, and pause it when idle to control cost
+  </Card>
+  <Card title="Repo maintenance" icon="git-branch">
+    Manage branches/tags, review discussions or PRs, and check security scan results before merging
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="huggingface_text_generation or other inference calls return a 503">
+    Serverless Inference API models can be cold and need to load — retry after a short delay, or use `huggingface_create_inference_endpoint` for a model you call frequently to avoid cold starts entirely.
+  </Accordion>
+  <Accordion title="huggingface_get_dataset_rows is slow or times out on a large dataset">
+    Prefer `huggingface_filter_dataset_rows` with a specific filter, or `huggingface_list_parquet_files` plus your own processing, rather than paging through an entire large dataset via rows.
+  </Accordion>
+  <Accordion title="huggingface_create_model_repo or dataset/space equivalents fail with a permissions error">
+    Repos created under an organization namespace require the token's account to be a member with write access to that organization — check `huggingface_list_organization_members` or create the repo under your personal namespace instead.
+  </Accordion>
+</AccordionGroup>

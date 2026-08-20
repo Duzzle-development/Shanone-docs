@@ -1,0 +1,85 @@
+---
+title: "Browserbase"
+description: "Run cloud browser sessions and agents — page automation, screenshots, functions, and session recordings"
+icon: /images/browserbase.svg
+---
+
+# Browserbase
+
+Shanone's Browserbase integration gives your agent 63 tools for headless cloud browsers — session and context management, low-level page actions (click, navigate, screenshot), higher-level browser agents, and serverless functions that run inside a browser context.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Browserbase API key">
+    In the Browserbase dashboard, go to **Settings** and copy your API key (and optionally your Project ID).
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to browse a page or run a browser task, or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the key is stored, `shanone_execute_tool` calls for `browserbase_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **63 tools** for Browserbase, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Sessions">
+    `browserbase_create_session`, `browserbase_get_session`, `browserbase_list_sessions`, `browserbase_update_session`, `browserbase_get_session_live_urls`, `browserbase_get_session_logs`, `browserbase_get_session_replay`, `browserbase_create_recording_downloads`, `browserbase_list_recording_downloads`
+  </Accordion>
+  <Accordion title="Page actions">
+    `browserbase_page_navigate`, `browserbase_page_go_back`, `browserbase_page_go_forward`, `browserbase_page_get_elements`, `browserbase_page_click`, `browserbase_page_input`, `browserbase_page_form_fill`, `browserbase_page_scroll`, `browserbase_page_screenshot`, `browserbase_page_get_text`, `browserbase_page_get_markdown`, `browserbase_page_evaluate`
+  </Accordion>
+  <Accordion title="Agents & runs">
+    `browserbase_create_agent`, `browserbase_get_agent`, `browserbase_update_agent`, `browserbase_delete_agent`, `browserbase_list_agents`, `browserbase_run_agent`, `browserbase_get_run`, `browserbase_list_runs`, `browserbase_stop_run`, `browserbase_list_run_messages`, `browserbase_wait_for_run`
+  </Accordion>
+  <Accordion title="Functions">
+    `browserbase_create_function`, `browserbase_get_function`, `browserbase_list_functions`, `browserbase_list_function_versions`, `browserbase_get_function_version`, `browserbase_get_function_build`, `browserbase_get_function_build_logs`, `browserbase_invoke_function`, `browserbase_get_invocation`, `browserbase_list_invocations`
+  </Accordion>
+  <Accordion title="Contexts & extensions">
+    `browserbase_create_context`, `browserbase_get_context`, `browserbase_update_context`, `browserbase_delete_context`, `browserbase_upload_extension`, `browserbase_get_extension`, `browserbase_delete_extension`
+  </Accordion>
+  <Accordion title="Certificates">
+    `browserbase_upload_certificate`, `browserbase_get_certificate`, `browserbase_list_certificates`, `browserbase_delete_certificate`
+  </Accordion>
+  <Accordion title="Session artifacts (downloads & uploads)">
+    `browserbase_list_downloads`, `browserbase_get_download`, `browserbase_delete_download`, `browserbase_delete_session_downloads`, `browserbase_upload_file_to_session`
+  </Accordion>
+  <Accordion title="Projects & fetch/search">
+    `browserbase_get_project`, `browserbase_list_projects`, `browserbase_get_project_usage`, `browserbase_fetch_page`, `browserbase_web_search`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Automated form submission" icon="mouse-pointer-click">
+    Navigate to a form, fill it with `browserbase_page_form_fill`, and submit it
+  </Card>
+  <Card title="Site content extraction" icon="file-text">
+    Fetch a page and pull it as clean Markdown with `browserbase_page_get_markdown` for downstream processing
+  </Card>
+  <Card title="End-to-end agent tasks" icon="bot">
+    Run a browser agent against a multi-step goal (e.g. "check availability and book a slot") and poll until it completes
+  </Card>
+  <Card title="Session debugging & replay" icon="video">
+    Pull session logs and a replay recording to diagnose why an automation failed
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="browserbase_page_click or browserbase_page_input can't find the target element">
+    Call `browserbase_page_get_elements` first to get up-to-date selectors — dynamic pages can re-render elements between actions, invalidating stale selectors.
+  </Accordion>
+  <Accordion title="browserbase_run_agent takes a long time to return">
+    Agent runs are asynchronous; use `browserbase_wait_for_run` to block until completion, or poll `browserbase_get_run` if you need to do other work in between.
+  </Accordion>
+  <Accordion title="A file downloaded during a session doesn't show up afterward">
+    Use `browserbase_list_downloads` for that session to retrieve the download reference, then `browserbase_get_download` — downloads aren't automatically persisted outside the session's artifact storage.
+  </Accordion>
+</AccordionGroup>

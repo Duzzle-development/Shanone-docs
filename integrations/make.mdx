@@ -1,0 +1,70 @@
+---
+title: "Make"
+description: "Manage Make (Integromat) scenarios — activate, run, and monitor automation workflows and their connections"
+icon: /images/make.svg
+---
+
+# Make
+
+Shanone's Make integration gives your agent 11 tools for controlling scenarios and inspecting the connections, data stores, and webhooks that power them.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Make API key">
+    In your Make account, go to **Profile > API** and generate an API token with the scopes you need (scenarios, connections, etc.).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations > Make** in the Shanone dashboard and paste the API key in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `make_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **11 tools** for Make, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Scenarios">
+    `make_list_scenarios`, `make_get_scenario`, `make_activate_scenario`, `make_deactivate_scenario`, `make_run_scenario`, `make_delete_scenario`
+  </Accordion>
+  <Accordion title="Logs & usage">
+    `make_list_scenario_logs`, `make_list_scenario_usage`
+  </Accordion>
+  <Accordion title="Resources">
+    `make_list_hooks`, `make_list_connections`, `make_list_data_stores`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Scenario health checks" icon="activity">
+    List active scenarios and check recent run logs for errors
+  </Card>
+  <Card title="On-demand automation" icon="play">
+    Trigger `make_run_scenario` in response to an external event or agent decision
+  </Card>
+  <Card title="Maintenance windows" icon="pause">
+    Deactivate scenarios before a planned change, then reactivate afterward
+  </Card>
+  <Card title="Usage auditing" icon="bar-chart">
+    Pull operation usage per scenario to spot runaway automations
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="make_run_scenario succeeds but nothing changes downstream">
+    Check `make_list_scenario_logs` right after the run — Make scenarios can complete without error even when a step is skipped due to a filter or empty input.
+  </Accordion>
+  <Accordion title="Can't find a scenario by name">
+    `make_list_scenarios` doesn't support name filtering; list all scenarios and match by name or team ID client-side.
+  </Accordion>
+  <Accordion title="Scenario won't deactivate">
+    Scenarios currently mid-run can't be deactivated until the run finishes; check `make_list_scenario_logs` for an in-progress execution first.
+  </Accordion>
+</AccordionGroup>

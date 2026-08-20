@@ -1,0 +1,85 @@
+---
+title: "Composio"
+description: "Unified access to 1000+ external services — toolkits, tool execution, connected accounts, and triggers"
+icon: /images/composio.svg
+---
+
+# Composio
+
+Shanone's Composio integration gives your agent 60 tools for Composio itself: a meta-layer that discovers and executes tools across 1000+ external services (GitHub, Gmail, Slack, and more) through managed OAuth/API key connections.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Composio API Key">
+    Sign in to [app.composio.dev](https://app.composio.dev) and copy your API Key from **Settings**.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Composio, and paste in the API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `composio_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **60 tools** for Composio, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Tool Router (Sessions)">
+    `composio_create_router_session`, `composio_get_router_session`, `composio_update_router_session`, `composio_attach_to_session`, `composio_search_session_tools`, `composio_list_session_tools`, `composio_execute_session_tool`, `composio_execute_session_meta_tool`, `composio_create_session_link`, `composio_list_session_toolkits`, `composio_get_session_config_history`, `composio_execute_session_proxy`
+  </Accordion>
+  <Accordion title="Triggers">
+    `composio_list_active_triggers`, `composio_upsert_trigger`, `composio_delete_trigger`, `composio_enable_trigger`, `composio_disable_trigger`, `composio_list_trigger_types`, `composio_get_trigger_type`, `composio_list_trigger_type_enums`, `composio_search_trigger_types`, `composio_get_trigger_status`
+  </Accordion>
+  <Accordion title="Connected Accounts">
+    `composio_list_connected_accounts`, `composio_get_connected_account`, `composio_create_connected_account`, `composio_update_connected_account`, `composio_delete_connected_account`, `composio_refresh_connected_account`, `composio_revoke_connected_account`, `composio_enable_connected_account`, `composio_disable_connected_account`
+  </Accordion>
+  <Accordion title="Toolkits">
+    `composio_list_toolkits`, `composio_get_toolkit`, `composio_list_toolkit_categories`, `composio_get_multiple_toolkits`, `composio_get_toolkit_changelog`, `composio_search_toolkits`, `composio_list_toolkit_tools`, `composio_get_toolkit_auth_methods`
+  </Accordion>
+  <Accordion title="Auth Configs">
+    `composio_list_auth_configs`, `composio_get_auth_config`, `composio_create_auth_config`, `composio_update_auth_config`, `composio_delete_auth_config`, `composio_enable_auth_config`, `composio_disable_auth_config`, `composio_get_session_info`
+  </Accordion>
+  <Accordion title="Tools">
+    `composio_list_tools`, `composio_get_tool`, `composio_execute_tool`, `composio_execute_tool_with_text`, `composio_generate_tool_input`, `composio_execute_proxy`, `composio_get_required_scopes`
+  </Accordion>
+  <Accordion title="Tool Search">
+    `composio_search_tools`, `composio_get_tools_enum`, `composio_find_tool_for_task`
+  </Accordion>
+  <Accordion title="Auth Link">
+    `composio_create_auth_link`, `composio_get_auth_link_status`, `composio_wait_for_connection`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meta-orchestration" icon="workflow">
+    Use Composio as a bridge to call a service Shanone doesn't natively integrate yet
+  </Card>
+  <Card title="Dynamic tool discovery" icon="search">
+    Search across 1000+ toolkits at runtime and execute the best-matching tool for a task
+  </Card>
+  <Card title="Managed OAuth for third parties" icon="link">
+    Generate an auth link, wait for the user to connect an external account, then execute against it
+  </Card>
+  <Card title="Event-driven automation" icon="zap">
+    Set up a trigger on an external service and react when it fires
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="composio_execute_tool fails with a missing connected account error">
+    The target toolkit needs its own connected account first — use `composio_create_auth_link` to get an authorization URL, have the end user complete it, then poll `composio_wait_for_connection` before executing.
+  </Accordion>
+  <Accordion title="composio_search_tools returns too many irrelevant results">
+    Narrow the query with a specific `toolkit_slug` filter, or use `composio_find_tool_for_task` instead, which is tuned to return a single best match for a natural-language task description.
+  </Accordion>
+  <Accordion title="Tool Router session tools disappear after some time">
+    Router sessions (`composio_create_router_session`) are time-scoped; check `composio_get_router_session` for its expiry and call `composio_update_router_session` or create a new session if it has lapsed.
+  </Accordion>
+</AccordionGroup>

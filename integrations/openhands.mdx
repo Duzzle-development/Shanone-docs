@@ -1,0 +1,67 @@
+---
+title: "OpenHands"
+description: "Run and manage OpenHands AI coding agent conversations from your own agent"
+icon: /images/openhands.svg
+---
+
+# OpenHands
+
+Shanone's OpenHands integration gives your agent 8 tools for driving [OpenHands](https://all-hands.dev) coding-agent conversations — creating, messaging, and monitoring autonomous coding sessions without leaving your Shanone workflow.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create an OpenHands API key">
+    Generate a key from your [OpenHands Cloud settings](https://app.all-hands.dev/settings/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select OpenHands, and paste in the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `openhands_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **8 tools** for OpenHands, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Conversations">
+    `openhands_list_conversations`, `openhands_get_conversation`, `openhands_create_conversation`, `openhands_start_conversation`, `openhands_stop_conversation`, `openhands_delete_conversation`
+  </Accordion>
+  <Accordion title="Messaging & events">
+    `openhands_send_message`, `openhands_get_conversation_events`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Delegate coding tasks" icon="terminal">
+    Create an OpenHands conversation, describe a bug or feature, and let it work autonomously
+  </Card>
+  <Card title="Progress monitoring" icon="activity">
+    Poll `openhands_get_conversation_events` to summarize what an agent has done so far
+  </Card>
+  <Card title="Multi-agent handoff" icon="git-branch">
+    Kick off several conversations for independent tasks and check on all of them from one place
+  </Card>
+  <Card title="Session cleanup" icon="trash-2">
+    List stale conversations and stop or delete the ones that finished or stalled
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="openhands_create_conversation succeeds but the agent never starts working">
+    Creating a conversation and starting it are separate steps — call `openhands_start_conversation` afterward, or check the tool schema to see if it accepts a start flag directly.
+  </Accordion>
+  <Accordion title="openhands_send_message doesn't seem to reach a stopped conversation">
+    Messages can only be sent to an active conversation. Check its state with `openhands_get_conversation` first, and restart it with `openhands_start_conversation` if it's stopped.
+  </Accordion>
+  <Accordion title="openhands_get_conversation_events response is very large">
+    Long-running conversations accumulate many events (tool calls, file edits, terminal output). Request events incrementally rather than replaying the full history on every poll.
+  </Accordion>
+</AccordionGroup>

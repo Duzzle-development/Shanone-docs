@@ -1,0 +1,82 @@
+---
+title: "Modal"
+description: "Modalのサーバーレスクラウドでコードを実行 — サンドボックス、関数、ボリューム、Dict、キュー、シークレット"
+icon: "server"
+---
+
+# Modal
+
+ShanoneのModal連携は、サンドボックス内でのコマンド・関数の実行と、それを支えるストレージプリミティブ(ボリューム、Dict、キュー、シークレット)を管理する49個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Modalトークンを作成する">
+    Modalアカウントで**Settings > API Tokens**に移動し、トークンを作成します——自動化用途にはService Userトークンが推奨されます。これによりトークンIDとトークンシークレットが発行されます。
+  </Step>
+  <Step title="Shanoneに両方の値を追加する">
+    Shanoneダッシュボードの**Integrations > Modal**で、トークンIDとトークンシークレットの両方を入力します——どちらも必須です。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`modal_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはModal向けに**49個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="サンドボックス">
+    `modal_create_sandbox`, `modal_get_sandbox`, `modal_list_sandboxes`, `modal_wait_sandbox`, `modal_terminate_sandbox`, `modal_set_sandbox_tags`, `modal_get_sandbox_tags`, `modal_lookup_app`
+  </Accordion>
+  <Accordion title="コマンド & プロセス">
+    `modal_exec_command`, `modal_run_command_background`, `modal_get_background_output`, `modal_check_process_status`, `modal_kill_process`
+  </Accordion>
+  <Accordion title="サンドボックスのファイルシステム">
+    `modal_sandbox_list_files`, `modal_sandbox_read_file`, `modal_sandbox_write_file`, `modal_sandbox_make_directory`, `modal_sandbox_remove_file`, `modal_sandbox_stat_file`, `modal_sandbox_get_tunnels`
+  </Accordion>
+  <Accordion title="関数">
+    `modal_call_function`, `modal_spawn_function`, `modal_get_function_call_result`, `modal_cancel_function_call`, `modal_map_function`, `modal_call_class_method`
+  </Accordion>
+  <Accordion title="ボリューム">
+    `modal_create_volume`, `modal_list_volumes`, `modal_delete_volume`, `modal_volume_list_files`, `modal_volume_read_file`, `modal_volume_write_file`, `modal_volume_remove_file`, `modal_volume_copy_files`
+  </Accordion>
+  <Accordion title="Dict & キュー">
+    `modal_create_dict`, `modal_dict_put`, `modal_dict_get`, `modal_dict_pop`, `modal_delete_dict`, `modal_create_queue`, `modal_queue_put`, `modal_queue_get`, `modal_delete_queue`
+  </Accordion>
+  <Accordion title="シークレット & ワークスペース">
+    `modal_create_secret`, `modal_list_secrets`, `modal_delete_secret`, `modal_get_workspace_billing_summary`, `modal_list_workspace_members`, `modal_list_workspace_proxy_tokens`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="一時的なコード実行" icon="terminal">
+    サンドボックスを起動してスクリプトを実行し、その出力を読み取る
+  </Card>
+  <Card title="長時間実行されるジョブ" icon="clock">
+    単一の呼び出しでブロックするのではなく、バックグラウンドコマンドを実行して出力をポーリングする
+  </Card>
+  <Card title="実行間の状態共有" icon="database">
+    Dictやキューを使って、別々のサンドボックス/関数呼び出し間でデータをやり取りする
+  </Card>
+  <Card title="コスト管理" icon="dollar-sign">
+    バッチジョブをスケールアップする前に、ワークスペースの利用料サマリーを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="modal_exec_commandが長時間ジョブでタイムアウトする">
+    代わりに`modal_run_command_background`を使い、`modal_get_background_output`と`modal_check_process_status`をポーリングしてください——`modal_exec_command`はプロセスの実行が終わるまでブロックします。
+  </Accordion>
+  <Accordion title="modal_call_functionがnot-foundエラーで失敗する">
+    まず`modal_lookup_app`でアプリが実際にデプロイされ実行中であることを確認してください——関数呼び出しはワークスペース内の任意のコードではなく、特定のデプロイ済みアプリ/関数名を対象とします。
+  </Accordion>
+  <Accordion title="サンドボックスのファイルシステムへの書き込みが、サンドボックス終了後に消えてしまう">
+    サンドボックスのファイルシステムは一時的なものです——永続化したいデータは、サンドボックスのローカルファイルシステムではなく`modal_volume_write_file`を使ってVolumeに書き込んでください。
+  </Accordion>
+</AccordionGroup>

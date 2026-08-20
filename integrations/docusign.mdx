@@ -1,0 +1,88 @@
+---
+title: "DocuSign"
+description: "Send, sign, and manage electronic signature envelopes — templates, recipients, documents, and account administration"
+icon: /images/docusign.svg
+---
+
+# DocuSign
+
+Shanone's DocuSign integration gives your agent 144 tools covering the full eSignature lifecycle — envelopes, templates, recipients, documents, and the account/billing administration that most integrations leave out.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with DocuSign (e.g. "send this contract for signature"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the DocuSign account">
+    Approve DocuSign's OAuth consent screen for the account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `docusign_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **144 tools** for DocuSign, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Envelopes">
+    `docusign_create_envelope`, `docusign_send_envelope`, `docusign_get_envelope`, `docusign_list_envelopes`, `docusign_update_envelope`, `docusign_void_envelope`, `docusign_delete_envelope`, `docusign_get_envelope_status`, `docusign_list_status_changes`, `docusign_get_audit_events`, `docusign_get_notification_settings`, `docusign_update_notification_settings`, `docusign_list_custom_fields`, `docusign_create_custom_field`, `docusign_update_custom_field`, `docusign_create_envelope_from_template`
+  </Accordion>
+  <Accordion title="Recipients">
+    `docusign_list_recipients`, `docusign_add_recipients`, `docusign_update_recipients`, `docusign_delete_recipient`, `docusign_list_recipient_tabs`, `docusign_create_recipient_tabs`, `docusign_update_recipient_tabs`, `docusign_delete_recipient_tabs`, `docusign_create_recipient_preview`, `docusign_get_recipient_signature`, `docusign_get_recipient_initials_image`, `docusign_get_recipient_signature_image`
+  </Accordion>
+  <Accordion title="Documents">
+    `docusign_list_documents`, `docusign_get_document`, `docusign_add_document`, `docusign_update_document`, `docusign_delete_document`, `docusign_get_combined_document`, `docusign_get_document_page_image`, `docusign_list_document_fields`, `docusign_create_document_fields`, `docusign_update_document_fields`
+  </Accordion>
+  <Accordion title="Views">
+    `docusign_create_recipient_view`, `docusign_create_shared_recipient_view`, `docusign_create_sender_view`, `docusign_create_edit_view`, `docusign_create_correct_view`, `docusign_create_console_view`, `docusign_create_template_edit_view`, `docusign_create_template_recipient_preview`
+  </Accordion>
+  <Accordion title="Templates">
+    `docusign_list_templates`, `docusign_get_template`, `docusign_create_template`, `docusign_update_template`, `docusign_delete_template`, `docusign_get_template_sharing`, `docusign_share_template`, `docusign_list_favorite_templates`, `docusign_add_favorite_template`, `docusign_remove_favorite_template`, `docusign_get_template_lock`, `docusign_list_template_recipients`, `docusign_add_template_recipients`, `docusign_update_template_recipients`, `docusign_delete_template_recipient`, `docusign_list_template_documents`, `docusign_get_template_document`, `docusign_add_template_document`, `docusign_delete_template_document`, `docusign_list_template_recipient_tabs`, `docusign_update_template_recipient_tabs`
+  </Accordion>
+  <Accordion title="Users & contacts">
+    `docusign_list_users`, `docusign_get_user`, `docusign_create_user`, `docusign_update_user`, `docusign_delete_user`, `docusign_list_contacts`, `docusign_get_contact`, `docusign_create_contacts`, `docusign_update_contact`, `docusign_delete_contacts`, `docusign_get_user_signature`, `docusign_update_user_signature`
+  </Accordion>
+  <Accordion title="Account & billing">
+    `docusign_get_account_info`, `docusign_get_account_settings`, `docusign_update_account_settings`, `docusign_list_brands`, `docusign_get_brand`, `docusign_create_brand`, `docusign_update_brand`, `docusign_delete_brand`, `docusign_list_permission_profiles`, `docusign_get_permission_profile`, `docusign_create_permission_profile`, `docusign_update_permission_profile`, `docusign_delete_permission_profile`, `docusign_list_account_custom_fields`, `docusign_list_groups`, `docusign_get_billing_plan`, `docusign_list_billing_plans`, `docusign_get_credit_card_info`, `docusign_purchase_envelopes`, `docusign_list_invoices`, `docusign_get_invoice`, `docusign_list_past_due_invoices`, `docusign_list_payments`, `docusign_get_payment`, `docusign_create_payment`
+  </Accordion>
+  <Accordion title="Bulk send, Connect & signing groups">
+    `docusign_list_bulk_send_lists`, `docusign_get_bulk_send_list`, `docusign_create_bulk_send_list`, `docusign_update_bulk_send_list`, `docusign_delete_bulk_send_list`, `docusign_create_bulk_send_request`, `docusign_get_bulk_send_batch_status`, `docusign_list_bulk_send_batch_envelopes`, `docusign_list_connect_configs`, `docusign_get_connect_config`, `docusign_create_connect_config`, `docusign_update_connect_config`, `docusign_delete_connect_config`, `docusign_list_connect_logs`, `docusign_get_connect_log`, `docusign_delete_connect_logs`, `docusign_retry_connect_event`, `docusign_list_connect_failures`, `docusign_list_signing_groups`, `docusign_get_signing_group`, `docusign_create_signing_group`, `docusign_update_signing_group`, `docusign_delete_signing_group`, `docusign_list_signing_group_users`, `docusign_add_signing_group_users`, `docusign_delete_signing_group_users`
+  </Accordion>
+  <Accordion title="PowerForms, folders & workspaces">
+    `docusign_list_powerforms`, `docusign_get_powerform`, `docusign_create_powerform`, `docusign_update_powerform`, `docusign_delete_powerform`, `docusign_list_powerform_senders`, `docusign_list_folders`, `docusign_get_folder_items`, `docusign_move_envelopes_to_folder`, `docusign_list_workspaces`, `docusign_get_workspace`, `docusign_create_workspace`, `docusign_update_workspace`, `docusign_delete_workspace`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Contract dispatch" icon="file-signature">
+    Build an envelope from a template, add recipients, and send it for signature in one flow
+  </Card>
+  <Card title="Signature status tracking" icon="list-checks">
+    Poll envelope status and audit events to know exactly when a contract is fully executed
+  </Card>
+  <Card title="Bulk sending" icon="send">
+    Send the same template to a large recipient list via bulk send lists and batches
+  </Card>
+  <Card title="Brand-consistent workspaces" icon="folder-open">
+    Organize envelopes into folders/workspaces and keep templates on-brand
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="docusign_send_envelope fails with a recipient routing error">
+    Check `docusign_list_recipients` and `docusign_list_recipient_tabs` first — DocuSign requires signature/initial tabs to be anchored to a valid document and recipient before the envelope can be sent.
+  </Accordion>
+  <Accordion title="Template-based envelope is missing fields">
+    Templates carry their own recipient/tab definitions; use `docusign_create_envelope_from_template` and only override recipient roles that need to change rather than rebuilding tabs from scratch.
+  </Accordion>
+  <Accordion title="Billing or account-admin tools return a permissions error">
+    Account settings, brands, and billing tools (`docusign_update_account_settings`, `docusign_get_billing_plan`, etc.) require an admin-level DocuSign user; verify the connected account has admin membership in `docusign_get_account_info`.
+  </Accordion>
+</AccordionGroup>

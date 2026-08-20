@@ -1,0 +1,67 @@
+---
+title: "OpenAI"
+description: "Generate and edit images, and run OpenAI's Deep Research agent from your agent"
+icon: /images/openai.svg
+---
+
+# OpenAI
+
+Shanone's OpenAI integration gives your agent 4 tools for image generation/editing and asynchronous Deep Research — a focused set built on top of OpenAI's own API, separate from whichever model powers your agent itself.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create an OpenAI API key">
+    Generate a key from the [OpenAI API keys page](https://platform.openai.com/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select OpenAI, and paste in the key (`sk-proj-...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `openai_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **4 tools** for OpenAI, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Images">
+    `openai_generate_image`, `openai_edit_image` — generate images from a text prompt or edit an existing image (e.g. inpainting, style changes) via DALL-E/GPT-Image models
+  </Accordion>
+  <Accordion title="Deep Research">
+    `openai_deep_research`, `openai_get_research_status` — kick off an asynchronous, multi-step research task and poll it for completion, useful for reports that take longer than a single request
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Marketing visuals" icon="image">
+    Generate hero images or product mockups from a text description
+  </Card>
+  <Card title="Image edits" icon="wand-2">
+    Edit an existing image (background removal, style transfer, inpainting) without leaving the chat
+  </Card>
+  <Card title="Long-form research reports" icon="file-search">
+    Kick off Deep Research on a complex topic and check back once it's done instead of blocking on a single call
+  </Card>
+  <Card title="Async pipelines" icon="workflow">
+    Poll `openai_get_research_status` from a scheduled job to pick up completed research automatically
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="openai_generate_image or openai_edit_image returns an authentication error">
+    Confirm the API key saved in **Integrations** starts with `sk-proj-` (or `sk-`) and belongs to a project with image generation enabled — some organization-level keys restrict model access.
+  </Accordion>
+  <Accordion title="openai_deep_research never seems to finish">
+    Deep Research runs asynchronously and can take several minutes for complex topics. Call `openai_get_research_status` with the returned task ID periodically rather than expecting a single synchronous response.
+  </Accordion>
+  <Accordion title="Image edits don't match the requested region">
+    `openai_edit_image` relies on a mask to target specific regions — if no mask is supplied, the whole image may be regenerated. Check the exact payload shape with `shanone_get_tool_schema` for `openai_edit_image`.
+  </Accordion>
+</AccordionGroup>

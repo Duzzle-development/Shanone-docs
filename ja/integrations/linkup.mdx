@@ -1,0 +1,67 @@
+---
+title: "Linkup"
+description: "AI最適化されたWeb検索・ページ取得・ディープリサーチ — 長時間実行される非同期リサーチタスクにも対応"
+icon: /images/linkup.svg
+---
+
+# Linkup
+
+ShanoneのLinkup連携は、AI最適化されたWeb検索、単一ページの取得、複数ステップのディープリサーチを行う4個のツールをエージェントに提供します。非同期のリサーチタスクを開始し、結果をポーリングすることもできます。
+
+## はじめに
+
+<Steps>
+  <Step title="Linkup APIキーを取得する">
+    [linkup.so](https://linkup.so)でサインアップし、ダッシュボードの**API Keys**ページからAPIキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**Integrations > Linkup**で、そのキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`linkup_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはLinkup向けに**4個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="検索 & 取得">
+    `linkup_search`, `linkup_fetch` — LLMでの利用に最適化された自然言語Web検索を実行するか、単一URLのコンテンツを取得・抽出する
+  </Accordion>
+  <Accordion title="ディープリサーチ">
+    `linkup_research`, `linkup_tasks` — あるトピックについて複数ステップのディープリサーチタスクを開始し、`linkup_tasks`で非同期タスクのステータスと結果をポーリングする
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="競合調査" icon="search">
+    競合の最近のプロダクト発表をWebで検索する
+  </Card>
+  <Card title="ファクトチェック" icon="check-circle">
+    特定のページを取得し、その内容に対して主張を検証する
+  </Card>
+  <Card title="ディープダイブレポート" icon="file-text">
+    あるトピックについて`linkup_research`を実行し、結果から出典付きレポートを組み立てる
+  </Card>
+  <Card title="引用元の収集" icon="link">
+    ドキュメント内の記述を裏付けるURLやスニペットを収集する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="linkup_researchがなかなか完了しない">
+    ディープリサーチタスクは非同期で実行されます——`linkup_research`はすぐにタスクIDを返します。ステータスがrunningからcompletedに変わるまで、そのIDで`linkup_tasks`をポーリングしてください。
+  </Accordion>
+  <Accordion title="linkup_fetchの内容が空または途中で切れる">
+    一部のページは自動取得をブロックしていたり、JavaScriptでクライアント側にコンテンツをレンダリングしています。`linkup_fetch`は静的で公開アクセス可能なページで最も安定して動作します。
+  </Accordion>
+  <Accordion title="linkup_searchの検索結果がトピックとずれている">
+    Linkupの検索はキーワード文字列ではなく自然言語のクエリに最適化されています——質問文や説明的な文章としてクエリを表現すると、より良い結果が得られます。
+  </Accordion>
+</AccordionGroup>

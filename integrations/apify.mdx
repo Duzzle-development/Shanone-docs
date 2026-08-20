@@ -1,0 +1,70 @@
+---
+title: "Apify"
+description: "Run Apify Actors for web scraping and automation, and retrieve their run results and datasets"
+icon: /images/apify.svg
+---
+
+# Apify
+
+Shanone's Apify integration gives your agent 6 tools for running and managing Actors — Apify's cloud programs for web scraping, data extraction, and browser automation — plus retrieving their output datasets.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get an Apify API token">
+    In the Apify Console, go to **Settings > Integrations** and copy your personal API token.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to run an Apify Actor (e.g. "scrape this Google Maps search with Apify"), or add the API token proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the token is stored, `shanone_execute_tool` calls for `apify_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **6 tools** for Apify:
+
+<AccordionGroup>
+  <Accordion title="Running Actors">
+    `apify_run_actor` — start an Actor by ID or by a built-in alias (e.g. `google_maps`, `instagram`, `web_scraper`), optionally waiting for completion and returning dataset items
+  </Accordion>
+  <Accordion title="Run management">
+    `apify_get_run_status`, `apify_abort_run`, `apify_list_runs`
+  </Accordion>
+  <Accordion title="Actors & datasets">
+    `apify_list_actors`, `apify_get_dataset`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Lead list scraping" icon="database">
+    Run a Google Maps or LinkedIn Actor and pull the resulting dataset into a CRM
+  </Card>
+  <Card title="Competitive price tracking" icon="tag">
+    Scrape a competitor's e-commerce listings on a schedule and diff the results over time
+  </Card>
+  <Card title="Long-running scrape monitoring" icon="clock">
+    Start an Actor without waiting, then poll `apify_get_run_status` until it succeeds
+  </Card>
+  <Card title="Social content collection" icon="messages-square">
+    Pull recent posts or profile data from Instagram, TikTok, or Twitter Actors for analysis
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="apify_run_actor times out on a large scrape">
+    `wait_for_completion` polls for up to 600 seconds. For longer-running Actors, call `apify_run_actor` with `wait_for_completion: false` and poll `apify_get_run_status` separately.
+  </Accordion>
+  <Accordion title="apify_get_dataset returns fewer items than expected">
+    Results are capped by the `limit` parameter (default 100). Increase `limit` or paginate with `offset` to retrieve the full dataset.
+  </Accordion>
+  <Accordion title="An Actor alias like 'instagram' resolves to the wrong Actor">
+    Built-in aliases map to a maintainer's default Actor ID for that use case; pass the exact Actor ID (e.g. `username/actor-name`) instead of an alias if you need a specific Actor.
+  </Accordion>
+</AccordionGroup>

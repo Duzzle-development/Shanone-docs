@@ -1,0 +1,85 @@
+---
+title: "SmartHR"
+description: "Manage employee records, org structure, and payroll — crews, departments, grades, and payslips"
+icon: /images/smarthr.svg
+---
+
+# SmartHR
+
+Shanone's SmartHR integration gives your agent 111 tools covering the full employee lifecycle in SmartHR — crew (employee) records, dependents, organizational structure, and payroll/tax documents — making it well suited for HR operations in Japanese companies using SmartHR.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an Access Token">
+    In SmartHR, go to your company's API settings and generate an access token for the tenant you want Shanone to operate on.
+  </Step>
+  <Step title="Connect the API key in Shanone">
+    Ask your agent to do something with SmartHR (e.g. "list all crews in the Sales department"), or add the Access Token and your company Subdomain proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `smarthr_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **111 tools** for SmartHR, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Crews (employees)">
+    `smarthr_list_crews`, `smarthr_get_crew`, `smarthr_create_crew`, `smarthr_update_crew`, `smarthr_delete_crew`, `smarthr_invite_crew`, `smarthr_delete_crew_departments`, `smarthr_partial_update_crew`, `smarthr_list_crew_input_forms`, `smarthr_get_crew_input_form`
+  </Accordion>
+  <Accordion title="Crew custom fields">
+    `smarthr_list_crew_custom_field_groups`, `smarthr_get_crew_custom_field_group`, `smarthr_create_crew_custom_field_group`, `smarthr_update_crew_custom_field_group`, `smarthr_delete_crew_custom_field_group`, `smarthr_list_crew_custom_field_templates`, `smarthr_get_crew_custom_field_template`, `smarthr_create_crew_custom_field_template`, `smarthr_update_crew_custom_field_template`, `smarthr_delete_crew_custom_field_template`
+  </Accordion>
+  <Accordion title="Dependents">
+    `smarthr_list_dependents`, `smarthr_get_dependent`, `smarthr_create_dependent`, `smarthr_update_dependent`, `smarthr_delete_dependent`, `smarthr_list_dependent_custom_field_templates`, `smarthr_list_dependent_relations`, `smarthr_list_maternity_childcare_leaves`
+  </Accordion>
+  <Accordion title="Organizational structure">
+    `smarthr_list_departments`, `smarthr_get_department`, `smarthr_create_department`, `smarthr_update_department`, `smarthr_delete_department`, `smarthr_discontinue_department`, `smarthr_list_biz_establishments`, `smarthr_get_biz_establishment`, `smarthr_create_biz_establishment`, `smarthr_update_biz_establishment`, `smarthr_list_grades`, `smarthr_get_grade`, `smarthr_create_grade`, `smarthr_update_grade`, `smarthr_delete_grade`, `smarthr_list_job_categories`, `smarthr_get_job_category`, `smarthr_create_job_category`, `smarthr_update_job_category`, `smarthr_delete_job_category`, `smarthr_get_job_title`, `smarthr_create_job_title`, `smarthr_update_job_title`, `smarthr_delete_job_title`, `smarthr_get_employment_type`, `smarthr_create_employment_type`, `smarthr_update_employment_type`, `smarthr_delete_employment_type`, `smarthr_list_recruitment_types`, `smarthr_get_recruitment_type`, `smarthr_create_recruitment_type`, `smarthr_update_recruitment_type`, `smarthr_delete_recruitment_type`, `smarthr_list_employment_types`, `smarthr_list_job_titles`, `smarthr_get_company`, `smarthr_list_payrolls`, `smarthr_list_users`
+  </Accordion>
+  <Accordion title="Payroll & tax">
+    `smarthr_list_payment_periods`, `smarthr_get_payment_period`, `smarthr_get_payroll`, `smarthr_create_payroll`, `smarthr_update_payroll`, `smarthr_delete_payroll`, `smarthr_fix_payroll`, `smarthr_unfix_payroll`, `smarthr_publish_payroll`, `smarthr_list_payslips`, `smarthr_get_payslip`, `smarthr_create_payslip`, `smarthr_delete_payslip`, `smarthr_bulk_create_payslips`, `smarthr_list_tax_withholdings`, `smarthr_get_tax_withholding`, `smarthr_create_tax_withholding`, `smarthr_update_tax_withholding`, `smarthr_delete_tax_withholding`, `smarthr_list_tax_withholding_slips`, `smarthr_get_tax_withholding_slip`, `smarthr_create_tax_withholding_slip`, `smarthr_update_tax_withholding_slip`, `smarthr_delete_tax_withholding_slip`, `smarthr_list_bank_account_settings`
+  </Accordion>
+  <Accordion title="Users & SAML">
+    `smarthr_get_user`, `smarthr_get_user_saml`, `smarthr_create_user_saml`, `smarthr_update_user_saml`, `smarthr_delete_user_saml`, `smarthr_enable_user_saml`, `smarthr_disable_user_saml`
+  </Accordion>
+  <Accordion title="Batch jobs & mail formats">
+    `smarthr_list_batch_jobs`, `smarthr_get_batch_job`, `smarthr_create_crew_export_job`, `smarthr_create_crew_import_job`, `smarthr_create_dependent_import_job`, `smarthr_get_batch_job_attachment_file`, `smarthr_list_mail_formats`, `smarthr_get_mail_format`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `smarthr_list_webhooks`, `smarthr_get_webhook`, `smarthr_create_webhook`, `smarthr_update_webhook`, `smarthr_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Onboarding automation" icon="user-plus">
+    Create a new crew record, assign their department/grade, and send the invite email
+  </Card>
+  <Card title="Org chart reporting" icon="sitemap">
+    List departments and crews to build a current headcount breakdown by department
+  </Card>
+  <Card title="Payroll batch prep" icon="banknote">
+    Bulk-create payslips for a payment period and check which ones are still unpublished
+  </Card>
+  <Card title="Bulk data import/export" icon="database">
+    Kick off a crew export or import batch job and poll it until completion
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Every call fails with an authentication error">
+    SmartHR requires both the Access Token and your tenant's Subdomain — the subdomain determines which company's data the API operates on. Check both are set in **Integrations**.
+  </Accordion>
+  <Accordion title="smarthr_delete_department or smarthr_delete_crew fails unexpectedly">
+    SmartHR often blocks deletion of departments/crews that are still referenced elsewhere (e.g. a department with active crews). Use `smarthr_discontinue_department` or reassign crews first.
+  </Accordion>
+  <Accordion title="A batch job (export/import) never seems to finish">
+    Batch jobs created with `smarthr_create_crew_export_job` or `smarthr_create_crew_import_job` run asynchronously — poll `smarthr_get_batch_job` with the returned job ID until its status changes, then fetch the result with `smarthr_get_batch_job_attachment_file`.
+  </Accordion>
+</AccordionGroup>

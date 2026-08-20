@@ -1,0 +1,85 @@
+---
+title: "Apollo"
+description: "Search and enrich contacts, accounts, and organizations, and manage deals and outreach sequences"
+icon: /images/apollo.svg
+---
+
+# Apollo
+
+Shanone's Apollo integration gives your agent 40 tools for B2B sales workflows — contact and account CRM, people/organization search and enrichment, deals, tasks, and outreach sequences.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get an Apollo API key">
+    In Apollo, go to **Settings > Integrations > API Keys** and generate a key.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to do something with Apollo (e.g. "search for VP of Engineering contacts at Series B startups"), or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once the key is stored, `shanone_execute_tool` calls for `apollo_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **40 tools** for Apollo, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Accounts">
+    `apollo_create_account`, `apollo_bulk_create_accounts`, `apollo_get_account`, `apollo_update_account`, `apollo_bulk_update_accounts`, `apollo_search_accounts`, `apollo_list_account_stages`, `apollo_update_account_stage`, `apollo_update_account_owner`
+  </Accordion>
+  <Accordion title="Contacts">
+    `apollo_create_contact`, `apollo_bulk_create_contacts`, `apollo_get_contact`, `apollo_update_contact`, `apollo_bulk_update_contacts`, `apollo_search_contacts`, `apollo_list_contact_stages`, `apollo_update_contact_stage`, `apollo_update_contact_owner`
+  </Accordion>
+  <Accordion title="Search">
+    `apollo_search_people`, `apollo_search_organizations`, `apollo_search_news`, `apollo_search_job_postings`
+  </Accordion>
+  <Accordion title="Enrichment">
+    `apollo_enrich_person`, `apollo_bulk_enrich_people`, `apollo_enrich_organization`, `apollo_bulk_enrich_organizations`
+  </Accordion>
+  <Accordion title="Deals">
+    `apollo_create_deal`, `apollo_get_deal`, `apollo_update_deal`, `apollo_list_deals`, `apollo_list_deal_stages`
+  </Accordion>
+  <Accordion title="Sequences">
+    `apollo_search_sequences`, `apollo_add_contacts_to_sequence`, `apollo_activate_sequence`, `apollo_deactivate_sequence`
+  </Accordion>
+  <Accordion title="Tasks">
+    `apollo_create_task`, `apollo_search_tasks`
+  </Accordion>
+  <Accordion title="Misc & account admin">
+    `apollo_list_users`, `apollo_list_email_accounts`, `apollo_get_api_usage`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Prospect list building" icon="search">
+    Search people/organizations by role, company size, or industry, then bulk-create matching contacts
+  </Card>
+  <Card title="Contact enrichment" icon="user-round-search">
+    Enrich a list of emails or LinkedIn URLs with full contact and company details
+  </Card>
+  <Card title="Outreach sequence management" icon="send">
+    Add newly enriched contacts to a sequence and activate outreach
+  </Card>
+  <Card title="Pipeline hygiene" icon="clipboard-check">
+    Audit deals and contacts stuck in a stage and update owners or stages in bulk
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="apollo_enrich_person or apollo_enrich_organization returns partial data">
+    Apollo's enrichment coverage varies by how much public/first-party data exists for that person or company — not every field will be populated for every record.
+  </Accordion>
+  <Accordion title="Bulk tools (apollo_bulk_create_contacts, etc.) fail partway through">
+    Check `apollo_get_api_usage` for rate limit or credit exhaustion — Apollo enforces per-plan limits on search, enrichment, and bulk write operations.
+  </Accordion>
+  <Accordion title="apollo_add_contacts_to_sequence succeeds but contacts never receive outreach">
+    Confirm the target sequence is active with `apollo_activate_sequence` — contacts added to a paused or draft sequence won't be emailed until it's activated.
+  </Accordion>
+</AccordionGroup>

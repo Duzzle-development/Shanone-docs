@@ -1,0 +1,89 @@
+---
+title: "Amplitude"
+description: "Query product analytics, manage cohorts and taxonomy, and send events into Amplitude"
+icon: /images/amplitude.svg
+---
+
+# Amplitude
+
+Shanone's Amplitude integration gives your agent 62 tools covering analytics queries, user/event taxonomy management, cohorts, annotations, and privacy/deletion requests.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Amplitude API credentials">
+    In Amplitude, go to your project's **Settings > Projects** and copy the API Key and Secret Key.
+  </Step>
+  <Step title="Connect in Shanone">
+    Ask your agent to do something with Amplitude (e.g. "show retention analysis for the last 30 days"), or add both keys proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once both keys are stored, `shanone_execute_tool` calls for `amplitude_*` tools will succeed.
+  </Step>
+</Steps>
+
+<Note>
+Amplitude uses API key authentication rather than OAuth, and Shanone requires both the API Key and Secret Key together — most endpoints need the pair for HTTP Basic auth.
+</Note>
+
+## Available Tools
+
+Shanone provides **62 tools** for Amplitude, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Taxonomy">
+    `amplitude_get_event_types`, `amplitude_get_user_properties`, `amplitude_get_event_properties`, `amplitude_create_event_type`, `amplitude_update_event_type`, `amplitude_delete_event_type`, `amplitude_create_event_property`, `amplitude_update_event_property`, `amplitude_delete_event_property`, `amplitude_create_user_property`, `amplitude_update_user_property`
+  </Accordion>
+  <Accordion title="Cohorts">
+    `amplitude_upload_cohort`, `amplitude_update_cohort_membership`, `amplitude_request_cohort_download`, `amplitude_check_cohort_status`, `amplitude_download_cohort_file`, `amplitude_get_cohort_usage`, `amplitude_get_user_mappings`, `amplitude_map_users`, `amplitude_list_cohorts`, `amplitude_get_cohort`
+  </Accordion>
+  <Accordion title="Analytics & core queries">
+    `amplitude_get_funnel_analysis`, `amplitude_get_retention_analysis`, `amplitude_get_realtime_active_users`, `amplitude_get_user_profile`, `amplitude_export_events`, `amplitude_query_dashboard`, `amplitude_get_events_list`, `amplitude_get_event_segmentation`, `amplitude_get_chart_results`
+  </Accordion>
+  <Accordion title="Identify & user/group properties">
+    `amplitude_identify_user`, `amplitude_identify_group`, `amplitude_set_group_properties`, `amplitude_batch_identify`, `amplitude_get_revenue_ltv`, `amplitude_alias_users`, `amplitude_unalias_users`
+  </Accordion>
+  <Accordion title="Ingestion">
+    `amplitude_send_events`, `amplitude_batch_upload_events`, `amplitude_send_attribution_event`, `amplitude_validate_events`
+  </Accordion>
+  <Accordion title="Privacy & data deletion">
+    `amplitude_delete_user_data`, `amplitude_get_deletion_requests`, `amplitude_cancel_deletion_request`, `amplitude_create_dsar_request`, `amplitude_get_dsar_status`, `amplitude_download_dsar_output`
+  </Accordion>
+  <Accordion title="Annotations & releases">
+    `amplitude_create_annotation`, `amplitude_list_annotations`, `amplitude_get_annotation`, `amplitude_update_annotation`, `amplitude_delete_annotation`, `amplitude_manage_annotation_categories`, `amplitude_create_release`, `amplitude_list_releases`
+  </Accordion>
+  <Accordion title="Sessions & users">
+    `amplitude_get_session_length_distribution`, `amplitude_get_average_session_length`, `amplitude_get_sessions_per_user`, `amplitude_get_active_users`, `amplitude_search_user`, `amplitude_get_user_activity`, `amplitude_get_user_composition`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Retention reporting" icon="line-chart">
+    Pull retention and funnel analysis for a feature launch and summarize the trend
+  </Card>
+  <Card title="Taxonomy governance" icon="list-tree">
+    Audit and clean up event/property definitions before a data quality push
+  </Card>
+  <Card title="Cohort activation" icon="users">
+    Build or refresh a cohort and export it for use in another marketing or product tool
+  </Card>
+  <Card title="GDPR/CCPA deletion requests" icon="shield-off">
+    File and track a user data deletion request through to completion
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Any amplitude_* call fails with a 401/403">
+    Amplitude requires both the API Key and Secret Key to be connected — a single key isn't enough for most endpoints. Check **Integrations** in the Shanone dashboard for both values.
+  </Accordion>
+  <Accordion title="amplitude_get_funnel_analysis or amplitude_get_retention_analysis returns unexpectedly empty results">
+    Double-check the event names against `amplitude_get_event_types` — Amplitude event names are case-sensitive and must match exactly what was ingested.
+  </Accordion>
+  <Accordion title="amplitude_check_cohort_status stays in a pending state">
+    Cohort downloads and syncs are processed asynchronously by Amplitude; poll `amplitude_check_cohort_status` periodically rather than expecting an immediate result from `amplitude_request_cohort_download`.
+  </Accordion>
+</AccordionGroup>

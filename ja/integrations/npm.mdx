@@ -1,0 +1,85 @@
+---
+title: "npm"
+description: "npmのパッケージ、組織、チーム、トークンを管理 — アクセス制御、ダウンロード統計、セキュリティ監査"
+icon: /images/npm.svg
+---
+
+# npm
+
+Shanoneのnpm連携は、npmレジストリ上のパッケージ、組織、チーム、トークン、セキュリティを管理する52個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="npmアクセストークンを発行する">
+    `npm token create`を実行するか、[npmjs.com](https://www.npmjs.com)の**Access Tokens**設定で、必要なパッケージ/組織にスコープされた**Granular Access Token**を作成します。
+  </Step>
+  <Step title="Shanoneにトークンを追加する">
+    Shanoneダッシュボードの**Integrations > npm**で、そのアクセストークンを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`npm_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはnpm向けに**52個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="パッケージ">
+    `npm_get_package`, `npm_get_package_version`, `npm_get_package_abbreviated`, `npm_search_packages`, `npm_search_packages_advanced`, `npm_get_dist_tags`, `npm_get_latest_version`, `npm_get_registry_info`
+  </Accordion>
+  <Accordion title="アクセス & 共同作業者">
+    `npm_get_package_visibility`, `npm_set_package_access`, `npm_list_package_collaborators`, `npm_add_package_collaborator`, `npm_remove_package_collaborator`, `npm_add_dist_tag`, `npm_remove_dist_tag`, `npm_list_dist_tags_auth`
+  </Accordion>
+  <Accordion title="ダウンロード">
+    `npm_get_download_point`, `npm_get_download_point_all`, `npm_get_download_range`, `npm_get_download_range_all`, `npm_get_download_bulk`, `npm_get_download_versions`
+  </Accordion>
+  <Accordion title="組織">
+    `npm_list_org_members`, `npm_add_org_member`, `npm_remove_org_member`, `npm_list_org_teams`, `npm_list_org_packages`, `npm_get_org`
+  </Accordion>
+  <Accordion title="チーム">
+    `npm_create_team`, `npm_delete_team`, `npm_list_team_members`, `npm_add_team_member`, `npm_remove_team_member`, `npm_list_team_packages`, `npm_grant_team_package_access`, `npm_revoke_team_package_access`
+  </Accordion>
+  <Accordion title="トークン">
+    `npm_list_tokens`, `npm_create_token`, `npm_delete_token`, `npm_whoami`, `npm_validate_token`
+  </Accordion>
+  <Accordion title="ユーザー & パブリッシャー">
+    `npm_get_user_profile`, `npm_update_user_profile`, `npm_deprecate_package`, `npm_undeprecate_package`, `npm_list_trusted_publishers`, `npm_add_trusted_publisher`, `npm_remove_trusted_publisher`, `npm_star_package`
+  </Accordion>
+  <Accordion title="セキュリティ監査">
+    `npm_audit_bulk`, `npm_get_advisory`, `npm_search_advisories`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="依存関係のセキュリティレビュー" icon="shield-alert">
+    `package.json`の依存関係を一括で監査し、既知のアドバイザリを表示する
+  </Card>
+  <Card title="パッケージの整理" icon="package">
+    古いパッケージバージョンを非推奨にする前に、ダウンロード傾向を確認する
+  </Card>
+  <Card title="アクセス管理" icon="users">
+    新しいチームメンバーを追加し、適切なパッケージへのアクセス権を付与する
+  </Card>
+  <Card title="公開後のモニタリング" icon="trending-up">
+    リリース後のダウンロード数を追跡して採用状況を把握する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="npm_add_org_memberやチーム系ツールが権限エラーで失敗する">
+    組織やチームの管理には、npm組織のオーナーまたは管理者に属するトークンが必要です——単一パッケージにスコープされたトークンではこれらの呼び出しは失敗します。
+  </Accordion>
+  <Accordion title="npm_audit_bulkが期待より少ないアドバイザリしか返さない">
+    バルク監査はパッケージ名とバージョン範囲の完全一致でマッチングします。`package.json`のsemverレンジではなく、lockfileで解決済みのバージョンを渡すようにしてください。
+  </Accordion>
+  <Accordion title="スコープ付きパッケージでnpm_set_package_accessが失敗する">
+    スコープ付きパッケージを非公開(restricted)に設定するには、有料のnpm組織プランが必要です——無料アカウントではスコープ付きパッケージをpublicとしてのみ公開できます。
+  </Accordion>
+</AccordionGroup>

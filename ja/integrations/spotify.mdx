@@ -1,0 +1,85 @@
+---
+title: "Spotify"
+description: "再生を操作し、プレイリストとライブラリを管理し、アーティスト・アルバム・番組・オーディオブックを閲覧する"
+icon: /images/spotify.svg
+---
+
+# Spotify
+
+ShanoneのSpotify連携は、再生操作、プレイリスト管理、保存済みライブラリ、アーティスト/アルバム/番組/オーディオブックのメタデータをカバーする57個のツールをエージェントに提供します——エージェントにDJをさせたり、キュレーションしたり、「最近何を聴いていた?」に答えさせたりできます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにSpotify関連の作業を依頼(例: 「次のトラックにスキップして」「この曲をDiscoverプレイリストに追加して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Spotifyアカウントを許可する">
+    Shanoneに操作させたいアカウントで、SpotifyのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`spotify_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。再生操作系のツールは、操作対象となるアクティブなSpotifyデバイスが必要です。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはSpotify向けに**57個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="プレイヤー">
+    `spotify_get_playback_state`, `spotify_get_currently_playing`, `spotify_get_available_devices`, `spotify_get_queue`, `spotify_get_recently_played`, `spotify_start_playback`, `spotify_pause_playback`, `spotify_skip_to_next`, `spotify_skip_to_previous`, `spotify_seek_to_position`, `spotify_set_repeat_mode`, `spotify_set_shuffle`, `spotify_set_volume`, `spotify_transfer_playback`, `spotify_add_to_queue`
+  </Accordion>
+  <Accordion title="ライブラリ">
+    `spotify_get_saved_albums`, `spotify_save_albums`, `spotify_remove_saved_albums`, `spotify_get_saved_shows`, `spotify_save_shows`, `spotify_remove_saved_shows`, `spotify_get_saved_audiobooks`, `spotify_save_audiobooks`, `spotify_remove_saved_audiobooks`, `spotify_get_saved_tracks`, `spotify_save_tracks`, `spotify_remove_saved_tracks`
+  </Accordion>
+  <Accordion title="プレイリスト">
+    `spotify_get_my_playlists`, `spotify_get_playlist`, `spotify_create_playlist`, `spotify_add_tracks_to_playlist`, `spotify_remove_tracks_from_playlist`, `spotify_update_playlist_details`, `spotify_reorder_playlist_items`, `spotify_replace_playlist_items`, `spotify_get_playlist_cover_image`, `spotify_upload_playlist_cover_image`, `spotify_get_playlist_items`
+  </Accordion>
+  <Accordion title="フォロー">
+    `spotify_follow_artists`, `spotify_unfollow_artists`, `spotify_get_followed_artists`, `spotify_check_following_artists`, `spotify_follow_playlist`, `spotify_unfollow_playlist`
+  </Accordion>
+  <Accordion title="トラック & レコメンデーション">
+    `spotify_get_track`, `spotify_get_recommendations`, `spotify_search`
+  </Accordion>
+  <Accordion title="アルバム & アーティスト">
+    `spotify_get_album`, `spotify_get_artist`
+  </Accordion>
+  <Accordion title="番組、エピソード & オーディオブック">
+    `spotify_get_show`, `spotify_get_show_episodes`, `spotify_get_episode`, `spotify_get_audiobook`, `spotify_get_audiobook_chapters`, `spotify_get_chapter`
+  </Accordion>
+  <Accordion title="ユーザープロフィール">
+    `spotify_get_my_profile`, `spotify_get_top_items`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="音声操作による再生" icon="play">
+    リクエストに応じて特定のトラック/アルバム/プレイリストを再生、スキップ、音量調整する
+  </Card>
+  <Card title="プレイリストのキュレーション" icon="list-music">
+    検索結果からテーマ別プレイリストを作成し、カスタムカバー画像を追加する
+  </Card>
+  <Card title="リスニングの振り返り" icon="chart-bar">
+    トップトラック/アーティストや再生履歴を取得し、リスニング傾向を要約する
+  </Card>
+  <Card title="発見" icon="compass">
+    好きなトラックやアーティストをいくつか元にレコメンデーションを取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="spotify_start_playbackやspotify_skip_to_nextがアクティブデバイスなしで失敗する">
+    再生操作系のツールには、少なくとも1つのアクティブなSpotify Connectデバイス(スマホ/PC/Webでアプリが開いている状態)が必要です。まず`spotify_get_available_devices`と`spotify_transfer_playback`で対象デバイスを選択してください。
+  </Accordion>
+  <Accordion title="再生系ツールは動作するが実際には何も変わらない">
+    Spotify Freeアカウントは一部のデバイスで再生操作が制限されています(シークができない、スキップ回数に制限がある等)——再生コマンドが黙って無視される場合はアカウントの種類を確認してください。
+  </Accordion>
+  <Accordion title="自分が所有しているはずのプレイリストでspotify_add_tracks_to_playlistが失敗する">
+    プレイリストIDが認証済みユーザーのものであるか、共同編集権限を持っているか確認してください——Spotifyは接続中のアカウントが変更できないプレイリストへの書き込みを拒否します。
+  </Accordion>
+</AccordionGroup>

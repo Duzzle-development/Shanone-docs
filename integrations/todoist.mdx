@@ -1,0 +1,85 @@
+---
+title: "Todoist"
+description: "Manage tasks, projects, and labels — plus comments, reminders, and activity history"
+icon: /images/todoist.svg
+---
+
+# Todoist
+
+Shanone's Todoist integration gives your agent 48 tools covering tasks, projects, sections, labels, comments, and reminders — plus collaboration and activity tracking — enough to run personal or team task management entirely through an agent.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an API token">
+    In Todoist, go to **Settings → Integrations → Developer** and copy your API token.
+  </Step>
+  <Step title="Connect the API key in Shanone">
+    Ask your agent to do something with Todoist (e.g. "add a task to buy groceries due tomorrow"), or add the API token proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `todoist_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **48 tools** for Todoist, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Tasks">
+    `todoist_get_tasks`, `todoist_get_task`, `todoist_create_task`, `todoist_update_task`, `todoist_complete_task`, `todoist_reopen_task`, `todoist_delete_task`, `todoist_move_task`, `todoist_quick_add`, `todoist_get_tasks_by_filter`, `todoist_close_task`, `todoist_get_completed_tasks`
+  </Accordion>
+  <Accordion title="Projects">
+    `todoist_get_projects`, `todoist_get_project`, `todoist_create_project`, `todoist_update_project`, `todoist_delete_project`, `todoist_archive_project`, `todoist_unarchive_project`, `todoist_get_archived_projects`, `todoist_search_projects`
+  </Accordion>
+  <Accordion title="Sections & labels">
+    `todoist_get_sections`, `todoist_create_section`, `todoist_update_section`, `todoist_delete_section`, `todoist_get_labels`, `todoist_create_label`, `todoist_get_label`, `todoist_update_label`, `todoist_delete_label`, `todoist_search_labels`
+  </Accordion>
+  <Accordion title="Comments">
+    `todoist_get_comments`, `todoist_create_comment`, `todoist_get_comment`, `todoist_update_comment`, `todoist_delete_comment`
+  </Accordion>
+  <Accordion title="Reminders">
+    `todoist_get_reminders`, `todoist_get_reminder`, `todoist_create_reminder`, `todoist_delete_reminder`
+  </Accordion>
+  <Accordion title="Collaboration">
+    `todoist_get_collaborators`, `todoist_share_project`, `todoist_remove_collaborator`
+  </Accordion>
+  <Accordion title="Activity & backups">
+    `todoist_get_activity_logs`, `todoist_get_backups`, `todoist_download_backup`
+  </Accordion>
+  <Accordion title="User">
+    `todoist_get_user`, `todoist_get_productivity_stats`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Quick task capture" icon="check-square">
+    Use natural-language quick-add to turn a spoken request into a task with due date and labels
+  </Card>
+  <Card title="Daily planning" icon="calendar">
+    Pull today's/overdue tasks by filter and summarize a prioritized plan
+  </Card>
+  <Card title="Project handoff" icon="users">
+    Share a project with a collaborator and post a comment summarizing current status
+  </Card>
+  <Card title="Productivity review" icon="chart-bar">
+    Check productivity stats and completed tasks to recap a week's progress
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="todoist_get_tasks doesn't show a task I know exists">
+    The default task list excludes completed tasks and can be scoped by project/filter — use `todoist_get_tasks_by_filter` with Todoist's filter syntax (e.g. `today`, `p1`, `#Work`) or `todoist_get_completed_tasks` for done items.
+  </Accordion>
+  <Accordion title="todoist_quick_add doesn't parse due dates or labels as expected">
+    Quick-add relies on Todoist's natural-language parser for its text argument (e.g. `Submit report @work tomorrow p1`) — check `shanone_get_tool_schema` for `todoist_quick_add` and follow that syntax rather than passing structured fields.
+  </Accordion>
+  <Accordion title="todoist_delete_project or todoist_delete_label fails unexpectedly">
+    Deletion is permanent and cascades (deleting a project deletes its tasks) — Todoist doesn't block this by default, so double-check the target ID before calling delete tools.
+  </Accordion>
+</AccordionGroup>

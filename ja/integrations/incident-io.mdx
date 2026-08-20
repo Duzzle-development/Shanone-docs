@@ -1,0 +1,100 @@
+---
+title: "incident.io"
+description: "インシデント対応のライフサイクル全体を管理 — インシデント、アラート、オンコールスケジュール、ワークフロー、ステータスページ"
+icon: "siren"
+---
+
+# incident.io
+
+Shanoneのincident.io連携では、incident.ioプラットフォームのほぼ全機能——インシデント管理、アラート、オンコールスケジュール、ワークフロー、カタログ、ステータスページ、管理/API操作を扱う178のツールをエージェントが利用できるようになります。
+
+## はじめに
+
+<Steps>
+  <Step title="incident.io APIキーを発行する">
+    incident.ioダッシュボードで**Settings → API keys**に移動し、新しいキーを発行します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、incident.ioを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`incidentio_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはincident.io用に**178のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="インシデント">
+    `incidentio_list_incidents`, `incidentio_get_incident`, `incidentio_create_incident`, `incidentio_edit_incident`, `incidentio_import_postmortem_document`, `incidentio_list_incident_types`, `incidentio_get_incident_type`, `incidentio_list_incident_statuses`, `incidentio_get_incident_status`, `incidentio_create_incident_status`, `incidentio_update_incident_status`, `incidentio_delete_incident_status`, `incidentio_list_incident_updates`
+  </Accordion>
+  <Accordion title="インシデントメタデータ(ロール・重大度・カスタムフィールド)">
+    `incidentio_list_incident_roles`, `incidentio_get_incident_role`, `incidentio_create_incident_role`, `incidentio_update_incident_role`, `incidentio_delete_incident_role`, `incidentio_list_severities`, `incidentio_get_severity`, `incidentio_create_severity`, `incidentio_update_severity`, `incidentio_delete_severity`, `incidentio_list_custom_fields`, `incidentio_get_custom_field`, `incidentio_create_custom_field`, `incidentio_update_custom_field`, `incidentio_delete_custom_field`
+  </Accordion>
+  <Accordion title="インシデント関連情報(参加者・タイムスタンプ・添付ファイル)">
+    `incidentio_list_custom_field_options`, `incidentio_get_custom_field_option`, `incidentio_create_custom_field_option`, `incidentio_update_custom_field_option`, `incidentio_delete_custom_field_option`, `incidentio_list_incident_attachments`, `incidentio_create_incident_attachment`, `incidentio_delete_incident_attachment`, `incidentio_list_incident_relationships`, `incidentio_list_incident_timestamps`, `incidentio_get_incident_timestamp`, `incidentio_list_incident_participants`, `incidentio_list_incident_participant_workloads`, `incidentio_create_incident_membership`, `incidentio_revoke_incident_membership`
+  </Accordion>
+  <Accordion title="アクション & フォローアップ">
+    `incidentio_list_actions`, `incidentio_get_action`, `incidentio_create_action`, `incidentio_update_action`, `incidentio_delete_action`, `incidentio_list_follow_ups`, `incidentio_get_follow_up`, `incidentio_create_follow_up`, `incidentio_update_follow_up`, `incidentio_delete_follow_up`, `incidentio_connect_follow_up_external_issue`
+  </Accordion>
+  <Accordion title="アラート & アラートルーティング">
+    `incidentio_list_alert_attributes`, `incidentio_get_alert_attribute`, `incidentio_create_alert_attribute`, `incidentio_update_alert_attribute`, `incidentio_delete_alert_attribute`, `incidentio_list_alert_sources`, `incidentio_get_alert_source`, `incidentio_create_alert_source`, `incidentio_update_alert_source`, `incidentio_delete_alert_source`, `incidentio_list_alerts`, `incidentio_get_alert`, `incidentio_resolve_alert`, `incidentio_list_incident_alerts`, `incidentio_create_alert_event`, `incidentio_list_alert_notes`, `incidentio_get_alert_note`, `incidentio_create_alert_note`, `incidentio_update_alert_note`, `incidentio_delete_alert_note`, `incidentio_list_alert_routes`, `incidentio_get_alert_route`, `incidentio_create_alert_route`, `incidentio_update_alert_route`, `incidentio_delete_alert_route`
+  </Accordion>
+  <Accordion title="エスカレーション">
+    `incidentio_list_escalation_paths`, `incidentio_get_escalation_path`, `incidentio_create_escalation_path`, `incidentio_update_escalation_path`, `incidentio_delete_escalation_path`, `incidentio_list_escalations`, `incidentio_get_escalation`, `incidentio_create_escalation`, `incidentio_cancel_escalation`
+  </Accordion>
+  <Accordion title="オンコールスケジュール & 同期">
+    `incidentio_list_schedules`, `incidentio_get_schedule`, `incidentio_create_schedule`, `incidentio_update_schedule`, `incidentio_delete_schedule`, `incidentio_preview_schedule_entries`, `incidentio_list_schedule_entries`, `incidentio_list_schedule_overrides`, `incidentio_create_schedule_override`, `incidentio_list_schedule_replicas`, `incidentio_get_schedule_replica`, `incidentio_create_schedule_replica`, `incidentio_delete_schedule_replica`, `incidentio_list_schedule_sync_rules`, `incidentio_get_schedule_sync_rule`, `incidentio_create_schedule_sync_rule`, `incidentio_update_schedule_sync_rule`, `incidentio_delete_schedule_sync_rule`, `incidentio_list_schedule_sync_targets`, `incidentio_get_schedule_sync_target`, `incidentio_create_schedule_sync_target`, `incidentio_update_schedule_sync_target`, `incidentio_delete_schedule_sync_target`
+  </Accordion>
+  <Accordion title="ワークフロー・チーム・ユーザー">
+    `incidentio_list_workflows`, `incidentio_get_workflow`, `incidentio_create_workflow`, `incidentio_update_workflow`, `incidentio_delete_workflow`, `incidentio_list_teams`, `incidentio_get_team`, `incidentio_list_users`, `incidentio_get_user`, `incidentio_list_user_notification_methods`, `incidentio_list_user_notification_rules`, `incidentio_get_user_paging_provider`, `incidentio_update_user_paging_provider`
+  </Accordion>
+  <Accordion title="カタログ">
+    `incidentio_list_catalog_entries`, `incidentio_get_catalog_entry`, `incidentio_create_catalog_entry`, `incidentio_update_catalog_entry`, `incidentio_delete_catalog_entry`, `incidentio_bulk_update_catalog_entries`, `incidentio_list_catalog_resources`, `incidentio_list_catalog_types`, `incidentio_get_catalog_type`, `incidentio_create_catalog_type`, `incidentio_update_catalog_type`, `incidentio_delete_catalog_type`, `incidentio_update_catalog_type_schema`
+  </Accordion>
+  <Accordion title="ステータスページ">
+    `incidentio_list_status_pages`, `incidentio_get_status_page_structure`, `incidentio_list_status_page_incidents`, `incidentio_get_status_page_incident`, `incidentio_create_status_page_incident`, `incidentio_update_status_page_incident`, `incidentio_create_status_page_incident_update`, `incidentio_create_status_page_retrospective_incident`, `incidentio_list_status_page_response_incidents`, `incidentio_list_status_page_maintenances`, `incidentio_get_status_page_maintenance`, `incidentio_create_status_page_maintenance`, `incidentio_create_status_page_maintenance_update`
+  </Accordion>
+  <Accordion title="ポストモーテム & ユーティリティ">
+    `incidentio_list_postmortem_documents`, `incidentio_get_postmortem_document`, `incidentio_update_postmortem_document_status`, `incidentio_get_postmortem_document_content`, `incidentio_attach_postmortem_document`, `incidentio_ping_heartbeat`, `incidentio_update_telemetry_data_source`, `incidentio_get_identity`, `incidentio_get_openapi_spec`
+  </Accordion>
+  <Accordion title="管理(APIキー・シークレット・メンテナンス)">
+    `incidentio_list_api_keys`, `incidentio_get_api_key`, `incidentio_create_api_key`, `incidentio_update_api_key`, `incidentio_delete_api_key`, `incidentio_rotate_api_key`, `incidentio_get_ip_allowlist`, `incidentio_update_ip_allowlist`, `incidentio_list_maintenance_windows`, `incidentio_get_maintenance_window`, `incidentio_create_maintenance_window`, `incidentio_update_maintenance_window`, `incidentio_delete_maintenance_window`, `incidentio_list_secrets`, `incidentio_get_secret`, `incidentio_create_secret`, `incidentio_update_secret`, `incidentio_delete_secret`, `incidentio_rotate_secret`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="インシデントトリアージ" icon="siren">
+    アラートからインシデントを作成し、ロールを割り当て、最初の更新を自動で投稿する
+  </Card>
+  <Card title="オンコールの可視化" icon="calendar-clock">
+    現在誰がオンコールかを確認し、今後のスケジュールエントリを事前に確認する
+  </Card>
+  <Card title="ポストモーテムの作成" icon="file-text">
+    タイムスタンプ、参加者、フォローアップを取得してポストモーテムのドラフトを作成する
+  </Card>
+  <Card title="ステータスページ更新" icon="megaphone">
+    インシデントの重大度が変化するのに合わせて顧客向けステータスページを更新する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="incidentio_create_incidentがカスタムフィールドやロールに関する検証エラーで失敗する">
+    incident.ioのアカウントでは作成時に特定のカスタムフィールドやロール割り当てが必須になっていることが多いです——まず`incidentio_list_custom_fields`と`incidentio_list_incident_roles`でワークスペースの必須項目を確認してください。
+  </Accordion>
+  <Accordion title="incidentio_list_schedule_entriesで想定外の抜けが発生する">
+    オーバーライド(`incidentio_list_schedule_overrides`)は基本ローテーションより優先されますが、エントリ表示には自動的にマージされません——オンコール状況が不完全に見える場合は両方のエンドポイントを確認してください。
+  </Accordion>
+  <Accordion title="incidentio_resolve_alertで紐づくインシデントが閉じない">
+    アラートとインシデントは関連していますが別物です——アラートを解決してもインシデントのステータスは自動で遷移しません。必要であれば`incidentio_update_incident_status`で明示的に更新してください。
+  </Accordion>
+  <Accordion title="incidentio_create_api_keyやincidentio_update_ip_allowlistなどの管理系ツールが権限エラーを返す">
+    これらのエンドポイントには管理者レベルのスコープを持つAPIキーが必要です——インシデント管理操作のみにスコープされたキーでは、アカウント/管理者レベルの変更が拒否されます。
+  </Accordion>
+</AccordionGroup>

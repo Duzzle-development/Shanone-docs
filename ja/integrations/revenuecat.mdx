@@ -1,0 +1,82 @@
+---
+title: "RevenueCat"
+description: "アプリ内サブスクリプションの管理 — 顧客、権利(エンタイトルメント)、オファリング、ペイウォール、分析"
+icon: /images/revenuecat.svg
+---
+
+# RevenueCat
+
+ShanoneのRevenueCat連携は、モバイル/Webアプリのサブスクリプション・購入管理をカバーする107個のツールをエージェントに提供します。顧客の権利(エンタイトルメント)、オファリングとペイウォール、商品とパッケージ、バーチャルカレンシー、収益分析まで対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="RevenueCatのSecret APIキーを作成する">
+    [RevenueCatダッシュボード](https://app.revenuecat.com/settings/api-keys)のプロジェクトの**API Keys**設定からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でRevenueCatを選択し、キー(`sk_...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`revenuecat_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはRevenueCat向けに**107個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="顧客">
+    `revenuecat_list_customers`, `revenuecat_create_customer`, `revenuecat_get_customer`, `revenuecat_delete_customer`, `revenuecat_get_customer_center_config`, `revenuecat_transfer_customer_data`, `revenuecat_grant_customer_entitlement`, `revenuecat_revoke_customer_granted_entitlement`, `revenuecat_assign_customer_offering`, `revenuecat_restore_purchase_by_order_id`, `revenuecat_list_customer_subscriptions`, `revenuecat_list_customer_purchases`, `revenuecat_list_customer_active_entitlements`, `revenuecat_list_customer_events`, `revenuecat_list_customer_aliases`, `revenuecat_list_customer_attributes`, `revenuecat_set_customer_attributes`
+  </Accordion>
+  <Accordion title="サブスクリプション & 購入">
+    `revenuecat_get_subscription`, `revenuecat_search_subscriptions`, `revenuecat_get_store_subscription_transactions`, `revenuecat_refund_store_subscription_transaction`, `revenuecat_list_subscription_entitlements`, `revenuecat_cancel_subscription`, `revenuecat_extend_subscription`, `revenuecat_refund_subscription`, `revenuecat_get_subscription_management_url`, `revenuecat_get_purchase`, `revenuecat_list_purchase_entitlements`, `revenuecat_refund_purchase`, `revenuecat_search_purchases`
+  </Accordion>
+  <Accordion title="権利(エンタイトルメント)、商品 & パッケージ">
+    `revenuecat_list_entitlements`, `revenuecat_create_entitlement`, `revenuecat_get_entitlement`, `revenuecat_update_entitlement`, `revenuecat_delete_entitlement`, `revenuecat_archive_entitlement`, `revenuecat_unarchive_entitlement`, `revenuecat_list_entitlement_products`, `revenuecat_attach_products_to_entitlement`, `revenuecat_detach_products_from_entitlement`, `revenuecat_list_products`, `revenuecat_create_product`, `revenuecat_get_product`, `revenuecat_update_product`, `revenuecat_delete_product`, `revenuecat_archive_product`, `revenuecat_unarchive_product`, `revenuecat_push_product_to_store`, `revenuecat_list_packages`, `revenuecat_create_package`, `revenuecat_get_package`, `revenuecat_update_package`, `revenuecat_delete_package`, `revenuecat_list_package_products`, `revenuecat_attach_products_to_package`, `revenuecat_detach_products_from_package`
+  </Accordion>
+  <Accordion title="オファリング & ペイウォール">
+    `revenuecat_list_offerings`, `revenuecat_create_offering`, `revenuecat_get_offering`, `revenuecat_update_offering`, `revenuecat_delete_offering`, `revenuecat_archive_offering`, `revenuecat_unarchive_offering`, `revenuecat_upload_media_asset`, `revenuecat_list_paywalls`, `revenuecat_create_paywall`, `revenuecat_get_paywall`, `revenuecat_update_paywall`, `revenuecat_delete_paywall`, `revenuecat_publish_paywall`, `revenuecat_unpublish_paywall`, `revenuecat_create_paywall_version`, `revenuecat_get_paywall_version`
+  </Accordion>
+  <Accordion title="バーチャルカレンシー">
+    `revenuecat_list_virtual_currencies`, `revenuecat_create_virtual_currency`, `revenuecat_get_virtual_currency`, `revenuecat_update_virtual_currency`, `revenuecat_delete_virtual_currency`, `revenuecat_archive_virtual_currency`, `revenuecat_unarchive_virtual_currency`, `revenuecat_list_customer_virtual_currencies_balances`, `revenuecat_create_virtual_currency_transaction`, `revenuecat_update_virtual_currency_balance`
+  </Accordion>
+  <Accordion title="アプリ、プロジェクト & コラボレーター">
+    `revenuecat_list_apps`, `revenuecat_create_app`, `revenuecat_get_app`, `revenuecat_update_app`, `revenuecat_delete_app`, `revenuecat_list_app_public_api_keys`, `revenuecat_get_app_storekit_config`, `revenuecat_list_projects`, `revenuecat_create_project`, `revenuecat_list_collaborators`
+  </Accordion>
+  <Accordion title="分析、請求書、Webhook & 監査ログ">
+    `revenuecat_get_overview_metrics`, `revenuecat_get_revenue_metric`, `revenuecat_get_chart_data`, `revenuecat_get_chart_options`, `revenuecat_list_customer_invoices`, `revenuecat_get_invoice`, `revenuecat_list_webhook_integrations`, `revenuecat_create_webhook_integration`, `revenuecat_get_webhook_integration`, `revenuecat_update_webhook_integration`, `revenuecat_delete_webhook_integration`, `revenuecat_list_audit_logs`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="カスタマーサポートの調査" icon="user-search">
+    課金の問題を解決する前に、顧客のアクティブな権利や購入履歴を確認する
+  </Card>
+  <Card title="手動での付与 & 返金" icon="gift">
+    プロモーション用の権利を付与したり、特定のトランザクションに対する返金を処理する
+  </Card>
+  <Card title="ペイウォールの実験" icon="layout">
+    オファリングに紐づく新しいペイウォールバージョンを作成・公開し、メトリクスでコンバージョンを追跡する
+  </Card>
+  <Card title="収益レポート" icon="trending-up">
+    ダッシュボードを開かずに、プロジェクトの概要メトリクスと収益チャートを取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="revenuecat_grant_customer_entitlementの結果がアプリにすぐ反映されない">
+    クライアントSDKは権利情報をキャッシュします。付与自体はサーバー側で即座に適用されますが、変更を反映させるにはアプリが顧客情報を再取得する(またはユーザーがアプリを再起動する)必要がある場合があります。
+  </Accordion>
+  <Accordion title="revenuecat_refund_purchaseやrevenuecat_refund_subscriptionが失敗する">
+    RevenueCatは返金処理を基盤となるストア(App Store/Play Store)に委任しており、各ストアには独自の返金期間や適格ルールがあります。返金が拒否される場合、RevenueCat側のエラーではなくストア側のポリシー上の制限であることが多いです。
+  </Accordion>
+  <Accordion title="revenuecat_search_subscriptionsやrevenuecat_search_purchasesが期待と異なる結果を返す">
+    `shanone_get_tool_schema`で正確なフィルタ/クエリパラメータを確認してください——検索は通常プロジェクト単位でスコープされ、自由テキストではなく特定の識別子(アプリユーザーID、商品IDなど)が必要な場合があります。
+  </Accordion>
+</AccordionGroup>

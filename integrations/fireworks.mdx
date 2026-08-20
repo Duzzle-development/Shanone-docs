@@ -1,0 +1,91 @@
+---
+title: "Fireworks AI"
+description: "Fast inference, fine-tuning, and deployment management for open models — chat, embeddings, LoRA, and evaluations"
+icon: /images/fireworks.svg
+---
+
+# Fireworks AI
+
+Shanone's Fireworks AI integration gives your agent 96 tools spanning inference, model/LoRA management, on-demand deployments, fine-tuning (SFT/DPO), evaluations, and account administration.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Fireworks AI API key">
+    Create an API key from the [Fireworks AI dashboard](https://app.fireworks.ai/settings/users/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Open **Integrations** in the Shanone dashboard, select Fireworks AI, and paste the API key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `fireworks_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **96 tools** for Fireworks AI, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Inference">
+    `fireworks_chat_completion`, `fireworks_create_completion`, `fireworks_create_message`, `fireworks_create_embedding`, `fireworks_rerank_documents`, `fireworks_list_models`
+  </Accordion>
+  <Accordion title="Batch & Responses API">
+    `fireworks_create_batch_inference_job`, `fireworks_list_batch_inference_jobs`, `fireworks_get_batch_inference_job`, `fireworks_delete_batch_inference_job`, `fireworks_create_response`, `fireworks_list_responses`, `fireworks_get_response`, `fireworks_delete_response`
+  </Accordion>
+  <Accordion title="Models & LoRA">
+    `fireworks_get_model`, `fireworks_create_model`, `fireworks_update_model`, `fireworks_delete_model`, `fireworks_get_model_upload_endpoint`, `fireworks_validate_model_upload`, `fireworks_get_model_download_endpoint`, `fireworks_prepare_model_precision`, `fireworks_load_lora`, `fireworks_list_loras`, `fireworks_get_lora`, `fireworks_update_lora`, `fireworks_unload_lora`
+  </Accordion>
+  <Accordion title="Deployments">
+    `fireworks_create_deployment`, `fireworks_list_deployments`, `fireworks_get_deployment`, `fireworks_update_deployment`, `fireworks_scale_deployment`, `fireworks_delete_deployment`, `fireworks_undelete_deployment`, `fireworks_list_deployment_shapes`, `fireworks_get_deployment_shape`, `fireworks_list_deployment_shape_versions`
+  </Accordion>
+  <Accordion title="Datasets">
+    `fireworks_create_dataset`, `fireworks_upload_dataset_files`, `fireworks_get_dataset_upload_endpoint`, `fireworks_validate_dataset_upload`, `fireworks_get_dataset_download_endpoint`, `fireworks_list_datasets`, `fireworks_get_dataset`, `fireworks_update_dataset`, `fireworks_delete_dataset`
+  </Accordion>
+  <Accordion title="Fine-tuning (SFT / DPO)">
+    `fireworks_create_sft_job`, `fireworks_list_sft_jobs`, `fireworks_get_sft_job`, `fireworks_resume_sft_job`, `fireworks_delete_sft_job`, `fireworks_create_dpo_job`, `fireworks_list_dpo_jobs`, `fireworks_get_dpo_job`, `fireworks_get_dpo_job_metrics_file_endpoint`, `fireworks_resume_dpo_job`, `fireworks_delete_dpo_job`
+  </Accordion>
+  <Accordion title="Evaluations">
+    `fireworks_create_evaluator`, `fireworks_get_evaluator_upload_endpoint`, `fireworks_validate_evaluator_upload`, `fireworks_get_evaluator_build_log_endpoint`, `fireworks_get_evaluator_source_code_endpoint`, `fireworks_list_evaluators`, `fireworks_get_evaluator`, `fireworks_update_evaluator`, `fireworks_delete_evaluator`, `fireworks_create_evaluation_job`, `fireworks_list_evaluation_jobs`, `fireworks_get_evaluation_job`, `fireworks_get_evaluation_job_log_endpoint`, `fireworks_delete_evaluation_job`
+  </Accordion>
+  <Accordion title="Account (quotas, billing, API keys)">
+    `fireworks_list_quotas`, `fireworks_get_quota`, `fireworks_update_quota`, `fireworks_get_billing_usage`, `fireworks_get_billing_summary`, `fireworks_query_usage_costs`, `fireworks_create_api_key`, `fireworks_list_api_keys`, `fireworks_delete_api_key`
+  </Accordion>
+  <Accordion title="Admin (secrets, users, accounts)">
+    `fireworks_create_secret`, `fireworks_list_secrets`, `fireworks_update_secret`, `fireworks_delete_secret`, `fireworks_create_user`, `fireworks_list_users`, `fireworks_get_user`, `fireworks_update_user`, `fireworks_delete_user`, `fireworks_get_account`, `fireworks_update_account`
+  </Accordion>
+  <Accordion title="Routers">
+    `fireworks_create_router`, `fireworks_list_routers`, `fireworks_get_router`, `fireworks_update_router`, `fireworks_delete_router`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Fast open-model inference" icon="zap">
+    Run chat completions or embeddings against open-weight models without managing GPUs
+  </Card>
+  <Card title="Custom fine-tuning" icon="sliders-horizontal">
+    Upload a dataset and launch an SFT or DPO fine-tuning job, then deploy the resulting model
+  </Card>
+  <Card title="On-demand GPU deployments" icon="server">
+    Create and scale a dedicated deployment for a model that needs consistent low latency
+  </Card>
+  <Card title="Cost and usage tracking" icon="receipt">
+    Query billing summaries and usage costs to monitor spend across projects
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="fireworks_create_sft_job or fireworks_create_dpo_job fails to start">
+    Verify the dataset finished uploading and validating first — use `fireworks_validate_dataset_upload` and check `fireworks_get_dataset` status before referencing it in a fine-tuning job.
+  </Accordion>
+  <Accordion title="fireworks_load_lora returns an error about deployment compatibility">
+    LoRA adapters must be loaded onto a deployment running the exact base model they were fine-tuned from — check the base model on both the LoRA and the target deployment with `fireworks_get_lora` / `fireworks_get_deployment`.
+  </Accordion>
+  <Accordion title="Admin tools (fireworks_create_user, fireworks_update_account) return a permissions error">
+    These require the connected API key to belong to an account admin, and some management endpoints additionally need an `account_id` configured — inference-only tools work without it.
+  </Accordion>
+</AccordionGroup>

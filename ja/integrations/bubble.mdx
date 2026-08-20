@@ -1,0 +1,70 @@
+---
+title: "Bubble"
+description: "Bubble.ioアプリのデータをData/Workflow APIで読み書きし、バックエンドワークフローをトリガー"
+icon: /images/bubble.svg
+---
+
+# Bubble
+
+ShanoneのBubble連携では、ノーコードのBubbleアプリのData API(レコード)とWorkflow API(バックエンドワークフロー)を操作するための**7個のツール**をエージェントに提供します。加えて、何が公開されているかを確認するためのAPI仕様取得ツールもあります。
+
+## はじめに
+
+<Steps>
+  <Step title="Data/Workflow APIを有効にする">
+    Bubbleアプリの**Settings > API**でData API(バックエンドワークフローをトリガーしたい場合はWorkflow APIも)を有効化し、APIトークンを発行します。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにBubbleアプリで何か作業をしてもらうか、Shanoneダッシュボードの**インテグレーション**からAPIトークンとアプリのベースURLを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`bubble_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Bubble向けに**7個のツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="レコード">
+    `bubble_list_records`, `bubble_get_record`, `bubble_create_record`, `bubble_update_record`, `bubble_delete_record`
+  </Accordion>
+  <Accordion title="ワークフロー">
+    `bubble_trigger_workflow` — Bubbleのワークフローエディタで公開設定されたAPIワークフローをトリガーする
+  </Accordion>
+  <Accordion title="API仕様の確認">
+    `bubble_get_api_spec` — アプリのSwagger/OpenAPI仕様を取得し、公開されているデータ型やワークフローを確認する
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="バックエンドデータの管理" icon="database">
+    より大きなエージェントタスクの一部として、Bubbleのデータ型のレコードを一覧・絞り込み・更新する
+  </Card>
+  <Card title="ワークフロー起動による自動化" icon="zap">
+    外部イベントからBubbleのバックエンドワークフロー(通知送信など)をトリガーする
+  </Card>
+  <Card title="APIの探索" icon="compass">
+    クエリを書く前に`bubble_get_api_spec`で正確なデータ型・フィールド名を確認する
+  </Card>
+  <Card title="テストデータと本番データ" icon="flask-conical">
+    `version`パラメータを使い、本番データに触れる前にテストバージョンで変更を検証する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="存在するはずのデータ型でbubble_list_recordsが404を返す">
+    そのデータ型がData APIに公開されていない可能性があります。Bubbleの**Settings > API**で、そのデータ型の"Data API"トグルが有効になっているか、名前が一致しているか(大文字小文字は区別されず、スペースは除去される)を確認してください。
+  </Accordion>
+  <Accordion title="存在するはずのワークフローでbubble_trigger_workflowが404を返す">
+    そのワークフローがBubbleのBackend Workflowsエディタで公開APIワークフローとしてマークされている必要があります — 内部限定のワークフローはWorkflow API経由では到達できません。
+  </Accordion>
+  <Accordion title="bubble_create_recordやbubble_update_recordで書き込んだフィールドの値が想定通りに反映されない">
+    BubbleのAPI上のフィールド名は、エディタに表示される表示名と微妙に異なることがよくあります。書き込む前に`bubble_get_api_spec`で正確なフィールドキーを確認してください。
+  </Accordion>
+</AccordionGroup>

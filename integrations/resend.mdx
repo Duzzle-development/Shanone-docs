@@ -1,0 +1,82 @@
+---
+title: "Resend"
+description: "Send transactional email and manage audiences, domains, templates, and webhooks"
+icon: /images/resend.svg
+---
+
+# Resend
+
+Shanone's Resend integration gives your agent 69 tools covering transactional and broadcast email — sending, contacts/audiences/segments, domain verification, templates, suppressions, and webhooks.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Resend API key">
+    Generate a key from the [Resend dashboard](https://resend.com/api-keys).
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Resend, and paste in the key (`re_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `resend_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **69 tools** for Resend, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Emails & broadcasts">
+    `resend_send_email`, `resend_send_batch_emails`, `resend_list_emails`, `resend_get_email`, `resend_cancel_email`, `resend_update_email`, `resend_list_broadcasts`, `resend_create_broadcast`, `resend_send_broadcast`, `resend_get_broadcast`, `resend_delete_broadcast`, `resend_update_broadcast`
+  </Accordion>
+  <Accordion title="Contacts & segments">
+    `resend_list_contacts`, `resend_create_contact`, `resend_get_contact`, `resend_update_contact`, `resend_delete_contact`, `resend_add_contact_to_segment`, `resend_remove_contact_from_segment`, `resend_list_contact_segments`, `resend_list_segments`, `resend_create_segment`, `resend_get_segment`, `resend_delete_segment`, `resend_list_segment_contacts`
+  </Accordion>
+  <Accordion title="Audiences, properties & topics">
+    `resend_list_audiences`, `resend_create_audience`, `resend_get_audience`, `resend_delete_audience`, `resend_update_audience`, `resend_list_contact_properties`, `resend_create_contact_property`, `resend_get_contact_property`, `resend_update_contact_property`, `resend_delete_contact_property`, `resend_get_contact_topics`, `resend_update_contact_topics`, `resend_list_topics`, `resend_create_topic`, `resend_get_topic`, `resend_update_topic`, `resend_delete_topic`
+  </Accordion>
+  <Accordion title="Domains & API keys">
+    `resend_list_domains`, `resend_get_domain`, `resend_create_domain`, `resend_verify_domain`, `resend_delete_domain`, `resend_update_domain`, `resend_list_api_keys`, `resend_create_api_key`, `resend_delete_api_key`
+  </Accordion>
+  <Accordion title="Templates">
+    `resend_list_templates`, `resend_create_template`, `resend_get_template`, `resend_update_template`, `resend_delete_template`, `resend_duplicate_template`, `resend_publish_template`
+  </Accordion>
+  <Accordion title="Suppressions & logs">
+    `resend_list_suppressions`, `resend_add_suppression`, `resend_get_suppression`, `resend_remove_suppression`, `resend_list_logs`, `resend_get_log`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `resend_list_webhooks`, `resend_create_webhook`, `resend_get_webhook`, `resend_update_webhook`, `resend_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Transactional email" icon="mail">
+    Send a receipt, password reset, or notification email from a verified domain
+  </Card>
+  <Card title="Newsletter broadcasts" icon="megaphone">
+    Build a segment, draft a broadcast from a template, and send it to that audience
+  </Card>
+  <Card title="Deliverability monitoring" icon="activity">
+    Check suppression lists and delivery logs before diagnosing a "email not received" report
+  </Card>
+  <Card title="Domain onboarding" icon="globe">
+    Add a new sending domain and walk through DNS verification before going live
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="resend_send_email fails with a domain not verified error">
+    The `from` address must use a domain that's passed verification — check status with `resend_get_domain` and complete `resend_verify_domain` after adding the required DNS records.
+  </Accordion>
+  <Accordion title="resend_send_broadcast doesn't reach some contacts">
+    Recipients on a suppression list (unsubscribed, bounced, or complained) are automatically excluded — check `resend_list_suppressions` if specific contacts seem to be missing.
+  </Accordion>
+  <Accordion title="resend_update_email or resend_cancel_email returns an error after sending">
+    Both only work on scheduled emails that haven't been delivered yet — once an email has actually sent, it can no longer be canceled or rescheduled.
+  </Accordion>
+</AccordionGroup>

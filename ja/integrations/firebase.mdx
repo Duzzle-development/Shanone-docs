@@ -1,0 +1,82 @@
+---
+title: "Firebase"
+description: "Firebaseプロジェクトの管理 — Firestore、認証、Cloud Messaging、Remote Config、Storage、Hosting"
+icon: /images/firebase.svg
+---
+
+# Firebase
+
+ShanoneのFirebase連携は、Firestore・認証・Cloud Messaging・Remote Config・Cloud Storage・プロジェクト/アプリ管理まで、Firebase Adminの機能全体をカバーする45個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="サービスアカウントキーを作成する">
+    Firebaseコンソールで、プロジェクトの設定 → サービスアカウントに移動し、新しい秘密鍵(JSON)を生成します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**を開き、Firebaseを選択して、サービスアカウントのJSON全体を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`firebase_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはFirebase向けに**45個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="プロジェクト & アプリ">
+    `firebase_list_projects`, `firebase_get_project`, `firebase_list_web_apps`, `firebase_list_android_apps`, `firebase_list_ios_apps`, `firebase_create_android_app`, `firebase_create_ios_app`
+  </Accordion>
+  <Accordion title="Firestore">
+    `firebase_list_firestore_collections`, `firebase_list_firestore_documents`, `firebase_get_firestore_document`, `firebase_create_firestore_document`, `firebase_update_firestore_document`, `firebase_delete_firestore_document`, `firebase_query_firestore`
+  </Accordion>
+  <Accordion title="認証">
+    `firebase_auth_list_users`, `firebase_auth_get_user`, `firebase_auth_create_user`, `firebase_auth_update_user`, `firebase_auth_delete_user`, `firebase_auth_delete_users`, `firebase_auth_set_custom_user_claims`, `firebase_auth_revoke_refresh_tokens`, `firebase_auth_verify_id_token`, `firebase_auth_create_custom_token`, `firebase_auth_generate_password_reset_link`, `firebase_auth_generate_email_verification_link`
+  </Accordion>
+  <Accordion title="Cloud Messaging">
+    `firebase_messaging_send`, `firebase_messaging_send_each`, `firebase_messaging_send_each_for_multicast`, `firebase_messaging_subscribe_to_topic`, `firebase_messaging_unsubscribe_from_topic`
+  </Accordion>
+  <Accordion title="Remote Config">
+    `firebase_remote_config_get_template`, `firebase_remote_config_publish_template`, `firebase_remote_config_list_versions`, `firebase_remote_config_rollback`, `firebase_remote_config_download_defaults`
+  </Accordion>
+  <Accordion title="Cloud Storage">
+    `firebase_storage_list_files`, `firebase_storage_get_file_metadata`, `firebase_storage_upload_file`, `firebase_storage_download_file`, `firebase_storage_delete_file`, `firebase_storage_generate_signed_url`
+  </Accordion>
+  <Accordion title="Hosting & App Check">
+    `firebase_list_hosting_sites`, `firebase_list_hosting_releases`, `firebase_app_check_verify_token`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="ユーザーアカウント管理" icon="users">
+    Firebase Authのユーザーを一覧・作成・更新し、ロールベースアクセス用のカスタムクレームを管理する
+  </Card>
+  <Card title="プッシュ通知キャンペーン" icon="bell-ring">
+    Cloud Messagingでターゲット指定/トピック指定のプッシュ通知を送信する
+  </Card>
+  <Card title="Firestoreデータ操作" icon="database">
+    コンソールを開かずにFirestoreのドキュメント/コレクションを検索・取得・更新する
+  </Card>
+  <Card title="設定のロールアウト & ロールバック" icon="rotate-ccw">
+    新しいRemote Configテンプレートを公開し、指標が悪化したら即座にロールバックする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="firebase_query_firestoreが期待より少ない結果を返す">
+    Firestoreの複合フィルタ/ソートを含むクエリにはインデックスが必要です。クエリのロジックが間違っていると考える前に、Firebaseコンソールでインデックス不足のエラーが出ていないか確認してください。
+  </Accordion>
+  <Accordion title="firebase_auth_delete_usersが一部のUIDを無言でスキップする">
+    バッチでのユーザー削除は、レスポンス内にUIDごとのエラーを報告します。200系のステータスがすべてのUIDが削除されたことを意味すると仮定せず、返されたエラーリストを確認してください。
+  </Accordion>
+  <Accordion title="ツール呼び出しが権限エラーやプロジェクト不一致エラーで失敗する">
+    サービスアカウントのJSONは1つのFirebaseプロジェクトに紐づいています。`firebase_get_project`が期待するプロジェクトを返すか確認してください。間違ったプロジェクトのキーだと、以降のすべての呼び出しが失敗します。
+  </Accordion>
+</AccordionGroup>

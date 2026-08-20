@@ -1,0 +1,89 @@
+---
+title: "Amplitude"
+description: "プロダクト分析のクエリ、コホートやタクソノミーの管理、Amplitudeへのイベント送信"
+icon: /images/amplitude.svg
+---
+
+# Amplitude
+
+ShanoneのAmplitude連携では、分析クエリ、ユーザー/イベントのタクソノミー管理、コホート、アノテーション、プライバシー/削除リクエストをカバーする**62個のツール**をエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="AmplitudeのAPI認証情報を取得する">
+    Amplitudeでプロジェクトの**Settings > Projects**を開き、API KeyとSecret Keyをコピーします。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにAmplitudeで何か作業をしてもらう(例:「過去30日間のリテンション分析を見せて」)か、Shanoneダッシュボードの**インテグレーション**から両方のキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    両方のキーが保存されると、`amplitude_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+<Note>
+AmplitudeはOAuthではなくAPIキー認証を使用し、ShanoneはAPI KeyとSecret Keyの両方を必要とします — ほとんどのエンドポイントがHTTP Basic認証でこのペアを要求します。
+</Note>
+
+## 利用可能なツール
+
+Shanoneは Amplitude向けに**62個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="タクソノミー">
+    `amplitude_get_event_types`, `amplitude_get_user_properties`, `amplitude_get_event_properties`, `amplitude_create_event_type`, `amplitude_update_event_type`, `amplitude_delete_event_type`, `amplitude_create_event_property`, `amplitude_update_event_property`, `amplitude_delete_event_property`, `amplitude_create_user_property`, `amplitude_update_user_property`
+  </Accordion>
+  <Accordion title="コホート">
+    `amplitude_upload_cohort`, `amplitude_update_cohort_membership`, `amplitude_request_cohort_download`, `amplitude_check_cohort_status`, `amplitude_download_cohort_file`, `amplitude_get_cohort_usage`, `amplitude_get_user_mappings`, `amplitude_map_users`, `amplitude_list_cohorts`, `amplitude_get_cohort`
+  </Accordion>
+  <Accordion title="分析 & コアクエリ">
+    `amplitude_get_funnel_analysis`, `amplitude_get_retention_analysis`, `amplitude_get_realtime_active_users`, `amplitude_get_user_profile`, `amplitude_export_events`, `amplitude_query_dashboard`, `amplitude_get_events_list`, `amplitude_get_event_segmentation`, `amplitude_get_chart_results`
+  </Accordion>
+  <Accordion title="Identify & ユーザー/グループ プロパティ">
+    `amplitude_identify_user`, `amplitude_identify_group`, `amplitude_set_group_properties`, `amplitude_batch_identify`, `amplitude_get_revenue_ltv`, `amplitude_alias_users`, `amplitude_unalias_users`
+  </Accordion>
+  <Accordion title="イベント送信">
+    `amplitude_send_events`, `amplitude_batch_upload_events`, `amplitude_send_attribution_event`, `amplitude_validate_events`
+  </Accordion>
+  <Accordion title="プライバシー & データ削除">
+    `amplitude_delete_user_data`, `amplitude_get_deletion_requests`, `amplitude_cancel_deletion_request`, `amplitude_create_dsar_request`, `amplitude_get_dsar_status`, `amplitude_download_dsar_output`
+  </Accordion>
+  <Accordion title="アノテーション & リリース">
+    `amplitude_create_annotation`, `amplitude_list_annotations`, `amplitude_get_annotation`, `amplitude_update_annotation`, `amplitude_delete_annotation`, `amplitude_manage_annotation_categories`, `amplitude_create_release`, `amplitude_list_releases`
+  </Accordion>
+  <Accordion title="セッション & ユーザー">
+    `amplitude_get_session_length_distribution`, `amplitude_get_average_session_length`, `amplitude_get_sessions_per_user`, `amplitude_get_active_users`, `amplitude_search_user`, `amplitude_get_user_activity`, `amplitude_get_user_composition`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="リテンションレポート" icon="line-chart">
+    機能リリースについてリテンション・ファネル分析を取得し、傾向をまとめる
+  </Card>
+  <Card title="タクソノミーのガバナンス" icon="list-tree">
+    データ品質向上の取り組みの前に、イベント/プロパティ定義を点検・整理する
+  </Card>
+  <Card title="コホートの活用" icon="users">
+    コホートを作成・更新し、他のマーケティングやプロダクトツールで使えるようにエクスポートする
+  </Card>
+  <Card title="GDPR/CCPA削除リクエスト" icon="shield-off">
+    ユーザーデータ削除リクエストを申請し、完了まで追跡する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="amplitude_* の呼び出しが401/403で失敗する">
+    Amplitudeでは API KeyとSecret Keyの両方の接続が必要です — ほとんどのエンドポイントは1つのキーだけでは動作しません。Shanoneダッシュボードの**インテグレーション**で両方の値を確認してください。
+  </Accordion>
+  <Accordion title="amplitude_get_funnel_analysisやamplitude_get_retention_analysisの結果が想定外に空になる">
+    `amplitude_get_event_types`でイベント名を確認してください — Amplitudeのイベント名は大文字小文字を区別し、実際に取り込まれた名前と完全に一致させる必要があります。
+  </Accordion>
+  <Accordion title="amplitude_check_cohort_statusが保留状態のまま変わらない">
+    コホートのダウンロードや同期はAmplitude側で非同期に処理されます。`amplitude_request_cohort_download`の即時レスポンスを期待するのではなく、`amplitude_check_cohort_status`を定期的にポーリングしてください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,67 @@
+---
+title: "Exa"
+description: "ニューラルWeb検索、類似検索、コンテンツ取得、長時間実行のリサーチエージェント"
+icon: /images/exa.svg
+---
+
+# Exa
+
+ShanoneのExa連携は、ニューラル/セマンティック検索のための12個のツールをエージェントに提供します。キーワード検索を超えて、類似検索・直接的な回答生成・複数ステップのディープリサーチ・非同期のリサーチエージェントまでカバーします。
+
+## はじめに
+
+<Steps>
+  <Step title="ExaのAPIキーを取得する">
+    [Exaダッシュボード](https://dashboard.exa.ai/api-keys)からAPIキーを作成します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**を開き、Exaを選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`exa_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはExa向けに**12個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="検索 & コンテンツ">
+    `exa_search`, `exa_find_similar`, `exa_get_contents`, `exa_answer`, `exa_deep_search`
+  </Accordion>
+  <Accordion title="リサーチエージェント">
+    `exa_agent_create`, `exa_agent_get`, `exa_agent_list`, `exa_agent_cancel`, `exa_agent_delete`, `exa_agent_events`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="根拠付きの質問応答" icon="message-circle-question">
+    `exa_answer`を使って、生の検索結果一覧ではなく引用元付きの直接的な回答を得る
+  </Card>
+  <Card title="競合調査" icon="search">
+    `exa_find_similar`で競合サイトに似たページを見つけ、`exa_get_contents`で全文を取得する
+  </Card>
+  <Card title="複数ステップのディープリサーチ" icon="telescope">
+    反復的な調査が必要な複雑なクエリに対して`exa_deep_search`やリサーチエージェントを起動する
+  </Card>
+  <Card title="長時間実行のバックグラウンドリサーチ" icon="clock">
+    `exa_agent_create`でリサーチエージェントを作成し、非同期実行中に`exa_agent_events`をポーリングする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="exa_searchの結果が広すぎる、または的外れに感じる">
+    Exaはキーワードではなく意味的な意味合いでランク付けします。キーワード文字列ではなく、探しているものを自然言語の説明として表現し、対応している場合はドメイン/日付フィルタで絞り込んでください。
+  </Accordion>
+  <Accordion title="リサーチエージェントが処理中のまま止まっているように見える">
+    `exa_agent_create`で作成した長時間実行のリサーチジョブは非同期です。同期的な結果を期待せず、`exa_agent_get`や`exa_agent_events`でステータスをポーリングし、停止が必要な場合は`exa_agent_cancel`を使ってください。
+  </Accordion>
+  <Accordion title="exa_get_contentsが空またはコンテンツが途切れて返る">
+    一部のページはスクレイピングをブロックしていたり、Exaのコンテンツ取得機能では実行できないJavaScriptレンダリングを必要とします。`exa_search`のスニペットにフォールバックするか、`exa_find_similar`で別のソースを試してください。
+  </Accordion>
+</AccordionGroup>

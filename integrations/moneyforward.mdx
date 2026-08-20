@@ -1,0 +1,85 @@
+---
+title: "MoneyForward"
+description: "Manage MoneyForward accounting, expenses, invoices, and payables — journals, transactions, reports, and approvals"
+icon: /images/moneyforward.svg
+---
+
+# MoneyForward
+
+Shanone's MoneyForward integration gives your agent 59 tools spanning core accounting (journals, trial balances), expense reports, invoicing, and payables — across MoneyForward's separate accounting, expense, invoice, and payable services.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with MoneyForward (e.g. "list this month's journal entries"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize each MoneyForward service you use">
+    MoneyForward Accounting, Expense, Invoice, and Payable are separate OAuth-protected services — you may need to authorize more than one depending on which `moneyforward_*` tools you use.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `moneyforward_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **59 tools** for MoneyForward, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Accounting base (offices, accounts, taxes)">
+    `moneyforward_get_office`, `moneyforward_list_accounts`, `moneyforward_list_departments`, `moneyforward_list_taxes`, `moneyforward_list_sub_accounts`, `moneyforward_get_term_settings`
+  </Accordion>
+  <Accordion title="Journals & vouchers">
+    `moneyforward_list_journals`, `moneyforward_get_journal`, `moneyforward_create_journal`, `moneyforward_update_journal`, `moneyforward_delete_journal`, `moneyforward_create_voucher`, `moneyforward_detach_voucher`
+  </Accordion>
+  <Accordion title="Trade partners & transactions">
+    `moneyforward_list_trade_partners`, `moneyforward_create_trade_partner`, `moneyforward_list_transactions`, `moneyforward_create_transaction`, `moneyforward_create_journal_from_transaction`, `moneyforward_list_connected_accounts`, `moneyforward_get_connected_account`
+  </Accordion>
+  <Accordion title="Accounting reports">
+    `moneyforward_get_trial_balance_bs`, `moneyforward_get_trial_balance_pl`, `moneyforward_get_transition_bs`, `moneyforward_get_transition_pl`
+  </Accordion>
+  <Accordion title="Expense transactions">
+    `moneyforward_expense_list_offices`, `moneyforward_expense_get_office`, `moneyforward_expense_list_transactions`, `moneyforward_expense_get_transaction`, `moneyforward_expense_create_transaction`, `moneyforward_expense_update_transaction`, `moneyforward_expense_delete_transaction`, `moneyforward_expense_upload_receipt`
+  </Accordion>
+  <Accordion title="Expense reports & approvals">
+    `moneyforward_expense_list_reports`, `moneyforward_expense_get_report`, `moneyforward_expense_create_report`, `moneyforward_expense_update_report`, `moneyforward_expense_submit_report`, `moneyforward_expense_list_approvals`, `moneyforward_expense_approve_report`, `moneyforward_expense_reject_report`
+  </Accordion>
+  <Accordion title="Invoicing">
+    `moneyforward_invoice_list_billings`, `moneyforward_invoice_get_billing`, `moneyforward_invoice_create_billing`, `moneyforward_invoice_update_billing`, `moneyforward_invoice_delete_billing`, `moneyforward_invoice_send_billing`, `moneyforward_invoice_list_quotes`, `moneyforward_invoice_get_quote`, `moneyforward_invoice_create_quote`, `moneyforward_invoice_update_quote`
+  </Accordion>
+  <Accordion title="Payables & approvals">
+    `moneyforward_payable_list_offices`, `moneyforward_payable_list_payment_requests`, `moneyforward_payable_get_payment_request`, `moneyforward_payable_create_payment_request`, `moneyforward_payable_update_payment_request`, `moneyforward_payable_submit_payment_request`, `moneyforward_payable_list_approvals`, `moneyforward_payable_approve_request`, `moneyforward_payable_reject_request`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Monthly close support" icon="calculator">
+    Pull trial balances and reconcile journal entries before closing the books
+  </Card>
+  <Card title="Expense approval queues" icon="check-square">
+    List pending expense report approvals and approve or reject them from natural language
+  </Card>
+  <Card title="Invoice follow-ups" icon="file-text">
+    Create and send a billing, then track it until payment
+  </Card>
+  <Card title="Payment request triage" icon="credit-card">
+    Review payable requests awaiting approval before month-end payment runs
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="A tool call fails with a 401 even though other MoneyForward tools work">
+    Accounting, Expense, Invoice, and Payable each have their own OAuth token — reconnect the specific service the failing tool belongs to from **Integrations**.
+  </Accordion>
+  <Accordion title="moneyforward_create_journal fails with an unbalanced entry error">
+    MoneyForward requires debit and credit amounts to sum to zero across all journal lines; use `moneyforward_list_accounts` and `moneyforward_list_sub_accounts` to confirm account IDs before submitting.
+  </Accordion>
+  <Accordion title="Expense report can't be approved">
+    Reports must be submitted (`moneyforward_expense_submit_report`) before they appear in `moneyforward_expense_list_approvals` — draft reports aren't approvable yet.
+  </Accordion>
+</AccordionGroup>

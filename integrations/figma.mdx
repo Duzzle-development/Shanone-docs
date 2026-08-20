@@ -1,0 +1,88 @@
+---
+title: "Figma"
+description: "Read design files, comments, components, styles, and variables — plus webhook management"
+icon: /images/figma.svg
+---
+
+# Figma
+
+Shanone's Figma integration gives your agent 39 tools for reading design files, managing comments and dev handoff resources, and inspecting components, styles, and variables across files and teams.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Figma (e.g. "summarize the comments on this design file"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Figma account">
+    Approve Figma's OAuth consent screen for the account/team you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `figma_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **39 tools** for Figma, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="User">
+    `figma_get_me`
+  </Accordion>
+  <Accordion title="Files">
+    `figma_get_file`, `figma_get_file_nodes`, `figma_export_images`, `figma_get_file_versions`, `figma_get_image_fills`, `figma_get_file_meta`
+  </Accordion>
+  <Accordion title="Comments">
+    `figma_get_comments`, `figma_post_comment`, `figma_delete_comment`, `figma_get_comment_reactions`, `figma_post_comment_reaction`, `figma_delete_comment_reaction`
+  </Accordion>
+  <Accordion title="Projects">
+    `figma_get_team_projects`, `figma_get_project_files`, `figma_get_component_sets`, `figma_get_styles`, `figma_get_project_meta`
+  </Accordion>
+  <Accordion title="Components & styles">
+    `figma_get_file_components`, `figma_get_team_components`, `figma_get_component`, `figma_get_team_component_sets`, `figma_get_component_set`, `figma_get_team_styles`, `figma_get_style`
+  </Accordion>
+  <Accordion title="Webhooks">
+    `figma_list_webhooks`, `figma_create_webhook`, `figma_get_webhook`, `figma_update_webhook`, `figma_delete_webhook`, `figma_get_webhook_requests`
+  </Accordion>
+  <Accordion title="Dev resources">
+    `figma_get_dev_resources`, `figma_create_dev_resources`, `figma_update_dev_resources`, `figma_delete_dev_resource`
+  </Accordion>
+  <Accordion title="Variables">
+    `figma_get_local_variables`, `figma_get_published_variables`, `figma_update_variables`
+  </Accordion>
+  <Accordion title="Misc">
+    `figma_get_oembed`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Design review triage" icon="messages-square">
+    Pull all comments on a file and summarize open feedback threads for the design team
+  </Card>
+  <Card title="Design-to-code handoff" icon="code">
+    Fetch component/style metadata and dev resources so engineers get exact specs and asset links
+  </Card>
+  <Card title="Design system audits" icon="palette">
+    List team components, component sets, and styles to check consistency across files
+  </Card>
+  <Card title="Change notifications" icon="bell">
+    Register a webhook to be notified when a file is updated or a new comment is posted
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="figma_get_file returns a huge, slow response for large files">
+    Use `figma_get_file_nodes` with specific node IDs instead of fetching the entire file tree when you only need a subset of the design.
+  </Accordion>
+  <Accordion title="figma_export_images returns an empty or expired URL">
+    Exported image URLs are temporary — re-call `figma_export_images` to get a fresh URL rather than caching the one from a previous response.
+  </Accordion>
+  <Accordion title="Team-level tools (figma_get_team_projects, figma_get_team_components) return nothing">
+    These require a valid team ID and the connected account must be a member of that team; verify the team ID with `figma_get_me` or the Figma web UI first.
+  </Accordion>
+</AccordionGroup>

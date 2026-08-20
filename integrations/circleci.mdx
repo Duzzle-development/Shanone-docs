@@ -1,0 +1,88 @@
+---
+title: "CircleCI"
+description: "Manage CI/CD pipelines — pipelines, workflows, jobs, contexts, policies, and insights"
+icon: "workflow"
+---
+
+# CircleCI
+
+Shanone's CircleCI integration gives your agent 111 tools for CI/CD: pipelines, workflows, jobs, projects, contexts, policies, OIDC, and pipeline insights.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate a Personal API Token">
+    In CircleCI, go to **User Settings → Personal API Tokens** and create a new token.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select CircleCI, and paste in the Personal API Token.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `circleci_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **111 tools** for CircleCI, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Pipelines, Definitions & Triggers">
+    `circleci_list_pipelines`, `circleci_list_project_pipelines`, `circleci_list_my_pipelines`, `circleci_get_pipeline`, `circleci_get_pipeline_by_number`, `circleci_get_pipeline_config`, `circleci_get_pipeline_workflows`, `circleci_get_pipeline_values`, `circleci_trigger_pipeline`, `circleci_trigger_pipeline_run`, `circleci_continue_pipeline`, `circleci_list_pipeline_definitions`, `circleci_create_pipeline_definition`, `circleci_get_pipeline_definition`, `circleci_update_pipeline_definition`, `circleci_delete_pipeline_definition`, `circleci_list_pipeline_definition_triggers`, `circleci_create_trigger`, `circleci_get_trigger`, `circleci_update_trigger`, `circleci_delete_trigger`, `circleci_list_schedules`, `circleci_create_schedule`, `circleci_get_schedule`, `circleci_update_schedule`, `circleci_delete_schedule`
+  </Accordion>
+  <Accordion title="Workflows & Jobs">
+    `circleci_get_workflow`, `circleci_list_workflow_jobs`, `circleci_approve_job`, `circleci_cancel_workflow`, `circleci_rerun_workflow`, `circleci_get_job`, `circleci_cancel_job`, `circleci_cancel_job_by_number`
+  </Accordion>
+  <Accordion title="Insights & Usage">
+    `circleci_get_project_summary`, `circleci_get_job_timeseries`, `circleci_get_org_summary`, `circleci_get_insights_branches`, `circleci_get_flaky_tests`, `circleci_get_workflow_metrics`, `circleci_get_workflow_runs`, `circleci_get_workflow_job_metrics`, `circleci_get_workflow_summary`, `circleci_get_workflow_test_metrics`, `circleci_create_usage_export`, `circleci_get_usage_export`
+  </Accordion>
+  <Accordion title="Projects, Organizations & Groups">
+    `circleci_create_project`, `circleci_get_project`, `circleci_delete_project`, `circleci_get_project_settings`, `circleci_update_project_settings`, `circleci_create_organization`, `circleci_get_organization`, `circleci_delete_organization`, `circleci_list_url_orb_allowlist`, `circleci_create_url_orb_allowlist_entry`, `circleci_delete_url_orb_allowlist_entry`, `circleci_list_groups`, `circleci_create_group`, `circleci_get_group`, `circleci_delete_group`
+  </Accordion>
+  <Accordion title="Contexts & Environment Variables">
+    `circleci_create_context`, `circleci_list_contexts`, `circleci_get_context`, `circleci_delete_context`, `circleci_list_context_env_vars`, `circleci_set_context_env_var`, `circleci_delete_context_env_var`, `circleci_get_context_restrictions`, `circleci_create_context_restriction`, `circleci_delete_context_restriction`, `circleci_list_env_vars`, `circleci_create_env_var`, `circleci_get_env_var`, `circleci_delete_env_var`
+  </Accordion>
+  <Accordion title="Policy & OIDC">
+    `circleci_get_decision_logs`, `circleci_make_decision`, `circleci_get_decision_settings`, `circleci_set_decision_settings`, `circleci_get_decision_log`, `circleci_get_decision_log_policy_bundle`, `circleci_get_policy_bundle`, `circleci_create_policy_bundle`, `circleci_get_policy_document`, `circleci_get_org_oidc_claims`, `circleci_update_org_oidc_claims`, `circleci_delete_org_oidc_claims`, `circleci_get_project_oidc_claims`, `circleci_update_project_oidc_claims`, `circleci_delete_project_oidc_claims`
+  </Accordion>
+  <Accordion title="Webhooks & OpenTelemetry">
+    `circleci_list_webhooks`, `circleci_create_webhook`, `circleci_get_webhook`, `circleci_update_webhook`, `circleci_delete_webhook`, `circleci_list_otel_exporters`, `circleci_create_otel_exporter`, `circleci_delete_otel_exporter`
+  </Accordion>
+  <Accordion title="Deploys, Checkout Keys & Rollback">
+    `circleci_list_deploy_environments`, `circleci_get_deploy_environment`, `circleci_list_deploy_components`, `circleci_get_deploy_component`, `circleci_list_component_versions`, `circleci_list_checkout_keys`, `circleci_create_checkout_key`, `circleci_get_checkout_key`, `circleci_delete_checkout_key`, `circleci_rollback_project`
+  </Accordion>
+  <Accordion title="User">
+    `circleci_get_me`, `circleci_get_collaborations`, `circleci_get_user`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Build failure triage" icon="triangle-alert">
+    Pull recent workflow runs and flaky-test insights to diagnose a red pipeline
+  </Card>
+  <Card title="Release automation" icon="rocket">
+    Trigger a pipeline with custom parameters and monitor it through to deploy
+  </Card>
+  <Card title="Secrets rotation" icon="key">
+    Audit and update context and project environment variables across projects
+  </Card>
+  <Card title="Compliance auditing" icon="shield-check">
+    Review policy decision logs and OIDC claims for security-sensitive pipelines
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="circleci_trigger_pipeline returns a 404">
+    `project_slug` must be in the form `vcs-slug/org-name/repo-name` (e.g. `gh/my-org/my-repo`). Use `circleci_get_project` to confirm the exact slug before triggering.
+  </Accordion>
+  <Accordion title="Context or environment variable tools return a permissions error">
+    Managing contexts and their environment variables requires org-admin scope on the Personal API Token's account — a token from a non-admin user can read pipelines but not write secrets.
+  </Accordion>
+  <Accordion title="Insights tools return no data for a recently created project">
+    CircleCI Insights aggregates data with a delay and only covers pipelines that have actually run; a brand-new or rarely-run project won't have summary data yet.
+  </Accordion>
+</AccordionGroup>

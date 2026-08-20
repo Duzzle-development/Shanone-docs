@@ -1,0 +1,67 @@
+---
+title: "Yahoo Finance"
+description: "Look up stock quotes, historical prices, financial statements, and news — no API key required"
+icon: /images/yahoo-finance.svg
+---
+
+# Yahoo Finance
+
+Shanone's Yahoo Finance integration gives your agent 4 tools for pulling market data via the unofficial `yfinance` library — quotes, historical prices, financial statements, and news, all without any authentication.
+
+## Getting Started
+
+<Steps>
+  <Step title="No connection needed">
+    Yahoo Finance tools use the free, unofficial `yfinance` data source and require no API key or OAuth — there's nothing to connect in **Integrations**.
+  </Step>
+  <Step title="Just ask">
+    Ask your agent for a stock quote, price history, or recent news (e.g. "what's Apple's stock doing today?") and it will call `yahoo_finance_*` tools directly.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **4 tools** for Yahoo Finance:
+
+<AccordionGroup>
+  <Accordion title="Market data">
+    `yahoo_finance_quote` — current price, day range, 52-week range, market cap, and key ratios for a ticker
+
+    `yahoo_finance_history` — historical OHLCV price data over a configurable period and interval
+
+    `yahoo_finance_financials` — income statement, balance sheet, and cash flow data
+
+    `yahoo_finance_news` — recent news headlines related to a ticker
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Portfolio check-ins" icon="line-chart">
+    Pull quotes for a watchlist of tickers to summarize daily movement
+  </Card>
+  <Card title="Earnings research" icon="file-bar-chart">
+    Review a company's financial statements before a research summary
+  </Card>
+  <Card title="Price trend analysis" icon="candlestick-chart">
+    Fetch historical data over months or years to spot trends
+  </Card>
+  <Card title="News-driven alerts" icon="newspaper">
+    Check recent headlines for a ticker before making a decision
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="yahoo_finance_quote returns 'Symbol not found'">
+    Yahoo Finance tickers use exchange suffixes for non-US listings (e.g. `7203.T` for Tokyo-listed Toyota) — double-check the symbol format for the exchange you're targeting.
+  </Accordion>
+  <Accordion title="yahoo_finance_history returns empty data for a short interval">
+    Intraday intervals (`1m`, `5m`, `15m`) are only available for recent periods (typically the last 7-60 days depending on interval) — use a daily (`1d`) interval for longer historical ranges.
+  </Accordion>
+  <Accordion title="Data looks slightly delayed or occasionally unavailable">
+    This integration relies on the unofficial `yfinance` library scraping Yahoo Finance's public data, not a paid real-time feed — expect best-effort freshness rather than guaranteed real-time accuracy.
+  </Accordion>
+</AccordionGroup>

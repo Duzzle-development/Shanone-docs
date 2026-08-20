@@ -1,0 +1,91 @@
+---
+title: "Together AI"
+description: "Run inference, fine-tuning, and dedicated deployments — chat, embeddings, GPU clusters, and DMI"
+icon: "cpu"
+---
+
+# Together AI
+
+Shanone's Together AI integration gives your agent 127 tools spanning serverless inference (chat/completions/embeddings/rerank), fine-tuning, batch and evaluation jobs, GPU cluster management, and Dedicated Model Inference (DMI) — a broad surface for teams running their own models on Together's infrastructure.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an API key">
+    In the Together AI dashboard, go to **Settings → API Keys** and create a key.
+  </Step>
+  <Step title="Connect the API key in Shanone">
+    Ask your agent to do something with Together AI (e.g. "list the models available for fine-tuning"), or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `together_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **127 tools** for Together AI, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Inference & media generation">
+    `together_chat_completion`, `together_create_completion`, `together_create_embedding`, `together_rerank_documents`, `together_list_models`, `together_generate_image`, `together_create_video`, `together_get_video`, `together_create_speech`, `together_transcribe_audio`, `together_translate_audio`
+  </Accordion>
+  <Accordion title="Fine-tuning">
+    `together_create_fine_tuning_job`, `together_estimate_fine_tuning_price`, `together_list_fine_tuning_jobs`, `together_get_fine_tuning_job`, `together_list_fine_tuning_events`, `together_list_fine_tuning_checkpoints`, `together_get_fine_tuning_metrics`, `together_download_tokenized_dataset`, `together_download_fine_tuned_model`, `together_cancel_fine_tuning_job`, `together_delete_fine_tuning_job`, `together_get_fine_tuning_model_limits`
+  </Accordion>
+  <Accordion title="Batch, evaluations & code interpreter">
+    `together_create_batch_job`, `together_list_batch_jobs`, `together_get_batch_job`, `together_cancel_batch_job`, `together_create_evaluation`, `together_list_evaluations`, `together_get_evaluation`, `together_get_evaluation_status`, `together_list_evaluation_models`, `together_execute_code`, `together_list_code_sessions`
+  </Accordion>
+  <Accordion title="Files">
+    `together_upload_file`, `together_list_files`, `together_get_file`, `together_get_file_content`, `together_delete_file`
+  </Accordion>
+  <Accordion title="GPU clusters & storage">
+    `together_create_gpu_cluster`, `together_list_gpu_clusters`, `together_get_gpu_cluster`, `together_update_gpu_cluster`, `together_delete_gpu_cluster`, `together_list_cluster_regions`, `together_create_cluster_storage`, `together_list_cluster_storages`, `together_get_cluster_storage`, `together_update_cluster_storage`, `together_delete_cluster_storage`, `together_create_remediation`, `together_list_remediations`, `together_get_remediation`, `together_approve_remediation`, `together_cancel_remediation`, `together_reject_remediation`
+  </Accordion>
+  <Accordion title="Dedicated Container Inference (deployments)">
+    `together_dci_create_deployment`, `together_dci_list_deployments`, `together_dci_get_deployment`, `together_dci_update_deployment`, `together_dci_delete_deployment`, `together_dci_get_deployment_logs`, `together_dci_create_secret`, `together_dci_list_secrets`, `together_dci_get_secret`, `together_dci_update_secret`, `together_dci_delete_secret`, `together_dci_create_volume`, `together_dci_list_volumes`, `together_dci_get_volume`, `together_dci_update_volume`, `together_dci_delete_volume`, `together_dci_download_storage_file`, `together_dci_submit_queue_job`, `together_dci_get_queue_job_status`, `together_dci_cancel_queue_job`, `together_dci_clear_queue`, `together_dci_get_queue_metrics`
+  </Accordion>
+  <Accordion title="Dedicated Model Inference (DMI)">
+    `together_dmi_list_adapters`, `together_dmi_add_adapter`, `together_dmi_get_adapter`, `together_dmi_update_adapter`, `together_dmi_remove_adapter`, `together_dmi_create_deployment`, `together_dmi_list_deployments`, `together_dmi_get_deployment`, `together_dmi_update_deployment`, `together_dmi_delete_deployment`, `together_dmi_create_endpoint`, `together_dmi_list_endpoints`, `together_dmi_get_endpoint`, `together_dmi_update_endpoint`, `together_dmi_delete_endpoint`, `together_dmi_list_endpoint_events`, `together_dmi_get_endpoint_analytics`, `together_dmi_list_organization_endpoints`
+  </Accordion>
+  <Accordion title="DMI experiments & models">
+    `together_dmi_create_ab_experiment`, `together_dmi_list_ab_experiments`, `together_dmi_get_ab_experiment`, `together_dmi_update_ab_experiment`, `together_dmi_delete_ab_experiment`, `together_dmi_create_shadow_experiment`, `together_dmi_list_shadow_experiments`, `together_dmi_get_shadow_experiment`, `together_dmi_update_shadow_experiment`, `together_dmi_delete_shadow_experiment`, `together_dmi_list_shadow_targets`, `together_dmi_create_shadow_target`, `together_dmi_get_shadow_target`, `together_dmi_update_shadow_target`, `together_dmi_delete_shadow_target`, `together_dmi_list_supported_models`, `together_dmi_get_supported_model`, `together_dmi_list_models`, `together_dmi_create_model`, `together_dmi_get_model`, `together_dmi_update_model`, `together_dmi_delete_model`, `together_dmi_list_model_files`, `together_dmi_list_model_revisions`, `together_dmi_list_organization_models`, `together_dmi_create_model_upload`, `together_dmi_get_model_upload`, `together_dmi_list_model_upload_events`, `together_dmi_list_instance_types`, `together_dmi_list_configs`
+  </Accordion>
+  <Accordion title="Account">
+    `together_whoami`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Chat/completion calls" icon="message-square">
+    Run a chat completion against an open model and return the response to the user
+  </Card>
+  <Card title="Custom model fine-tuning" icon="settings">
+    Upload a training file, launch a fine-tuning job, and poll it until a checkpoint is ready
+  </Card>
+  <Card title="Dedicated inference ops" icon="server">
+    Stand up a DMI endpoint for a fine-tuned model and monitor its analytics/events
+  </Card>
+  <Card title="Batch processing" icon="layers">
+    Submit a large prompt set as a batch job instead of looping single completions
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="together_create_fine_tuning_job fails on validation">
+    Use `together_estimate_fine_tuning_price` first — it validates the training file and base model compatibility before you commit to a paid job.
+  </Accordion>
+  <Accordion title="A DMI deployment stays in a pending state">
+    Dedicated Model Inference deployments provision GPU capacity and can take several minutes — poll `together_dmi_get_deployment` (or `together_dci_get_deployment` for container-based deployments) rather than assuming failure.
+  </Accordion>
+  <Accordion title="together_execute_code doesn't retain state between calls">
+    Code interpreter sessions are explicit — use `together_list_code_sessions` to find or reuse an existing session ID; a fresh call without one starts a brand-new session.
+  </Accordion>
+  <Accordion title="GPU cluster operations fail with a quota or capacity error">
+    GPU clusters are a scarce, billed resource — check `together_list_cluster_regions` for availability and confirm your account's quota before retrying `together_create_gpu_cluster`.
+  </Accordion>
+</AccordionGroup>

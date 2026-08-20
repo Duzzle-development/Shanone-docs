@@ -1,0 +1,91 @@
+---
+title: "OneDrive"
+description: "Manage OneDrive and SharePoint files — drives, folders, sharing, versions, sync, and Microsoft 365 governance"
+icon: /images/onedrive.svg
+---
+
+# OneDrive
+
+Shanone's OneDrive integration gives your agent 87 tools spanning everyday file management, SharePoint site access, and the Microsoft 365 governance tools (retention labels, sensitivity labels, delta sync) most integrations leave out.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with OneDrive (e.g. "find the latest version of the Q3 budget spreadsheet"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Microsoft account">
+    Approve Microsoft's OAuth consent screen for the account whose OneDrive and SharePoint sites Shanone should access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `onedrive_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **87 tools** for OneDrive, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Files">
+    `onedrive_get_file_info`, `onedrive_download_file`, `onedrive_upload_file`, `onedrive_delete_file`, `onedrive_move_file`, `onedrive_copy_file`, `onedrive_search_files`, `onedrive_download_file_by_path`, `onedrive_create_upload_session`, `onedrive_download_as_format`, `onedrive_update_metadata`, `onedrive_rename_item`, `onedrive_follow_item`, `onedrive_unfollow_item`, `onedrive_preview_item`
+  </Accordion>
+  <Accordion title="Folders">
+    `onedrive_list_root`, `onedrive_list_folder`, `onedrive_create_folder`, `onedrive_delete_folder`, `onedrive_get_special_folder`, `onedrive_list_special_folder`, `onedrive_get_recent`, `onedrive_get_root_children`, `onedrive_list_followed`
+  </Accordion>
+  <Accordion title="Sharing & permissions">
+    `onedrive_create_sharing_link`, `onedrive_grant_permission_to_link`, `onedrive_get_shared_drive_item`, `onedrive_list_link_permissions`, `onedrive_list_permissions`, `onedrive_get_permission`, `onedrive_update_permission`, `onedrive_delete_permission`, `onedrive_invite_user`, `onedrive_get_shared_item`, `onedrive_list_shared_with_me`
+  </Accordion>
+  <Accordion title="Versions & recycle bin">
+    `onedrive_list_versions`, `onedrive_get_version`, `onedrive_download_version`, `onedrive_restore_version`, `onedrive_restore_item`, `onedrive_permanent_delete`, `onedrive_list_recycle_bin_items`
+  </Accordion>
+  <Accordion title="Sync & subscriptions">
+    `onedrive_get_delta`, `onedrive_get_delta_by_token`, `onedrive_create_subscription`, `onedrive_list_subscriptions`, `onedrive_delete_subscription`, `onedrive_update_subscription`, `onedrive_get_subscription`
+  </Accordion>
+  <Accordion title="Collaboration & bundles">
+    `onedrive_checkout`, `onedrive_checkin`, `onedrive_discard_checkout`, `onedrive_get_publication_status`, `onedrive_list_bundles`, `onedrive_get_bundle`, `onedrive_create_bundle`, `onedrive_add_item_to_bundle`, `onedrive_remove_item_from_bundle`, `onedrive_update_bundle`, `onedrive_delete_bundle`
+  </Accordion>
+  <Accordion title="SharePoint sites">
+    `onedrive_get_site`, `onedrive_list_site_drives`, `onedrive_get_site_drive`, `onedrive_list_site_lists`, `onedrive_get_group_drive`, `onedrive_search_sites`, `onedrive_list_site_subsites`, `onedrive_list_site_columns`, `onedrive_get_site_page_content`, `onedrive_get_sharepoint_list_items`, `onedrive_list_sharepoint_list_items_delta`, `onedrive_list_site_drive_items_delta`
+  </Accordion>
+  <Accordion title="Governance & compliance">
+    `onedrive_get_retention_label`, `onedrive_set_retention_label`, `onedrive_remove_retention_label`, `onedrive_lock_unlock_record`, `onedrive_extract_sensitivity_labels`, `onedrive_assign_sensitivity_label`
+  </Accordion>
+  <Accordion title="Analytics & thumbnails">
+    `onedrive_get_analytics`, `onedrive_get_activities`, `onedrive_list_drive_activities`, `onedrive_get_activity_stats`, `onedrive_get_thumbnails`, `onedrive_get_thumbnail`, `onedrive_get_thumbnail_content`, `onedrive_get_my_drive`, `onedrive_get_drive_info`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Cross-team file sharing" icon="share-2">
+    Find a document, generate a sharing link, and grant access to specific collaborators
+  </Card>
+  <Card title="SharePoint site search" icon="search">
+    Search across connected SharePoint sites and libraries to locate the latest version of a document
+  </Card>
+  <Card title="Compliance & retention audits" icon="shield-check">
+    Check retention labels and sensitivity labels applied to sensitive files across a drive
+  </Card>
+  <Card title="Version recovery" icon="history">
+    List a file's version history and restore a previous version after an unwanted edit
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="onedrive_upload_file fails for larger files">
+    Microsoft Graph's simple upload endpoint tops out around 4MB. For anything larger, use `onedrive_create_upload_session` to start a resumable upload session instead.
+  </Accordion>
+  <Accordion title="onedrive_get_delta suddenly returns a resync-required error">
+    Delta tokens can expire or be invalidated server-side. Call `onedrive_get_delta` without a token to restart the sync loop, then persist the new token from the response for subsequent `onedrive_get_delta_by_token` calls.
+  </Accordion>
+  <Accordion title="SharePoint tools return empty results or a 403">
+    Most `onedrive_*` SharePoint tools require a specific site or drive ID — start with `onedrive_search_sites` or `onedrive_get_site` to resolve the right site, and confirm the connected Microsoft account actually has access to it.
+  </Accordion>
+  <Accordion title="onedrive_delete_file doesn't seem to free up space">
+    Deleted items move to the recycle bin first. Use `onedrive_list_recycle_bin_items` to confirm, and `onedrive_permanent_delete` if you need to remove them for good.
+  </Accordion>
+</AccordionGroup>

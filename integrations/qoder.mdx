@@ -1,0 +1,73 @@
+---
+title: "Qoder"
+description: "Run and manage Qoder AI development agent sessions, files, and events"
+icon: /images/qoder.svg
+---
+
+# Qoder
+
+Shanone's Qoder integration gives your agent 11 tools for driving [Qoder](https://qoder.ai) AI development agent sessions — creating agents, running sessions, uploading files, and tracking events from an autonomous coding workflow.
+
+## Getting Started
+
+<Steps>
+  <Step title="Create a Qoder API key">
+    Generate a key from your Qoder account settings.
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations** in the Shanone dashboard, select Qoder, and paste in the key (`qd_...`).
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `qoder_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **11 tools** for Qoder, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Agents">
+    `qoder_list_agents`, `qoder_get_agent`, `qoder_create_agent`
+  </Accordion>
+  <Accordion title="Sessions">
+    `qoder_create_session`, `qoder_get_session`, `qoder_list_sessions`, `qoder_delete_session`
+  </Accordion>
+  <Accordion title="Messaging & events">
+    `qoder_send_message`, `qoder_get_session_events`
+  </Accordion>
+  <Accordion title="Files">
+    `qoder_upload_file`, `qoder_list_files`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Delegate a coding task" icon="terminal">
+    Create an agent and session, send a task description, and let Qoder work on it
+  </Card>
+  <Card title="Supply reference files" icon="file-up">
+    Upload spec docs or sample files a session needs before sending its task message
+  </Card>
+  <Card title="Session monitoring" icon="activity">
+    Poll `qoder_get_session_events` to track progress on a long-running session
+  </Card>
+  <Card title="Multi-agent management" icon="layout-grid">
+    List existing agents and sessions to avoid duplicating work already in progress
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="qoder_send_message fails right after qoder_create_session">
+    Some session types need a moment to initialize — check the session's status with `qoder_get_session` before sending the first message if it fails immediately.
+  </Accordion>
+  <Accordion title="qoder_upload_file succeeds but the agent doesn't seem to use the file">
+    Confirm the file was attached to the correct session/agent ID with `qoder_list_files` — uploads are scoped, not globally visible to every session.
+  </Accordion>
+  <Accordion title="qoder_get_session_events returns nothing for an active session">
+    Events may take a moment to appear after a message is sent; poll again after a short delay rather than assuming the session is stuck.
+  </Accordion>
+</AccordionGroup>

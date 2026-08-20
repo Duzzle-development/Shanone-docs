@@ -1,0 +1,79 @@
+---
+title: "Chatwork"
+description: "日本企業向けチームチャット — チャットルーム、メッセージ、タスク、ファイル、コンタクト、招待リンク"
+icon: /images/chatwork.svg
+---
+
+# Chatwork
+
+ShanoneのChatwork連携は、チャットルーム、メッセージ、タスク、ファイル、コンタクト、招待リンクを扱う32個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにChatwork関連の作業を依頼(例: 「営業チャットルームにメッセージを送って」)するか、Shanoneダッシュボードの**連携**から事前に接続します。どちらの場合も、ShanoneをChatworkアカウントに対して許可するための`connect_link`が発行されます。
+  </Step>
+  <Step title="Chatworkアカウントを許可する">
+    Shanoneに操作させたいアカウントについて、ChatworkのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`chatwork_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはChatwork向けに**32個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="メッセージ">
+    `chatwork_get_room_messages`, `chatwork_send_message`, `chatwork_mark_as_read`, `chatwork_mark_as_unread`, `chatwork_get_message`, `chatwork_update_message`, `chatwork_delete_message`
+  </Accordion>
+  <Accordion title="チャットルーム">
+    `chatwork_list_rooms`, `chatwork_get_room_info`, `chatwork_list_room_members`, `chatwork_create_room`, `chatwork_update_room`, `chatwork_leave_room`, `chatwork_update_room_members`
+  </Accordion>
+  <Accordion title="タスク">
+    `chatwork_create_task`, `chatwork_get_my_tasks`, `chatwork_list_tasks`, `chatwork_update_task_status`, `chatwork_get_task`
+  </Accordion>
+  <Accordion title="ファイル">
+    `chatwork_list_files`, `chatwork_get_file`, `chatwork_upload_file`
+  </Accordion>
+  <Accordion title="コンタクト">
+    `chatwork_get_me`, `chatwork_get_my_status`, `chatwork_list_contacts`, `chatwork_list_incoming_requests`, `chatwork_approve_incoming_request`, `chatwork_reject_incoming_request`
+  </Accordion>
+  <Accordion title="招待リンク">
+    `chatwork_get_invite_link`, `chatwork_create_invite_link`, `chatwork_update_invite_link`, `chatwork_delete_invite_link`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="タスクのトリアージ" icon="list-checks">
+    複数のチャットルームをまたいで自分の未完了タスクを取得し、期限が近いものを要約する
+  </Card>
+  <Card title="チャットルーム全体への告知" icon="megaphone">
+    チャットルームに更新情報を投稿し、対応済みのメッセージを既読にする
+  </Card>
+  <Card title="ファイルの受け渡し" icon="file-up">
+    レポートや添付ファイルをプロジェクトのチャットルームに直接アップロードする
+  </Card>
+  <Card title="オンボーディングの自動化" icon="user-plus">
+    チャットルームの招待リンクを発行し、届いたコンタクト申請を承認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="chatwork_send_messageがルームアクセスエラーで失敗する">
+    接続済みのアカウントが対象チャットルームに既に参加している必要があります。送信前に`chatwork_list_rooms`で`room_id`が認証済みユーザーから見えているか確認してください。
+  </Accordion>
+  <Accordion title="chatwork_create_taskで担当者に想定通り通知が届かない">
+    `to_ids`には、すでにそのチャットルームに参加している有効なChatworkアカウントIDをカンマ区切りで指定する必要があります。事前に`chatwork_list_room_members`で確認してください。
+  </Accordion>
+  <Accordion title="アップロードしたファイルがchatwork_list_filesにすぐ表示されない">
+    Chatworkはアップロードをサーバー側で処理します。アップロードしたばかりのファイルがまだ一覧に出ない場合は、少し時間を置いて`chatwork_list_files`を再実行してください。
+  </Accordion>
+</AccordionGroup>

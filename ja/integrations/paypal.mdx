@@ -1,0 +1,85 @@
+---
+title: "PayPal"
+description: "注文、請求書、サブスクリプション、紛争、ペイアウト、Webhook — PayPalの決済API全体"
+icon: /images/paypal.svg
+---
+
+# PayPal
+
+ShanoneのPayPal連携は、決済の全ライフサイクルをカバーする105個のツールをエージェントに提供します。注文・決済、請求書発行、サブスクリプション/課金プラン、紛争解決、ペイアウト、Webhook管理まで対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにPayPal関連の作業を依頼(例: 「今月の未払い請求書を一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="PayPalアカウントを許可する">
+    Shanoneに操作させたいビジネスアカウントについて、PayPalのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`paypal_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはPayPal向けに**105個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="注文 & 決済">
+    `paypal_create_order`, `paypal_get_order`, `paypal_authorize_order`, `paypal_capture_order`, `paypal_update_order`, `paypal_confirm_order`, `paypal_add_order_tracking`, `paypal_update_order_tracking`, `paypal_get_authorization`, `paypal_capture_authorization`, `paypal_void_authorization`, `paypal_get_capture`, `paypal_refund_capture`, `paypal_get_refund`
+  </Accordion>
+  <Accordion title="請求書">
+    `paypal_create_draft_invoice`, `paypal_get_invoice`, `paypal_list_invoices`, `paypal_send_invoice`, `paypal_cancel_invoice`, `paypal_delete_invoice`, `paypal_record_payment_for_invoice`, `paypal_update_invoice`, `paypal_send_invoice_reminder`, `paypal_generate_invoice_number`, `paypal_search_invoices`, `paypal_generate_invoice_qr_code`, `paypal_record_refund_for_invoice`, `paypal_delete_invoice_external_payment`, `paypal_create_invoice_template`, `paypal_list_invoice_templates`, `paypal_get_invoice_template`, `paypal_update_invoice_template`, `paypal_delete_invoice_template`
+  </Accordion>
+  <Accordion title="サブスクリプション & プラン">
+    `paypal_create_plan`, `paypal_get_plan`, `paypal_list_plans`, `paypal_activate_plan`, `paypal_deactivate_plan`, `paypal_update_plan_pricing`, `paypal_update_plan`, `paypal_get_subscription`, `paypal_cancel_subscription`, `paypal_suspend_subscription`, `paypal_activate_subscription`, `paypal_list_subscription_transactions`, `paypal_update_subscription`, `paypal_revise_subscription`, `paypal_capture_subscription_payment`
+  </Accordion>
+  <Accordion title="紛争">
+    `paypal_list_disputes`, `paypal_get_dispute`, `paypal_accept_dispute_claim`, `paypal_send_message_to_dispute`, `paypal_escalate_dispute`, `paypal_make_dispute_offer`, `paypal_provide_dispute_evidence`, `paypal_appeal_dispute`, `paypal_acknowledge_dispute_return_item`, `paypal_accept_dispute_offer`, `paypal_deny_dispute_offer`, `paypal_provide_dispute_supporting_info`
+  </Accordion>
+  <Accordion title="ペイアウト & トラッキング">
+    `paypal_create_payout`, `paypal_get_payout_batch`, `paypal_get_payout_item`, `paypal_cancel_payout_item`, `paypal_create_referenced_payout`, `paypal_get_referenced_payout`, `paypal_get_referenced_payout_item`, `paypal_add_tracking`, `paypal_update_tracking`, `paypal_get_tracking`, `paypal_batch_add_tracking`, `paypal_list_tracking`
+  </Accordion>
+  <Accordion title="商品 & Webプロフィール">
+    `paypal_create_product`, `paypal_get_product`, `paypal_list_products`, `paypal_update_product`, `paypal_create_web_profile`, `paypal_get_web_profile`, `paypal_list_web_profiles`, `paypal_update_web_profile`, `paypal_patch_web_profile`, `paypal_delete_web_profile`
+  </Accordion>
+  <Accordion title="Webhook">
+    `paypal_list_webhooks`, `paypal_create_webhook`, `paypal_delete_webhook`, `paypal_list_available_events`, `paypal_verify_webhook_signature`, `paypal_get_webhook`, `paypal_update_webhook`, `paypal_simulate_webhook_event`, `paypal_list_webhook_events`, `paypal_get_webhook_event`, `paypal_resend_webhook_event`
+  </Accordion>
+  <Accordion title="レポート、Vault & アカウント">
+    `paypal_list_transactions`, `paypal_get_balance`, `paypal_search_transactions`, `paypal_get_transaction_details`, `paypal_list_all_balances`, `paypal_create_setup_token`, `paypal_get_setup_token`, `paypal_create_payment_token`, `paypal_list_payment_tokens`, `paypal_get_payment_token`, `paypal_delete_payment_token`, `paypal_get_userinfo`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="請求書のフォローアップ" icon="file-text">
+    未払いの請求書を見つけ、期限を過ぎる前にリマインダーを送る
+  </Card>
+  <Card title="サブスクリプション管理" icon="repeat">
+    顧客のサブスクリプション状況を確認し、プランの一時停止・キャンセル・変更を行う
+  </Card>
+  <Card title="紛争への対応" icon="shield-alert">
+    未解決の紛争を取得し、必要な証拠を集めて期限内に回答を提出する
+  </Card>
+  <Card title="ペイアウトの自動化" icon="send">
+    複数の受取人へのペイアウトをバッチで作成し、バッチの状態を確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="paypal_capture_orderが注文未承認エラーで失敗する">
+    `paypal_capture_order`が成功するには、購入者がPayPalの承認フローを完了している必要があります。まず`paypal_get_order`で注文の現在の状態を確認してください。
+  </Accordion>
+  <Accordion title="paypal_create_webhookで設定したイベントが届かない">
+    WebhookのURLが外部からアクセス可能であること、そして`paypal_list_available_events`に登録したいイベントタイプが含まれていることを確認してください。`paypal_simulate_webhook_event`でエンドポイントを直接テストすることもできます。
+  </Accordion>
+  <Accordion title="paypal_provide_dispute_evidenceが送信を拒否する">
+    `shanone_get_tool_schema`で正確な証拠ペイロードの形式を確認してください——PayPalは自由記述のテキストや任意の添付ファイルではなく、特定の証拠タイプ(例: `PROOF_OF_FULFILLMENT`)を要求します。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,79 @@
+---
+title: "Stability AI"
+description: "Generate, edit, and upscale images and audio with Stable Diffusion and Stable Audio"
+icon: /images/stability.svg
+---
+
+# Stability AI
+
+Shanone's Stability AI integration gives your agent 28 tools for image generation, editing (inpainting, outpainting, background removal), control-guided generation, upscaling, 3D asset generation, and text-to-audio — covering most of Stability's generative media API.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an API key">
+    In the Stability AI Platform, go to **Account → API Keys** and create a key.
+  </Step>
+  <Step title="Connect the API key in Shanone">
+    Ask your agent to do something with Stability (e.g. "generate an image of a lighthouse at sunset"), or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `stability_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **28 tools** for Stability AI, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Generate">
+    `stability_generate_ultra`, `stability_generate_core`, `stability_generate_sd3`
+  </Accordion>
+  <Accordion title="Edit">
+    `stability_remove_background`, `stability_search_and_replace`, `stability_outpaint`, `stability_erase`, `stability_inpaint`, `stability_search_and_recolor`, `stability_replace_background_relight`
+  </Accordion>
+  <Accordion title="Control-guided generation">
+    `stability_control_sketch`, `stability_control_structure`, `stability_control_style`, `stability_control_style_transfer`
+  </Accordion>
+  <Accordion title="Upscale">
+    `stability_upscale_fast`, `stability_upscale_conservative`, `stability_upscale_creative`
+  </Accordion>
+  <Accordion title="3D & audio media">
+    `stability_generate_3d`, `stability_generate_3d_spar3d`, `stability_audio_text_to_audio`, `stability_audio_audio_to_audio`, `stability_audio_inpaint`, `stability_audio_3_text_to_audio`, `stability_audio_3_audio_to_audio`, `stability_audio_3_inpaint`
+  </Accordion>
+  <Accordion title="Account & results">
+    `stability_get_balance`, `stability_fetch_image_result`, `stability_fetch_audio_result`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Marketing asset generation" icon="image">
+    Generate a batch of product hero images from text prompts for a campaign
+  </Card>
+  <Card title="Photo cleanup" icon="eraser">
+    Remove a background or erase an unwanted object from an uploaded photo
+  </Card>
+  <Card title="Style-consistent variations" icon="palette">
+    Use control-style or style-transfer to generate variations that match an existing brand look
+  </Card>
+  <Card title="Upscaling low-res assets" icon="maximize">
+    Upscale an old or low-resolution image for reuse in higher-resolution layouts
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="A generation call returns a 402 or balance error">
+    Stability AI bills per generation by credits. Check `stability_get_balance` before running large batches to avoid mid-batch failures.
+  </Accordion>
+  <Accordion title="stability_generate_3d or an audio tool doesn't return the asset immediately">
+    3D and some audio generations run asynchronously and return a job/generation ID — poll `stability_fetch_image_result` or `stability_fetch_audio_result` with that ID until the asset is ready.
+  </Accordion>
+  <Accordion title="stability_inpaint or stability_erase produces unexpected results">
+    These tools rely on a mask image aligned to the source image's dimensions — check `shanone_get_tool_schema` for `stability_inpaint` to confirm the mask format (grayscale, matching resolution) expected.
+  </Accordion>
+</AccordionGroup>

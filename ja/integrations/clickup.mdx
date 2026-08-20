@@ -1,0 +1,106 @@
+---
+title: "ClickUp"
+description: "本格的なプロジェクト管理 — タスク、リスト、ドキュメント、ゴール、時間管理、チャット、ワークスペース管理"
+icon: /images/clickup.svg
+---
+
+# ClickUp
+
+ShanoneのClickUp連携は、ClickUpのほぼすべての領域を扱う166個のツールをエージェントに提供します。タスク、リスト、フォルダ、スペース、ドキュメント、ゴール、時間管理、チャット、ゲスト、ワークスペース管理が対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="Personal API Tokenを発行する">
+    ClickUpの**Settings → Apps**ページでPersonal API Token(`pk_`で始まるトークン)をコピーします。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、ClickUpを選択してトークンを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`clickup_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはClickUp向けに**166個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="タスク (14個)">
+    `clickup_get_tasks`, `clickup_get_task`, `clickup_create_task`, `clickup_update_task`, `clickup_search_tasks`, `clickup_create_comment`, `clickup_delete_task`, `clickup_move_task`, `clickup_merge_tasks`, `clickup_create_task_from_template`, `clickup_get_task_time_in_status`, `clickup_get_bulk_tasks_time_in_status`, `clickup_update_task_time_estimates`, `clickup_replace_task_time_estimates`
+  </Accordion>
+  <Accordion title="リスト・フォルダ & スペース (14個)">
+    `clickup_get_list`, `clickup_create_list`, `clickup_get_folderless_lists`, `clickup_create_folderless_list`, `clickup_update_list`, `clickup_delete_list`, `clickup_create_list_from_template`, `clickup_add_task_to_list`, `clickup_remove_task_from_list`, `clickup_get_list_members`, `clickup_get_folder`, `clickup_create_folder`, `clickup_update_folder`, `clickup_delete_folder`
+  </Accordion>
+  <Accordion title="ワークスペース (11個)">
+    `clickup_get_authorized_user`, `clickup_list_workspaces`, `clickup_list_spaces`, `clickup_list_folders`, `clickup_list_lists`, `clickup_get_workspace_seats`, `clickup_get_workspace_plan`, `clickup_invite_user_to_workspace`, `clickup_get_user`, `clickup_edit_user_on_workspace`, `clickup_remove_user_from_workspace`
+  </Accordion>
+  <Accordion title="スペース & カスタムフィールド (11個)">
+    `clickup_get_space`, `clickup_create_space`, `clickup_update_space`, `clickup_delete_space`, `clickup_get_custom_task_types`, `clickup_get_list_custom_fields`, `clickup_get_folder_custom_fields`, `clickup_get_space_custom_fields`, `clickup_get_workspace_custom_fields`, `clickup_set_custom_field_value`, `clickup_remove_custom_field_value`
+  </Accordion>
+  <Accordion title="時間管理 (13個)">
+    `clickup_get_time_entries`, `clickup_create_time_entry`, `clickup_get_time_entry`, `clickup_update_time_entry`, `clickup_delete_time_entry`, `clickup_get_time_entry_history`, `clickup_get_running_time_entry`, `clickup_start_time_entry`, `clickup_stop_time_entry`, `clickup_get_time_entry_tags`, `clickup_add_tags_to_time_entries`, `clickup_remove_tags_from_time_entries`, `clickup_change_time_entry_tag_name`
+  </Accordion>
+  <Accordion title="ビュー (12個)">
+    `clickup_get_workspace_views`, `clickup_create_workspace_view`, `clickup_get_space_views`, `clickup_create_space_view`, `clickup_get_folder_views`, `clickup_create_folder_view`, `clickup_get_list_views`, `clickup_create_list_view`, `clickup_get_view`, `clickup_update_view`, `clickup_delete_view`, `clickup_get_view_tasks`
+  </Accordion>
+  <Accordion title="チャット (20個)">
+    `clickup_get_chat_channels`, `clickup_create_chat_channel`, `clickup_create_location_chat_channel`, `clickup_create_direct_message`, `clickup_get_chat_channel`, `clickup_update_chat_channel`, `clickup_delete_chat_channel`, `clickup_get_chat_channel_followers`, `clickup_get_chat_channel_members`, `clickup_get_chat_messages`, `clickup_create_chat_message`, `clickup_update_chat_message`, `clickup_delete_chat_message`, `clickup_get_chat_message_reactions`, `clickup_create_chat_reaction`, `clickup_delete_chat_reaction`, `clickup_get_chat_message_replies`, `clickup_create_reply_message`, `clickup_get_chat_message_tagged_users`, `clickup_get_chat_post_subtypes`
+  </Accordion>
+  <Accordion title="ゴール (8個)">
+    `clickup_get_goals`, `clickup_create_goal`, `clickup_get_goal`, `clickup_update_goal`, `clickup_delete_goal`, `clickup_create_key_result`, `clickup_edit_key_result`, `clickup_delete_key_result`
+  </Accordion>
+  <Accordion title="ドキュメント (8個)">
+    `clickup_search_docs`, `clickup_create_doc`, `clickup_get_doc`, `clickup_get_doc_page_listing`, `clickup_get_doc_pages`, `clickup_create_page`, `clickup_get_page`, `clickup_edit_page`
+  </Accordion>
+  <Accordion title="コメント (9個)">
+    `clickup_get_task_comments`, `clickup_get_list_comments`, `clickup_create_list_comment`, `clickup_get_chat_view_comments`, `clickup_create_chat_view_comment`, `clickup_update_comment`, `clickup_delete_comment`, `clickup_get_threaded_comments`, `clickup_create_threaded_comment`
+  </Accordion>
+  <Accordion title="ゲスト (10個)">
+    `clickup_invite_guest_to_workspace`, `clickup_get_guest`, `clickup_edit_guest_on_workspace`, `clickup_remove_guest_from_workspace`, `clickup_add_guest_to_task`, `clickup_remove_guest_from_task`, `clickup_add_guest_to_list`, `clickup_remove_guest_from_list`, `clickup_add_guest_to_folder`, `clickup_remove_guest_from_folder`
+  </Accordion>
+  <Accordion title="チェックリスト (6個)">
+    `clickup_create_checklist`, `clickup_update_checklist`, `clickup_delete_checklist`, `clickup_create_checklist_item`, `clickup_update_checklist_item`, `clickup_delete_checklist_item`
+  </Accordion>
+  <Accordion title="タグ & 依存関係 (10個)">
+    `clickup_get_space_tags`, `clickup_create_space_tag`, `clickup_edit_space_tag`, `clickup_delete_space_tag`, `clickup_add_tag_to_task`, `clickup_remove_tag_from_task`, `clickup_add_dependency`, `clickup_delete_dependency`, `clickup_add_task_link`, `clickup_delete_task_link`
+  </Accordion>
+  <Accordion title="テンプレート & 添付ファイル (6個)">
+    `clickup_get_task_templates`, `clickup_get_list_templates`, `clickup_get_folder_templates`, `clickup_create_task_attachment`, `clickup_get_attachments`, `clickup_create_attachment`
+  </Accordion>
+  <Accordion title="メンバー・グループ・Webhook & 管理 (14個)">
+    `clickup_get_task_members`, `clickup_get_custom_roles`, `clickup_get_shared_hierarchy`, `clickup_get_groups`, `clickup_create_group`, `clickup_update_group`, `clickup_delete_group`, `clickup_get_webhooks`, `clickup_create_webhook`, `clickup_update_webhook`, `clickup_delete_webhook`, `clickup_update_acl`, `clickup_create_audit_logs`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="スプリント計画" icon="calendar-check">
+    テンプレートからタスクを作成し、見積もりを設定してリストに割り当てる
+  </Card>
+  <Card title="時間・請求レポート" icon="clock">
+    タグやタスク単位で時間エントリを取得し、クライアント向けの稼働時間を集計する
+  </Card>
+  <Card title="OKR管理" icon="target">
+    作業の進行に合わせてゴールのキーリザルトを更新し、遅れているゴールを把握する
+  </Card>
+  <Card title="ドキュメントからタスクへの変換" icon="file-text">
+    ClickUp Docの対応事項を、適切なリストの追跡可能なタスクに変換する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="clickup_create_taskがカスタムフィールドのエラーで失敗する">
+    カスタムフィールドの値は、タスク作成後に`clickup_set_custom_field_value`で別途設定する必要があります。スキーマが明示的にサポートしていない限り、`clickup_create_task`は任意のカスタムフィールドを直接受け付けません。
+  </Accordion>
+  <Accordion title="チャット系のツールが403を返す">
+    ClickUp Chatは比較的新しい機能であり、すべてのワークスペースプランで有効になっているわけではありません。`clickup_*chat*`系のツールを呼び出す前に、ClickUpワークスペースでChatが有効化されているか確認してください。
+  </Accordion>
+  <Accordion title="正しいlist_id/folder_id/space_idが分からない">
+    階層を上から順にたどってください: `clickup_list_workspaces` → `clickup_list_spaces` → `clickup_list_folders` → `clickup_list_lists`。IDは推測できないため、必ずこれらの一覧取得の呼び出しから取得してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,100 @@
+---
+title: "incident.io"
+description: "Full incident lifecycle management — incidents, alerts, on-call schedules, workflows, and status pages"
+icon: "siren"
+---
+
+# incident.io
+
+Shanone's incident.io integration gives your agent 178 tools covering nearly the entire incident.io platform — incident management, alerting, on-call schedules, workflows, catalog, status pages, and admin/API operations.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate an incident.io API Key">
+    In your incident.io dashboard, go to **Settings → API keys** and generate a new key.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select incident.io, and paste in your API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `incidentio_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **178 tools** for incident.io, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Incidents">
+    `incidentio_list_incidents`, `incidentio_get_incident`, `incidentio_create_incident`, `incidentio_edit_incident`, `incidentio_import_postmortem_document`, `incidentio_list_incident_types`, `incidentio_get_incident_type`, `incidentio_list_incident_statuses`, `incidentio_get_incident_status`, `incidentio_create_incident_status`, `incidentio_update_incident_status`, `incidentio_delete_incident_status`, `incidentio_list_incident_updates`
+  </Accordion>
+  <Accordion title="Incident metadata (roles, severities, custom fields)">
+    `incidentio_list_incident_roles`, `incidentio_get_incident_role`, `incidentio_create_incident_role`, `incidentio_update_incident_role`, `incidentio_delete_incident_role`, `incidentio_list_severities`, `incidentio_get_severity`, `incidentio_create_severity`, `incidentio_update_severity`, `incidentio_delete_severity`, `incidentio_list_custom_fields`, `incidentio_get_custom_field`, `incidentio_create_custom_field`, `incidentio_update_custom_field`, `incidentio_delete_custom_field`
+  </Accordion>
+  <Accordion title="Incident relations (participants, timestamps, attachments)">
+    `incidentio_list_custom_field_options`, `incidentio_get_custom_field_option`, `incidentio_create_custom_field_option`, `incidentio_update_custom_field_option`, `incidentio_delete_custom_field_option`, `incidentio_list_incident_attachments`, `incidentio_create_incident_attachment`, `incidentio_delete_incident_attachment`, `incidentio_list_incident_relationships`, `incidentio_list_incident_timestamps`, `incidentio_get_incident_timestamp`, `incidentio_list_incident_participants`, `incidentio_list_incident_participant_workloads`, `incidentio_create_incident_membership`, `incidentio_revoke_incident_membership`
+  </Accordion>
+  <Accordion title="Actions & follow-ups">
+    `incidentio_list_actions`, `incidentio_get_action`, `incidentio_create_action`, `incidentio_update_action`, `incidentio_delete_action`, `incidentio_list_follow_ups`, `incidentio_get_follow_up`, `incidentio_create_follow_up`, `incidentio_update_follow_up`, `incidentio_delete_follow_up`, `incidentio_connect_follow_up_external_issue`
+  </Accordion>
+  <Accordion title="Alerts & alert routing">
+    `incidentio_list_alert_attributes`, `incidentio_get_alert_attribute`, `incidentio_create_alert_attribute`, `incidentio_update_alert_attribute`, `incidentio_delete_alert_attribute`, `incidentio_list_alert_sources`, `incidentio_get_alert_source`, `incidentio_create_alert_source`, `incidentio_update_alert_source`, `incidentio_delete_alert_source`, `incidentio_list_alerts`, `incidentio_get_alert`, `incidentio_resolve_alert`, `incidentio_list_incident_alerts`, `incidentio_create_alert_event`, `incidentio_list_alert_notes`, `incidentio_get_alert_note`, `incidentio_create_alert_note`, `incidentio_update_alert_note`, `incidentio_delete_alert_note`, `incidentio_list_alert_routes`, `incidentio_get_alert_route`, `incidentio_create_alert_route`, `incidentio_update_alert_route`, `incidentio_delete_alert_route`
+  </Accordion>
+  <Accordion title="Escalations">
+    `incidentio_list_escalation_paths`, `incidentio_get_escalation_path`, `incidentio_create_escalation_path`, `incidentio_update_escalation_path`, `incidentio_delete_escalation_path`, `incidentio_list_escalations`, `incidentio_get_escalation`, `incidentio_create_escalation`, `incidentio_cancel_escalation`
+  </Accordion>
+  <Accordion title="On-call schedules & sync">
+    `incidentio_list_schedules`, `incidentio_get_schedule`, `incidentio_create_schedule`, `incidentio_update_schedule`, `incidentio_delete_schedule`, `incidentio_preview_schedule_entries`, `incidentio_list_schedule_entries`, `incidentio_list_schedule_overrides`, `incidentio_create_schedule_override`, `incidentio_list_schedule_replicas`, `incidentio_get_schedule_replica`, `incidentio_create_schedule_replica`, `incidentio_delete_schedule_replica`, `incidentio_list_schedule_sync_rules`, `incidentio_get_schedule_sync_rule`, `incidentio_create_schedule_sync_rule`, `incidentio_update_schedule_sync_rule`, `incidentio_delete_schedule_sync_rule`, `incidentio_list_schedule_sync_targets`, `incidentio_get_schedule_sync_target`, `incidentio_create_schedule_sync_target`, `incidentio_update_schedule_sync_target`, `incidentio_delete_schedule_sync_target`
+  </Accordion>
+  <Accordion title="Workflows, teams & users">
+    `incidentio_list_workflows`, `incidentio_get_workflow`, `incidentio_create_workflow`, `incidentio_update_workflow`, `incidentio_delete_workflow`, `incidentio_list_teams`, `incidentio_get_team`, `incidentio_list_users`, `incidentio_get_user`, `incidentio_list_user_notification_methods`, `incidentio_list_user_notification_rules`, `incidentio_get_user_paging_provider`, `incidentio_update_user_paging_provider`
+  </Accordion>
+  <Accordion title="Catalog">
+    `incidentio_list_catalog_entries`, `incidentio_get_catalog_entry`, `incidentio_create_catalog_entry`, `incidentio_update_catalog_entry`, `incidentio_delete_catalog_entry`, `incidentio_bulk_update_catalog_entries`, `incidentio_list_catalog_resources`, `incidentio_list_catalog_types`, `incidentio_get_catalog_type`, `incidentio_create_catalog_type`, `incidentio_update_catalog_type`, `incidentio_delete_catalog_type`, `incidentio_update_catalog_type_schema`
+  </Accordion>
+  <Accordion title="Status pages">
+    `incidentio_list_status_pages`, `incidentio_get_status_page_structure`, `incidentio_list_status_page_incidents`, `incidentio_get_status_page_incident`, `incidentio_create_status_page_incident`, `incidentio_update_status_page_incident`, `incidentio_create_status_page_incident_update`, `incidentio_create_status_page_retrospective_incident`, `incidentio_list_status_page_response_incidents`, `incidentio_list_status_page_maintenances`, `incidentio_get_status_page_maintenance`, `incidentio_create_status_page_maintenance`, `incidentio_create_status_page_maintenance_update`
+  </Accordion>
+  <Accordion title="Postmortems & utilities">
+    `incidentio_list_postmortem_documents`, `incidentio_get_postmortem_document`, `incidentio_update_postmortem_document_status`, `incidentio_get_postmortem_document_content`, `incidentio_attach_postmortem_document`, `incidentio_ping_heartbeat`, `incidentio_update_telemetry_data_source`, `incidentio_get_identity`, `incidentio_get_openapi_spec`
+  </Accordion>
+  <Accordion title="Admin (API keys, secrets, maintenance)">
+    `incidentio_list_api_keys`, `incidentio_get_api_key`, `incidentio_create_api_key`, `incidentio_update_api_key`, `incidentio_delete_api_key`, `incidentio_rotate_api_key`, `incidentio_get_ip_allowlist`, `incidentio_update_ip_allowlist`, `incidentio_list_maintenance_windows`, `incidentio_get_maintenance_window`, `incidentio_create_maintenance_window`, `incidentio_update_maintenance_window`, `incidentio_delete_maintenance_window`, `incidentio_list_secrets`, `incidentio_get_secret`, `incidentio_create_secret`, `incidentio_update_secret`, `incidentio_delete_secret`, `incidentio_rotate_secret`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Incident triage" icon="siren">
+    Create an incident from an alert, assign roles, and post the first update automatically
+  </Card>
+  <Card title="On-call visibility" icon="calendar-clock">
+    Check who's on-call right now and preview upcoming schedule entries
+  </Card>
+  <Card title="Postmortem drafting" icon="file-text">
+    Pull timestamps, participants, and follow-ups for an incident to draft a postmortem
+  </Card>
+  <Card title="Status page updates" icon="megaphone">
+    Post a customer-facing status page update as an incident's severity changes
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="incidentio_create_incident fails with a validation error about custom fields or roles">
+    incident.io accounts often require certain custom fields or role assignments on creation — call `incidentio_list_custom_fields` and `incidentio_list_incident_roles` first to see what's mandatory for your workspace.
+  </Accordion>
+  <Accordion title="incidentio_list_schedule_entries returns unexpected gaps">
+    Overrides (`incidentio_list_schedule_overrides`) take priority over the base rotation and aren't merged automatically into the entries view — check both endpoints if the on-call picture looks incomplete.
+  </Accordion>
+  <Accordion title="incidentio_resolve_alert doesn't close the linked incident">
+    Alerts and incidents are related but distinct — resolving an alert doesn't automatically transition its incident; update the incident status explicitly with `incidentio_update_incident_status` if needed.
+  </Accordion>
+  <Accordion title="Admin tools like incidentio_create_api_key or incidentio_update_ip_allowlist return a permissions error">
+    These endpoints require an API Key with admin-level scope — a key scoped only to incident management operations will be rejected for account/admin-level changes.
+  </Accordion>
+</AccordionGroup>

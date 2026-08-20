@@ -1,0 +1,76 @@
+---
+title: "AssemblyAI"
+description: "音声の文字起こし、話者識別・翻訳・整形などのスピーチ理解、LLMによる文字起こし内容へのクエリ"
+icon: /images/assemblyai.svg
+---
+
+# AssemblyAI
+
+ShanoneのAssemblyAI連携では、音声認識に関する**17個のツール**をエージェントに提供します — 非同期/同期の文字起こし、話者識別・翻訳、そして文字起こし内容の要約や質問応答を行うLLMゲートウェイをカバーしています。
+
+## はじめに
+
+<Steps>
+  <Step title="AssemblyAI APIキーを取得する">
+    [AssemblyAIのアカウント](https://www.assemblyai.com/app/account)にサインインし、APIキーをコピーします。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントに音声/動画ファイルの文字起こしを依頼するか、Shanoneダッシュボードの**インテグレーション**からAPIキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`assemblyai_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは AssemblyAI向けに**17個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="文字起こし">
+    `assemblyai_transcribe`, `assemblyai_get_transcript`, `assemblyai_list_transcripts`, `assemblyai_delete_transcript`, `assemblyai_upload_file`
+  </Accordion>
+  <Accordion title="同期的な文字起こし">
+    `assemblyai_sync_transcribe` — ポーリングの代わりに、単一のブロッキング呼び出しで短い音声の文字起こし結果を取得する
+  </Accordion>
+  <Accordion title="スピーチ理解">
+    `assemblyai_translate_transcript`, `assemblyai_identify_speakers`, `assemblyai_apply_custom_formatting`
+  </Accordion>
+  <Accordion title="LLMゲートウェイ">
+    `assemblyai_llm_chat`, `assemblyai_llm_summary`, `assemblyai_llm_qa`, `assemblyai_llm_action_items`
+  </Accordion>
+  <Accordion title="エクスポート & 検索">
+    `assemblyai_export_subtitles`, `assemblyai_get_sentences`, `assemblyai_get_paragraphs`, `assemblyai_search_words`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="会議の文字起こし & 要約" icon="mic">
+    録音を文字起こしし、LLMゲートウェイで要約とアクションアイテムを生成する
+  </Card>
+  <Card title="字幕生成" icon="captions">
+    動画を文字起こしし、公開用にSRT/VTT字幕を出力する
+  </Card>
+  <Card title="複数話者による通話の分析" icon="users">
+    サポート通話の話者を識別し、文字起こし全体から特定の語句を検索する
+  </Card>
+  <Card title="多言語コンテンツ" icon="languages">
+    より広い視聴者のために、文字起こしを別の言語に翻訳する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="assemblyai_transcribeの結果が'processing'のまま変わらない">
+    非同期の文字起こしはキューベースで処理されます。即時の結果を期待するのではなく、返されたIDで`assemblyai_get_transcript`を`status`が`completed`になるまでポーリングしてください。
+  </Accordion>
+  <Accordion title="長い音声ファイルでassemblyai_sync_transcribeが失敗またはタイムアウトする">
+    同期的な文字起こしは短い音声のみを対象としています。より長い録音には、`assemblyai_transcribe`(非同期)をポーリングと組み合わせて使用してください。
+  </Accordion>
+  <Accordion title="assemblyai_llm_qaやassemblyai_llm_summaryが文字起こしが見つからないというエラーを返す">
+    LLMゲートウェイのツールを使う前に、文字起こしの処理が完了している(`status: completed`)必要があります — まず`assemblyai_get_transcript`で確認してください。
+  </Accordion>
+</AccordionGroup>

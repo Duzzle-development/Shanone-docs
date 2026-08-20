@@ -1,0 +1,73 @@
+---
+title: "Parallel"
+description: "AIによるWeb検索、構造化データ抽出、長時間実行のリサーチタスク"
+icon: /images/parallel.svg
+---
+
+# Parallel
+
+ShanoneのParallel連携は、[Parallel](https://parallel.ai)のWeb検索、構造化された発見・抽出、チャット、非同期リサーチ/モニタリングAPIを利用するための7個のツールをエージェントに提供します。リアルタイムのWeb情報に基づいた根拠のある回答を必要とするエージェント作業のために構築されています。
+
+## はじめに
+
+<Steps>
+  <Step title="Parallel APIキーを作成する">
+    [Parallelプラットフォーム](https://platform.parallel.ai/)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でParallelを選択し、APIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`parallel_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはParallel向けに**7個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="検索 & 抽出">
+    `parallel_search`, `parallel_extract` — LLMでの利用に最適化されたWeb検索を実行するか、特定のURLから構造化されたコンテンツを抽出します
+  </Accordion>
+  <Accordion title="Find-all(条件検索)">
+    `parallel_findall` — 説明に合致するエンティティをWeb上から発見し(例: 「Xを行っている企業を探す」)、構造化されたリストとして返します
+  </Accordion>
+  <Accordion title="リサーチ & チャット">
+    `parallel_task`, `parallel_chat` — 引用付きの長時間実行リサーチタスクを実行するか、ライブのWeb検索に基づいた根拠のある会話を行います
+  </Accordion>
+  <Accordion title="モニタリング">
+    `parallel_monitor_create`, `parallel_monitor_list`, `parallel_monitor_events`, `parallel_monitor_delete` — トピックに対する定常的なWebモニターを設定し、新しいイベントをポーリングします
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="根拠付きのリサーチレポート" icon="file-search">
+    複雑な質問に対して`parallel_task`を実行し、引用付きで構造化された回答を得る
+  </Card>
+  <Card title="リード/エンティティ発見" icon="users">
+    `parallel_findall`を使って、特定の条件に合致する企業や人物のリストを作成する
+  </Card>
+  <Card title="競合モニタリング" icon="radar">
+    競合企業やトピックに対するモニターを作成し、定期的に`parallel_monitor_events`を確認する
+  </Card>
+  <Card title="構造化データ抽出" icon="file-code">
+    手動でスクレイピングする代わりに、`parallel_extract`で複数のURLから特定のフィールドを抜き出す
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="parallel_taskがなかなか最終的な回答を返さない">
+    リサーチタスクは非同期に実行され、複雑なクエリでは1回のリクエストより時間がかかることがあります。ツールのレスポンスにあるタスク/実行IDを確認し、即座の同期結果を期待するのではなくポーリングしてください。
+  </Accordion>
+  <Accordion title="モニター作成直後にparallel_monitor_eventsが空のリストを返す">
+    モニターは最初のスキャンサイクルを実行するまでに時間が必要です。`parallel_monitor_create`の後、数分待ってからイベントを確認し、その後は定期的にポーリングしてください。
+  </Accordion>
+  <Accordion title="parallel_extractがURLに対して部分的・欠損したフィールドを返す">
+    抽出品質はページがアクセス可能で、ある程度構造化されているかに依存します。JSに大きく依存するページや有料壁のあるページでは、有効なAPIキーでも結果が不完全になることがあります。
+  </Accordion>
+</AccordionGroup>

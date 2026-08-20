@@ -1,0 +1,76 @@
+---
+title: "Bitbucket"
+description: "Bitbucketワークスペース全体で、リポジトリ・プルリクエスト・課題を管理し、コードを検索"
+icon: /images/bitbucket.svg
+---
+
+# Bitbucket
+
+ShanoneのBitbucket連携では、日常的なコードレビューのワークフローをカバーする**15個のツール**をエージェントに提供します — リポジトリとブランチ、プルリクエスト、課題、コード検索です。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにBitbucketで何か作業をしてもらう(例:「my-workspace/my-repoのオープンなプルリクエストを一覧表示して」)か、Shanoneダッシュボードの**インテグレーション**から事前に接続します。
+  </Step>
+  <Step title="リクエストされたスコープを承認する">
+    Shanoneにアクセスさせたいワークスペースとリポジトリについて、BitbucketのOAuth承認画面で承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`bitbucket_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Bitbucket向けに**15個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="プルリクエスト">
+    `bitbucket_list_pull_requests`, `bitbucket_get_pull_request`, `bitbucket_create_pull_request`, `bitbucket_create_pull_request_comment`
+  </Accordion>
+  <Accordion title="課題(Issues)">
+    `bitbucket_list_issues`, `bitbucket_get_issue`, `bitbucket_create_issue`, `bitbucket_create_issue_comment`
+  </Accordion>
+  <Accordion title="リポジトリ">
+    `bitbucket_list_repositories`, `bitbucket_get_repository`, `bitbucket_list_branches`, `bitbucket_list_commits`
+  </Accordion>
+  <Accordion title="検索">
+    `bitbucket_search_code`
+  </Accordion>
+  <Accordion title="ユーザー & ワークスペース">
+    `bitbucket_get_current_user`, `bitbucket_list_workspaces`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="PRレビューのトリアージ" icon="git-pull-request">
+    リポジトリ内のオープンなプルリクエストを一覧表示し、対応が必要なものにコメントする
+  </Card>
+  <Card title="リポジトリ横断のコード検索" icon="search">
+    ワークスペース内の複数リポジトリをまたいで、関数や文字列の使用箇所を検索する
+  </Card>
+  <Card title="課題バックログの整理" icon="list-checks">
+    オープンな課題を一覧表示・コメントし、バックログを最新の状態に保つ
+  </Card>
+  <Card title="ブランチ/コミットの点検" icon="git-branch">
+    マージ前に、mainからどれだけ分岐しているかをブランチと直近のコミットで確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="bitbucket_list_repositoriesの結果が想定より少ない">
+    結果はOAuth時に承認されたワークスペースにスコープされます。`bitbucket_list_workspaces`でどのワークスペースが接続されているか確認し、不足していれば再接続してください。
+  </Accordion>
+  <Accordion title="存在するはずのコードがbitbucket_search_codeで見つからない">
+    Bitbucketのコード検索はプッシュ後に非同期でインデックスされるため、直近のコミットはまだ検索対象になっていない場合があります。すぐに結果が必要な場合は、対象ブランチに対して`bitbucket_list_commits`を使ってください。
+  </Accordion>
+  <Accordion title="bitbucket_create_pull_requestがブランチ不明エラーで失敗する">
+    まず`bitbucket_list_branches`でソース・宛先ブランチの名前を確認してください — Bitbucketは両方のブランチがリポジトリに既に存在していることを要求します。
+  </Accordion>
+</AccordionGroup>

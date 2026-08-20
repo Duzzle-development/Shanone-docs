@@ -1,0 +1,100 @@
+---
+title: "Databricks"
+description: "Run SQL, manage clusters and jobs, and administer Unity Catalog — the full Databricks REST API surface"
+icon: /images/databricks.svg
+---
+
+# Databricks
+
+Shanone's Databricks integration gives your agent 155 tools spanning SQL execution, cluster/job/pipeline management, Unity Catalog administration, MLflow experiments, model serving, secrets, and workspace files.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Databricks (e.g. "list my SQL warehouses"), or connect proactively from **Integrations** in the Shanone dashboard. You'll be asked for your workspace URL (e.g. `https://adb-1234567890123456.7.azuredatabricks.net`) and then get a `connect_link` to authorize Shanone.
+  </Step>
+  <Step title="Authorize the workspace">
+    Approve Databricks' OAuth consent screen for the specific workspace you entered — Databricks credentials are workspace-scoped, so reconnect separately for each workspace you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `databricks_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **155 tools** for Databricks, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="SQL Execution & Query History (8 tools)">
+    `databricks_execute_sql`, `databricks_get_statement_status`, `databricks_get_statement_result`, `databricks_cancel_statement`, `databricks_query`, `databricks_execute_async`, `databricks_list_query_history`, `databricks_get_query`
+  </Accordion>
+  <Accordion title="SQL Warehouses (6 tools)">
+    `databricks_list_warehouses`, `databricks_get_warehouse`, `databricks_create_warehouse`, `databricks_start_warehouse`, `databricks_stop_warehouse`, `databricks_delete_warehouse`
+  </Accordion>
+  <Accordion title="Clusters & Instance Pools (13 tools)">
+    `databricks_list_clusters`, `databricks_get_cluster`, `databricks_create_cluster`, `databricks_start_cluster`, `databricks_terminate_cluster`, `databricks_delete_cluster`, `databricks_list_instance_pools`, `databricks_get_instance_pool`, `databricks_create_instance_pool`, `databricks_edit_instance_pool`, `databricks_delete_instance_pool`, `databricks_get_instance_pool_permissions`, `databricks_set_instance_pool_permissions`
+  </Accordion>
+  <Accordion title="Jobs & Runs (8 tools)">
+    `databricks_list_jobs`, `databricks_get_job`, `databricks_create_job`, `databricks_run_job_now`, `databricks_get_run`, `databricks_list_runs`, `databricks_cancel_run`, `databricks_get_run_output`
+  </Accordion>
+  <Accordion title="Pipelines (12 tools)">
+    `databricks_list_pipelines`, `databricks_get_pipeline`, `databricks_create_pipeline`, `databricks_update_pipeline`, `databricks_delete_pipeline`, `databricks_clone_pipeline`, `databricks_start_pipeline`, `databricks_stop_pipeline`, `databricks_get_pipeline_update`, `databricks_list_pipeline_updates`, `databricks_list_pipeline_events`, `databricks_get_pipeline_permissions`
+  </Accordion>
+  <Accordion title="Unity Catalog — Catalogs, Schemas & Tables (15 tools)">
+    `databricks_list_catalogs`, `databricks_get_catalog`, `databricks_create_catalog`, `databricks_update_catalog`, `databricks_delete_catalog`, `databricks_list_schemas`, `databricks_get_schema`, `databricks_create_schema`, `databricks_update_schema`, `databricks_delete_schema`, `databricks_list_tables`, `databricks_get_table`, `databricks_list_table_summaries`, `databricks_table_exists`, `databricks_delete_table`
+  </Accordion>
+  <Accordion title="Volumes & DBFS (15 tools)">
+    `databricks_list_volumes`, `databricks_get_volume`, `databricks_create_volume`, `databricks_update_volume`, `databricks_delete_volume`, `databricks_dbfs_list`, `databricks_dbfs_get_status`, `databricks_dbfs_mkdirs`, `databricks_dbfs_put`, `databricks_dbfs_read`, `databricks_dbfs_delete`, `databricks_dbfs_move`, `databricks_dbfs_create`, `databricks_dbfs_add_block`, `databricks_dbfs_close`
+  </Accordion>
+  <Accordion title="MLflow Experiments & Runs (25 tools)">
+    `databricks_list_experiments`, `databricks_get_experiment`, `databricks_get_experiment_by_name`, `databricks_create_experiment`, `databricks_update_experiment`, `databricks_delete_experiment`, `databricks_restore_experiment`, `databricks_search_experiments`, `databricks_set_experiment_tag`, `databricks_get_experiment_permissions`, `databricks_set_experiment_permissions`, `databricks_update_experiment_permissions`, `databricks_create_mlflow_run`, `databricks_get_mlflow_run`, `databricks_update_mlflow_run`, `databricks_delete_mlflow_run`, `databricks_restore_mlflow_run`, `databricks_search_mlflow_runs`, `databricks_log_metric`, `databricks_log_param`, `databricks_log_batch`, `databricks_set_mlflow_tag`, `databricks_delete_mlflow_tag`, `databricks_list_artifacts`, `databricks_get_metric_history`
+  </Accordion>
+  <Accordion title="Model Serving Endpoints (12 tools)">
+    `databricks_list_serving_endpoints`, `databricks_get_serving_endpoint`, `databricks_create_serving_endpoint`, `databricks_update_serving_endpoint_config`, `databricks_delete_serving_endpoint`, `databricks_query_serving_endpoint`, `databricks_get_serving_endpoint_logs`, `databricks_export_serving_endpoint_metrics`, `databricks_get_serving_endpoint_permissions`, `databricks_set_serving_endpoint_permissions`, `databricks_put_serving_endpoint_ai_gateway`, `databricks_patch_serving_endpoint_tags`
+  </Accordion>
+  <Accordion title="Command Execution & Libraries (10 tools)">
+    `databricks_create_context`, `databricks_get_context_status`, `databricks_destroy_context`, `databricks_execute_command`, `databricks_get_command_status`, `databricks_cancel_command`, `databricks_list_cluster_libraries`, `databricks_list_all_cluster_libraries`, `databricks_install_cluster_libraries`, `databricks_uninstall_cluster_libraries`
+  </Accordion>
+  <Accordion title="Secrets & Git Credentials (16 tools)">
+    `databricks_list_secret_scopes`, `databricks_create_secret_scope`, `databricks_delete_secret_scope`, `databricks_list_secrets`, `databricks_get_secret`, `databricks_put_secret`, `databricks_delete_secret`, `databricks_list_secret_acls`, `databricks_get_secret_acl`, `databricks_put_secret_acl`, `databricks_delete_secret_acl`, `databricks_list_git_credentials`, `databricks_get_git_credential`, `databricks_create_git_credential`, `databricks_update_git_credential`, `databricks_delete_git_credential`
+  </Accordion>
+  <Accordion title="Repos & Workspace Files (15 tools)">
+    `databricks_list_repos`, `databricks_get_repo`, `databricks_create_repo`, `databricks_update_repo`, `databricks_delete_repo`, `databricks_get_repo_permissions`, `databricks_set_repo_permissions`, `databricks_update_repo_permissions`, `databricks_get_repo_permission_levels`, `databricks_list_workspace`, `databricks_get_workspace_status`, `databricks_export_workspace`, `databricks_import_workspace`, `databricks_mkdirs`, `databricks_delete_workspace`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Ad-hoc data analysis" icon="database">
+    Run SQL against a warehouse and get results back without opening the Databricks UI
+  </Card>
+  <Card title="Pipeline & job monitoring" icon="activity">
+    Check job run status, pull failure logs, and trigger reruns from a chat conversation
+  </Card>
+  <Card title="Unity Catalog governance" icon="shield-check">
+    Audit catalogs/schemas/tables and manage permissions across the data estate
+  </Card>
+  <Card title="ML experiment tracking" icon="flask-conical">
+    Log metrics/params to an MLflow run and compare experiment results
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="All tools fail with a connection error after working before">
+    Databricks OAuth tokens are workspace-scoped and expire; if a long-idle connection stops working, reconnect from **Integrations** to refresh the token for that specific `workspace_url`.
+  </Accordion>
+  <Accordion title="databricks_execute_sql hangs or times out on a large query">
+    Use `databricks_execute_async` instead, then poll `databricks_get_statement_status` / `databricks_get_statement_result` — synchronous execution isn't suited to long-running queries.
+  </Accordion>
+  <Accordion title="Unity Catalog tools return a permissions error">
+    Unity Catalog operations (create/update/delete on catalogs, schemas, tables) require the connected identity to have the appropriate `USE CATALOG`/`CREATE`/`OWNER` privileges — check with a workspace admin if a tool that should work returns 403.
+  </Accordion>
+  <Accordion title="databricks_run_job_now succeeds but the job fails silently">
+    Call `databricks_get_run_output` on the resulting run ID to see the actual task error — the "now" call only confirms the run was triggered, not that it completed successfully.
+  </Accordion>
+</AccordionGroup>

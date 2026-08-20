@@ -1,0 +1,85 @@
+---
+title: "SmartHR"
+description: "従業員情報、組織構造、給与を管理する — 従業員、部署、等級、給与明細"
+icon: /images/smarthr.svg
+---
+
+# SmartHR
+
+ShanoneのSmartHR連携は、従業員(crew)情報、家族情報、組織構造、給与/税務関連ドキュメントなど、SmartHRにおける従業員ライフサイクル全体をカバーする111個のツールをエージェントに提供します——SmartHRを利用している日本企業の人事業務に適しています。
+
+## はじめに
+
+<Steps>
+  <Step title="アクセストークンを発行する">
+    SmartHRの企業向けAPI設定画面で、Shanoneに操作させたいテナント用のアクセストークンを発行します。
+  </Step>
+  <Step title="ShanoneでAPIキーを接続する">
+    エージェントにSmartHR関連の作業を依頼(例: 「営業部の従業員を全員リストアップして」)するか、Shanoneダッシュボードの**連携**からアクセストークンと会社のサブドメインを事前に登録しておきます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`smarthr_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはSmartHR向けに**111個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="従業員(Crew)">
+    `smarthr_list_crews`, `smarthr_get_crew`, `smarthr_create_crew`, `smarthr_update_crew`, `smarthr_delete_crew`, `smarthr_invite_crew`, `smarthr_delete_crew_departments`, `smarthr_partial_update_crew`, `smarthr_list_crew_input_forms`, `smarthr_get_crew_input_form`
+  </Accordion>
+  <Accordion title="従業員のカスタム項目">
+    `smarthr_list_crew_custom_field_groups`, `smarthr_get_crew_custom_field_group`, `smarthr_create_crew_custom_field_group`, `smarthr_update_crew_custom_field_group`, `smarthr_delete_crew_custom_field_group`, `smarthr_list_crew_custom_field_templates`, `smarthr_get_crew_custom_field_template`, `smarthr_create_crew_custom_field_template`, `smarthr_update_crew_custom_field_template`, `smarthr_delete_crew_custom_field_template`
+  </Accordion>
+  <Accordion title="家族情報">
+    `smarthr_list_dependents`, `smarthr_get_dependent`, `smarthr_create_dependent`, `smarthr_update_dependent`, `smarthr_delete_dependent`, `smarthr_list_dependent_custom_field_templates`, `smarthr_list_dependent_relations`, `smarthr_list_maternity_childcare_leaves`
+  </Accordion>
+  <Accordion title="組織構造">
+    `smarthr_list_departments`, `smarthr_get_department`, `smarthr_create_department`, `smarthr_update_department`, `smarthr_delete_department`, `smarthr_discontinue_department`, `smarthr_list_biz_establishments`, `smarthr_get_biz_establishment`, `smarthr_create_biz_establishment`, `smarthr_update_biz_establishment`, `smarthr_list_grades`, `smarthr_get_grade`, `smarthr_create_grade`, `smarthr_update_grade`, `smarthr_delete_grade`, `smarthr_list_job_categories`, `smarthr_get_job_category`, `smarthr_create_job_category`, `smarthr_update_job_category`, `smarthr_delete_job_category`, `smarthr_get_job_title`, `smarthr_create_job_title`, `smarthr_update_job_title`, `smarthr_delete_job_title`, `smarthr_get_employment_type`, `smarthr_create_employment_type`, `smarthr_update_employment_type`, `smarthr_delete_employment_type`, `smarthr_list_recruitment_types`, `smarthr_get_recruitment_type`, `smarthr_create_recruitment_type`, `smarthr_update_recruitment_type`, `smarthr_delete_recruitment_type`, `smarthr_list_employment_types`, `smarthr_list_job_titles`, `smarthr_get_company`, `smarthr_list_payrolls`, `smarthr_list_users`
+  </Accordion>
+  <Accordion title="給与 & 税務">
+    `smarthr_list_payment_periods`, `smarthr_get_payment_period`, `smarthr_get_payroll`, `smarthr_create_payroll`, `smarthr_update_payroll`, `smarthr_delete_payroll`, `smarthr_fix_payroll`, `smarthr_unfix_payroll`, `smarthr_publish_payroll`, `smarthr_list_payslips`, `smarthr_get_payslip`, `smarthr_create_payslip`, `smarthr_delete_payslip`, `smarthr_bulk_create_payslips`, `smarthr_list_tax_withholdings`, `smarthr_get_tax_withholding`, `smarthr_create_tax_withholding`, `smarthr_update_tax_withholding`, `smarthr_delete_tax_withholding`, `smarthr_list_tax_withholding_slips`, `smarthr_get_tax_withholding_slip`, `smarthr_create_tax_withholding_slip`, `smarthr_update_tax_withholding_slip`, `smarthr_delete_tax_withholding_slip`, `smarthr_list_bank_account_settings`
+  </Accordion>
+  <Accordion title="ユーザー & SAML">
+    `smarthr_get_user`, `smarthr_get_user_saml`, `smarthr_create_user_saml`, `smarthr_update_user_saml`, `smarthr_delete_user_saml`, `smarthr_enable_user_saml`, `smarthr_disable_user_saml`
+  </Accordion>
+  <Accordion title="バッチジョブ & メールフォーマット">
+    `smarthr_list_batch_jobs`, `smarthr_get_batch_job`, `smarthr_create_crew_export_job`, `smarthr_create_crew_import_job`, `smarthr_create_dependent_import_job`, `smarthr_get_batch_job_attachment_file`, `smarthr_list_mail_formats`, `smarthr_get_mail_format`
+  </Accordion>
+  <Accordion title="Webhook">
+    `smarthr_list_webhooks`, `smarthr_get_webhook`, `smarthr_create_webhook`, `smarthr_update_webhook`, `smarthr_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="オンボーディングの自動化" icon="user-plus">
+    新しい従業員レコードを作成し、部署/等級を割り当て、招待メールを送信する
+  </Card>
+  <Card title="組織図レポート" icon="sitemap">
+    部署と従業員を一覧表示し、部署別の現在の人員構成をまとめる
+  </Card>
+  <Card title="給与バッチ処理の準備" icon="banknote">
+    給与期間ごとに給与明細を一括作成し、未公開のものを確認する
+  </Card>
+  <Card title="データの一括インポート/エクスポート" icon="database">
+    従業員のエクスポート/インポートバッチジョブを開始し、完了までポーリングする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="すべての呼び出しが認証エラーになる">
+    SmartHRはアクセストークンとテナントのサブドメインの両方を必要とします——サブドメインによって、APIがどの会社のデータを操作するかが決まります。**連携**画面で両方が設定されているか確認してください。
+  </Accordion>
+  <Accordion title="smarthr_delete_departmentやsmarthr_delete_crewが予期せず失敗する">
+    SmartHRは他の場所から参照されている部署/従業員(例: 在籍中の従業員がいる部署)の削除をブロックすることが多いです。まず`smarthr_discontinue_department`を使うか、従業員を別の部署に移してください。
+  </Accordion>
+  <Accordion title="バッチジョブ(エクスポート/インポート)がいつまでも完了しない">
+    `smarthr_create_crew_export_job`や`smarthr_create_crew_import_job`で作成したバッチジョブは非同期で実行されます——返されたジョブIDで`smarthr_get_batch_job`をステータスが変わるまでポーリングし、その後`smarthr_get_batch_job_attachment_file`で結果を取得してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,91 @@
+---
+title: "Together AI"
+description: "推論、ファインチューニング、専用デプロイメントを実行する — チャット、埋め込み、GPUクラスタ、DMI"
+icon: "cpu"
+---
+
+# Together AI
+
+ShanoneのTogether AI連携は、サーバーレス推論(チャット/補完/埋め込み/リランク)、ファインチューニング、バッチ処理と評価ジョブ、GPUクラスタ管理、専用モデル推論(DMI)にまたがる127個のツールをエージェントに提供します——Together上で自社モデルを運用するチームにとって幅広いカバレッジです。
+
+## はじめに
+
+<Steps>
+  <Step title="APIキーを発行する">
+    Together AIダッシュボードの**Settings → API Keys**でキーを作成します。
+  </Step>
+  <Step title="ShanoneでAPIキーを接続する">
+    エージェントにTogether AI関連の作業を依頼(例: 「ファインチューニング可能なモデルを一覧表示して」)するか、Shanoneダッシュボードの**連携**からAPIキーを事前に登録しておきます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`together_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはTogether AI向けに**127個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="推論 & メディア生成">
+    `together_chat_completion`, `together_create_completion`, `together_create_embedding`, `together_rerank_documents`, `together_list_models`, `together_generate_image`, `together_create_video`, `together_get_video`, `together_create_speech`, `together_transcribe_audio`, `together_translate_audio`
+  </Accordion>
+  <Accordion title="ファインチューニング">
+    `together_create_fine_tuning_job`, `together_estimate_fine_tuning_price`, `together_list_fine_tuning_jobs`, `together_get_fine_tuning_job`, `together_list_fine_tuning_events`, `together_list_fine_tuning_checkpoints`, `together_get_fine_tuning_metrics`, `together_download_tokenized_dataset`, `together_download_fine_tuned_model`, `together_cancel_fine_tuning_job`, `together_delete_fine_tuning_job`, `together_get_fine_tuning_model_limits`
+  </Accordion>
+  <Accordion title="バッチ処理、評価 & コードインタープリタ">
+    `together_create_batch_job`, `together_list_batch_jobs`, `together_get_batch_job`, `together_cancel_batch_job`, `together_create_evaluation`, `together_list_evaluations`, `together_get_evaluation`, `together_get_evaluation_status`, `together_list_evaluation_models`, `together_execute_code`, `together_list_code_sessions`
+  </Accordion>
+  <Accordion title="ファイル">
+    `together_upload_file`, `together_list_files`, `together_get_file`, `together_get_file_content`, `together_delete_file`
+  </Accordion>
+  <Accordion title="GPUクラスタ & ストレージ">
+    `together_create_gpu_cluster`, `together_list_gpu_clusters`, `together_get_gpu_cluster`, `together_update_gpu_cluster`, `together_delete_gpu_cluster`, `together_list_cluster_regions`, `together_create_cluster_storage`, `together_list_cluster_storages`, `together_get_cluster_storage`, `together_update_cluster_storage`, `together_delete_cluster_storage`, `together_create_remediation`, `together_list_remediations`, `together_get_remediation`, `together_approve_remediation`, `together_cancel_remediation`, `together_reject_remediation`
+  </Accordion>
+  <Accordion title="Dedicated Container Inference(デプロイメント)">
+    `together_dci_create_deployment`, `together_dci_list_deployments`, `together_dci_get_deployment`, `together_dci_update_deployment`, `together_dci_delete_deployment`, `together_dci_get_deployment_logs`, `together_dci_create_secret`, `together_dci_list_secrets`, `together_dci_get_secret`, `together_dci_update_secret`, `together_dci_delete_secret`, `together_dci_create_volume`, `together_dci_list_volumes`, `together_dci_get_volume`, `together_dci_update_volume`, `together_dci_delete_volume`, `together_dci_download_storage_file`, `together_dci_submit_queue_job`, `together_dci_get_queue_job_status`, `together_dci_cancel_queue_job`, `together_dci_clear_queue`, `together_dci_get_queue_metrics`
+  </Accordion>
+  <Accordion title="Dedicated Model Inference(DMI)">
+    `together_dmi_list_adapters`, `together_dmi_add_adapter`, `together_dmi_get_adapter`, `together_dmi_update_adapter`, `together_dmi_remove_adapter`, `together_dmi_create_deployment`, `together_dmi_list_deployments`, `together_dmi_get_deployment`, `together_dmi_update_deployment`, `together_dmi_delete_deployment`, `together_dmi_create_endpoint`, `together_dmi_list_endpoints`, `together_dmi_get_endpoint`, `together_dmi_update_endpoint`, `together_dmi_delete_endpoint`, `together_dmi_list_endpoint_events`, `together_dmi_get_endpoint_analytics`, `together_dmi_list_organization_endpoints`
+  </Accordion>
+  <Accordion title="DMIの実験 & モデル">
+    `together_dmi_create_ab_experiment`, `together_dmi_list_ab_experiments`, `together_dmi_get_ab_experiment`, `together_dmi_update_ab_experiment`, `together_dmi_delete_ab_experiment`, `together_dmi_create_shadow_experiment`, `together_dmi_list_shadow_experiments`, `together_dmi_get_shadow_experiment`, `together_dmi_update_shadow_experiment`, `together_dmi_delete_shadow_experiment`, `together_dmi_list_shadow_targets`, `together_dmi_create_shadow_target`, `together_dmi_get_shadow_target`, `together_dmi_update_shadow_target`, `together_dmi_delete_shadow_target`, `together_dmi_list_supported_models`, `together_dmi_get_supported_model`, `together_dmi_list_models`, `together_dmi_create_model`, `together_dmi_get_model`, `together_dmi_update_model`, `together_dmi_delete_model`, `together_dmi_list_model_files`, `together_dmi_list_model_revisions`, `together_dmi_list_organization_models`, `together_dmi_create_model_upload`, `together_dmi_get_model_upload`, `together_dmi_list_model_upload_events`, `together_dmi_list_instance_types`, `together_dmi_list_configs`
+  </Accordion>
+  <Accordion title="アカウント">
+    `together_whoami`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="チャット/補完の呼び出し" icon="message-square">
+    オープンモデルに対してチャット補完を実行し、結果をユーザーに返す
+  </Card>
+  <Card title="カスタムモデルのファインチューニング" icon="settings">
+    トレーニングファイルをアップロードし、ファインチューニングジョブを開始し、チェックポイントが準備できるまでポーリングする
+  </Card>
+  <Card title="専用推論の運用" icon="server">
+    ファインチューニング済みモデル用にDMIエンドポイントを立ち上げ、その分析/イベントを監視する
+  </Card>
+  <Card title="バッチ処理" icon="layers">
+    単発の補完をループで呼ぶ代わりに、大量のプロンプトセットをバッチジョブとして送信する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="together_create_fine_tuning_jobが検証エラーで失敗する">
+    まず`together_estimate_fine_tuning_price`を使ってください——これは有料ジョブを実行する前に、トレーニングファイルとベースモデルの互換性を検証します。
+  </Accordion>
+  <Accordion title="DMIデプロイメントが保留状態のまま止まっている">
+    専用モデル推論のデプロイメントはGPUキャパシティをプロビジョニングするため数分かかることがあります——失敗と決めつけず、`together_dmi_get_deployment`(コンテナベースのデプロイメントの場合は`together_dci_get_deployment`)をポーリングしてください。
+  </Accordion>
+  <Accordion title="together_execute_codeが呼び出し間で状態を保持しない">
+    コードインタープリタのセッションは明示的です——`together_list_code_sessions`で既存のセッションIDを探して再利用してください。IDを指定せずに呼び出すと、常に新しいセッションが開始されます。
+  </Accordion>
+  <Accordion title="GPUクラスタ操作がクォータや容量エラーで失敗する">
+    GPUクラスタは限られた、課金対象のリソースです——`together_create_gpu_cluster`を再試行する前に、`together_list_cluster_regions`で利用可能状況を確認し、アカウントのクォータを確認してください。
+  </Accordion>
+</AccordionGroup>

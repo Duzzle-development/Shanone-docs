@@ -1,0 +1,64 @@
+---
+title: "Context7"
+description: "50,000以上のライブラリに対応した最新のドキュメントとコード例"
+icon: /images/context7.svg
+---
+
+# Context7
+
+ShanoneのContext7連携は、ライブラリのソースから最新かつバージョンに正確なドキュメントとコードスニペットを直接取得する3個のツールをエージェントに提供します。モデルの学習データに含まれる古いAPI知識に頼らずに済むのが利点です。
+
+## はじめに
+
+<Steps>
+  <Step title="Context7 APIキーを取得する">
+    [context7.com](https://context7.com/docs/api-guide)にサインアップし、アカウントからAPIキーを発行します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Context7を選択してAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`context7_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはContext7向けに**3個のツール**を提供しています。
+
+<AccordionGroup>
+  <Accordion title="ライブラリ検索 & ドキュメント">
+    `context7_search_library`, `context7_get_docs`, `context7_get_code_snippets`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="正確なAPI利用" icon="book-open">
+    ライブラリ関数のコードを書く前に、現在のシグネチャ/使い方を取得する
+  </Card>
+  <Card title="フレームワークの移行" icon="git-branch">
+    依存パッケージをアップグレードする際、バージョン固有のドキュメントを取得して破壊的変更を確認する
+  </Card>
+  <Card title="未知のライブラリの学習" icon="compass">
+    ライブラリを検索し、トピックで絞り込んだコードスニペットを取得して素早くAPIを理解する
+  </Card>
+  <Card title="コードレビューの補助" icon="search-check">
+    PR内のライブラリの使い方を、実際のドキュメント化された挙動と照らし合わせる
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="context7_get_docsやcontext7_get_code_snippetsが404を返す">
+    `library_id`は必ず`context7_search_library`から取得したものを使用してください。Context7のライブラリIDは`/owner/repo`形式で、パッケージ名だけから推測することはできません。
+  </Accordion>
+  <Accordion title="context7_get_code_snippetsが意図しないバージョンのスニペットを返す">
+    特定のリリースに紐づくスニペットが必要な場合は、明示的に`version`パラメータ(例: `v18.2.0`)を指定してください。指定しない場合、Context7はインデックスされているすべてのバージョンからスニペットを返します。
+  </Accordion>
+  <Accordion title="リクエストがレート制限エラーで失敗する">
+    Context7の無料プランには1分あたりのリクエスト数の上限があります。ドキュメント検索を高頻度で実行する場合は呼び出しの間隔を空けるか、context7.comでプランをアップグレードしてください。
+  </Accordion>
+</AccordionGroup>

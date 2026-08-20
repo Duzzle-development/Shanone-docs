@@ -1,0 +1,85 @@
+---
+title: "Reddit Ads"
+description: "Reddit広告の管理 — ビジネス、キャンペーン、ターゲティング、クリエイティブ、カタログ、レポーティング"
+icon: /images/reddit-ads.svg
+---
+
+# Reddit Ads
+
+ShanoneのReddit Ads連携は、広告運用の全体像をカバーする90個のツールをエージェントに提供します。ビジネス/広告アカウントの発見、キャンペーンとクリエイティブの管理、オーディエンスターゲティング、商品カタログ、コンバージョン追跡、レポーティングまで対応しています。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにReddit Ads関連の作業を依頼(例: 「アクティブなキャンペーンを一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Reddit Adsアカウントを許可する">
+    Shanoneに操作させたいビジネス/広告アカウントについて、RedditのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`reddit_ads_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。まず`reddit_ads_get_me`で接続を確認し、次に`reddit_ads_list_my_businesses`で広告アカウントIDを取得してください。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはReddit Ads向けに**90個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="ビジネス & アカウント発見">
+    `reddit_ads_get_me`, `reddit_ads_list_my_businesses`, `reddit_ads_get_business`, `reddit_ads_update_business`, `reddit_ads_query_ad_accounts`, `reddit_ads_list_profiles_by_business`, `reddit_ads_list_profiles_by_ad_account`, `reddit_ads_get_profile`, `reddit_ads_list_industries`, `reddit_ads_get_ad_account_history`, `reddit_ads_get_ad_account`, `reddit_ads_update_ad_account`, `reddit_ads_list_ad_accounts_by_business`
+  </Accordion>
+  <Accordion title="キャンペーン、広告グループ & 広告">
+    `reddit_ads_list_campaigns`, `reddit_ads_get_campaign`, `reddit_ads_create_campaign`, `reddit_ads_update_campaign`, `reddit_ads_list_ad_groups`, `reddit_ads_get_ad_group`, `reddit_ads_create_ad_group`, `reddit_ads_update_ad_group`, `reddit_ads_list_ads`, `reddit_ads_get_ad`, `reddit_ads_create_ad`, `reddit_ads_update_ad`, `reddit_ads_list_saved_audiences`, `reddit_ads_get_saved_audience`, `reddit_ads_create_saved_audience`, `reddit_ads_update_saved_audience`, `reddit_ads_list_time_zones`
+  </Accordion>
+  <Accordion title="ターゲティング">
+    `reddit_ads_list_geolocations`, `reddit_ads_do_geolocation_validations`, `reddit_ads_list_communities`, `reddit_ads_list_communities_suggestions`, `reddit_ads_search_communities`, `reddit_ads_list_interests`, `reddit_ads_list_devices`, `reddit_ads_list_carriers`, `reddit_ads_list_3rd_party_audiences`, `reddit_ads_do_keyword_validations`, `reddit_ads_list_keyword_suggestions`, `reddit_ads_list_user_custom_audiences`, `reddit_ads_get_custom_audience`, `reddit_ads_get_sk_ad_network_availability`
+  </Accordion>
+  <Accordion title="カスタムオーディエンス & ピクセル">
+    `reddit_ads_create_custom_audience`, `reddit_ads_update_custom_audience_users`, `reddit_ads_delete_custom_audience`, `reddit_ads_list_pixels_by_ad_account`, `reddit_ads_list_pixels_by_business`, `reddit_ads_get_pixel_last_fired_at`, `reddit_ads_get_app_last_fired_at`, `reddit_ads_post_conversion_events`
+  </Accordion>
+  <Accordion title="クリエイティブ & 投稿">
+    `reddit_ads_list_posts`, `reddit_ads_get_post`, `reddit_ads_create_post`, `reddit_ads_update_post`, `reddit_ads_list_structured_posts`, `reddit_ads_get_structured_post`, `reddit_ads_create_structured_post_creation_job`, `reddit_ads_update_structured_post`, `reddit_ads_generate_inspiration_creative_summary`
+  </Accordion>
+  <Accordion title="商品カタログ">
+    `reddit_ads_list_product_catalogs`, `reddit_ads_get_product_catalog`, `reddit_ads_create_product_catalog`, `reddit_ads_update_product_catalog`, `reddit_ads_list_catalog_feeds`, `reddit_ads_get_catalog_feed`, `reddit_ads_create_catalog_feed`, `reddit_ads_update_catalog_feed`, `reddit_ads_delete_catalog_feed`, `reddit_ads_list_products`, `reddit_ads_get_product`, `reddit_ads_create_product`, `reddit_ads_delete_product`, `reddit_ads_list_product_sets`, `reddit_ads_get_product_set`, `reddit_ads_create_product_set`, `reddit_ads_update_product_set`, `reddit_ads_delete_product_set`, `reddit_ads_batch_upsert_products`, `reddit_ads_batch_delete_products`
+  </Accordion>
+  <Accordion title="リード & 請求">
+    `reddit_ads_list_lead_gen_forms`, `reddit_ads_get_lead_gen_form`, `reddit_ads_create_lead_gen_form`, `reddit_ads_list_funding_instruments`, `reddit_ads_get_funding_instruments`, `reddit_ads_list_billing_v2_invoices`
+  </Accordion>
+  <Accordion title="レポーティング">
+    `reddit_ads_get_a_report`, `reddit_ads_get_channel_planning_reach`, `reddit_ads_generate_bid_suggestion`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="キャンペーン成果のレビュー" icon="bar-chart-3">
+    複数キャンペーンにわたるレポートを取得し、支出・リーチ・コンバージョンを要約する
+  </Card>
+  <Card title="オーディエンス調査" icon="users">
+    キャンペーン開始前に、コミュニティや興味関心を検索してターゲティング計画を立てる
+  </Card>
+  <Card title="カタログ連動広告" icon="shopping-bag">
+    商品カタログを同期し、ダイナミック商品広告キャンペーンで再利用する
+  </Card>
+  <Card title="リードフォームの管理" icon="clipboard-list">
+    アクティブなキャンペーンに紐づくリード獲得フォームを作成・監視する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="reddit_ads_get_meを最初に呼ぶまでほとんどのツールが失敗する">
+    `reddit_ads_get_me`は、ビジネスや広告アカウントを操作する前に接続を確認するための必須の入口です。続けて`reddit_ads_list_my_businesses`、`reddit_ads_list_ad_accounts_by_business`を呼び、他のほとんどのツールが必要とする`ad_account_id`を取得してください。
+  </Accordion>
+  <Accordion title="reddit_ads_create_campaignやreddit_ads_create_ad_groupがバリデーションエラーで失敗する">
+    `shanone_get_tool_schema`で正確な必須フィールドを確認してください——キャンペーンの目的、予算タイプ、ターゲティングオブジェクトには、キャンペーンタイプによって異なる相互依存の制約があります。
+  </Accordion>
+  <Accordion title="reddit_ads_post_conversion_eventsの結果がレポートにすぐ反映されない">
+    コンバージョンのアトリビューションには遅延が発生することがあります。レポートの問題と判断する前に、`reddit_ads_get_pixel_last_fired_at`や`reddit_ads_get_app_last_fired_at`でイベントが実際に受信されているか確認してください。
+  </Accordion>
+</AccordionGroup>

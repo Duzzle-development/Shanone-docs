@@ -1,0 +1,65 @@
+---
+title: "OpenAlex"
+description: "OpenAlexのオープンな学術データベースで論文・著者・引用を検索"
+icon: /images/openalex.svg
+---
+
+# OpenAlex
+
+ShanoneのOpenAlex連携は、論文・著者・引用情報を検索・取得するための2個のツールをエージェントに提供します。[OpenAlex](https://openalex.org)は完全にオープンな学術情報カタログで、アカウントやAPIキーは不要です。
+
+## はじめに
+
+<Steps>
+  <Step title="接続は不要">
+    OpenAlexは無料のオープンAPIです。**連携**で許可する作業は何もなく、ツールはそのまま利用できます。
+  </Step>
+  <Step title="エージェントに検索を依頼する">
+    例えば「トランスフォーマーアーキテクチャに関する最近の論文をOpenAlexで検索して」や「このDOIの論文を調べて」のように依頼してみてください。
+  </Step>
+  <Step title="すぐにツール呼び出しが成功する">
+    `openalex_*`ツールに対する`shanone_execute_tool`呼び出しは、事前設定なしで成功します。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはOpenAlex向けに**2個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="論文検索">
+    `openalex_search_works` — 出版年やオープンアクセス状況などのフィルタとページングに対応した、OpenAlexの論文インデックス全文検索
+    `openalex_get_work_by_doi` — DOIを指定して論文の詳細情報(著者、被引用数、オープンアクセス状況、要約)を取得
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="文献レビュー" icon="book-open">
+    トピックを検索し、関連性の高い論文の被引用数やオープンアクセスリンクを取得する
+  </Card>
+  <Card title="引用の確認" icon="link">
+    文書中で言及されたDOIを、完全なメタデータと要約に変換する
+  </Card>
+  <Card title="オープンアクセスの発見" icon="unlock">
+    検索結果をオープンアクセスの論文だけに絞り込んで要約する
+  </Card>
+  <Card title="トレンドの把握" icon="trending-up">
+    出版年でフィルタして、あるトピックの研究量が時間とともにどう変化したかを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="openalex_get_work_by_doiが存在するはずのDOIで404を返す">
+    完全な`https://doi.org/...`形式のURLではなく、素のDOI(例: `10.1038/nature12373`)を渡してください。ツールは一般的なプレフィックスを自動的に除去しますが、特殊な形式では解決に失敗することがあります。
+  </Accordion>
+  <Accordion title="openalex_search_worksが遅い・レート制限にかかっているように感じる">
+    OpenAlexは連絡先メールアドレスを含むリクエスト("polite pool")を優先的に処理します。これはユーザー単位ではなくShanoneのデプロイ単位で環境変数として設定されます——セルフホストの場合は`OPENALEX_EMAIL`を設定してください。
+  </Accordion>
+  <Accordion title="要約(abstract)が欠けている・途中で切れている">
+    OpenAlexは要約を単語位置の転置インデックスとして保存しており、Shanoneはそこから要約を再構築します。非常に長い要約はレスポンスを簡潔にするため最初の100単語で切り捨てられます。
+  </Accordion>
+</AccordionGroup>

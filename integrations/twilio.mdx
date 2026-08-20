@@ -1,0 +1,97 @@
+---
+title: "Twilio"
+description: "Send SMS and WhatsApp messages, manage phone numbers, conferences, and recordings — programmable communications for your agent"
+icon: /images/twilio.svg
+---
+
+# Twilio
+
+Shanone's Twilio integration gives your agent 45 tools covering SMS/WhatsApp messaging, phone number provisioning, conference calls, and the usage/reporting tools most integrations skip.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get your Twilio credentials">
+    Grab your **Account SID** and **Auth Token** from the [Twilio Console](https://www.twilio.com/docs/iam/api) dashboard.
+  </Step>
+  <Step title="Connect via API key">
+    In the Shanone dashboard, go to **Integrations → Twilio** and enter both the Account SID and Auth Token — Twilio requires both together, not just one.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `twilio_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **45 tools** for Twilio, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Phone Numbers">
+    `twilio_search_available_phone_numbers`, `twilio_purchase_phone_number`, `twilio_get_phone_number`, `twilio_update_phone_number`, `twilio_release_phone_number`
+  </Accordion>
+  <Accordion title="Messaging Services">
+    `twilio_list_messaging_services`, `twilio_get_messaging_service`, `twilio_create_messaging_service`, `twilio_delete_messaging_service`
+  </Accordion>
+  <Accordion title="WhatsApp">
+    `twilio_send_whatsapp_message`, `twilio_send_whatsapp_media`, `twilio_send_whatsapp_template`, `twilio_list_whatsapp_messages`
+  </Accordion>
+  <Accordion title="Content Templates">
+    `twilio_list_content_templates`, `twilio_get_content_template`, `twilio_send_message_with_template`
+  </Accordion>
+  <Accordion title="Message Media">
+    `twilio_list_message_media`, `twilio_get_message_media`, `twilio_delete_message_media`
+  </Accordion>
+  <Accordion title="Conferences">
+    `twilio_list_conferences`, `twilio_get_conference`, `twilio_create_conference_participant`, `twilio_list_conference_participants`, `twilio_get_conference_participant`, `twilio_update_conference_participant`, `twilio_remove_conference_participant`
+  </Accordion>
+  <Accordion title="Recordings & Transcriptions">
+    `twilio_get_recording`, `twilio_list_call_recordings`, `twilio_list_conference_recordings`, `twilio_list_transcriptions`, `twilio_get_transcription`, `twilio_list_recording_transcriptions`, `twilio_delete_transcription`
+  </Accordion>
+  <Accordion title="Call Feedback">
+    `twilio_get_call_feedback`, `twilio_create_call_feedback`
+  </Accordion>
+  <Accordion title="Addresses">
+    `twilio_list_addresses`, `twilio_create_address`, `twilio_delete_address`
+  </Accordion>
+  <Accordion title="API Keys">
+    `twilio_list_api_keys`, `twilio_create_api_key`, `twilio_get_api_key`, `twilio_delete_api_key`
+  </Accordion>
+  <Accordion title="Usage Records">
+    `twilio_list_usage_records`, `twilio_list_usage_records_daily`, `twilio_list_usage_records_monthly`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Appointment reminders" icon="calendar-clock">
+    Send SMS or WhatsApp reminders for bookings pulled from another tool
+  </Card>
+  <Card title="Customer support over WhatsApp" icon="message-circle">
+    Reply to customers on WhatsApp using approved message templates
+  </Card>
+  <Card title="On-call phone number provisioning" icon="phone">
+    Search, purchase, and configure new numbers for a support line or campaign
+  </Card>
+  <Card title="Usage and cost monitoring" icon="bar-chart-3">
+    Pull daily/monthly usage records to track spend across services
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connecting fails even though I entered a token">
+    Twilio requires **both** the Account SID and Auth Token to be set — Shanone's connection check rejects a partially-configured integration, so double-check both fields in **Integrations**.
+  </Accordion>
+  <Accordion title="twilio_send_whatsapp_template fails with an invalid template error">
+    WhatsApp template messages must reference a template already approved in your Twilio Content Template catalog. Use `twilio_list_content_templates` to find a valid, approved template SID first.
+  </Accordion>
+  <Accordion title="twilio_purchase_phone_number returns no matching numbers">
+    Run `twilio_search_available_phone_numbers` first with a country code and area code/pattern — number availability varies significantly by region and number type (local/toll-free/mobile).
+  </Accordion>
+  <Accordion title="Recording or transcription tools return empty results">
+    Recordings and transcriptions are scoped to a specific call or conference SID. Use `twilio_list_call_recordings` or `twilio_list_conference_recordings` with the right call/conference SID rather than expecting a global list.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,91 @@
+---
+title: "Stack Exchange"
+description: "Search and read Q&A across Stack Overflow and the Stack Exchange network, plus post and vote"
+icon: "message-circle-question"
+---
+
+# Stack Exchange
+
+Shanone's Stack Exchange integration gives your agent 82 tools for searching questions, reading answers/comments/badges, browsing tags, and — for authenticated write access — posting questions/answers/comments and voting, across Stack Overflow and any other Stack Exchange site.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Stack Exchange (e.g. "search Stack Overflow for how to debounce a React hook"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize your Stack Exchange account">
+    Approve the OAuth consent screen. You can optionally set an Application Key and a Default Site (e.g. `stackoverflow`) — the key raises your daily request quota from 300 to 10,000.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `stackexchange_*` tools will succeed. Read-only tools work even without full OAuth if an Application Key is set.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **82 tools** for Stack Exchange, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Questions">
+    `stackexchange_search_questions`, `stackexchange_advanced_search_questions`, `stackexchange_get_similar_questions`, `stackexchange_search_excerpts`, `stackexchange_list_questions`, `stackexchange_get_questions_by_ids`, `stackexchange_get_unanswered_questions`, `stackexchange_get_no_answer_questions`, `stackexchange_get_featured_questions`, `stackexchange_get_related_questions`
+  </Accordion>
+  <Accordion title="Answers">
+    `stackexchange_list_answers`, `stackexchange_get_answers_by_ids`, `stackexchange_get_answers_for_questions`, `stackexchange_get_questions_by_answer_ids`, `stackexchange_get_comments_on_answers`
+  </Accordion>
+  <Accordion title="Posts & comments">
+    `stackexchange_list_posts`, `stackexchange_get_posts_by_ids`, `stackexchange_get_comments_on_posts`, `stackexchange_list_comments`, `stackexchange_get_comments_by_ids`, `stackexchange_get_revisions_by_post_ids`, `stackexchange_get_revisions_by_guids`, `stackexchange_get_suggested_edits_on_posts`, `stackexchange_list_suggested_edits`
+  </Accordion>
+  <Accordion title="Writing posts">
+    `stackexchange_create_question`, `stackexchange_edit_question`, `stackexchange_delete_question`, `stackexchange_create_answer`, `stackexchange_edit_answer`, `stackexchange_delete_answer`, `stackexchange_create_comment`, `stackexchange_delete_comment`, `stackexchange_edit_comment`, `stackexchange_render_answer_preview`
+  </Accordion>
+  <Accordion title="Voting">
+    `stackexchange_upvote_post`, `stackexchange_downvote_post`, `stackexchange_undo_vote`, `stackexchange_favorite_question`, `stackexchange_accept_answer`
+  </Accordion>
+  <Accordion title="Tags">
+    `stackexchange_list_tags`, `stackexchange_get_tags_info`, `stackexchange_get_moderator_only_tags`, `stackexchange_get_required_tags`, `stackexchange_get_tag_synonyms`, `stackexchange_get_synonyms_by_tags`, `stackexchange_get_related_tags`, `stackexchange_get_tag_wikis`, `stackexchange_get_top_answerers_on_tags`, `stackexchange_get_top_askers_on_tags`, `stackexchange_get_faqs_by_tags`, `stackexchange_get_top_user_answers_in_tags`
+  </Accordion>
+  <Accordion title="Users">
+    `stackexchange_list_users`, `stackexchange_get_users_by_ids`, `stackexchange_get_user_answers`, `stackexchange_get_user_questions`, `stackexchange_get_user_badges`, `stackexchange_get_user_comments`, `stackexchange_get_user_favorites`, `stackexchange_get_user_reputation`, `stackexchange_get_user_reputation_history`, `stackexchange_get_user_tags`, `stackexchange_get_user_timeline`, `stackexchange_get_top_tags_on_users`, `stackexchange_get_moderators`
+  </Accordion>
+  <Accordion title="Badges">
+    `stackexchange_list_badges`, `stackexchange_get_badges_by_ids`, `stackexchange_get_badges_by_name`, `stackexchange_get_badge_recipients`
+  </Accordion>
+  <Accordion title="My account (me)">
+    `stackexchange_get_me`, `stackexchange_get_my_answers`, `stackexchange_get_my_questions`, `stackexchange_get_my_reputation`, `stackexchange_get_my_favorites`, `stackexchange_get_my_inbox`, `stackexchange_get_my_notifications`, `stackexchange_get_my_achievements`
+  </Accordion>
+  <Accordion title="Sites & meta">
+    `stackexchange_list_sites`, `stackexchange_get_site_info`, `stackexchange_create_filter`, `stackexchange_read_filters`, `stackexchange_list_privileges`, `stackexchange_list_errors`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Research before answering" icon="search">
+    Search Stack Overflow for existing answers to a technical question before writing new code
+  </Card>
+  <Card title="Community monitoring" icon="bell">
+    Watch unanswered questions in a tag your team owns and draft a response for review
+  </Card>
+  <Card title="Reputation tracking" icon="trophy">
+    Check a user's reputation history and recent badges after a big contribution
+  </Card>
+  <Card title="Tag research" icon="tags">
+    Find related tags and top answerers for a topic to identify subject-matter experts
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Getting throttled or hitting a daily quota error">
+    Without an Application Key, Stack Exchange limits you to 300 requests/day; set one on the integration to raise the limit to 10,000/day.
+  </Accordion>
+  <Accordion title="A search tool returns results from the wrong site">
+    Most read tools take a `site` parameter (defaults to your configured Default Site) — pass it explicitly when querying a site other than Stack Overflow, e.g. `superuser` or `serverfault`.
+  </Accordion>
+  <Accordion title="Writing tools like stackexchange_create_answer or stackexchange_upvote_post fail">
+    Write and vote actions require full OAuth authorization (not just an Application Key) and sufficient reputation on the target site — Stack Exchange enforces its own reputation thresholds for posting and voting independent of Shanone.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,94 @@
+---
+title: "Snowflake"
+description: "Query and manage your Snowflake data warehouse — databases, tables, warehouses, tasks, and Cortex AI"
+icon: /images/snowflake.svg
+---
+
+# Snowflake
+
+Shanone's Snowflake integration gives your agent 142 tools spanning SQL execution, the full object model (databases, schemas, tables, views, warehouses), data engineering primitives (streams, tasks, pipes, dynamic/iceberg tables), governance (roles, grants, network policies), and Cortex AI — enough to run most data-platform operations directly from an agent.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate a key pair">
+    Snowflake authenticates via key-pair auth rather than a simple token. Generate an RSA key pair and assign the public key to your Snowflake user (`ALTER USER ... SET RSA_PUBLIC_KEY = '...'`).
+  </Step>
+  <Step title="Connect the credentials in Shanone">
+    Ask your agent to do something with Snowflake (e.g. "list all warehouses and their current size"), or add your Account Identifier, Username, and Private Key (PEM) proactively from **Integrations** in the Shanone dashboard. All three fields are required.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `snowflake_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **142 tools** for Snowflake, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="SQL execution & statements">
+    `snowflake_execute_sql`, `snowflake_get_statement_status`, `snowflake_get_statement_result`, `snowflake_cancel_statement`, `snowflake_query`, `snowflake_execute_dml`, `snowflake_execute_ddl`, `snowflake_execute_multi_statements`, `snowflake_execute_async`, `snowflake_poll_until_complete`, `snowflake_describe_table`
+  </Accordion>
+  <Accordion title="Databases, schemas & roles">
+    `snowflake_list_databases`, `snowflake_get_database`, `snowflake_create_database`, `snowflake_delete_database`, `snowflake_list_schemas`, `snowflake_get_schema`, `snowflake_create_schema`, `snowflake_delete_schema`, `snowflake_list_roles`, `snowflake_get_role`, `snowflake_create_role`, `snowflake_delete_role`, `snowflake_list_database_roles`, `snowflake_get_database_role`, `snowflake_create_database_role`, `snowflake_delete_database_role`, `snowflake_list_users`, `snowflake_get_user`, `snowflake_create_user`, `snowflake_delete_user`
+  </Accordion>
+  <Accordion title="Tables & views">
+    `snowflake_list_tables`, `snowflake_get_table`, `snowflake_delete_table`, `snowflake_create_table`, `snowflake_update_table`, `snowflake_clone_table`, `snowflake_undrop_table`, `snowflake_list_views`, `snowflake_get_view`, `snowflake_create_view`, `snowflake_delete_view`, `snowflake_list_iceberg_tables`, `snowflake_get_iceberg_table`, `snowflake_create_iceberg_table`, `snowflake_create_iceberg_table_as_select`, `snowflake_create_iceberg_from_glue`, `snowflake_create_iceberg_from_delta`, `snowflake_create_iceberg_from_files`, `snowflake_create_iceberg_from_rest`, `snowflake_delete_iceberg_table`, `snowflake_resume_iceberg_recluster`, `snowflake_list_dynamic_tables`, `snowflake_get_dynamic_table`, `snowflake_create_dynamic_table`, `snowflake_delete_dynamic_table`, `snowflake_suspend_dynamic_table`, `snowflake_resume_dynamic_table`, `snowflake_refresh_dynamic_table`
+  </Accordion>
+  <Accordion title="Warehouses & compute pools">
+    `snowflake_list_warehouses`, `snowflake_get_warehouse`, `snowflake_create_warehouse`, `snowflake_delete_warehouse`, `snowflake_resume_warehouse`, `snowflake_suspend_warehouse`, `snowflake_list_compute_pools`, `snowflake_get_compute_pool`, `snowflake_create_compute_pool`, `snowflake_update_compute_pool`, `snowflake_delete_compute_pool`, `snowflake_resume_compute_pool`, `snowflake_suspend_compute_pool`, `snowflake_stop_all_services`
+  </Accordion>
+  <Accordion title="Data engineering (streams, tasks, pipes)">
+    `snowflake_list_streams`, `snowflake_get_stream`, `snowflake_create_stream`, `snowflake_delete_stream`, `snowflake_clone_stream`, `snowflake_list_tasks`, `snowflake_get_task`, `snowflake_create_task`, `snowflake_update_task`, `snowflake_delete_task`, `snowflake_execute_task`, `snowflake_resume_task`, `snowflake_list_pipes`, `snowflake_get_pipe`, `snowflake_create_pipe`, `snowflake_delete_pipe`, `snowflake_refresh_pipe`
+  </Accordion>
+  <Accordion title="Functions, procedures & stages">
+    `snowflake_list_functions`, `snowflake_get_function`, `snowflake_create_function`, `snowflake_delete_function`, `snowflake_execute_function`, `snowflake_list_procedures`, `snowflake_get_procedure`, `snowflake_create_procedure`, `snowflake_delete_procedure`, `snowflake_call_procedure`, `snowflake_list_stages`, `snowflake_get_stage`, `snowflake_create_stage`, `snowflake_delete_stage`, `snowflake_list_stage_files`, `snowflake_get_presigned_url`
+  </Accordion>
+  <Accordion title="Governance & security">
+    `snowflake_grant_privileges`, `snowflake_revoke_privileges`, `snowflake_list_grants`, `snowflake_list_network_policies`, `snowflake_get_network_policy`, `snowflake_create_network_policy`, `snowflake_delete_network_policy`, `snowflake_list_network_rules`, `snowflake_create_network_rule`, `snowflake_delete_network_rule`, `snowflake_list_secrets`, `snowflake_get_secret`, `snowflake_create_secret`, `snowflake_delete_secret`, `snowflake_list_tags`, `snowflake_get_tag`, `snowflake_create_tag`
+  </Accordion>
+  <Accordion title="Alerts & notifications">
+    `snowflake_list_alerts`, `snowflake_get_alert`, `snowflake_create_alert`, `snowflake_delete_alert`, `snowflake_execute_alert`, `snowflake_list_notification_integrations`, `snowflake_get_notification_integration`, `snowflake_create_notification_integration`, `snowflake_delete_notification_integration`
+  </Accordion>
+  <Accordion title="Image repositories & external volumes">
+    `snowflake_list_image_repositories`, `snowflake_get_image_repository`, `snowflake_create_image_repository`, `snowflake_delete_image_repository`, `snowflake_list_external_volumes`
+  </Accordion>
+  <Accordion title="Cortex AI">
+    `snowflake_cortex_chat_completion`, `snowflake_cortex_embed`, `snowflake_cortex_search`, `snowflake_cortex_inference`, `snowflake_cortex_messages`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Ad-hoc analysis" icon="database">
+    Run a SQL query against a warehouse and summarize the result set in natural language
+  </Card>
+  <Card title="Cost management" icon="gauge">
+    List warehouses, check which are running, and suspend idle ones to cut compute spend
+  </Card>
+  <Card title="Access review" icon="shield-check">
+    List grants and roles for a database to audit who has write access before an incident review
+  </Card>
+  <Card title="Pipeline monitoring" icon="workflow">
+    Check task and stream status across a schema to spot a broken ELT pipeline
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Every call fails with an authentication error">
+    Snowflake requires the Account Identifier, Username, and Private Key together — a partial credential set will not authenticate. Double-check the private key is the unencrypted PEM matching the public key registered on the Snowflake user.
+  </Accordion>
+  <Accordion title="snowflake_execute_sql returns a statement handle instead of results">
+    Long-running queries execute asynchronously — poll `snowflake_get_statement_status` and `snowflake_get_statement_result` with the returned statement handle, or use `snowflake_poll_until_complete` to wait for it automatically.
+  </Accordion>
+  <Accordion title="A warehouse or compute pool operation fails with an insufficient privileges error">
+    Most create/delete/grant operations require the connected user's role to have the relevant object privilege — use `snowflake_list_grants` to check what the current role can actually do before assuming a bug.
+  </Accordion>
+  <Accordion title="snowflake_create_dynamic_table or snowflake_create_stream succeeds but data isn't updating">
+    Dynamic tables and streams only refresh on their configured lag/schedule or when explicitly triggered — use `snowflake_refresh_dynamic_table` or check the object's `TARGET_LAG` setting.
+  </Accordion>
+</AccordionGroup>

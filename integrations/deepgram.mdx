@@ -1,0 +1,73 @@
+---
+title: "Deepgram"
+description: "Speech-to-text, text-to-speech, and audio intelligence — transcription, TTS, and text analysis"
+icon: /images/deepgram.svg
+---
+
+# Deepgram
+
+Shanone's Deepgram integration gives your agent 12 tools for voice AI: audio transcription, speaker diarization, summarization, text-to-speech, and text intelligence (sentiment, topics, intents, entities).
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Deepgram API Key">
+    Sign in to the [Deepgram Console](https://console.deepgram.com/project/api-keys) and create a new API Key for your project.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Deepgram, and paste in the API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `deepgram_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **12 tools** for Deepgram, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Transcription">
+    `deepgram_transcribe`, `deepgram_analyze_audio`, `deepgram_detect_entities`, `deepgram_summarize_audio`
+  </Accordion>
+  <Accordion title="Speech Synthesis">
+    `deepgram_text_to_speech`, `deepgram_list_voices`
+  </Accordion>
+  <Accordion title="Text Intelligence">
+    `deepgram_analyze_text`, `deepgram_summarize_text`
+  </Accordion>
+  <Accordion title="Management">
+    `deepgram_list_models`, `deepgram_get_usage`, `deepgram_get_balance`, `deepgram_list_project_models`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting transcription" icon="mic">
+    Transcribe a recorded call with speaker diarization and summarize the key points
+  </Card>
+  <Card title="Voice interfaces" icon="volume-2">
+    Convert generated text responses to speech for a voice-based agent experience
+  </Card>
+  <Card title="Support ticket triage" icon="inbox">
+    Run sentiment and entity extraction on transcribed support calls to prioritize follow-up
+  </Card>
+  <Card title="Usage monitoring" icon="gauge">
+    Track API usage and remaining balance to avoid unexpected billing surprises
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="deepgram_transcribe fails with a fetch error">
+    `audio_url` must be a publicly accessible URL — Deepgram fetches the file server-side and can't reach URLs behind authentication or on a local network.
+  </Accordion>
+  <Accordion title="deepgram_analyze_audio / deepgram_summarize_audio return unexpectedly generic results">
+    These intelligence features rely on `smart_format` and clean transcription first — for noisy audio, try `nova-3` (the most accurate model) before running summarization or entity detection on top.
+  </Accordion>
+  <Accordion title="deepgram_get_usage or deepgram_get_balance shows unexpected numbers">
+    Usage and balance are tracked at the Deepgram project level tied to the API Key, not per-user within Shanone — if multiple integrations share the same Deepgram project, usage will reflect all of them combined.
+  </Accordion>
+</AccordionGroup>

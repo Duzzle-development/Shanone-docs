@@ -1,0 +1,121 @@
+---
+title: "LINE WORKS"
+description: "Manage LINE WORKS — mail, calendar, contacts, drive, boards, tasks, bots, and full directory/admin control"
+icon: /images/lineworks.svg
+---
+
+# LINE WORKS
+
+Shanone's LINE WORKS integration gives your agent 350 tools — the largest in Shanone's catalog — covering everyday messaging, mail, calendar, and drive alongside deep directory administration (users, groups, org units, custom fields) and bot management.
+
+## Getting Started
+
+<Steps>
+  <Step title="Register a LINE WORKS Developer app">
+    In the [LINE WORKS Developer Console](https://developers.worksmobile.com), create an app and generate a Client ID, Client Secret, and a Service Account with a private key for JWT-based authentication.
+  </Step>
+  <Step title="Add all four credentials in Shanone">
+    Go to **Integrations > LINE WORKS** in the Shanone dashboard and enter the Client ID, Client Secret, Service Account, and Private Key — all four are required to mint access tokens.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `lineworks_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **350 tools** for LINE WORKS, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Drive (67 tools)">
+    File/folder CRUD, sharing, permissions, revisions, links, and trash across your own drive, shared drives, group folders, and channel folders — e.g. `lineworks_upload_drive_file`, `lineworks_create_drive_permission`, `lineworks_list_drive_file_revisions`, `lineworks_create_drive_file_link`
+  </Accordion>
+  <Accordion title="Directory: users (37 tools)">
+    Member lifecycle, profile, status, and account linking — e.g. `lineworks_create_member`, `lineworks_search_members`, `lineworks_suspend_member`, `lineworks_grant_member_link_to_works`, `lineworks_resolve_member_by_external_key`
+  </Accordion>
+  <Accordion title="Board (28 tools)">
+    Boards, posts, comments, and attachments — e.g. `lineworks_create_board`, `lineworks_create_board_post`, `lineworks_search_board_posts`, `lineworks_create_board_post_comment`
+  </Accordion>
+  <Accordion title="Contacts (25 tools)">
+    Company/personal contacts, tags, custom properties, and photos — e.g. `lineworks_create_contact`, `lineworks_search_user_contacts`, `lineworks_create_contact_custom_properties`
+  </Accordion>
+  <Accordion title="Directory: levels & positions (16 tools)">
+    Org hierarchy levels and job positions — e.g. `lineworks_create_level`, `lineworks_create_position`, `lineworks_enable_levels`
+  </Accordion>
+  <Accordion title="Calendar (15 tools)">
+    Personal and default calendars plus events — e.g. `lineworks_create_calendar_event`, `lineworks_search_calendar_events`, `lineworks_update_default_calendar_event`
+  </Accordion>
+  <Accordion title="Menu: rich & persistent menus (15 tools)">
+    Bot rich menus and persistent menus — e.g. `lineworks_create_rich_menu`, `lineworks_set_user_rich_menu`, `lineworks_create_persistent_menu`
+  </Accordion>
+  <Accordion title="Task (16 tools)">
+    Tasks and task categories — e.g. `lineworks_create_task`, `lineworks_complete_task`, `lineworks_create_task_category`
+  </Accordion>
+  <Accordion title="Mail (18 tools)">
+    Sending, folders, filters, and forwarding — e.g. `lineworks_send_mail`, `lineworks_create_mail_filter`, `lineworks_enable_mail_forwarding`
+  </Accordion>
+  <Accordion title="Groups (15 tools)">
+    Groups, members, administrators, and external keys — e.g. `lineworks_create_group`, `lineworks_add_group_administrator`, `lineworks_update_group_external_keys`
+  </Accordion>
+  <Accordion title="Bot management (13 tools)">
+    Creating/updating bots and bot domains — e.g. `lineworks_create_bot`, `lineworks_register_bot_domain`, `lineworks_add_bot_domain_member`
+  </Accordion>
+  <Accordion title="Note (13 tools)">
+    Group notes and note posts — e.g. `lineworks_create_group_note`, `lineworks_create_group_note_post`, `lineworks_search_group_note_posts`
+  </Accordion>
+  <Accordion title="Directory: access restrictions (12 tools)">
+    Org unit access restrictions by member, user type, and team — e.g. `lineworks_set_member_orgunit_access_restrict`, `lineworks_set_team_orgunit_access_restrict`
+  </Accordion>
+  <Accordion title="Teams (11 tools)">
+    Teams and team membership — e.g. `lineworks_create_team`, `lineworks_get_team_members`, `lineworks_move_team`
+  </Accordion>
+  <Accordion title="Directory: custom fields (10 tools)">
+    Custom fields and member custom properties — e.g. `lineworks_create_custom_field`, `lineworks_create_member_custom_properties`
+  </Accordion>
+  <Accordion title="Directory: user types & statuses (16 tools)">
+    Custom user types and profile statuses — e.g. `lineworks_create_user_type`, `lineworks_create_profile_status`
+  </Accordion>
+  <Accordion title="Directory: external keys (6 tools)">
+    External key mapping for levels, positions, and user types — e.g. `lineworks_update_level_external_keys`, `lineworks_list_position_external_keys`
+  </Accordion>
+  <Accordion title="Messages, channels, bots & users (10 tools)">
+    Direct/channel messaging and read-only bot/user/channel lookups — e.g. `lineworks_send_message_to_user`, `lineworks_send_message_to_channel`, `lineworks_create_channel`, `lineworks_list_users`
+  </Accordion>
+  <Accordion title="Attachments, audit & security (6 tools)">
+    Bot attachments, audit/monitoring log downloads, and external browser policy — e.g. `lineworks_upload_bot_attachment`, `lineworks_download_audit_logs`, `lineworks_enable_external_browser`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Employee onboarding" icon="user-plus">
+    Create a member, assign org unit/level/position, and send an invitation email
+  </Card>
+  <Card title="Intranet content ops" icon="layout-template">
+    Post company announcements to a board and track must-read acknowledgment
+  </Card>
+  <Card title="Compliance exports" icon="file-search">
+    Download audit and monitoring logs for a security review
+  </Card>
+  <Card title="Document collaboration" icon="folder">
+    Share a Drive folder with fine-grained permissions and track file revisions
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="All lineworks_* tool calls fail with an authentication error">
+    LINE WORKS uses JWT-based service account auth, not a simple bearer token — Client ID, Client Secret, Service Account, and Private Key must all be correctly set; a single missing or malformed field prevents any token from being issued.
+  </Accordion>
+  <Accordion title="Directory admin tools (users, groups, levels) return a permission error">
+    These tools require the connected app to have Directory Management API scopes granted in the Developer Console for that app — messaging-only scopes aren't sufficient.
+  </Accordion>
+  <Accordion title="lineworks_delete_member doesn't seem to fully remove the user">
+    Standard delete is often a soft-delete/deactivation; use `lineworks_force_delete_member` if you need to permanently and immediately remove a member record.
+  </Accordion>
+  <Accordion title="Bot-related tools fail even though the bot exists">
+    Bot messaging tools operate under a specific bot's credentials registered via `lineworks_create_bot` — confirm the bot ID you're targeting is authorized for the domain with `lineworks_list_bot_domains`.
+  </Accordion>
+</AccordionGroup>

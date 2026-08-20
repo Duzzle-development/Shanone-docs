@@ -1,0 +1,79 @@
+---
+title: "Webex"
+description: "Schedule meetings and manage rooms, teams, and messages on Cisco Webex"
+icon: /images/webex.svg
+---
+
+# Webex
+
+Shanone's Webex integration gives your agent 27 tools for scheduling meetings and managing the spaces (rooms), teams, and messages people collaborate in.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Webex (e.g. "schedule a meeting for tomorrow at 3pm"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Webex account">
+    Approve Webex's OAuth consent screen for the account you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `webex_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **27 tools** for Webex, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Meetings">
+    `webex_list_meetings`, `webex_get_meeting`, `webex_create_meeting`, `webex_update_meeting`, `webex_delete_meeting`
+  </Accordion>
+  <Accordion title="Rooms">
+    `webex_list_rooms`, `webex_get_room`, `webex_create_room`, `webex_update_room`, `webex_delete_room`
+  </Accordion>
+  <Accordion title="Memberships">
+    `webex_list_memberships`, `webex_get_membership`, `webex_create_membership`, `webex_update_membership`, `webex_delete_membership`
+  </Accordion>
+  <Accordion title="Teams">
+    `webex_list_teams`, `webex_get_team`, `webex_create_team`, `webex_update_team`, `webex_delete_team`
+  </Accordion>
+  <Accordion title="Messages">
+    `webex_list_messages`, `webex_get_message`, `webex_send_message`, `webex_delete_message`
+  </Accordion>
+  <Accordion title="Users">
+    `webex_get_me`, `webex_get_person`, `webex_list_people`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting scheduling" icon="calendar-plus">
+    Create and update meetings, then confirm attendees have the right access
+  </Card>
+  <Card title="Team space setup" icon="users-round">
+    Create a room, add a team, and manage memberships for a new project
+  </Card>
+  <Card title="Broadcast updates" icon="megaphone">
+    Post a status update to a room and confirm it reached the right space
+  </Card>
+  <Card title="Directory lookups" icon="search">
+    Look up a colleague's Webex person ID or email before messaging or adding them
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="webex_create_membership or webex_send_message fails with a not found error">
+    Room, team, and person identifiers in Webex are opaque IDs, not emails or names — use `webex_list_rooms`/`webex_list_people` (or `webex_get_person`) to resolve the correct ID first.
+  </Accordion>
+  <Accordion title="webex_delete_room or webex_delete_team appears to succeed but content still shows elsewhere">
+    Deleting a room or team is a moderator-level action; if the connected account isn't a moderator of that space, the call may fail silently depending on Webex's permission response — verify with `webex_get_membership` first.
+  </Accordion>
+  <Accordion title="Meeting attendee list looks incomplete">
+    `webex_get_meeting` returns the scheduled meeting's core fields; invitee lists are managed separately and may require checking the meeting's associated room membership via `webex_list_memberships`.
+  </Accordion>
+</AccordionGroup>

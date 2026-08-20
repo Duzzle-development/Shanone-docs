@@ -1,0 +1,73 @@
+---
+title: "Qoder"
+description: "Qoder AI開発エージェントのセッション、ファイル、イベントの実行・管理"
+icon: /images/qoder.svg
+---
+
+# Qoder
+
+ShanoneのQoder連携は、[Qoder](https://qoder.ai) AI開発エージェントのセッションを操作するための11個のツールをエージェントに提供します。エージェントの作成、セッションの実行、ファイルのアップロード、自律的なコーディングワークフローのイベント追跡が行えます。
+
+## はじめに
+
+<Steps>
+  <Step title="Qoder APIキーを作成する">
+    Qoderのアカウント設定からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でQoderを選択し、キー(`qd_...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`qoder_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはQoder向けに**11個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="エージェント">
+    `qoder_list_agents`, `qoder_get_agent`, `qoder_create_agent`
+  </Accordion>
+  <Accordion title="セッション">
+    `qoder_create_session`, `qoder_get_session`, `qoder_list_sessions`, `qoder_delete_session`
+  </Accordion>
+  <Accordion title="メッセージング & イベント">
+    `qoder_send_message`, `qoder_get_session_events`
+  </Accordion>
+  <Accordion title="ファイル">
+    `qoder_upload_file`, `qoder_list_files`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="コーディング作業の委任" icon="terminal">
+    エージェントとセッションを作成し、タスクの説明を送ってQoderに作業させる
+  </Card>
+  <Card title="参考ファイルの提供" icon="file-up">
+    タスクメッセージを送る前に、セッションに必要な仕様書やサンプルファイルをアップロードする
+  </Card>
+  <Card title="セッションの監視" icon="activity">
+    `qoder_get_session_events`をポーリングして、長時間実行中のセッションの進捗を追跡する
+  </Card>
+  <Card title="複数エージェントの管理" icon="layout-grid">
+    既存のエージェントやセッションを一覧表示し、進行中の作業を重複させないようにする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="qoder_create_sessionの直後にqoder_send_messageが失敗する">
+    一部のセッションタイプは初期化に少し時間がかかります。最初のメッセージ送信が即座に失敗する場合は、`qoder_get_session`でセッションの状態を確認してください。
+  </Accordion>
+  <Accordion title="qoder_upload_fileは成功するがエージェントがファイルを使っていないように見える">
+    `qoder_list_files`で、ファイルが正しいセッション/エージェントIDに紐づいているか確認してください——アップロードはスコープが限定され、すべてのセッションから見えるわけではありません。
+  </Accordion>
+  <Accordion title="アクティブなセッションでqoder_get_session_eventsが何も返さない">
+    メッセージ送信後、イベントが表れるまで少し時間がかかることがあります。セッションが停止したと判断する前に、少し待って再度ポーリングしてください。
+  </Accordion>
+</AccordionGroup>

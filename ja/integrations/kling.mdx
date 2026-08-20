@@ -1,0 +1,70 @@
+---
+title: "Kling AI"
+description: "リップシンク付きAI動画の生成・延長 — テキストから動画、画像から動画、動画エフェクト"
+icon: /images/kling.svg
+---
+
+# Kling AI
+
+ShanoneのKling AI連携では、AI動画生成を扱う6のツールをエージェントが利用できるようになります——テキストや画像から動画を作成し、既存のクリップを延長し、音声に合わせてリップシンクを行い、生成タスクを完了まで追跡できます。
+
+## はじめに
+
+<Steps>
+  <Step title="Kling AIのAccess KeyとSecret Keyを取得する">
+    [Kling AI](https://klingai.com/)アカウントからAPIキーペアを生成します。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**Integrations**を開き、Kling AIを選択してAccess KeyとSecret Keyを入力します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    保存が完了すると、`kling_*`ツールへの`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはKling AI用に**6のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="動画生成">
+    `kling_text_to_video`, `kling_image_to_video` — テキストプロンプトまたは開始画像から動画クリップを生成する
+  </Accordion>
+  <Accordion title="動画エフェクト">
+    `kling_extend_video`, `kling_lip_sync` — 以前に生成したクリップを延長する、またはキャラクターの口の動きを音声トラックに合わせる
+  </Accordion>
+  <Accordion title="タスク追跡">
+    `kling_get_task`, `kling_wait_for_task` — 生成タスクの状態を1回確認する、または完了(もしくはタイムアウト)まで待機して生成された動画のURLを返す
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="テキストから動画生成" icon="clapperboard">
+    シーンの説明文を短いAI生成動画クリップに変える
+  </Card>
+  <Card title="画像のアニメーション化" icon="image">
+    静止画像を動く動画クリップにアニメーション化する
+  </Card>
+  <Card title="吹き替えリップシンク" icon="mic">
+    ローカライズのため、キャラクターの口の動きを新しい音声トラックに合わせる
+  </Card>
+  <Card title="連続シーケンスの拡張" icon="film">
+    `kling_extend_video`の呼び出しを連結して初期クリップからより長いシーケンスを構築する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="長い生成でkling_wait_for_taskがタイムアウトする">
+    動画生成はデフォルトの待機時間より長くかかることがあります——`max_wait_seconds`を増やすか、1回の呼び出しでブロックする代わりに`kling_get_task`をより長い間隔で自分でポーリングしてください。
+  </Accordion>
+  <Accordion title="タスクのステータスが明確な理由なくFAILEDになる">
+    `kling_get_task`が返す`error`フィールドを確認してください——よくある原因は、コンテンツポリシーに違反するプロンプトや、Klingの解像度/フォーマット要件を満たしていない元画像です。
+  </Accordion>
+  <Accordion title="kling_lip_syncで口の動きがずれる">
+    リップシンクの品質は入力トラック内のクリーンで単独の音声に依存します——背景ノイズや複数人の重なった発話は同期精度を低下させます。
+  </Accordion>
+</AccordionGroup>

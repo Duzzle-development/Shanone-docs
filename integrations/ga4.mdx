@@ -1,0 +1,79 @@
+---
+title: "Google Analytics 4"
+description: "Query reports, manage properties, and send events — Admin API, Data API, and Measurement Protocol"
+icon: /images/ga4.svg
+---
+
+# Google Analytics 4
+
+Shanone's GA4 integration gives your agent 33 tools spanning the Admin API (accounts, properties, custom definitions), the Data API (reports, real-time, funnels), and the Measurement Protocol for sending events directly.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with GA4 (e.g. "show me last week's traffic by channel"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the account with access to the GA4 property you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `ga4_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **33 tools** for GA4, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Admin (accounts & properties)">
+    `ga4_list_accounts`, `ga4_list_properties`, `ga4_get_property`, `ga4_list_data_streams`, `ga4_get_account_summaries`, `ga4_get_account`, `ga4_update_property`, `ga4_get_data_retention_settings`
+  </Accordion>
+  <Accordion title="Reporting">
+    `ga4_run_report`, `ga4_run_realtime_report`, `ga4_get_metadata`, `ga4_batch_run_reports`, `ga4_run_pivot_report`, `ga4_check_compatibility`, `ga4_run_funnel_report`, `ga4_create_report_task`, `ga4_get_report_task`, `ga4_query_report_task`
+  </Accordion>
+  <Accordion title="Key events & custom definitions">
+    `ga4_list_key_events`, `ga4_list_custom_dimensions`, `ga4_list_custom_metrics`, `ga4_create_custom_dimension`, `ga4_archive_custom_dimension`, `ga4_create_custom_metric`
+  </Accordion>
+  <Accordion title="Audiences & links">
+    `ga4_list_audiences`, `ga4_create_audience_export`, `ga4_query_audience_export`, `ga4_list_google_ads_links`, `ga4_list_bigquery_links`
+  </Accordion>
+  <Accordion title="Measurement Protocol">
+    `ga4_send_events`, `ga4_validate_events`, `ga4_list_measurement_protocol_secrets`
+  </Accordion>
+  <Accordion title="Access bindings">
+    `ga4_list_access_bindings`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Traffic reporting" icon="chart-line">
+    Run a standard or pivot report to break down sessions/conversions by channel, source, or device
+  </Card>
+  <Card title="Real-time monitoring" icon="activity">
+    Check `ga4_run_realtime_report` during a launch or campaign to watch live traffic
+  </Card>
+  <Card title="Custom event tracking" icon="tag">
+    Define custom dimensions/metrics, then validate and send events via the Measurement Protocol
+  </Card>
+  <Card title="Audience & funnel analysis" icon="filter">
+    Build a funnel report or export an audience list for downstream marketing use
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="ga4_run_report returns fewer rows or a sampling warning">
+    Check `ga4_check_compatibility` before combining dimensions/metrics — some combinations aren't compatible and GA4 silently drops or samples data instead of erroring.
+  </Accordion>
+  <Accordion title="ga4_list_access_bindings fails with an insufficient scope error">
+    This endpoint is in the GA4 Admin API's alpha surface and needs an additional OAuth scope beyond the standard read/edit scopes — reconnect the integration if you hit this.
+  </Accordion>
+  <Accordion title="ga4_send_events events don't show up in reports">
+    Measurement Protocol events aren't validated server-side by default — run `ga4_validate_events` first, and remember real-time/standard reports can take minutes to hours to reflect new events.
+  </Accordion>
+</AccordionGroup>

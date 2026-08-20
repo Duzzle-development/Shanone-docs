@@ -1,0 +1,97 @@
+---
+title: "Shopify"
+description: "Shopifyストアの商品、注文、顧客、ストアフロントコンテンツを管理する"
+icon: /images/shopify.svg
+---
+
+# Shopify
+
+ShanoneのShopify連携は、商品、注文、フルフィルメント、顧客、割引、マーケティング、ストアフロントコンテンツにまたがるAdmin REST APIのほぼ全体をカバーする149個のツールをエージェントに提供します——コマース業務をエンドツーエンドで実行できる、最も充実した連携の一つです。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにShopify関連の作業を依頼(例: 「今月の売れ筋商品トップ10を教えて」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="ストア名を入力する">
+    ShopifyのOAuthフローでは、どのストアを許可するか特定する必要があります——プロンプトが表示されたら、ストア名(`.myshopify.com`の前の部分)を入力してください。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`shopify_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはShopify向けに**149個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="商品、バリエーション & 画像">
+    `shopify_list_products`, `shopify_get_product`, `shopify_count_products`, `shopify_create_product`, `shopify_update_product`, `shopify_delete_product`, `shopify_list_variants`, `shopify_get_variant`, `shopify_create_variant`, `shopify_update_variant`, `shopify_delete_variant`, `shopify_count_variants`, `shopify_list_product_images`, `shopify_get_product_image`, `shopify_create_product_image`, `shopify_update_product_image`, `shopify_delete_product_image`, `shopify_count_product_images`, `shopify_list_product_metafields`, `shopify_get_product_metafield`, `shopify_create_product_metafield`, `shopify_update_product_metafield`, `shopify_delete_product_metafield`
+  </Accordion>
+  <Accordion title="コレクション">
+    `shopify_list_collections`, `shopify_get_custom_collection`, `shopify_create_custom_collection`, `shopify_update_custom_collection`, `shopify_delete_custom_collection`, `shopify_count_custom_collections`, `shopify_list_smart_collections`, `shopify_get_smart_collection`, `shopify_create_smart_collection`, `shopify_update_smart_collection`, `shopify_delete_smart_collection`, `shopify_count_smart_collections`, `shopify_list_collects`, `shopify_get_collect`, `shopify_create_collect`, `shopify_delete_collect`, `shopify_count_collects`
+  </Accordion>
+  <Accordion title="注文、取引 & リスク">
+    `shopify_list_orders`, `shopify_get_order`, `shopify_count_orders`, `shopify_close_order`, `shopify_cancel_order`, `shopify_create_order`, `shopify_update_order`, `shopify_delete_order`, `shopify_reopen_order`, `shopify_list_transactions`, `shopify_get_transaction`, `shopify_create_transaction`, `shopify_count_transactions`, `shopify_list_refunds`, `shopify_get_refund`, `shopify_calculate_refund`, `shopify_create_refund`, `shopify_list_order_risks`, `shopify_get_order_risk`, `shopify_create_order_risk`
+  </Accordion>
+  <Accordion title="フルフィルメント">
+    `shopify_list_fulfillments`, `shopify_get_fulfillment`, `shopify_create_fulfillment`, `shopify_update_fulfillment_tracking`, `shopify_cancel_fulfillment`, `shopify_count_fulfillments`, `shopify_list_fulfillment_orders`, `shopify_get_fulfillment_order`, `shopify_cancel_fulfillment_order`, `shopify_move_fulfillment_order`, `shopify_apply_fulfillment_hold`, `shopify_release_fulfillment_hold`, `shopify_list_fulfillment_events`, `shopify_get_fulfillment_event`, `shopify_create_fulfillment_event`, `shopify_delete_fulfillment_event`
+  </Accordion>
+  <Accordion title="顧客">
+    `shopify_list_customers`, `shopify_get_customer`, `shopify_search_customers`, `shopify_create_customer`, `shopify_update_customer`, `shopify_delete_customer`
+  </Accordion>
+  <Accordion title="割引 & ギフトカード">
+    `shopify_list_price_rules`, `shopify_get_price_rule`, `shopify_list_gift_cards`, `shopify_get_gift_card`, `shopify_create_gift_card`, `shopify_update_gift_card`, `shopify_disable_gift_card`, `shopify_count_gift_cards`, `shopify_search_gift_cards`
+  </Accordion>
+  <Accordion title="コンテンツ(記事・ブログ・ページ)">
+    `shopify_list_articles`, `shopify_get_article`, `shopify_create_article`, `shopify_update_article`, `shopify_delete_article`, `shopify_count_articles`, `shopify_list_article_authors`, `shopify_list_article_tags`, `shopify_list_blogs`, `shopify_get_blog`, `shopify_create_blog`, `shopify_update_blog`, `shopify_delete_blog`, `shopify_count_blogs`, `shopify_list_pages`, `shopify_get_page`, `shopify_create_page`, `shopify_update_page`, `shopify_delete_page`, `shopify_count_pages`
+  </Accordion>
+  <Accordion title="マーケティング">
+    `shopify_list_marketing_events`, `shopify_get_marketing_event`, `shopify_create_marketing_event`, `shopify_update_marketing_event`, `shopify_delete_marketing_event`, `shopify_count_marketing_events`, `shopify_create_marketing_engagements`, `shopify_list_events`, `shopify_get_event`, `shopify_count_events`, `shopify_list_reports`, `shopify_get_report`
+  </Accordion>
+  <Accordion title="ロケーション & 在庫">
+    `shopify_list_locations`, `shopify_get_location`, `shopify_count_locations`, `shopify_list_inventory_levels_for_location`, `shopify_list_inventory_items`, `shopify_get_inventory_item`, `shopify_update_inventory_item`, `shopify_list_inventory_levels`, `shopify_adjust_inventory_level`, `shopify_set_inventory_level`, `shopify_connect_inventory`, `shopify_delete_inventory_level`
+  </Accordion>
+  <Accordion title="リダイレクト & Webhook">
+    `shopify_list_redirects`, `shopify_get_redirect`, `shopify_create_redirect`, `shopify_update_redirect`, `shopify_delete_redirect`, `shopify_count_redirects`, `shopify_list_policies`, `shopify_list_webhooks`, `shopify_get_webhook`, `shopify_create_webhook`, `shopify_update_webhook`, `shopify_delete_webhook`, `shopify_count_webhooks`
+  </Accordion>
+  <Accordion title="ショップ">
+    `shopify_get_shop_info`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="注文フルフィルメントの自動化" icon="package">
+    未処理の注文を取得し、フルフィルメントを作成して、追跡番号を一括更新する
+  </Card>
+  <Card title="在庫の同期" icon="warehouse">
+    ロケーションごとの在庫レベルを確認し、実棚卸し後に在庫を調整する
+  </Card>
+  <Card title="カスタマーサポート向け検索" icon="user-search">
+    メールアドレスで顧客を検索し、注文と返金の履歴をすべて取得する
+  </Card>
+  <Card title="ストアフロントコンテンツの更新" icon="file-pen">
+    Shopify管理画面を使わずに、ブログ記事やランディングページを作成・公開する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="shopify_create_productやshopify_update_productが422エラーを返す">
+    Shopifyは必須項目(タイトル、バリエーションの価格)を厳密に検証します——`shopify_create_product`の`shanone_get_tool_schema`を確認し、価格が設定されたバリエーションを少なくとも1つ含めてください。
+  </Accordion>
+  <Accordion title="一括処理でレート制限(429)にかかる">
+    ShopifyのAdmin APIはストアごとにリーキーバケット方式のレート制限を課しています。`shopify_update_inventory_item`や`shopify_create_fulfillment`のような呼び出しを大量に処理する場合は、一度にまとめて実行せず間隔を空けてください。
+  </Accordion>
+  <Accordion title="shopify_cancel_orderやshopify_delete_orderがフルフィルメント済みの注文で失敗する">
+    フルフィルメントや支払いが完了した注文は直接キャンセル/削除できないことが多いです——まず`shopify_create_refund`と`shopify_cancel_fulfillment`を使って注文を巻き戻してください。
+  </Accordion>
+  <Accordion title="在庫調整が反映されないように見える">
+    `shopify_adjust_inventory_level`は現在の在庫数に対する相対的な変更を行い、`shopify_set_inventory_level`は絶対値を設定します——どちらを使うか間違えることが、想定外の在庫数になる最も多い原因です。
+  </Accordion>
+</AccordionGroup>

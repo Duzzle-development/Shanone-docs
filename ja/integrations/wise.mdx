@@ -1,0 +1,94 @@
+---
+title: "Wise"
+description: "Wise(旧TransferWise)で海外送金、多通貨残高管理、為替レートの確認"
+icon: "banknote"
+---
+
+# Wise
+
+Shanoneのwise連携は、国際的な資金移動 — 見積もり、送金、受取人、多通貨残高、そしてこれらをプログラム的に運用するためのプロフィール/Webhookツールまで含む57個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="WiseのPersonal Access Tokenを作成する">
+    [wise.com/settings/api-tokens](https://wise.com/settings/api-tokens)の**設定 → API tokens → Personal access tokens**からトークンを発行します。
+  </Step>
+  <Step title="APIキーで接続する">
+    Shanoneダッシュボードの**連携 → Wise**でトークンを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`wise_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneはwise向けに**57個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="送金">
+    `wise_validate_transfer_requirements`, `wise_create_transfer`, `wise_get_transfer`, `wise_list_transfers`, `wise_cancel_transfer`, `wise_fund_transfer`, `wise_get_transfer_receipt`, `wise_get_delivery_estimate`, `wise_list_transfer_payments`, `wise_get_transfer_payout_info`, `wise_get_transfer_noc`, `wise_get_transfer_us_combined_receipt`
+  </Accordion>
+  <Accordion title="残高">
+    `wise_list_balances`, `wise_get_balance`, `wise_create_balance`, `wise_convert_balance`, `wise_get_total_funds`, `wise_delete_balance`, `wise_get_balance_capacity`, `wise_list_hold_limit_breaches`, `wise_close_hold_limit_breach`, `wise_add_excess_money_account`
+  </Accordion>
+  <Accordion title="受取人">
+    `wise_create_recipient`, `wise_list_recipients`, `wise_get_recipient`, `wise_deactivate_recipient`, `wise_get_recipient_requirements`, `wise_check_recipient_quote_compatibility`
+  </Accordion>
+  <Accordion title="見積もり">
+    `wise_create_quote`, `wise_get_quote`, `wise_update_quote`
+  </Accordion>
+  <Accordion title="プロフィール">
+    `wise_list_profiles`, `wise_get_profile`, `wise_create_personal_profile`, `wise_update_personal_profile`, `wise_update_business_profile`
+  </Accordion>
+  <Accordion title="Webhook">
+    `wise_create_webhook_subscription`, `wise_list_webhook_subscriptions`, `wise_get_webhook_subscription`, `wise_delete_webhook_subscription`, `wise_verify_webhook_signature`
+  </Accordion>
+  <Accordion title="多通貨アカウント">
+    `wise_get_multi_currency_account`, `wise_check_mca_eligibility`, `wise_get_available_currencies`
+  </Accordion>
+  <Accordion title="銀行口座情報">
+    `wise_get_bank_account_details`, `wise_create_bank_account_details_order`, `wise_list_bank_account_details_orders`
+  </Accordion>
+  <Accordion title="住所">
+    `wise_get_address_requirements`, `wise_create_address`, `wise_list_addresses`, `wise_get_address`
+  </Accordion>
+  <Accordion title="レート & 比較">
+    `wise_get_exchange_rates`, `wise_list_currencies`, `wise_compare_providers`
+  </Accordion>
+  <Accordion title="アクティビティ、明細書 & ユーザー">
+    `wise_list_activities`, `wise_get_balance_statement`, `wise_get_current_user`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="海外への給与・取引先支払い" icon="send">
+    海外の受取人への送金を見積もり、作成し、資金を投入する
+  </Card>
+  <Card title="多通貨の資金管理" icon="wallet">
+    通貨ごとの残高を確認し、レートが有利なタイミングで資金を換算する
+  </Card>
+  <Card title="レート監視" icon="trending-up">
+    リアルタイムの為替レートを取得し、換算や送金のタイミングを判断する
+  </Card>
+  <Card title="送金ステータスのWebhook" icon="webhook">
+    Webhookサブスクリプションを登録し、送金完了時にエージェントへ通知する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="有効な見積もりの後もwise_create_transferが失敗する">
+    送金には資金投入済みの残高か有効な決済手段が必要です — 作成直後に`wise_fund_transfer`を呼ぶか(または`wise_list_balances`で十分な残高を確認)してください。資金未投入の送金は未完了状態のままになります。
+  </Accordion>
+  <Accordion title="wise_create_recipientがペイロードを拒否する">
+    受取人の必須項目は通貨・国によって異なります。送信前に対象通貨で`wise_get_recipient_requirements`を呼び出し、必須フィールド(IBAN、ソートコード、ルーティング番号など)を確認してください。
+  </Accordion>
+  <Accordion title="wise_check_recipient_quote_compatibilityがincompatibleを返す">
+    見積もりは特定の送金元/送金先通貨ペアに対して作成されます。受取人の通貨が見積もりの送金先通貨と一致しない場合は、古い見積もりを再利用せずそのペア用に新しい見積もりを作成してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,73 @@
+---
+title: "Mintlify"
+description: "Manage your Mintlify docs site — trigger deploys, run the docs AI agent, search content, and pull analytics"
+icon: /images/mintlify.svg
+---
+
+# Mintlify
+
+Shanone's Mintlify integration gives your agent 16 tools spanning deploys, the docs AI agent/assistant, content search, and site analytics.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get Mintlify API keys">
+    In your Mintlify dashboard, generate an **Admin API key** (deploys, analytics) and, if you use the docs AI assistant, an **Assistant API key** as well.
+  </Step>
+  <Step title="Add the keys in Shanone">
+    Go to **Integrations > Mintlify** in the Shanone dashboard and paste in whichever key(s) you have — most tools only need the Admin key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `mintlify_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **16 tools** for Mintlify, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Deploy">
+    `mintlify_trigger_preview`, `mintlify_trigger_deploy`, `mintlify_get_deploy_status`
+  </Accordion>
+  <Accordion title="AI agent">
+    `mintlify_create_agent_job`, `mintlify_get_agent_job`, `mintlify_send_agent_message` — run background jobs against the Mintlify docs AI agent, e.g. to review or update content
+  </Accordion>
+  <Accordion title="Search & chat">
+    `mintlify_search`, `mintlify_get_page`, `mintlify_chat`
+  </Accordion>
+  <Accordion title="Analytics">
+    `mintlify_get_page_views`, `mintlify_get_visitors`, `mintlify_get_searches`, `mintlify_get_feedback`, `mintlify_get_feedback_by_page`, `mintlify_get_conversations`, `mintlify_get_caller_stats`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Docs deploy automation" icon="rocket">
+    Trigger a preview deploy after content changes, then promote to production
+  </Card>
+  <Card title="Content gap analysis" icon="search">
+    Pull top searches and feedback to find pages that need improvement
+  </Card>
+  <Card title="AI-assisted editing" icon="bot">
+    Kick off an agent job to review a section of docs against style guidelines
+  </Card>
+  <Card title="Usage reporting" icon="bar-chart">
+    Summarize page views and visitor trends for a weekly docs report
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="mintlify_trigger_deploy succeeds but the site looks unchanged">
+    Poll `mintlify_get_deploy_status` — deploys are asynchronous and can take a minute or more; the tool call returning doesn't mean the build finished.
+  </Accordion>
+  <Accordion title="mintlify_get_feedback_by_page returns nothing for a page I know has feedback">
+    Confirm the page path matches exactly what's registered in `docs.json`, including leading slash and no trailing `.mdx` extension.
+  </Accordion>
+  <Accordion title="Agent job tools fail with an auth error">
+    Agent job tools (`mintlify_create_agent_job`, etc.) require the Assistant API key specifically — the Admin key alone won't authorize them.
+  </Accordion>
+</AccordionGroup>

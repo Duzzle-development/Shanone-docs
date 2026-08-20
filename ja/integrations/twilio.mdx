@@ -1,0 +1,97 @@
+---
+title: "Twilio"
+description: "SMS・WhatsAppメッセージの送信、電話番号・カンファレンス・録音の管理 — エージェントのためのプログラマブルな通信"
+icon: /images/twilio.svg
+---
+
+# Twilio
+
+ShanoneのTwilio連携は、SMS/WhatsAppメッセージングに加え、電話番号のプロビジョニング、カンファレンスコール、そして他の連携ではあまり扱われない使用量・レポート系ツールまで含む45個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Twilioの認証情報を取得する">
+    [Twilio Console](https://www.twilio.com/docs/iam/api)のダッシュボードから**Account SID**と**Auth Token**を取得します。
+  </Step>
+  <Step title="APIキーで接続する">
+    Shanoneダッシュボードの**連携 → Twilio**でAccount SIDとAuth Tokenの両方を入力します — Twilioはどちらか片方だけでは認証できないため、両方の設定が必須です。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`twilio_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはTwilio向けに**45個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="電話番号">
+    `twilio_search_available_phone_numbers`, `twilio_purchase_phone_number`, `twilio_get_phone_number`, `twilio_update_phone_number`, `twilio_release_phone_number`
+  </Accordion>
+  <Accordion title="メッセージングサービス">
+    `twilio_list_messaging_services`, `twilio_get_messaging_service`, `twilio_create_messaging_service`, `twilio_delete_messaging_service`
+  </Accordion>
+  <Accordion title="WhatsApp">
+    `twilio_send_whatsapp_message`, `twilio_send_whatsapp_media`, `twilio_send_whatsapp_template`, `twilio_list_whatsapp_messages`
+  </Accordion>
+  <Accordion title="コンテンツテンプレート">
+    `twilio_list_content_templates`, `twilio_get_content_template`, `twilio_send_message_with_template`
+  </Accordion>
+  <Accordion title="メッセージメディア">
+    `twilio_list_message_media`, `twilio_get_message_media`, `twilio_delete_message_media`
+  </Accordion>
+  <Accordion title="カンファレンス">
+    `twilio_list_conferences`, `twilio_get_conference`, `twilio_create_conference_participant`, `twilio_list_conference_participants`, `twilio_get_conference_participant`, `twilio_update_conference_participant`, `twilio_remove_conference_participant`
+  </Accordion>
+  <Accordion title="録音 & 文字起こし">
+    `twilio_get_recording`, `twilio_list_call_recordings`, `twilio_list_conference_recordings`, `twilio_list_transcriptions`, `twilio_get_transcription`, `twilio_list_recording_transcriptions`, `twilio_delete_transcription`
+  </Accordion>
+  <Accordion title="通話フィードバック">
+    `twilio_get_call_feedback`, `twilio_create_call_feedback`
+  </Accordion>
+  <Accordion title="アドレス">
+    `twilio_list_addresses`, `twilio_create_address`, `twilio_delete_address`
+  </Accordion>
+  <Accordion title="APIキー">
+    `twilio_list_api_keys`, `twilio_create_api_key`, `twilio_get_api_key`, `twilio_delete_api_key`
+  </Accordion>
+  <Accordion title="使用量レコード">
+    `twilio_list_usage_records`, `twilio_list_usage_records_daily`, `twilio_list_usage_records_monthly`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="予約リマインダー" icon="calendar-clock">
+    他のツールから取得した予約情報に基づき、SMSやWhatsAppでリマインダーを送信する
+  </Card>
+  <Card title="WhatsAppでのカスタマーサポート" icon="message-circle">
+    承認済みのメッセージテンプレートを使ってWhatsApp上で顧客に返信する
+  </Card>
+  <Card title="電話番号のオンデマンド調達" icon="phone">
+    サポート窓口やキャンペーン用に新しい番号を検索・購入・設定する
+  </Card>
+  <Card title="使用量・コストの監視" icon="bar-chart-3">
+    日次/月次の使用量レコードを取得し、サービス横断で支出を追跡する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="トークンを入力したのに接続に失敗する">
+    TwilioはAccount SIDとAuth Tokenの**両方**の設定が必須です — Shanoneの接続チェックは片方のみの設定を「未接続」として扱うため、**連携**画面で両方のフィールドを確認してください。
+  </Accordion>
+  <Accordion title="twilio_send_whatsapp_templateがテンプレート無効エラーで失敗する">
+    WhatsAppテンプレートメッセージは、Twilioのコンテンツテンプレートカタログで承認済みのテンプレートを参照する必要があります。まず`twilio_list_content_templates`で有効な承認済みテンプレートSIDを確認してください。
+  </Accordion>
+  <Accordion title="twilio_purchase_phone_numberで該当する番号が見つからない">
+    先に`twilio_search_available_phone_numbers`を国番号・エリアコード/パターンを指定して実行してください — 番号の在庫は地域や番号種別(ローカル/フリーダイヤル/モバイル)によって大きく異なります。
+  </Accordion>
+  <Accordion title="録音・文字起こし系ツールの結果が空になる">
+    録音・文字起こしは特定の通話またはカンファレンスSIDに紐づいています。グローバルな一覧を期待するのではなく、正しい通話/カンファレンスSIDを指定して`twilio_list_call_recordings`や`twilio_list_conference_recordings`を使用してください。
+  </Accordion>
+</AccordionGroup>

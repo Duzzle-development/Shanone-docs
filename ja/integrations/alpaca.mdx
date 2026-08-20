@@ -1,0 +1,86 @@
+---
+title: "Alpaca"
+description: "Alpacaのブローカレッジ API経由で株式・暗号資産の取引、ポジション・ウォッチリストの管理、マーケットデータの取得"
+icon: "trending-up"
+---
+
+# Alpaca
+
+ShanoneのAlpaca連携では、取引に関する**44個のツール**をエージェントに提供します。アカウント情報、注文、ポジション、ウォッチリスト、そして株式・暗号資産の両方のマーケットデータをカバーしています。
+
+<Warning>
+ライブ取引用のAPIキーを接続すると、Alpacaの注文・ポジション系ツールは実際の取引を実行し、実際のお金を動かします。引数を必ず確認し、エージェントのワークフローを構築・検証している間はペーパートレード用のキーを接続することを検討してください。
+</Warning>
+
+## はじめに
+
+<Steps>
+  <Step title="APIキーペアを発行する">
+    Alpacaダッシュボードの**API Keys**で、キーIDとシークレットキーを発行します — ペーパートレードの場合は、ライブキーではなくペーパートレード用のキーを使用してください。
+  </Step>
+  <Step title="Shanoneで接続する">
+    エージェントにAlpacaで何か作業をしてもらう(例:「保有中のポジションを表示して」)か、Shanoneダッシュボードの**インテグレーション**からキーIDとシークレットキーを事前に登録します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    キーが保存されると、`alpaca_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Alpaca向けに**44個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="アカウント">
+    `alpaca_get_account`, `alpaca_get_clock`, `alpaca_get_calendar`, `alpaca_list_assets`, `alpaca_get_asset`, `alpaca_get_account_configurations`, `alpaca_update_account_configurations`, `alpaca_get_account_activities`
+  </Accordion>
+  <Accordion title="注文">
+    `alpaca_create_order`, `alpaca_list_orders`, `alpaca_get_order`, `alpaca_get_order_by_client_id`, `alpaca_replace_order`, `alpaca_cancel_order`, `alpaca_cancel_all_orders`
+  </Accordion>
+  <Accordion title="ポジション">
+    `alpaca_list_positions`, `alpaca_get_position`, `alpaca_close_position`, `alpaca_close_all_positions`, `alpaca_get_portfolio_history`
+  </Accordion>
+  <Accordion title="ウォッチリスト">
+    `alpaca_list_watchlists`, `alpaca_get_watchlist`, `alpaca_create_watchlist`, `alpaca_update_watchlist`, `alpaca_add_watchlist_asset`, `alpaca_remove_watchlist_asset`, `alpaca_delete_watchlist`
+  </Accordion>
+  <Accordion title="株式マーケットデータ">
+    `alpaca_get_stock_bars`, `alpaca_get_stock_latest_bars`, `alpaca_get_stock_quotes`, `alpaca_get_stock_latest_quotes`, `alpaca_get_stock_trades`, `alpaca_get_stock_latest_trades`, `alpaca_get_stock_snapshots`
+  </Accordion>
+  <Accordion title="暗号資産マーケットデータ">
+    `alpaca_get_crypto_bars`, `alpaca_get_crypto_latest_bars`, `alpaca_get_crypto_quotes`, `alpaca_get_crypto_latest_quotes`, `alpaca_get_crypto_trades`, `alpaca_get_crypto_latest_trades`, `alpaca_get_crypto_snapshots`
+  </Accordion>
+  <Accordion title="マーケットムーバー & ニュース">
+    `alpaca_get_most_active_stocks`, `alpaca_get_market_movers`, `alpaca_get_news`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="ポートフォリオの確認" icon="pie-chart">
+    保有ポジション・未実現損益・ポートフォリオの履歴をその場でまとめる
+  </Card>
+  <Card title="ウォッチリスト連動のアラート" icon="eye">
+    ウォッチリストを追跡し、対象銘柄の目立った値動きやニュースを可視化する
+  </Card>
+  <Card title="注文ライフサイクルの管理" icon="list-checks">
+    注文を発行・差し替え・取消し、`alpaca_get_order`で約定状況を確認する
+  </Card>
+  <Card title="マーケットスクリーニング" icon="search">
+    さらに調査すべき銘柄を決める前に、その日の主要な活発銘柄・上位ムーバーを取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="alpaca_create_orderが購買力不足エラーで失敗する">
+    注文サイズを調整する前に、`alpaca_get_account`で現在の購買力を確認し、アカウントに制限(パターンデイトレードルールなど)がかかっていないか確認してください。
+  </Accordion>
+  <Accordion title="市場時間外にマーケットデータツールが何も返さない">
+    `alpaca_get_clock`と`alpaca_get_calendar`で市場が開いているか確認してください — 一部のsnapshot/latest系エンドポイントは直近セッションのデータしか反映しません。
+  </Accordion>
+  <Accordion title="ライブキーで発注した取引がペーパートレード用ダッシュボードに表示されない(またはその逆)">
+    ペーパートレードとライブ取引はAPIキーペアとアカウント状態がそれぞれ別です。Shanoneダッシュボードの**インテグレーション**でどちらのキーペアが接続されているか確認してください。
+  </Accordion>
+</AccordionGroup>

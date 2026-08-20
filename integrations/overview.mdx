@@ -1,7 +1,9 @@
 ---
 title: "Integrations Overview"
-description: "Browse Shanone's integration catalog — 140+ services, 269+ implemented and live today, exposed through a handful of MCP meta-tools instead of one dedicated tool per action."
+description: "Browse Shanone's integration catalog — 140+ services, 10,000+ tools, exposed through a handful of MCP meta-tools instead of one dedicated tool per action."
 ---
+
+Shanone connects your agent to **140+ services and 10,000+ tools** — from everyday SaaS (Slack, Notion, HubSpot) to infrastructure (Cloudflare, Snowflake, Vercel), AI models (OpenAI, Together AI, ElevenLabs), and crypto (Ethereum, Hyperliquid, OpenSea). Every page below documents a real, live integration with its full tool list, common use cases, and troubleshooting tips.
 
 ## How the catalog works
 
@@ -19,38 +21,516 @@ Shanone doesn't register a separate MCP tool for every action of every service �
   </Step>
 </Steps>
 
-See [MCP Overview](/mcp/overview) for the full mechanics. The pages below go deeper on a curated set of high-usage integrations — but this is a small slice of what's actually available.
+See [MCP Overview](/mcp/overview) for the full mechanics.
 
-## Scale
+## Browse by category
 
-Shanone is marketed at **140+ integrations and 10,000+ tools** across its full ecosystem. **269+ integrations are implemented and live** in the backend today, covering the services documented below plus many more (GitLab, Bitbucket, Jira, Confluence, HubSpot, Airtable, Discord, Telegram, Microsoft Teams, Google Calendar/Docs/Sheets/Drive, Stripe, PayPal, Shopify, Datadog, Sentry, Cloudflare, Vercel, OpenAI, Anthropic, and more). If a service you need isn't listed here, ask your agent to run `shanone_search_tools` or `shanone_list_service_tools` with that service's name — it's very likely already registered.
-
-## Documented integrations
+### Productivity & Docs
 
 <CardGroup cols={3}>
-  <Card title="Slack" icon="slack" href="/integrations/slack">
-    139 tools across messaging, channels, canvases, lists, admin, and more
+  <Card title="Airtable" icon="/images/airtable.svg" href="/integrations/airtable">
+    Read, write, and manage Airtable bases — records, tables, views, fields, comments, and webhooks (55 tools)
   </Card>
-  <Card title="GitHub" icon="github" href="/integrations/github">
-    176 tools spanning issues, PRs, Actions, security scanning, and org administration
+  <Card title="Box" icon="/images/box.svg" href="/integrations/box">
+    Manage files and folders, collaborations, metadata, e-signatures, and AI-powered content Q&A in Box (100 tools)
   </Card>
-  <Card title="Notion" icon="book" href="/integrations/notion">
-    45 tools for pages, databases, blocks, comments, and Markdown-native editing
+  <Card title="Bubble" icon="/images/bubble.svg" href="/integrations/bubble">
+    Read and write Bubble.io app data, and trigger backend workflows via the Data and Workflow APIs (7 tools)
   </Card>
-  <Card title="Stripe" icon="credit-card" href="/integrations/stripe">
-    328 tools covering payments, subscriptions, billing, Treasury, and Issuing
+  <Card title="Confluence" icon="/images/confluence.svg" href="/integrations/confluence">
+    Read, write, and search Confluence — pages, blog posts, comments, labels, and attachments (46 tools)
   </Card>
-  <Card title="Linear" icon="list-check" href="/integrations/linear">
-    46 tools for issues, projects, cycles, and initiatives
+  <Card title="Dropbox" icon="/images/dropbox.svg" href="/integrations/dropbox">
+    Store, share, and manage files and folders — uploads, sharing, team administration, and Paper docs (166 tools)
   </Card>
-  <Card title="Gmail" icon="mail" href="/integrations/gmail">
-    52 tools for messages, threads, drafts, labels, and mailbox settings
+  <Card title="Figma" icon="/images/figma.svg" href="/integrations/figma">
+    Read design files, comments, components, styles, and variables — plus webhook management (39 tools)
   </Card>
-  <Card title="HubSpot" icon="megaphone" href="/integrations/hubspot">
-    214 tools for CRM objects, marketing, deals, and commerce
+  <Card title="Google Docs" icon="/images/google-docs.svg" href="/integrations/google-docs">
+    Create and edit documents — text, tables, formatting, comments, and Markdown-native round-trips (58 tools)
   </Card>
-  <Card title="Ethereum" icon="link" href="/integrations/ethereum">
-    76 tools for accounts, blocks, transactions, gas, ENS, and contract calls
+  <Card title="Google Drive" icon="/images/google-drive.svg" href="/integrations/google-drive">
+    Manage files, folders, shared drives, permissions, comments, and revisions in Google Drive (50 tools)
+  </Card>
+  <Card title="Google Forms" icon="/images/google-forms.svg" href="/integrations/google-forms">
+    Create forms, manage questions, read responses, and configure publish settings and watches (16 tools)
+  </Card>
+  <Card title="Google Sheets" icon="/images/google-sheets.svg" href="/integrations/google-sheets">
+    The full Sheets API surface — spreadsheets, cells, formatting, charts, filters, tables, and more (88 tools)
+  </Card>
+  <Card title="Mintlify" icon="/images/mintlify.svg" href="/integrations/mintlify">
+    Manage your Mintlify docs site — trigger deploys, run the docs AI agent, search content, and pull analytics (16 tools)
+  </Card>
+  <Card title="Miro" icon="/images/miro.svg" href="/integrations/miro">
+    Create and edit Miro boards — sticky notes, shapes, cards, connectors, frames, and board membership (47 tools)
+  </Card>
+  <Card title="Notion" icon="/images/notion.svg" href="/integrations/notion">
+    Read, write, and search Notion pages and databases — with native Markdown support (45 tools)
+  </Card>
+  <Card title="OneDrive" icon="/images/onedrive.svg" href="/integrations/onedrive">
+    Manage OneDrive and SharePoint files — drives, folders, sharing, versions, sync, and Microsoft 365 governance (87 tools)
+  </Card>
+  <Card title="SharePoint" icon="/images/sharepoint.svg" href="/integrations/sharepoint">
+    Browse, upload, and share files and sites across your SharePoint document libraries (13 tools)
+  </Card>
+  <Card title="Typeform" icon="/images/typeform.svg" href="/integrations/typeform">
+    Manage forms, responses, themes, and workspaces — plus images and webhooks (31 tools)
+  </Card>
+  <Card title="WordPress" icon="newspaper" href="/integrations/wordpress">
+    Manage posts, pages, media, comments, and users on your self-hosted WordPress site via the REST API (42 tools)
+  </Card>
+</CardGroup>
+
+### Communication & Scheduling
+
+<CardGroup cols={3}>
+  <Card title="Calendly" icon="/images/calendly.svg" href="/integrations/calendly">
+    Manage scheduling — event types, scheduled events, invitees, availability, teams, and routing forms (51 tools)
+  </Card>
+  <Card title="Chatwork" icon="/images/chatwork.svg" href="/integrations/chatwork">
+    Team messaging for Japanese businesses — rooms, messages, tasks, files, contacts, and invite links (32 tools)
+  </Card>
+  <Card title="Discord" icon="/images/discord.svg" href="/integrations/discord">
+    Manage servers end-to-end — messages, channels, roles, moderation, voice, events, and webhooks (182 tools)
+  </Card>
+  <Card title="Fireflies" icon="/images/fireflies.svg" href="/integrations/fireflies">
+    Meeting transcription and analysis — transcripts, bites, live meetings, and channel management (21 tools)
+  </Card>
+  <Card title="Gmail" icon="/images/gmail.svg" href="/integrations/gmail">
+    Search, send, and organize email — messages, threads, drafts, labels, filters, and mailbox settings (52 tools)
+  </Card>
+  <Card title="Google Calendar" icon="/images/google-calendar.svg" href="/integrations/google-calendar">
+    Manage calendars and events — scheduling, free/busy lookup, sharing, and smart scheduling helpers (49 tools)
+  </Card>
+  <Card title="Google Chat" icon="/images/google-chat.svg" href="/integrations/google-chat">
+    Manage spaces, messages, members, and reactions — plus availability status and custom emoji (49 tools)
+  </Card>
+  <Card title="Google Meet" icon="/images/google-meet.svg" href="/integrations/google-meet">
+    Create meeting spaces and read conference records, participants, recordings, transcripts, and smart notes (14 tools)
+  </Card>
+  <Card title="LINE" icon="/images/line.svg" href="/integrations/line">
+    Messaging, rich menus, audiences, insights, and account management for the LINE Messaging API (101 tools)
+  </Card>
+  <Card title="LINE WORKS" icon="/images/lineworks.svg" href="/integrations/lineworks">
+    Manage LINE WORKS — mail, calendar, contacts, drive, boards, tasks, bots, and full directory/admin control (350 tools)
+  </Card>
+  <Card title="Luma" icon="/images/luma.svg" href="/integrations/luma">
+    Manage Luma events — guests, hosts, tickets, coupons, membership tiers, and webhooks (36 tools)
+  </Card>
+  <Card title="Microsoft Teams" icon="/images/teams.svg" href="/integrations/teams">
+    Manage teams, channels, chats, meetings, and files — messaging, reactions, and calendar integration (97 tools)
+  </Card>
+  <Card title="Outlook" icon="/images/outlook.svg" href="/integrations/outlook">
+    Manage mail, calendars, contacts, and tasks — Microsoft 365's full messaging and scheduling surface (134 tools)
+  </Card>
+  <Card title="Resend" icon="/images/resend.svg" href="/integrations/resend">
+    Send transactional email and manage audiences, domains, templates, and webhooks (69 tools)
+  </Card>
+  <Card title="Slack" icon="/images/slack.svg" href="/integrations/slack">
+    Connect Shanone to your Slack workspace for messaging, channel management, and admin operations (125 tools)
+  </Card>
+  <Card title="Telegram" icon="/images/telegram.svg" href="/integrations/telegram">
+    Run a Telegram bot — send messages, manage chats, moderate members, and configure webhooks (38 tools)
+  </Card>
+  <Card title="Twilio" icon="/images/twilio.svg" href="/integrations/twilio">
+    Send SMS and WhatsApp messages, manage phone numbers, conferences, and recordings — programmable communications for your agent (45 tools)
+  </Card>
+  <Card title="Webex" icon="/images/webex.svg" href="/integrations/webex">
+    Schedule meetings and manage rooms, teams, and messages on Cisco Webex (27 tools)
+  </Card>
+  <Card title="Zoom" icon="/images/zoom.svg" href="/integrations/zoom">
+    Schedule meetings and webinars, pull recordings/transcripts, and manage registrants on Zoom (67 tools)
+  </Card>
+</CardGroup>
+
+### Project & Issue Tracking
+
+<CardGroup cols={3}>
+  <Card title="Asana" icon="/images/asana.svg" href="/integrations/asana">
+    Manage tasks, projects, portfolios, and goals — with full support for custom fields, dependencies, and time tracking (115 tools)
+  </Card>
+  <Card title="Backlog" icon="/images/backlog.svg" href="/integrations/backlog">
+    Manage issues, projects, wikis, pull requests, and Git repositories in Backlog — Nulab's project management tool (96 tools)
+  </Card>
+  <Card title="ClickUp" icon="/images/clickup.svg" href="/integrations/clickup">
+    Full project management — tasks, lists, docs, goals, time tracking, chat, and workspace administration (166 tools)
+  </Card>
+  <Card title="Google Tasks" icon="list-checks" href="/integrations/google-tasks">
+    Manage task lists and tasks — create, complete, reopen, move, and clear completed items (14 tools)
+  </Card>
+  <Card title="incident.io" icon="siren" href="/integrations/incident-io">
+    Full incident lifecycle management — incidents, alerts, on-call schedules, workflows, and status pages (178 tools)
+  </Card>
+  <Card title="Jira" icon="/images/jira.svg" href="/integrations/jira">
+    Issues, projects, boards, sprints, worklogs, and more — full Jira Cloud project management (47 tools)
+  </Card>
+  <Card title="Linear" icon="/images/linear.svg" href="/integrations/linear">
+    Manage issues, projects, cycles, and initiatives in Linear from your agent (45 tools)
+  </Card>
+  <Card title="Monday.com" icon="/images/monday.svg" href="/integrations/monday">
+    Manage monday.com boards, items, docs, and teams — items, columns, groups, updates, and workspace administration (68 tools)
+  </Card>
+  <Card title="Todoist" icon="/images/todoist.svg" href="/integrations/todoist">
+    Manage tasks, projects, and labels — plus comments, reminders, and activity history (48 tools)
+  </Card>
+  <Card title="Trello" icon="/images/trello.svg" href="/integrations/trello">
+    Manage boards, lists, and cards — checklists, labels, custom fields, and webhooks (113 tools)
+  </Card>
+</CardGroup>
+
+### Engineering & DevOps
+
+<CardGroup cols={3}>
+  <Card title="Bitbucket" icon="/images/bitbucket.svg" href="/integrations/bitbucket">
+    Manage repositories, pull requests, and issues, and search code across your Bitbucket workspaces (15 tools)
+  </Card>
+  <Card title="CircleCI" icon="workflow" href="/integrations/circleci">
+    Manage CI/CD pipelines — pipelines, workflows, jobs, contexts, policies, and insights (111 tools)
+  </Card>
+  <Card title="Cloudflare" icon="/images/cloudflare.svg" href="/integrations/cloudflare">
+    Manage your edge platform — DNS, Workers, Pages, R2, D1, Zero Trust Access, AI Gateway, and security (247 tools)
+  </Card>
+  <Card title="Cursor" icon="/images/cursor.svg" href="/integrations/cursor">
+    Launch and monitor Cursor Cloud Agents — agent lifecycle, background runs, and artifacts (17 tools)
+  </Card>
+  <Card title="Datadog" icon="/images/datadog.svg" href="/integrations/datadog">
+    Monitor infrastructure and applications — metrics, monitors, dashboards, logs, traces, and SLOs (39 tools)
+  </Card>
+  <Card title="GitHub" icon="/images/github.svg" href="/integrations/github">
+    Manage issues, pull requests, Actions workflows, security alerts, and org administration from your agent (176 tools)
+  </Card>
+  <Card title="GitHub Copilot" icon="/images/copilot.svg" href="/integrations/copilot">
+    Manage GitHub Copilot for your organization — seats, billing, metrics, cloud agents, and policies (37 tools)
+  </Card>
+  <Card title="GitLab" icon="/images/gitlab.svg" href="/integrations/gitlab">
+    Manage projects, issues, merge requests, pipelines, and repository files (60 tools)
+  </Card>
+  <Card title="LaunchDarkly" icon="flag" href="/integrations/launchdarkly">
+    Feature flags, experiments, AI Configs, segments, and audit logs — full feature management (76 tools)
+  </Card>
+  <Card title="ngrok" icon="/images/ngrok.svg" href="/integrations/ngrok">
+    Manage ngrok's ingress platform — endpoints, tunnels, reserved domains, TLS certs, backends, AI Gateway, and vaults (171 tools)
+  </Card>
+  <Card title="npm" icon="/images/npm.svg" href="/integrations/npm">
+    Manage npm packages, orgs, teams, and tokens — access control, download stats, and security audits (52 tools)
+  </Card>
+  <Card title="Render" icon="server" href="/integrations/render">
+    Manage cloud infrastructure — services, deploys, databases, environments, and workflows (171 tools)
+  </Card>
+  <Card title="Sentry" icon="/images/sentry.svg" href="/integrations/sentry">
+    Track errors, performance, and releases — issues, traces, profiling, session replay, and dashboards (115 tools)
+  </Card>
+  <Card title="Vercel" icon="/images/vercel.svg" href="/integrations/vercel">
+    Manage deployments, domains, environment variables, Edge Config, and team settings across your Vercel projects (107 tools)
+  </Card>
+</CardGroup>
+
+### Cloud, Data & Infrastructure
+
+<CardGroup cols={3}>
+  <Card title="BigQuery" icon="/images/bigquery.svg" href="/integrations/bigquery">
+    Query and manage Google BigQuery datasets, tables, jobs, and IAM — using a service account key (40 tools)
+  </Card>
+  <Card title="Databricks" icon="/images/databricks.svg" href="/integrations/databricks">
+    Run SQL, manage clusters and jobs, and administer Unity Catalog — the full Databricks REST API surface (155 tools)
+  </Card>
+  <Card title="Firebase" icon="/images/firebase.svg" href="/integrations/firebase">
+    Manage Firebase projects — Firestore, Authentication, Cloud Messaging, Remote Config, Storage, and Hosting (45 tools)
+  </Card>
+  <Card title="Google Cloud" icon="cloud" href="/integrations/google-cloud">
+    Manage API enablement, IAM policies, and organization-level settings via Workload Identity Federation (24 tools)
+  </Card>
+  <Card title="Modal" icon="server" href="/integrations/modal">
+    Run code on Modal's serverless cloud — sandboxes, functions, volumes, dicts, queues, and secrets (49 tools)
+  </Card>
+  <Card title="Neon" icon="/images/neon.svg" href="/integrations/neon">
+    Manage Neon serverless Postgres — projects, branches, databases, roles, Neon Auth, Data API, and organizations (162 tools)
+  </Card>
+  <Card title="Pinecone" icon="database" href="/integrations/pinecone">
+    Vector database operations — indexes, namespaces, vectors, assistants, backups, and org-level admin (85 tools)
+  </Card>
+  <Card title="Snowflake" icon="/images/snowflake.svg" href="/integrations/snowflake">
+    Query and manage your Snowflake data warehouse — databases, tables, warehouses, tasks, and Cortex AI (142 tools)
+  </Card>
+  <Card title="Supabase" icon="/images/supabase.svg" href="/integrations/supabase">
+    Manage Supabase projects, databases, storage, auth, and edge functions — plus run SQL and PostgREST queries (120 tools)
+  </Card>
+</CardGroup>
+
+### AI Agents & Automation
+
+<CardGroup cols={3}>
+  <Card title="Apify" icon="/images/apify.svg" href="/integrations/apify">
+    Run Apify Actors for web scraping and automation, and retrieve their run results and datasets (6 tools)
+  </Card>
+  <Card title="Base44" icon="/images/base44.svg" href="/integrations/base44">
+    Generate and edit full-stack apps from natural language, and query the data models Base44 builds for them (5 tools)
+  </Card>
+  <Card title="Browserbase" icon="/images/browserbase.svg" href="/integrations/browserbase">
+    Run cloud browser sessions and agents — page automation, screenshots, functions, and session recordings (63 tools)
+  </Card>
+  <Card title="BrowserUse" icon="/images/browseruse.svg" href="/integrations/browseruse">
+    Run AI browser-automation sessions in the cloud — profiles, browsers, workspaces, and billing (27 tools)
+  </Card>
+  <Card title="Composio" icon="/images/composio.svg" href="/integrations/composio">
+    Unified access to 1000+ external services — toolkits, tool execution, connected accounts, and triggers (60 tools)
+  </Card>
+  <Card title="Context7" icon="/images/context7.svg" href="/integrations/context7">
+    Up-to-date library documentation and code examples for over 50,000 libraries (3 tools)
+  </Card>
+  <Card title="Devin" icon="/images/devin.svg" href="/integrations/devin">
+    Manage Devin AI software engineer sessions — sessions, playbooks, knowledge, schedules, and PR reviews (38 tools)
+  </Card>
+  <Card title="Dify" icon="/images/dify.svg" href="/integrations/dify">
+    Run and manage Dify AI apps — chat/completion, workflows, knowledge bases, documents, and annotations (65 tools)
+  </Card>
+  <Card title="E2B" icon="/images/e2b.svg" href="/integrations/e2b">
+    Run code in isolated cloud sandboxes — commands, filesystem, code interpreter, and snapshots (27 tools)
+  </Card>
+  <Card title="Gumloop" icon="/images/gumloop.svg" href="/integrations/gumloop">
+    Run and monitor Gumloop AI automation flows — list flows, start runs, poll status, and view history (6 tools)
+  </Card>
+  <Card title="Hermes Agent" icon="/images/hermes.svg" href="/integrations/hermes">
+    Manage Hermes Agent sessions, jobs, and runs — send messages, trigger jobs, and monitor execution (23 tools)
+  </Card>
+  <Card title="Jinba" icon="/images/jinba.svg" href="/integrations/jinba">
+    Execute published Jinba Flow workflows — natural-language and visual no-code automations (1 tool)
+  </Card>
+  <Card title="Make" icon="/images/make.svg" href="/integrations/make">
+    Manage Make (Integromat) scenarios — activate, run, and monitor automation workflows and their connections (11 tools)
+  </Card>
+  <Card title="Manus" icon="/images/manus.svg" href="/integrations/manus">
+    Control Manus AI agents and their tasks — send messages, manage projects, files, websites, and webhooks (32 tools)
+  </Card>
+  <Card title="Mem0" icon="plug" href="/integrations/mem0">
+    Give your agent persistent, searchable long-term memory — add, search, and manage memories and the entities they reference (14 tools)
+  </Card>
+  <Card title="n8n" icon="/images/n8n.svg" href="/integrations/n8n">
+    Inspect and control n8n workflows and executions — activate, deactivate, retry, and manage tags/variables (15 tools)
+  </Card>
+  <Card title="OpenHands" icon="/images/openhands.svg" href="/integrations/openhands">
+    Run and manage OpenHands AI coding agent conversations from your own agent (8 tools)
+  </Card>
+  <Card title="Qoder" icon="/images/qoder.svg" href="/integrations/qoder">
+    Run and manage Qoder AI development agent sessions, files, and events (11 tools)
+  </Card>
+  <Card title="V0" icon="/images/v0.svg" href="/integrations/v0">
+    Generate and iterate on UI code with Vercel's v0 — chats, projects, deployments, and MCP server management (42 tools)
+  </Card>
+  <Card title="Zapier" icon="/images/zapier.svg" href="/integrations/zapier">
+    Run Zapier actions and inspect Zaps, connected apps, and templates from your agent (9 tools)
+  </Card>
+</CardGroup>
+
+### AI Models & Media Generation
+
+<CardGroup cols={3}>
+  <Card title="AssemblyAI" icon="/images/assemblyai.svg" href="/integrations/assemblyai">
+    Transcribe audio, understand speech (speakers, translation, formatting), and query transcripts with an LLM (17 tools)
+  </Card>
+  <Card title="Baseten" icon="cpu" href="/integrations/baseten">
+    Deploy and run ML models — inference, training, chains, gateway routing, and workspace administration (129 tools)
+  </Card>
+  <Card title="Deepgram" icon="/images/deepgram.svg" href="/integrations/deepgram">
+    Speech-to-text, text-to-speech, and audio intelligence — transcription, TTS, and text analysis (12 tools)
+  </Card>
+  <Card title="ElevenLabs" icon="/images/elevenlabs.svg" href="/integrations/elevenlabs">
+    AI voice generation — text-to-speech, voice cloning, dubbing, music, and transcription (83 tools)
+  </Card>
+  <Card title="Fireworks AI" icon="/images/fireworks.svg" href="/integrations/fireworks">
+    Fast inference, fine-tuning, and deployment management for open models — chat, embeddings, LoRA, and evaluations (96 tools)
+  </Card>
+  <Card title="Google Gemini" icon="/images/gemini.svg" href="/integrations/gemini">
+    Deep research and image generation via the Gemini API (6 tools)
+  </Card>
+  <Card title="HeyGen" icon="/images/heygen.svg" href="/integrations/heygen">
+    Generate AI avatar videos, clone voices, translate videos, and manage templates, brand kits, and webhooks (69 tools)
+  </Card>
+  <Card title="Hugging Face" icon="/images/huggingface.svg" href="/integrations/huggingface">
+    Models, datasets, spaces, inference, collections, discussions, papers, and repository management (87 tools)
+  </Card>
+  <Card title="Kling AI" icon="/images/kling.svg" href="/integrations/kling">
+    Generate and extend AI video, with lip-sync — text-to-video, image-to-video, and video effects (6 tools)
+  </Card>
+  <Card title="OpenAI" icon="/images/openai.svg" href="/integrations/openai">
+    Generate and edit images, and run OpenAI's Deep Research agent from your agent (4 tools)
+  </Card>
+  <Card title="Replicate" icon="cpu" href="/integrations/replicate">
+    Run and manage AI models — predictions, trainings, deployments, and model versions (31 tools)
+  </Card>
+  <Card title="Runway" icon="/images/runway.svg" href="/integrations/runway">
+    Generate video, image, audio, and avatars with Runway's generative AI models (43 tools)
+  </Card>
+  <Card title="Stability AI" icon="/images/stability.svg" href="/integrations/stability">
+    Generate, edit, and upscale images and audio with Stable Diffusion and Stable Audio (28 tools)
+  </Card>
+  <Card title="Together AI" icon="cpu" href="/integrations/together">
+    Run inference, fine-tuning, and dedicated deployments — chat, embeddings, GPU clusters, and DMI (127 tools)
+  </Card>
+  <Card title="Wan (Alibaba)" icon="/images/wan.svg" href="/integrations/wan">
+    Generate video from text or images using Alibaba's Wan model via DashScope (4 tools)
+  </Card>
+</CardGroup>
+
+### Web Search & Research
+
+<CardGroup cols={3}>
+  <Card title="Brave" icon="/images/brave.svg" href="/integrations/brave">
+    Privacy-focused web, news, image, and video search with autocomplete suggestions (6 tools)
+  </Card>
+  <Card title="Exa" icon="/images/exa.svg" href="/integrations/exa">
+    Neural web search, similarity search, content retrieval, and long-running research agents (12 tools)
+  </Card>
+  <Card title="Firecrawl" icon="/images/firecrawl.svg" href="/integrations/firecrawl">
+    Scrape, crawl, search, and extract structured data from the web — plus sandboxed browser automation (22 tools)
+  </Card>
+  <Card title="Hacker News" icon="/images/hackernews.svg" href="/integrations/hackernews">
+    Browse top, new, best, Ask HN, Show HN, and job stories, plus individual stories with comments (7 tools)
+  </Card>
+  <Card title="Jina AI" icon="/images/jina.svg" href="/integrations/jina">
+    LLM-friendly web search, URL reading, deep research, and document reranking (4 tools)
+  </Card>
+  <Card title="Linkup" icon="/images/linkup.svg" href="/integrations/linkup">
+    AI-optimized web search, page fetching, and deep research — with support for long-running async research tasks (4 tools)
+  </Card>
+  <Card title="OpenAlex" icon="/images/openalex.svg" href="/integrations/openalex">
+    Search academic papers, authors, and citations across OpenAlex's open scholarly database (2 tools)
+  </Card>
+  <Card title="Parallel" icon="/images/parallel.svg" href="/integrations/parallel">
+    AI-powered web search, structured extraction, and long-running research tasks (7 tools)
+  </Card>
+  <Card title="Perplexity" icon="/images/perplexity.svg" href="/integrations/perplexity">
+    AI-powered web search with citations, powered by Perplexity's Sonar models (1 tool)
+  </Card>
+  <Card title="Perplexity Operator" icon="/images/perplexity-operator.svg" href="/integrations/perplexity-operator">
+    Advanced Perplexity Sonar access — reasoning, deep research, and multi-turn chat with citations (4 tools)
+  </Card>
+  <Card title="Stack Exchange" icon="message-circle-question" href="/integrations/stackexchange">
+    Search and read Q&A across Stack Overflow and the Stack Exchange network, plus post and vote (82 tools)
+  </Card>
+  <Card title="Tavily" icon="/images/tavily.svg" href="/integrations/tavily">
+    AI-optimized web search, extraction, crawling, and research — built for agent workflows (5 tools)
+  </Card>
+</CardGroup>
+
+### CRM, Sales & Marketing
+
+<CardGroup cols={3}>
+  <Card title="Amplitude" icon="/images/amplitude.svg" href="/integrations/amplitude">
+    Query product analytics, manage cohorts and taxonomy, and send events into Amplitude (62 tools)
+  </Card>
+  <Card title="Apollo" icon="/images/apollo.svg" href="/integrations/apollo">
+    Search and enrich contacts, accounts, and organizations, and manage deals and outreach sequences (40 tools)
+  </Card>
+  <Card title="Attio" icon="/images/attio.svg" href="/integrations/attio">
+    Manage companies, people, deals, and custom objects in your Attio CRM, plus lists, notes, and tasks (76 tools)
+  </Card>
+  <Card title="Canva" icon="/images/canva.svg" href="/integrations/canva">
+    Create, manage, and export Canva designs — assets, folders, brand templates, autofill, and comments (36 tools)
+  </Card>
+  <Card title="Google Analytics 4" icon="/images/ga4.svg" href="/integrations/ga4">
+    Query reports, manage properties, and send events — Admin API, Data API, and Measurement Protocol (33 tools)
+  </Card>
+  <Card title="HubSpot" icon="/images/hubspot.svg" href="/integrations/hubspot">
+    CRM objects, marketing, deals, commerce, and support — HubSpot's full breadth in one integration (214 tools)
+  </Card>
+  <Card title="Looker" icon="/images/looker.svg" href="/integrations/looker">
+    Query and manage Looker — looks, dashboards, explores/models, scheduled plans, embed URLs, and admin (users, roles, groups) (71 tools)
+  </Card>
+  <Card title="Mailchimp" icon="/images/mailchimp.svg" href="/integrations/mailchimp">
+    Run Mailchimp email/SMS marketing and e-commerce integrations — audiences, campaigns, automations, templates, and reports (279 tools)
+  </Card>
+  <Card title="Mixpanel" icon="/images/mixpanel.svg" href="/integrations/mixpanel">
+    Track events, manage user/group profiles, and query analytics — segmentation, retention, funnels, and annotations (46 tools)
+  </Card>
+  <Card title="Reddit Ads" icon="/images/reddit-ads.svg" href="/integrations/reddit-ads">
+    Manage Reddit advertising — businesses, campaigns, targeting, creatives, catalogs, and reporting (90 tools)
+  </Card>
+  <Card title="TikTok Ads" icon="/images/tiktok-ads.svg" href="/integrations/tiktok-ads">
+    Manage TikTok ad campaigns — campaigns, ad groups, ads, audiences, targeting, and reporting (119 tools)
+  </Card>
+</CardGroup>
+
+### Finance & Payments
+
+<CardGroup cols={3}>
+  <Card title="Alpaca" icon="trending-up" href="/integrations/alpaca">
+    Trade stocks and crypto, manage positions and watchlists, and pull market data through Alpaca's brokerage API (44 tools)
+  </Card>
+  <Card title="freee" icon="/images/freee.svg" href="/integrations/freee">
+    Japanese accounting and HR platform — deals, invoices, payroll, expense workflows, and bank reconciliation (125 tools)
+  </Card>
+  <Card title="MoneyForward" icon="/images/moneyforward.svg" href="/integrations/moneyforward">
+    Manage MoneyForward accounting, expenses, invoices, and payables — journals, transactions, reports, and approvals (59 tools)
+  </Card>
+  <Card title="PayPal" icon="/images/paypal.svg" href="/integrations/paypal">
+    Orders, invoices, subscriptions, disputes, payouts, and webhooks — PayPal's full commerce API (105 tools)
+  </Card>
+  <Card title="RevenueCat" icon="/images/revenuecat.svg" href="/integrations/revenuecat">
+    Manage in-app subscriptions — customers, entitlements, offerings, paywalls, and analytics (107 tools)
+  </Card>
+  <Card title="Square" icon="/images/square.svg" href="/integrations/square">
+    Run point-of-sale commerce — orders, payments, invoices, catalog, loyalty, and bookings (140 tools)
+  </Card>
+  <Card title="Stripe" icon="/images/stripe.svg" href="/integrations/stripe">
+    Payments, subscriptions, billing, Treasury, and Issuing — the largest integration in Shanone's catalog (328 tools)
+  </Card>
+  <Card title="Wise" icon="banknote" href="/integrations/wise">
+    Send international transfers, manage multi-currency balances, and check exchange rates with Wise (formerly TransferWise) (57 tools)
+  </Card>
+  <Card title="Yahoo Finance" icon="/images/yahoo-finance.svg" href="/integrations/yahoo-finance">
+    Look up stock quotes, historical prices, financial statements, and news — no API key required (4 tools)
+  </Card>
+</CardGroup>
+
+### Crypto & Web3
+
+<CardGroup cols={3}>
+  <Card title="Coincheck" icon="/images/coincheck.svg" href="/integrations/coincheck">
+    Trade and manage assets on Coincheck — orders, market data, transfers, and withdrawals (24 tools)
+  </Card>
+  <Card title="Ethereum" icon="/images/ethereum.svg" href="/integrations/ethereum">
+    Query Ethereum blockchain data and interact with smart contracts via a JSON-RPC endpoint you provide (76 tools)
+  </Card>
+  <Card title="Hyperliquid" icon="/images/hyperliquid.svg" href="/integrations/hyperliquid">
+    Perpetual DEX account, market, and order data — balances, orderbooks, funding, positions, and trading (34 tools)
+  </Card>
+  <Card title="OpenSea" icon="/images/opensea.svg" href="/integrations/opensea">
+    Browse, trade, and analyze NFTs — collections, listings, offers, orders, stats, and token swaps (63 tools)
+  </Card>
+</CardGroup>
+
+### Commerce, HR & Support
+
+<CardGroup cols={3}>
+  <Card title="DocuSign" icon="/images/docusign.svg" href="/integrations/docusign">
+    Send, sign, and manage electronic signature envelopes — templates, recipients, documents, and account administration (144 tools)
+  </Card>
+  <Card title="Shopify" icon="/images/shopify.svg" href="/integrations/shopify">
+    Manage products, orders, customers, and storefront content across your Shopify store (149 tools)
+  </Card>
+  <Card title="SmartHR" icon="/images/smarthr.svg" href="/integrations/smarthr">
+    Manage employee records, org structure, and payroll — crews, departments, grades, and payslips (111 tools)
+  </Card>
+  <Card title="Wix" icon="layout-template" href="/integrations/wix">
+    Manage your Wix store, bookings, blog, contacts, and site data — products, orders, CMS collections, and marketing (144 tools)
+  </Card>
+  <Card title="Zendesk" icon="/images/zendesk.svg" href="/integrations/zendesk">
+    Manage support tickets, users, organizations, and macros on Zendesk — the full customer support workflow (64 tools)
+  </Card>
+</CardGroup>
+
+### Social, Video & Music
+
+<CardGroup cols={3}>
+  <Card title="Spotify" icon="/images/spotify.svg" href="/integrations/spotify">
+    Control playback, manage playlists and library, and browse artists, albums, shows, and audiobooks (57 tools)
+  </Card>
+  <Card title="X" icon="/images/x.svg" href="/integrations/x">
+    Post, search, and engage on X (formerly Twitter) — posts, timelines, lists, DMs, spaces, and relationships (67 tools)
+  </Card>
+  <Card title="YouTube" icon="/images/youtube.svg" href="/integrations/youtube">
+    Manage videos, live streams, playlists, comments, and channel analytics on YouTube (82 tools)
   </Card>
 </CardGroup>
 
@@ -59,13 +539,13 @@ Shanone is marketed at **140+ integrations and 10,000+ tools** across its full e
 Most integrations use OAuth and don't need to be pre-configured — the first time your agent calls a tool for a service you haven't connected, `shanone_execute_tool` returns a `connect_link` instead of failing. Visit it, authorize, and retry. See the [Quickstart](/quickstart) for a walkthrough, or connect proactively from **Integrations** in the Shanone dashboard.
 
 <Note>
-A few integrations (like Ethereum) authenticate with a configured RPC endpoint/API key rather than OAuth — see that integration's page for specifics.
+A few integrations (like Ethereum, Google Cloud, and Coincheck) authenticate with a configured API key/RPC endpoint rather than OAuth — see that integration's page for specifics.
 </Note>
 
-## Need something that's not documented here?
+## Still missing something specific?
 
 <Note>
-This page only covers a curated subset in depth. Don't see the integration you need? Ask your agent — `shanone_search_tools` covers the full live catalog, not just what's written up here. If it's genuinely missing, reach out.
+Don't see the exact tool you need on one of these pages? Ask your agent — `shanone_search_tools` covers the full live catalog and often has more granular tools than what's written up here. If something is genuinely missing, reach out.
 </Note>
 
 Contact us at [hey@duzzle.dev](mailto:hey@duzzle.dev) with integration requests.

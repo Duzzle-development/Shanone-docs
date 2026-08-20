@@ -1,0 +1,82 @@
+---
+title: "Manus"
+description: "Manus AIエージェントとそのタスクを制御 — メッセージ送信、プロジェクト・ファイル・Webサイト・Webhookの管理"
+icon: /images/manus.svg
+---
+
+# Manus
+
+ShanoneのManus連携は、Manusエージェントのタスク実行、それが扱うプロジェクトやファイルの管理、構築したWebサイトの公開を行う32個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="Manus APIキーを取得する">
+    Manusアカウントで**Settings > API**に移動し、APIキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**Integrations > Manus**で、そのAPIキーを貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`manus_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはManus向けに**32個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="タスク">
+    `manus_create_task`, `manus_list_tasks`, `manus_get_task`, `manus_update_task`, `manus_delete_task`
+  </Accordion>
+  <Accordion title="タスク制御">
+    `manus_send_message`, `manus_list_messages`, `manus_confirm_action`, `manus_stop_task`
+  </Accordion>
+  <Accordion title="エージェント">
+    `manus_list_agents`, `manus_get_agent`, `manus_update_agent`
+  </Accordion>
+  <Accordion title="プロジェクト & ファイル">
+    `manus_create_project`, `manus_list_projects`, `manus_upload_file`, `manus_get_file`, `manus_delete_file`
+  </Accordion>
+  <Accordion title="Webサイト">
+    `manus_get_website_status`, `manus_list_checkpoints`, `manus_publish_website`, `manus_update_website`
+  </Accordion>
+  <Accordion title="スキル、コネクタ & ブラウザ">
+    `manus_list_skills`, `manus_list_connectors`, `manus_list_browsers`
+  </Accordion>
+  <Accordion title="使用状況 & Webhook">
+    `manus_get_credits`, `manus_list_usage`, `manus_get_team_log`, `manus_get_team_stats`, `manus_create_webhook`, `manus_list_webhooks`, `manus_get_webhook_key`, `manus_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="委任されたリサーチタスク" icon="search">
+    Manusタスクを作成し、メッセージを監視して、求められたアクションを承認する
+  </Card>
+  <Card title="Webサイト公開の自動化" icon="globe">
+    ManusにWebサイトを構築させ、ステータスを確認して準備が整ったら公開する
+  </Card>
+  <Card title="クレジット監視" icon="gauge">
+    重い処理を実行する前に、残クレジットとチームごとの使用量を確認する
+  </Card>
+  <Card title="イベント駆動パイプライン" icon="webhook">
+    Webhookを登録し、タスク完了が後続の自動化をトリガーするようにする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="Manusタスクが確認待ちで止まっている">
+    一部のManusアクションは明示的な承認が必要です——`manus_list_messages`で承認待ちのプロンプトを確認し、`manus_confirm_action`で応答してください。
+  </Accordion>
+  <Accordion title="manus_stop_taskを呼んでもタスクが即座に止まらない">
+    停止処理はベストエフォートで、エージェントが処理の途中だと少し時間がかかることがあります。`manus_get_task`をポーリングして、実際に停止状態になったか確認してください。
+  </Accordion>
+  <Accordion title="manus_publish_websiteが失敗する、または古いバージョンが表示される">
+    まず`manus_list_checkpoints`を確認してください——最新のチェックポイントのビルドが完了していない場合、特定のチェックポイントを明示的に指定する必要があります。
+  </Accordion>
+</AccordionGroup>

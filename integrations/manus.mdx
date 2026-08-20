@@ -1,0 +1,82 @@
+---
+title: "Manus"
+description: "Control Manus AI agents and their tasks — send messages, manage projects, files, websites, and webhooks"
+icon: /images/manus.svg
+---
+
+# Manus
+
+Shanone's Manus integration gives your agent 32 tools for running Manus agent tasks, managing the projects and files they touch, and publishing websites they build.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Manus API key">
+    In your Manus account, go to **Settings > API** and generate an API key.
+  </Step>
+  <Step title="Add the key in Shanone">
+    Go to **Integrations > Manus** in the Shanone dashboard and paste the API key in.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `manus_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **32 tools** for Manus, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Tasks">
+    `manus_create_task`, `manus_list_tasks`, `manus_get_task`, `manus_update_task`, `manus_delete_task`
+  </Accordion>
+  <Accordion title="Task control">
+    `manus_send_message`, `manus_list_messages`, `manus_confirm_action`, `manus_stop_task`
+  </Accordion>
+  <Accordion title="Agents">
+    `manus_list_agents`, `manus_get_agent`, `manus_update_agent`
+  </Accordion>
+  <Accordion title="Projects & files">
+    `manus_create_project`, `manus_list_projects`, `manus_upload_file`, `manus_get_file`, `manus_delete_file`
+  </Accordion>
+  <Accordion title="Websites">
+    `manus_get_website_status`, `manus_list_checkpoints`, `manus_publish_website`, `manus_update_website`
+  </Accordion>
+  <Accordion title="Skills, connectors & browsers">
+    `manus_list_skills`, `manus_list_connectors`, `manus_list_browsers`
+  </Accordion>
+  <Accordion title="Usage & webhooks">
+    `manus_get_credits`, `manus_list_usage`, `manus_get_team_log`, `manus_get_team_stats`, `manus_create_webhook`, `manus_list_webhooks`, `manus_get_webhook_key`, `manus_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Delegated research tasks" icon="search">
+    Create a Manus task, monitor its messages, and confirm actions it requests
+  </Card>
+  <Card title="Automated site publishing" icon="globe">
+    Have Manus build a website, then check its status and publish when ready
+  </Card>
+  <Card title="Credit monitoring" icon="gauge">
+    Track remaining credits and per-team usage before kicking off heavy tasks
+  </Card>
+  <Card title="Event-driven pipelines" icon="webhook">
+    Register a webhook so task completions trigger downstream automation
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="A Manus task is stuck waiting on confirmation">
+    Some Manus actions require explicit approval — check `manus_list_messages` for a pending confirmation prompt and respond with `manus_confirm_action`.
+  </Accordion>
+  <Accordion title="manus_stop_task doesn't stop the task immediately">
+    Stopping is best-effort and can take a moment if the agent is mid-step; poll `manus_get_task` to confirm the task actually reached a stopped state.
+  </Accordion>
+  <Accordion title="manus_publish_website fails or shows a stale version">
+    Check `manus_list_checkpoints` first — you may need to specify a specific checkpoint if the latest one hasn't finished building.
+  </Accordion>
+</AccordionGroup>

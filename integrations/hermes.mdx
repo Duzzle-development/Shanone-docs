@@ -1,0 +1,73 @@
+---
+title: "Hermes Agent"
+description: "Manage Hermes Agent sessions, jobs, and runs — send messages, trigger jobs, and monitor execution"
+icon: /images/hermes.svg
+---
+
+# Hermes Agent
+
+Shanone's Hermes Agent integration gives your agent 23 tools for controlling a self-hosted Hermes Agent server — sessions (agent conversations), jobs (scheduled/triggerable automations), and runs (individual executions), plus skill/capability discovery.
+
+## Getting Started
+
+<Steps>
+  <Step title="Deploy or locate your Hermes Agent server">
+    Hermes Agent is a self-hosted server (see the [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) project) — you'll need its API URL (e.g. `http://localhost:8642` or a public deployment URL).
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Hermes Agent, and enter the server's API URL. An API Key is only required if the server has `API_SERVER_KEY` configured.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `hermes_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **23 tools** for Hermes Agent, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Jobs">
+    `hermes_list_jobs`, `hermes_get_job`, `hermes_create_job`, `hermes_update_job`, `hermes_delete_job`, `hermes_pause_job`, `hermes_resume_job`, `hermes_trigger_job`
+  </Accordion>
+  <Accordion title="Runs">
+    `hermes_create_run`, `hermes_get_run`, `hermes_stop_run`, `hermes_approve_run` — a run is a single execution instance, which may require approval before proceeding
+  </Accordion>
+  <Accordion title="Sessions">
+    `hermes_list_sessions`, `hermes_get_session`, `hermes_create_session`, `hermes_send_message`, `hermes_update_session`, `hermes_delete_session`, `hermes_fork_session`
+  </Accordion>
+  <Accordion title="Skills & server info">
+    `hermes_list_skills`, `hermes_list_toolsets`, `hermes_get_capabilities`, `hermes_health_check`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Scheduled automation" icon="clock">
+    Create a job that runs a Hermes workflow on a recurring basis
+  </Card>
+  <Card title="Human-in-the-loop runs" icon="check-circle">
+    Trigger a run that requires approval, then approve or reject it based on its proposed action
+  </Card>
+  <Card title="Conversation branching" icon="git-fork">
+    Fork a session to explore an alternate approach without losing the original conversation
+  </Card>
+  <Card title="Capability discovery" icon="search">
+    Check available skills and toolsets before designing a new job
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="All hermes_* tool calls fail immediately">
+    Run `hermes_health_check` first — if the configured `api_url` is unreachable or wrong, every other call will fail the same way. Confirm the server is running and the URL doesn't have a trailing path segment.
+  </Accordion>
+  <Accordion title="hermes_trigger_job starts a run but it never completes">
+    Check `hermes_get_run` — some runs pause waiting on `hermes_approve_run`; if the job is designed for human-in-the-loop approval, it will stay pending until approved or stopped.
+  </Accordion>
+  <Accordion title="hermes_create_job accepts the job but it never triggers on schedule">
+    Confirm the job isn't paused — `hermes_pause_job` disables scheduled triggers until `hermes_resume_job` is called, and this state persists across server restarts.
+  </Accordion>
+</AccordionGroup>

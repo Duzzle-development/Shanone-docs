@@ -1,0 +1,85 @@
+---
+title: "Miro"
+description: "Create and edit Miro boards — sticky notes, shapes, cards, connectors, frames, and board membership"
+icon: /images/miro.svg
+---
+
+# Miro
+
+Shanone's Miro integration gives your agent 47 tools for building out boards programmatically — every widget type (sticky notes, shapes, cards, text, images, frames, connectors) plus board sharing and tags.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Miro (e.g. "add a sticky note to my roadmap board"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Miro workspace">
+    Approve Miro's OAuth consent screen for the team/workspace you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `miro_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **47 tools** for Miro, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Boards">
+    `miro_list_boards`, `miro_get_board`, `miro_create_board`, `miro_update_board`, `miro_delete_board`, `miro_copy_board`, `miro_get_board_members`, `miro_share_board`, `miro_get_board_member`, `miro_update_board_member`, `miro_remove_board_member`
+  </Accordion>
+  <Accordion title="Items (generic)">
+    `miro_get_items`, `miro_get_item`, `miro_update_item_position`, `miro_delete_item`, `miro_bulk_create_items`
+  </Accordion>
+  <Accordion title="Sticky notes & shapes">
+    `miro_create_sticky_note`, `miro_update_sticky_note`, `miro_create_shape`, `miro_update_shape`
+  </Accordion>
+  <Accordion title="Cards & app cards">
+    `miro_create_card`, `miro_update_card`, `miro_create_app_card`, `miro_update_app_card`
+  </Accordion>
+  <Accordion title="Text, images, documents & embeds">
+    `miro_create_text`, `miro_update_text`, `miro_create_image`, `miro_update_image`, `miro_create_document`, `miro_update_document`, `miro_create_embed`, `miro_update_embed`
+  </Accordion>
+  <Accordion title="Frames & connectors">
+    `miro_create_frame`, `miro_update_frame`, `miro_create_connector`, `miro_update_connector`
+  </Accordion>
+  <Accordion title="Groups">
+    `miro_create_group`, `miro_get_group_items`, `miro_update_group`, `miro_ungroup`, `miro_delete_group`
+  </Accordion>
+  <Accordion title="Tags">
+    `miro_list_tags`, `miro_create_tag`, `miro_get_tag`, `miro_update_tag`, `miro_delete_tag`, `miro_attach_tag_to_item`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Auto-generated retros" icon="layout-template">
+    Create a board with columns and populate sticky notes from meeting notes
+  </Card>
+  <Card title="Diagram generation" icon="git-branch">
+    Build a flowchart from shapes and connectors based on a described process
+  </Card>
+  <Card title="Bulk content import" icon="upload">
+    Use `miro_bulk_create_items` to seed a board with many items in one call
+  </Card>
+  <Card title="Board organization" icon="tags">
+    Tag items by status or owner and group related items together
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Items appear at the wrong position or overlapping">
+    Miro board coordinates are in a fixed canvas space, not pixels-on-screen — check `miro_get_items` on an existing board first to get a sense of the coordinate range in use before creating new items.
+  </Accordion>
+  <Accordion title="miro_bulk_create_items partially fails">
+    Bulk creation is all-or-nothing per request but limited to a maximum item count per call; split larger batches into multiple `miro_bulk_create_items` calls if you hit a size limit error.
+  </Accordion>
+  <Accordion title="miro_share_board doesn't seem to grant access">
+    Sharing requires an email invite to go through Miro's own flow — the invited user must accept it; check `miro_get_board_members` to confirm pending vs. active status.
+  </Accordion>
+</AccordionGroup>

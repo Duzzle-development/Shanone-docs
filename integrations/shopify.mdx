@@ -1,0 +1,97 @@
+---
+title: "Shopify"
+description: "Manage products, orders, customers, and storefront content across your Shopify store"
+icon: /images/shopify.svg
+---
+
+# Shopify
+
+Shanone's Shopify integration gives your agent 149 tools covering nearly the full Admin REST surface — products, orders, fulfillment, customers, discounts, marketing, and storefront content — making it one of the most complete integrations for running commerce operations end-to-end.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Shopify (e.g. "list my top 10 best-selling products this month"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Enter your shop name">
+    Shopify's OAuth flow needs to know which store to authorize — enter your shop name (the part before `.myshopify.com`) when prompted.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `shopify_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **149 tools** for Shopify, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Products, Variants & Images">
+    `shopify_list_products`, `shopify_get_product`, `shopify_count_products`, `shopify_create_product`, `shopify_update_product`, `shopify_delete_product`, `shopify_list_variants`, `shopify_get_variant`, `shopify_create_variant`, `shopify_update_variant`, `shopify_delete_variant`, `shopify_count_variants`, `shopify_list_product_images`, `shopify_get_product_image`, `shopify_create_product_image`, `shopify_update_product_image`, `shopify_delete_product_image`, `shopify_count_product_images`, `shopify_list_product_metafields`, `shopify_get_product_metafield`, `shopify_create_product_metafield`, `shopify_update_product_metafield`, `shopify_delete_product_metafield`
+  </Accordion>
+  <Accordion title="Collections">
+    `shopify_list_collections`, `shopify_get_custom_collection`, `shopify_create_custom_collection`, `shopify_update_custom_collection`, `shopify_delete_custom_collection`, `shopify_count_custom_collections`, `shopify_list_smart_collections`, `shopify_get_smart_collection`, `shopify_create_smart_collection`, `shopify_update_smart_collection`, `shopify_delete_smart_collection`, `shopify_count_smart_collections`, `shopify_list_collects`, `shopify_get_collect`, `shopify_create_collect`, `shopify_delete_collect`, `shopify_count_collects`
+  </Accordion>
+  <Accordion title="Orders, Transactions & Risks">
+    `shopify_list_orders`, `shopify_get_order`, `shopify_count_orders`, `shopify_close_order`, `shopify_cancel_order`, `shopify_create_order`, `shopify_update_order`, `shopify_delete_order`, `shopify_reopen_order`, `shopify_list_transactions`, `shopify_get_transaction`, `shopify_create_transaction`, `shopify_count_transactions`, `shopify_list_refunds`, `shopify_get_refund`, `shopify_calculate_refund`, `shopify_create_refund`, `shopify_list_order_risks`, `shopify_get_order_risk`, `shopify_create_order_risk`
+  </Accordion>
+  <Accordion title="Fulfillment">
+    `shopify_list_fulfillments`, `shopify_get_fulfillment`, `shopify_create_fulfillment`, `shopify_update_fulfillment_tracking`, `shopify_cancel_fulfillment`, `shopify_count_fulfillments`, `shopify_list_fulfillment_orders`, `shopify_get_fulfillment_order`, `shopify_cancel_fulfillment_order`, `shopify_move_fulfillment_order`, `shopify_apply_fulfillment_hold`, `shopify_release_fulfillment_hold`, `shopify_list_fulfillment_events`, `shopify_get_fulfillment_event`, `shopify_create_fulfillment_event`, `shopify_delete_fulfillment_event`
+  </Accordion>
+  <Accordion title="Customers">
+    `shopify_list_customers`, `shopify_get_customer`, `shopify_search_customers`, `shopify_create_customer`, `shopify_update_customer`, `shopify_delete_customer`
+  </Accordion>
+  <Accordion title="Discounts & Gift Cards">
+    `shopify_list_price_rules`, `shopify_get_price_rule`, `shopify_list_gift_cards`, `shopify_get_gift_card`, `shopify_create_gift_card`, `shopify_update_gift_card`, `shopify_disable_gift_card`, `shopify_count_gift_cards`, `shopify_search_gift_cards`
+  </Accordion>
+  <Accordion title="Content (Articles, Blogs & Pages)">
+    `shopify_list_articles`, `shopify_get_article`, `shopify_create_article`, `shopify_update_article`, `shopify_delete_article`, `shopify_count_articles`, `shopify_list_article_authors`, `shopify_list_article_tags`, `shopify_list_blogs`, `shopify_get_blog`, `shopify_create_blog`, `shopify_update_blog`, `shopify_delete_blog`, `shopify_count_blogs`, `shopify_list_pages`, `shopify_get_page`, `shopify_create_page`, `shopify_update_page`, `shopify_delete_page`, `shopify_count_pages`
+  </Accordion>
+  <Accordion title="Marketing">
+    `shopify_list_marketing_events`, `shopify_get_marketing_event`, `shopify_create_marketing_event`, `shopify_update_marketing_event`, `shopify_delete_marketing_event`, `shopify_count_marketing_events`, `shopify_create_marketing_engagements`, `shopify_list_events`, `shopify_get_event`, `shopify_count_events`, `shopify_list_reports`, `shopify_get_report`
+  </Accordion>
+  <Accordion title="Locations & Inventory">
+    `shopify_list_locations`, `shopify_get_location`, `shopify_count_locations`, `shopify_list_inventory_levels_for_location`, `shopify_list_inventory_items`, `shopify_get_inventory_item`, `shopify_update_inventory_item`, `shopify_list_inventory_levels`, `shopify_adjust_inventory_level`, `shopify_set_inventory_level`, `shopify_connect_inventory`, `shopify_delete_inventory_level`
+  </Accordion>
+  <Accordion title="Redirects & Webhooks">
+    `shopify_list_redirects`, `shopify_get_redirect`, `shopify_create_redirect`, `shopify_update_redirect`, `shopify_delete_redirect`, `shopify_count_redirects`, `shopify_list_policies`, `shopify_list_webhooks`, `shopify_get_webhook`, `shopify_create_webhook`, `shopify_update_webhook`, `shopify_delete_webhook`, `shopify_count_webhooks`
+  </Accordion>
+  <Accordion title="Shop">
+    `shopify_get_shop_info`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Order fulfillment automation" icon="package">
+    Pull unfulfilled orders, create fulfillments, and update tracking numbers in bulk
+  </Card>
+  <Card title="Inventory sync" icon="warehouse">
+    Check inventory levels across locations and adjust stock after a physical count
+  </Card>
+  <Card title="Customer support lookups" icon="user-search">
+    Search a customer by email and pull their full order and refund history
+  </Card>
+  <Card title="Storefront content updates" icon="file-pen">
+    Draft and publish a blog article or landing page without touching the Shopify admin
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="shopify_create_product or shopify_update_product returns a 422 error">
+    Shopify validates required fields (title, variant pricing) strictly — check `shanone_get_tool_schema` for `shopify_create_product` and ensure at least one variant with a price is included.
+  </Accordion>
+  <Accordion title="Getting rate-limited (429) on bulk operations">
+    Shopify's Admin API enforces a leaky-bucket rate limit per store. Space out calls like `shopify_update_inventory_item` or `shopify_create_fulfillment` when processing large batches rather than firing them all at once.
+  </Accordion>
+  <Accordion title="shopify_cancel_order or shopify_delete_order fails on an already-fulfilled order">
+    Orders with completed fulfillments or payments often can't be cancelled/deleted directly — use `shopify_create_refund` and `shopify_cancel_fulfillment` first to unwind the order.
+  </Accordion>
+  <Accordion title="Inventory adjustments don't seem to apply">
+    `shopify_adjust_inventory_level` changes inventory relative to the current level, while `shopify_set_inventory_level` sets an absolute value — using the wrong one is the most common cause of unexpected stock counts.
+  </Accordion>
+</AccordionGroup>

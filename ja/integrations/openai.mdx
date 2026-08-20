@@ -1,0 +1,67 @@
+---
+title: "OpenAI"
+description: "画像の生成・編集、OpenAIのDeep Researchエージェントの実行"
+icon: /images/openai.svg
+---
+
+# OpenAI
+
+ShanoneのOpenAI連携は、画像生成・編集と非同期のDeep Researchに特化した4個のツールをエージェントに提供します。これらはOpenAI自身のAPI上に構築されており、エージェント自体を動かしているモデルとは別物です。
+
+## はじめに
+
+<Steps>
+  <Step title="OpenAI APIキーを作成する">
+    [OpenAI APIキーページ](https://platform.openai.com/api-keys)からキーを発行します。
+  </Step>
+  <Step title="Shanoneにキーを追加する">
+    Shanoneダッシュボードの**連携**でOpenAIを選択し、キー(`sk-proj-...`)を貼り付けます。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`openai_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはOpenAI向けに**4個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="画像">
+    `openai_generate_image`, `openai_edit_image` — テキストプロンプトから画像を生成したり、DALL-E/GPT-Imageモデルで既存の画像を編集(インペインティング、スタイル変更など)したりします
+  </Accordion>
+  <Accordion title="Deep Research">
+    `openai_deep_research`, `openai_get_research_status` — 非同期の多段階リサーチタスクを開始し、完了をポーリングします。1回のリクエストで終わらないレポート作成に便利です
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="マーケティング用画像" icon="image">
+    テキストの説明からヒーロー画像や製品モックアップを生成する
+  </Card>
+  <Card title="画像編集" icon="wand-2">
+    チャットを離れずに既存画像を編集する(背景除去、スタイル変換、インペインティングなど)
+  </Card>
+  <Card title="長文のリサーチレポート" icon="file-search">
+    複雑なトピックでDeep Researchを開始し、1回の呼び出しでブロックせず完了後に確認する
+  </Card>
+  <Card title="非同期パイプライン" icon="workflow">
+    スケジュールジョブから`openai_get_research_status`をポーリングし、完成したリサーチを自動的に取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="openai_generate_imageやopenai_edit_imageが認証エラーを返す">
+    **連携**に保存したAPIキーが`sk-proj-`(または`sk-`)で始まっており、画像生成が有効なプロジェクトに紐づいているか確認してください。組織レベルのキーの中には、モデルへのアクセスを制限しているものもあります。
+  </Accordion>
+  <Accordion title="openai_deep_researchがなかなか終わらない">
+    Deep Researchは非同期に実行され、複雑なトピックでは完了まで数分かかることがあります。1回の同期レスポンスを期待するのではなく、返されたタスクIDで`openai_get_research_status`を定期的に呼び出してください。
+  </Accordion>
+  <Accordion title="画像編集が指定した領域と一致しない">
+    `openai_edit_image`は特定の領域を対象にするためにマスクを利用します。マスクを渡さない場合、画像全体が再生成されることがあります。`openai_edit_image`の`shanone_get_tool_schema`で正確なペイロード形式を確認してください。
+  </Accordion>
+</AccordionGroup>

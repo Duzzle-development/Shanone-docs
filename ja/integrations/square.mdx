@@ -1,0 +1,103 @@
+---
+title: "Square"
+description: "POSコマースを運用する — 注文、決済、請求書、カタログ、ロイヤルティ、予約"
+icon: /images/square.svg
+---
+
+# Square
+
+ShanoneのSquare連携は、注文、決済、請求書発行、商品カタログ、ロイヤルティ、サブスクリプション、予約にまたがる140個のツールをエージェントに提供します——小売業やサービス業の日常的なコマース運用の大半をカバーできます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにSquare関連の作業を依頼(例: 「今日の50ドル以上の決済を一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Squareアカウントを許可する">
+    Shanoneに操作させたい加盟店アカウントで、SquareのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`square_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはSquare向けに**140個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="注文 & 決済">
+    `square_list_orders`, `square_list_payments`, `square_create_order`, `square_get_order`, `square_update_order`, `square_pay_order`, `square_calculate_order`, `square_batch_retrieve_orders`, `square_create_payment`, `square_get_payment`, `square_update_payment`, `square_cancel_payment`, `square_cancel_payment_by_idempotency_key`, `square_complete_payment`
+  </Accordion>
+  <Accordion title="請求書 & 返金">
+    `square_list_invoices`, `square_create_invoice`, `square_get_invoice`, `square_update_invoice`, `square_delete_invoice`, `square_publish_invoice`, `square_send_invoice`, `square_cancel_invoice`, `square_delete_invoice_attachment`, `square_search_invoices`, `square_create_refund`, `square_get_refund`, `square_list_payment_refunds`
+  </Accordion>
+  <Accordion title="カタログ">
+    `square_list_catalog_items`, `square_upsert_catalog_object`, `square_get_catalog_object`, `square_delete_catalog_object`, `square_search_catalog_objects`, `square_batch_upsert_catalog_objects`, `square_list_catalog_categories`
+  </Accordion>
+  <Accordion title="顧客 & グループ">
+    `square_list_customers`, `square_get_customer`, `square_search_customers`, `square_create_customer`, `square_update_customer`, `square_delete_customer`, `square_list_customer_groups`, `square_create_customer_group`, `square_get_customer_group`, `square_update_customer_group`, `square_delete_customer_group`, `square_add_group_to_customer`, `square_remove_group_from_customer`, `square_list_customer_segments`, `square_get_customer_segment`, `square_bulk_create_customers`, `square_bulk_update_customers`, `square_bulk_retrieve_customers`
+  </Accordion>
+  <Accordion title="予約">
+    `square_create_booking`, `square_get_booking`, `square_update_booking`, `square_cancel_booking`, `square_list_bookings`, `square_search_availability`, `square_bulk_retrieve_bookings`, `square_retrieve_business_booking_profile`, `square_list_team_member_booking_profiles`
+  </Accordion>
+  <Accordion title="ロイヤルティ">
+    `square_create_loyalty_account`, `square_get_loyalty_account`, `square_search_loyalty_accounts`, `square_accumulate_loyalty_points`, `square_adjust_loyalty_points`, `square_create_loyalty_reward`, `square_get_loyalty_reward`, `square_redeem_loyalty_reward`, `square_delete_loyalty_reward`, `square_retrieve_loyalty_program`, `square_calculate_loyalty_points`, `square_search_loyalty_events`
+  </Accordion>
+  <Accordion title="サブスクリプション">
+    `square_create_subscription`, `square_get_subscription`, `square_update_subscription`, `square_search_subscriptions`, `square_pause_subscription`, `square_resume_subscription`, `square_cancel_subscription`, `square_list_subscription_events`, `square_bulk_swap_subscription_plan`
+  </Accordion>
+  <Accordion title="ギフトカード & 異議申し立て">
+    `square_create_gift_card`, `square_get_gift_card`, `square_get_gift_card_from_gan`, `square_list_gift_cards`, `square_deactivate_gift_card`, `square_create_gift_card_activity`, `square_list_gift_card_activities`, `square_get_gift_card_balance`, `square_list_disputes`, `square_get_dispute`, `square_accept_dispute`, `square_list_dispute_evidence`, `square_create_dispute_evidence_text`, `square_create_dispute_evidence_file`, `square_get_dispute_evidence`, `square_delete_dispute_evidence`, `square_submit_evidence`
+  </Accordion>
+  <Accordion title="在庫">
+    `square_retrieve_inventory_count`, `square_batch_retrieve_inventory_counts`, `square_retrieve_inventory_changes`, `square_batch_change_inventory`, `square_retrieve_inventory_physical_count`
+  </Accordion>
+  <Accordion title="チーム、ロケーション & 加盟店">
+    `square_create_team_member`, `square_get_team_member`, `square_update_team_member`, `square_search_team_members`, `square_retrieve_wage_setting`, `square_create_location`, `square_get_location`, `square_update_location`, `square_get_me`, `square_list_locations`
+  </Accordion>
+  <Accordion title="端末 & 決済リンク">
+    `square_create_terminal_checkout`, `square_get_terminal_checkout`, `square_cancel_terminal_checkout`, `square_search_terminal_checkouts`, `square_list_devices`, `square_get_device`, `square_create_payment_link`, `square_list_payment_links`
+  </Accordion>
+  <Accordion title="ベンダー & 支払い">
+    `square_create_vendor`, `square_get_vendor`, `square_update_vendor`, `square_search_vendors`, `square_batch_create_vendors`, `square_list_bank_accounts`, `square_get_bank_account`, `square_get_bank_account_by_location`, `square_list_payouts`, `square_get_payout`, `square_list_payout_entries`
+  </Accordion>
+  <Accordion title="Webhook">
+    `square_list_webhook_subscriptions`, `square_create_webhook_subscription`, `square_get_webhook_subscription`, `square_update_webhook_subscription`, `square_delete_webhook_subscription`, `square_test_webhook_subscription`, `square_list_webhook_event_types`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="日次売上レポート" icon="chart-bar">
+    今日の決済と注文を取得し、ロケーションや商品別に売上を要約する
+  </Card>
+  <Card title="請求書のフォローアップ" icon="file-text">
+    期限を過ぎた請求書を検索し、未払いのものにリマインダーを送る
+  </Card>
+  <Card title="ロイヤルティキャンペーン" icon="award">
+    顧客のロイヤルティ残高を確認し、プロモーションに応じてポイントを調整する
+  </Card>
+  <Card title="予約管理" icon="calendar">
+    空き状況を確認し、顧客からのリクエストに応じて予約を作成する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="square_create_paymentやsquare_create_orderが冪等性エラーで失敗する">
+    Squareは重複課金を防ぐため、書き込み系の呼び出しごとに一意な`idempotency_key`を要求します——`square_create_payment`の`shanone_get_tool_schema`を確認し、リトライごとではなく試行ごとに新しいキーを生成してください。
+  </Accordion>
+  <Accordion title="square_upsert_catalog_objectでのカタログ書き込みが期待した結果にならない">
+    Squareのカタログは型付きオブジェクト(ITEM、ITEM_VARIATION、CATEGORYなど)のグラフで構成され、新規オブジェクトにはクライアント側で割り当てる一時IDを使用します——一時IDの不一致や再利用が、想定外のカタログ状態になる最も多い原因です。
+  </Accordion>
+  <Accordion title="square_search_availabilityが空き枠を返さない">
+    空き状況検索は、Square側でビジネスの予約プロフィールとチームメンバーのスケジュールが正しく設定されていることに依存します——ツールの不具合と決めつける前に、`square_retrieve_business_booking_profile`で予約機能が有効になっているか確認してください。
+  </Accordion>
+  <Accordion title="square_accept_disputeなどの異議申し立て操作が失敗する">
+    異議申し立てには対応期限と特定の必須状態があります(例: 一部の操作の前にエビデンスの提出が必要)——操作する前に`square_get_dispute`で現在の状態を確認してください。
+  </Accordion>
+</AccordionGroup>

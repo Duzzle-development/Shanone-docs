@@ -1,0 +1,88 @@
+---
+title: "Microsoft Teams"
+description: "Manage teams, channels, chats, meetings, and files — messaging, reactions, and calendar integration"
+icon: /images/teams.svg
+---
+
+# Microsoft Teams
+
+Shanone's Microsoft Teams integration gives your agent 97 tools covering teams/channels, chats and messaging, meetings and calendar, files, tabs, and analytics — enough to run most collaboration workflows without opening the Teams client.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Teams (e.g. "post a summary in the #general channel"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Microsoft account">
+    Approve Microsoft's OAuth consent screen for the account whose teams and chats you want Shanone to access.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `teams_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **97 tools** for Microsoft Teams, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Teams & channels">
+    `teams_list_teams`, `teams_list_channels`, `teams_get_team`, `teams_create_team`, `teams_update_team`, `teams_archive_team`, `teams_unarchive_team`, `teams_delete_team`, `teams_get_channel`, `teams_create_channel`, `teams_update_channel`, `teams_delete_channel`, `teams_get_primary_channel`, `teams_list_private_channels`, `teams_list_tags`, `teams_get_tag`, `teams_create_tag`, `teams_delete_tag`
+  </Accordion>
+  <Accordion title="Members">
+    `teams_list_members`, `teams_get_member`, `teams_add_member`, `teams_remove_member`, `teams_update_member_role`, `teams_list_channel_members`
+  </Accordion>
+  <Accordion title="Channel messages">
+    `teams_get_channel_messages`, `teams_send_channel_message`, `teams_get_message`, `teams_update_message`, `teams_delete_message`, `teams_send_html_message`, `teams_send_card_message`, `teams_send_message_with_mention`, `teams_send_message_with_attachment`, `teams_get_message_delta`
+  </Accordion>
+  <Accordion title="Replies & reactions">
+    `teams_list_replies`, `teams_get_reply`, `teams_send_reply`, `teams_update_reply`, `teams_list_reactions`, `teams_add_reaction`, `teams_remove_reaction`, `teams_get_reaction_users`
+  </Accordion>
+  <Accordion title="Chats (1:1 & group)">
+    `teams_list_chats`, `teams_send_chat_message`, `teams_get_chat_messages`, `teams_get_chat`, `teams_create_chat`, `teams_update_chat`, `teams_delete_chat`, `teams_hide_chat`, `teams_unhide_chat`, `teams_mark_chat_read`, `teams_mark_chat_unread`, `teams_list_chat_members`, `teams_get_chat_member`, `teams_add_chat_member`, `teams_remove_chat_member`, `teams_update_chat_member_role`, `teams_add_chat_members_bulk`
+  </Accordion>
+  <Accordion title="Meetings & calendar">
+    `teams_list_meetings`, `teams_get_meeting`, `teams_create_meeting`, `teams_update_meeting`, `teams_delete_meeting`, `teams_get_meeting_attendance`, `teams_get_meeting_transcript`, `teams_get_meeting_recording`, `teams_create_meeting_for_user`, `teams_get_join_url`, `teams_list_calendar_events`, `teams_get_calendar_event`, `teams_create_calendar_event_with_meeting`, `teams_update_calendar_event`, `teams_delete_calendar_event`, `teams_get_calendar_view`
+  </Accordion>
+  <Accordion title="Files">
+    `teams_get_files_folder`, `teams_list_files`, `teams_get_file`, `teams_upload_file`, `teams_download_file`, `teams_delete_file`
+  </Accordion>
+  <Accordion title="Apps & tabs">
+    `teams_list_installed_apps`, `teams_get_installed_app`, `teams_install_app`, `teams_uninstall_app`, `teams_list_tabs`, `teams_get_tab`, `teams_add_tab`, `teams_remove_tab`
+  </Accordion>
+  <Accordion title="Webhooks & analytics">
+    `teams_list_webhooks`, `teams_create_webhook`, `teams_send_webhook_message`, `teams_delete_webhook`, `teams_get_team_activity`, `teams_get_user_activity`, `teams_get_device_usage`, `teams_get_team_counts`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Standup automation" icon="megaphone">
+    Post a daily summary card to a channel and mention the on-call member
+  </Card>
+  <Card title="Meeting follow-ups" icon="calendar-check">
+    Pull a meeting's transcript and attendance, then draft action items
+  </Card>
+  <Card title="Chat triage" icon="messages-square">
+    Scan unread chats across the connected account and summarize what needs a reply
+  </Card>
+  <Card title="Onboarding automation" icon="user-plus">
+    Add a new hire to the right team/channels and post a welcome message
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="teams_get_meeting_transcript or teams_get_meeting_recording returns nothing">
+    Transcription and recording must be enabled for the specific meeting (often an organizer-side setting), and processing can take time after the meeting ends — retry after a delay if it was just enabled.
+  </Accordion>
+  <Accordion title="teams_send_channel_message succeeds but the message doesn't look right">
+    Plain `teams_send_channel_message` only supports basic text — use `teams_send_html_message` for formatted content, `teams_send_card_message` for rich cards, or `teams_send_message_with_mention` to properly @mention users (a raw `@name` in text won't notify anyone).
+  </Accordion>
+  <Accordion title="teams_create_team or teams_add_member fails with a permissions error">
+    Most write operations on teams/members require admin-level Microsoft Graph permissions on the connected account, beyond what a regular member has — check with your Microsoft 365 admin if these consistently fail.
+  </Accordion>
+</AccordionGroup>

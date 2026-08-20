@@ -1,0 +1,64 @@
+---
+title: "Wan (Alibaba)"
+description: "Generate video from text or images using Alibaba's Wan model via DashScope"
+icon: /images/wan.svg
+---
+
+# Wan (Alibaba)
+
+Shanone's Wan integration gives your agent 4 tools for generating video from a text prompt or a source image, and for tracking those (asynchronous) generation jobs through Alibaba Cloud's DashScope API. It's a small, focused integration rather than a broad platform API.
+
+## Getting Started
+
+<Steps>
+  <Step title="Generate a DashScope API key">
+    In the [Alibaba Cloud DashScope console](https://dashscope.console.aliyun.com/), create an API key with access to the Wan video generation models.
+  </Step>
+  <Step title="Connect the API key in Shanone">
+    Ask your agent to do something with Wan (e.g. "generate a video of a paper airplane flying through a city"), or add the API key proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `wan_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **4 tools** for Wan, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Video generation">
+    `wan_text_to_video`, `wan_image_to_video`
+  </Accordion>
+  <Accordion title="Task tracking">
+    `wan_get_task`, `wan_wait_for_task`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Text-to-video generation" icon="video">
+    Turn a scene description into a short video clip for a storyboard or social post
+  </Card>
+  <Card title="Image animation" icon="image">
+    Animate a static product photo or illustration into a short motion clip
+  </Card>
+  <Card title="Batch content generation" icon="layers">
+    Queue several generation tasks and poll them for completion in a review pipeline
+  </Card>
+  <Card title="Creative exploration" icon="sparkles">
+    Generate multiple variations from the same prompt to pick the best result
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="wan_text_to_video or wan_image_to_video doesn't return a video immediately">
+    Video generation is asynchronous — both tools return a task ID that you should pass to `wan_wait_for_task` (or poll manually with `wan_get_task`) until the job completes.
+  </Accordion>
+  <Accordion title="wan_image_to_video fails on the source image">
+    Check `shanone_get_tool_schema` for `wan_image_to_video` — the source image typically needs to be a publicly accessible URL rather than raw binary data, and must meet DashScope's format/size requirements.
+  </Accordion>
+</AccordionGroup>

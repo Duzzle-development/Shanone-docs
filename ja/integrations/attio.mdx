@@ -1,0 +1,88 @@
+---
+title: "Attio"
+description: "AttioのCRMで企業・人物・取引・カスタムオブジェクトを管理し、リスト・ノート・タスクも扱う"
+icon: /images/attio.svg
+---
+
+# Attio
+
+ShanoneのAttio連携では、Attioの柔軟なオブジェクトモデルをカバーする**76個のツール**をエージェントに提供します — 企業・人物・取引といった標準的なCRMレコードに加え、カスタムオブジェクト、リスト、属性(attribute)、ノート、コメント、タスクまで扱えます。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにAttioで何か作業をしてもらう(例:「エンタープライズタグのついた企業を一覧表示して」)か、Shanoneダッシュボードの**インテグレーション**から事前に接続します。
+  </Step>
+  <Step title="ワークスペースを承認する">
+    Shanoneにアクセスさせたいワークスペースについて、AttioのOAuth承認画面で承認します。
+  </Step>
+  <Step title="リクエストを再試行する">
+    接続が完了すると、`attio_*`ツールに対する`shanone_execute_tool`の呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+Shanoneは Attio向けに**76個のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="企業(Companies)">
+    `attio_list_companies`, `attio_get_company`, `attio_create_company`, `attio_update_company`, `attio_delete_company`, `attio_search_companies`
+  </Accordion>
+  <Accordion title="人物(People)">
+    `attio_list_people`, `attio_get_person`, `attio_create_person`, `attio_update_person`, `attio_delete_person`, `attio_search_people`
+  </Accordion>
+  <Accordion title="取引(Deals)">
+    `attio_list_deals`, `attio_get_deal`, `attio_create_deal`, `attio_update_deal`, `attio_delete_deal`, `attio_search_deals`
+  </Accordion>
+  <Accordion title="レコード & オブジェクト(カスタムオブジェクト)">
+    `attio_list_records`, `attio_get_record`, `attio_create_record`, `attio_update_record`, `attio_delete_record`, `attio_assert_record`, `attio_list_objects`, `attio_get_object`, `attio_create_object`, `attio_update_object`, `attio_get_object_attributes`
+  </Accordion>
+  <Accordion title="属性(Attributes)">
+    `attio_list_attributes`, `attio_get_attribute`, `attio_create_attribute`, `attio_update_attribute`, `attio_archive_attribute`, `attio_get_select_options`, `attio_create_select_option`
+  </Accordion>
+  <Accordion title="リスト & エントリー">
+    `attio_list_lists`, `attio_get_list`, `attio_create_list`, `attio_update_list`, `attio_delete_list`, `attio_get_list_attributes`, `attio_list_entries`, `attio_get_entry`, `attio_create_entry`, `attio_update_entry`, `attio_delete_entry`, `attio_assert_entry`
+  </Accordion>
+  <Accordion title="タスク">
+    `attio_list_tasks`, `attio_get_task`, `attio_create_task`, `attio_update_task`, `attio_delete_task`, `attio_complete_task`
+  </Accordion>
+  <Accordion title="ノート & コメント">
+    `attio_list_notes`, `attio_get_note`, `attio_create_note`, `attio_update_note`, `attio_delete_note`, `attio_list_comments`, `attio_get_comment`, `attio_create_comment`, `attio_delete_comment`, `attio_list_threads`, `attio_create_thread`
+  </Accordion>
+  <Accordion title="ユーザー、ワークスペースメンバー & Webhook">
+    `attio_list_users`, `attio_get_user`, `attio_search_users`, `attio_get_current_user`, `attio_list_workspace_members`, `attio_get_workspace_member`, `attio_list_webhooks`, `attio_get_webhook`, `attio_create_webhook`, `attio_update_webhook`, `attio_delete_webhook`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="パイプラインレビュー" icon="filter">
+    ステージ別に取引を一覧・検索し、停滞している取引をまとめる
+  </Card>
+  <Card title="カスタムオブジェクトの自動化" icon="boxes">
+    ワークスペースのスキーマに紐づくカスタムオブジェクト(例:「Renewals」)のレコードを作成・更新する
+  </Card>
+  <Card title="リスト駆動のワークフロー" icon="list">
+    企業や人物をキュレーションされたリストに追加し、リスト固有の属性で追跡する
+  </Card>
+  <Card title="フォローアップタスクの作成" icon="check-square">
+    通話や会議の後に、人物や取引のレコードにタスクを作成・割り当てる
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="attio_create_recordが不明な属性エラーで失敗する">
+    Attioのオブジェクトスキーマはワークスペースごとに異なり、カスタム属性を含むことがあります。まず`attio_get_object_attributes`または`attio_list_attributes`で正確な属性のslugと型を確認してください。
+  </Accordion>
+  <Accordion title="attio_assert_record / attio_assert_entryの動作が想定と違う">
+    これらはマッチする属性(企業ならドメインなど)に基づくupsert的な操作です — マッチ条件が曖昧または不足していると、意図したレコードを更新するのではなく重複を作成してしまう場合があります。
+  </Accordion>
+  <Accordion title="select/statusフィールドの更新が拒否される">
+    enum型の属性(select、status)には、`attio_get_select_options`から取得した正確なオプションIDまたはタイトルが必要です — 既存のオプションに一致しない自由入力の値は、`attio_create_select_option`で先にオプションを作成しない限り失敗します。
+  </Accordion>
+</AccordionGroup>

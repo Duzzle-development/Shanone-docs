@@ -1,0 +1,64 @@
+---
+title: "Context7"
+description: "Up-to-date library documentation and code examples for over 50,000 libraries"
+icon: /images/context7.svg
+---
+
+# Context7
+
+Shanone's Context7 integration gives your agent 3 tools for pulling current, version-accurate documentation and code snippets directly from library source — useful for avoiding outdated API knowledge baked into a model's training data.
+
+## Getting Started
+
+<Steps>
+  <Step title="Get a Context7 API Key">
+    Sign up at [context7.com](https://context7.com/docs/api-guide) and generate an API Key from your account.
+  </Step>
+  <Step title="Add it to Shanone">
+    Open **Integrations** in the Shanone dashboard, select Context7, and paste in the API Key.
+  </Step>
+  <Step title="Retry your request">
+    Once saved, `shanone_execute_tool` calls for `context7_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **3 tools** for Context7:
+
+<AccordionGroup>
+  <Accordion title="Library Search & Documentation">
+    `context7_search_library`, `context7_get_docs`, `context7_get_code_snippets`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Accurate API usage" icon="book-open">
+    Pull the current signature/usage of a library function before writing code against it
+  </Card>
+  <Card title="Framework migrations" icon="git-branch">
+    Fetch version-specific docs when upgrading a dependency to confirm breaking changes
+  </Card>
+  <Card title="Unfamiliar library onboarding" icon="compass">
+    Search for a library and retrieve topic-filtered code snippets to learn its API quickly
+  </Card>
+  <Card title="Code review assistance" icon="search-check">
+    Cross-check a PR's usage of a library against its actual documented behavior
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="context7_get_docs or context7_get_code_snippets returns a 404">
+    The `library_id` must come from `context7_search_library` first — Context7 library IDs follow a `/owner/repo` format and aren't guessable from the package name alone.
+  </Accordion>
+  <Accordion title="context7_get_code_snippets returns snippets for the wrong version">
+    Pass an explicit `version` parameter (e.g. `v18.2.0`) if you need snippets tied to a specific release; without it, Context7 returns snippets across all indexed versions.
+  </Accordion>
+  <Accordion title="Requests fail with a rate limit error">
+    Context7's free tier has a request-per-minute cap; space out calls or upgrade the plan on context7.com if you're running high-volume documentation lookups.
+  </Accordion>
+</AccordionGroup>

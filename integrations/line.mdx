@@ -1,0 +1,94 @@
+---
+title: "LINE"
+description: "Messaging, rich menus, audiences, insights, and account management for the LINE Messaging API"
+icon: /images/line.svg
+---
+
+# LINE
+
+Shanone's LINE integration gives your agent 101 tools covering nearly all of the LINE Messaging and Login APIs — sending messages, managing rich menus, building audience segments for targeted messaging, and reading engagement insights.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with LINE (e.g. "broadcast this announcement to all followers"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the LINE channel">
+    Approve the OAuth flow for the LINE Official Account / channel Shanone should act on behalf of.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `line_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **101 tools** for LINE, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Messaging">
+    `line_push_message`, `line_reply_message`, `line_broadcast_message`, `line_multicast_message`, `line_narrowcast_message`, `line_get_narrowcast_progress`, `line_get_profile_by_user_id`, `line_get_group_summary`, `line_get_group_member_count`, `line_get_bot_info`, `line_get_message_quota`, `line_get_followers_count`, `line_leave_group`
+  </Accordion>
+  <Accordion title="Message management & validation">
+    `line_validate_reply_message`, `line_validate_push_message`, `line_validate_multicast_message`, `line_validate_narrowcast_message`, `line_validate_broadcast_message`, `line_get_reply_message_count`, `line_get_push_message_count`, `line_get_multicast_message_count`, `line_get_broadcast_message_count`, `line_mark_as_read`, `line_show_loading_indicator`
+  </Accordion>
+  <Accordion title="Rich menus">
+    `line_create_rich_menu`, `line_validate_rich_menu`, `line_upload_rich_menu_image`, `line_download_rich_menu_image`, `line_get_rich_menu_list`, `line_get_rich_menu`, `line_delete_rich_menu`, `line_set_default_rich_menu`, `line_get_default_rich_menu_id`, `line_clear_default_rich_menu`
+  </Accordion>
+  <Accordion title="Rich menu aliases & per-user assignment">
+    `line_create_rich_menu_alias`, `line_delete_rich_menu_alias`, `line_update_rich_menu_alias`, `line_get_rich_menu_alias`, `line_get_rich_menu_alias_list`, `line_link_rich_menu_to_user`, `line_link_rich_menu_to_users`, `line_get_rich_menu_id_of_user`, `line_unlink_rich_menu_from_user`, `line_unlink_rich_menu_from_users`, `line_batch_control_rich_menus`, `line_get_rich_menu_batch_progress`, `line_validate_rich_menu_batch_request`
+  </Accordion>
+  <Accordion title="Audience groups">
+    `line_create_upload_audience_group`, `line_create_upload_audience_group_by_file`, `line_update_upload_audience_group`, `line_update_upload_audience_group_by_file`, `line_create_click_audience_group`, `line_create_imp_audience_group`, `line_rename_audience_group`, `line_delete_audience_group`, `line_get_audience_group`, `line_get_audience_groups`, `line_get_shared_audience_group`, `line_get_shared_audience_groups`
+  </Accordion>
+  <Accordion title="Insights">
+    `line_get_message_delivery_count`, `line_get_friend_demographics`, `line_get_message_event_stats`, `line_get_statistics_per_unit`, `line_get_unit_name_type_count`, `line_get_unit_name_list`, `line_get_rich_menu_insight_summary`, `line_get_rich_menu_insight_daily`
+  </Accordion>
+  <Accordion title="Login & user access">
+    `line_get_user_profile`, `line_verify_access_token`, `line_get_friendship_status`, `line_refresh_access_token`, `line_revoke_login_access_token`, `line_deauthorize_app`, `line_verify_id_token`, `line_get_userinfo`, `line_get_follower_ids`, `line_issue_link_token`
+  </Accordion>
+  <Accordion title="Channel access tokens">
+    `line_issue_channel_access_token_v21`, `line_verify_channel_access_token_v21`, `line_get_channel_access_token_key_ids`, `line_revoke_channel_access_token_v21`, `line_issue_stateless_channel_access_token`, `line_issue_shortlived_channel_access_token`, `line_verify_channel_access_token`, `line_revoke_channel_access_token`
+  </Accordion>
+  <Accordion title="Content, coupons & membership">
+    `line_get_message_content`, `line_get_message_content_preview`, `line_verify_content_transcoding`, `line_create_coupon`, `line_discontinue_coupon`, `line_get_coupons_list`, `line_get_coupon`, `line_get_membership_subscription_status`, `line_get_membership_user_ids`, `line_get_membership_plans`
+  </Accordion>
+  <Accordion title="Groups & rooms">
+    `line_get_group_member_ids`, `line_get_group_member_profile`, `line_get_room_member_count`, `line_get_room_member_ids`, `line_get_room_member_profile`, `line_leave_room`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Targeted campaigns" icon="target">
+    Build an audience group from click/impression data and narrowcast a promotion to it
+  </Card>
+  <Card title="Rich menu experiences" icon="layout-grid">
+    Design and deploy a rich menu, then assign different menus to different user segments
+  </Card>
+  <Card title="Support auto-replies" icon="message-square-reply">
+    Reply to inbound messages using the reply token from a webhook event
+  </Card>
+  <Card title="Engagement reporting" icon="bar-chart-3">
+    Pull delivery counts and friend demographics to report on campaign performance
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="line_reply_message fails with an invalid or expired reply token">
+    Reply tokens are single-use and expire quickly after being issued in a webhook event — use `line_push_message` instead if you're responding outside that immediate webhook-handling window.
+  </Accordion>
+  <Accordion title="line_broadcast_message or line_multicast_message returns a rate limit or quota error">
+    Check `line_get_message_quota` and the relevant `line_get_*_message_count` tool for your plan's monthly limits — free and lower-tier plans have hard caps on push/broadcast volume.
+  </Accordion>
+  <Accordion title="A rich menu doesn't appear for a specific user">
+    Rich menus are either set as the account-wide default (`line_set_default_rich_menu`) or explicitly linked per-user (`line_link_rich_menu_to_user`) — a per-user link always overrides the default, so check `line_get_rich_menu_id_of_user` if the wrong menu is showing.
+  </Accordion>
+  <Accordion title="line_create_upload_audience_group_by_file fails validation">
+    Validate the request first with the corresponding `line_validate_*` tool — audience uploads have strict format requirements (e.g. one identifier per line, size limits) that are easy to violate silently.
+  </Accordion>
+</AccordionGroup>

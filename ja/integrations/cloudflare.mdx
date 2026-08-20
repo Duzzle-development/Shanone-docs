@@ -1,0 +1,124 @@
+---
+title: "Cloudflare"
+description: "エッジプラットフォームを管理する — DNS、Workers、Pages、R2、D1、Zero Trust Access、AI Gateway、セキュリティ"
+icon: /images/cloudflare.svg
+---
+
+# Cloudflare
+
+ShanoneのCloudflare連携は、Cloudflareプラットフォームのほぼ全域を扱う247個のツールをエージェントに提供します。DNS、ゾーン、Workers、Pages、R2、D1、KV、キュー、Zero Trust Access、AI Gateway、Workers AI、ロードバランシング、セキュリティ/監査ツールが対象です。
+
+## はじめに
+
+<Steps>
+  <Step title="APIトークンを作成する">
+    Cloudflareダッシュボードの**My Profile → API Tokens**で、必要なZone/DNS/Workers/Pagesなどの権限を持つトークンを作成します(または、フルアクセス用のより広い権限のトークンでも構いません)。
+  </Step>
+  <Step title="Shanoneに登録する">
+    Shanoneダッシュボードの**連携**を開き、Cloudflareを選択してAPIトークンとアカウントIDを入力します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    保存が完了すると、`cloudflare_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはCloudflare向けに**247個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="DNS & ゾーン (11個)">
+    `cloudflare_list_dns_records`, `cloudflare_create_dns_record`, `cloudflare_update_dns_record`, `cloudflare_delete_dns_record`, `cloudflare_list_zones`, `cloudflare_get_zone`, `cloudflare_purge_cache`, `cloudflare_list_zone_settings`, `cloudflare_get_zone_setting`, `cloudflare_update_zone_setting`, `cloudflare_get_zone_analytics`
+  </Accordion>
+  <Accordion title="ゾーン設定 & アナリティクス (13個)">
+    `cloudflare_get_security_level`, `cloudflare_set_security_level`, `cloudflare_get_cache_level`, `cloudflare_set_cache_level`, `cloudflare_get_development_mode`, `cloudflare_set_development_mode`, `cloudflare_get_always_online`, `cloudflare_get_zone_analytics_by_colo`, `cloudflare_get_dns_analytics`, `cloudflare_query_analytics_graphql`, `cloudflare_get_ssl_setting`, `cloudflare_set_ssl_setting`, `cloudflare_get_ssl_verification`
+  </Accordion>
+  <Accordion title="SSL/TLS (5個)">
+    `cloudflare_list_ssl_certificates`, `cloudflare_get_ssl_certificate`, `cloudflare_order_ssl_certificate`, `cloudflare_get_minimum_tls_version`, `cloudflare_set_minimum_tls_version`
+  </Accordion>
+  <Accordion title="Workers (9個)">
+    `cloudflare_list_workers`, `cloudflare_get_worker`, `cloudflare_delete_worker`, `cloudflare_create_worker`, `cloudflare_get_worker_settings`, `cloudflare_update_worker_settings`, `cloudflare_list_worker_routes`, `cloudflare_create_worker_route`, `cloudflare_delete_worker_route`
+  </Accordion>
+  <Accordion title="Workers KV (10個)">
+    `cloudflare_list_kv_namespaces`, `cloudflare_get_kv_namespace`, `cloudflare_create_kv_namespace`, `cloudflare_rename_kv_namespace`, `cloudflare_delete_kv_namespace`, `cloudflare_list_kv_keys`, `cloudflare_get_kv_value`, `cloudflare_put_kv_value`, `cloudflare_delete_kv_value`, `cloudflare_bulk_write_kv`
+  </Accordion>
+  <Accordion title="Pages (12個)">
+    `cloudflare_list_pages_projects`, `cloudflare_get_pages_project`, `cloudflare_list_pages_deployments`, `cloudflare_get_pages_deployment`, `cloudflare_create_pages_deployment`, `cloudflare_retry_pages_deployment`, `cloudflare_rollback_pages_deployment`, `cloudflare_list_pages_domains`, `cloudflare_add_pages_domain`, `cloudflare_delete_pages_domain`, `cloudflare_create_pages_project`, `cloudflare_update_pages_project`
+  </Accordion>
+  <Accordion title="Pages拡張 (5個)">
+    `cloudflare_delete_pages_project`, `cloudflare_get_pages_project_settings`, `cloudflare_purge_pages_cache`
+  </Accordion>
+  <Accordion title="D1データベース (12個)">
+    `cloudflare_list_d1_databases`, `cloudflare_get_d1_database`, `cloudflare_create_d1_database`, `cloudflare_delete_d1_database`, `cloudflare_get_d1_database_stats`, `cloudflare_update_d1_database`, `cloudflare_d1_query`, `cloudflare_d1_raw_query`, `cloudflare_d1_batch_query`, `cloudflare_list_d1_backups`, `cloudflare_create_d1_backup`, `cloudflare_restore_d1_backup`
+  </Accordion>
+  <Accordion title="R2ストレージ (14個)">
+    `cloudflare_list_r2_buckets`, `cloudflare_get_r2_bucket`, `cloudflare_create_r2_bucket`, `cloudflare_delete_r2_bucket`, `cloudflare_get_r2_bucket_usage`, `cloudflare_update_r2_bucket_cors`, `cloudflare_list_r2_objects`, `cloudflare_get_r2_object_metadata`, `cloudflare_put_r2_object`, `cloudflare_delete_r2_object`, `cloudflare_copy_r2_object`, `cloudflare_get_r2_public_access`, `cloudflare_enable_r2_public_access`, `cloudflare_disable_r2_public_access`
+  </Accordion>
+  <Accordion title="キュー・トンネル & Vectorize (16個)">
+    `cloudflare_queue_list`, `cloudflare_queue_get`, `cloudflare_queue_create`, `cloudflare_queue_update`, `cloudflare_queue_delete`, `cloudflare_list_tunnels`, `cloudflare_get_tunnel`, `cloudflare_create_tunnel`, `cloudflare_delete_tunnel`, `cloudflare_get_tunnel_token`, `cloudflare_update_tunnel_config`, `cloudflare_list_tunnel_routes`, `cloudflare_create_tunnel_route`, `cloudflare_update_tunnel_route`, `cloudflare_delete_tunnel_route`, `cloudflare_vectorize_list_indexes`
+  </Accordion>
+  <Accordion title="Workers AI & AI Gateway (25個)">
+    `cloudflare_ai_run_model`, `cloudflare_ai_list_models`, `cloudflare_ai_get_model`, `cloudflare_ai_text_generation`, `cloudflare_ai_text_embedding`, `cloudflare_ai_image_classification`, `cloudflare_ai_text_to_image`, `cloudflare_ai_speech_to_text`, `cloudflare_ai_translation`, `cloudflare_ai_summarization`, `cloudflare_ai_gateway_list`, `cloudflare_ai_gateway_get`, `cloudflare_ai_gateway_create`, `cloudflare_ai_gateway_update`, `cloudflare_ai_gateway_delete`, `cloudflare_ai_gateway_list_logs`, `cloudflare_ai_gateway_get_analytics`, `cloudflare_ai_gateway_list_datasets`, `cloudflare_ai_gateway_create_dataset`, `cloudflare_ai_gateway_list_evaluations`, `cloudflare_ai_gateway_create_evaluation`, `cloudflare_ai_gateway_list_provider_configs`, `cloudflare_ai_gateway_create_provider_config`, `cloudflare_ai_gateway_update_provider_config`, `cloudflare_ai_gateway_delete_provider_config`
+  </Accordion>
+  <Accordion title="Access (Zero Trust) (8個)">
+    `cloudflare_list_access_apps`, `cloudflare_get_access_app`, `cloudflare_create_access_app`, `cloudflare_delete_access_app`, `cloudflare_list_access_policies`, `cloudflare_get_access_policy`, `cloudflare_create_access_policy`, `cloudflare_delete_access_policy`
+  </Accordion>
+  <Accordion title="アカウント & メンバー (9個)">
+    `cloudflare_get_account_info`, `cloudflare_list_accounts`, `cloudflare_list_account_members`, `cloudflare_get_account_member`, `cloudflare_invite_account_member`, `cloudflare_update_account_member`, `cloudflare_remove_account_member`, `cloudflare_list_account_roles`, `cloudflare_get_account_role`
+  </Accordion>
+  <Accordion title="ファイアウォール・レート制限 & ルールセット (16個)">
+    `cloudflare_list_firewall_rules`, `cloudflare_get_firewall_rule`, `cloudflare_create_firewall_rule`, `cloudflare_update_firewall_rule`, `cloudflare_delete_firewall_rule`, `cloudflare_update_firewall_rule_priority`, `cloudflare_list_ip_access_rules`, `cloudflare_create_ip_access_rule`, `cloudflare_update_ip_access_rule`, `cloudflare_delete_ip_access_rule`, `cloudflare_list_rate_limits`, `cloudflare_get_rate_limit`, `cloudflare_create_rate_limit`, `cloudflare_delete_rate_limit`, `cloudflare_list_rulesets`, `cloudflare_get_ruleset`
+  </Accordion>
+  <Accordion title="Security Center & DLP (14個)">
+    `cloudflare_create_ruleset`, `cloudflare_update_ruleset`, `cloudflare_delete_ruleset`, `cloudflare_create_ruleset_rule`, `cloudflare_security_center_list_insights`, `cloudflare_security_center_get_insight`, `cloudflare_security_center_dismiss_insight`, `cloudflare_security_center_list_issue_types`, `cloudflare_security_center_get_summary`, `cloudflare_security_center_scan`, `cloudflare_security_center_list_scans`, `cloudflare_security_center_get_scan`, `cloudflare_dlp_list_profiles`, `cloudflare_dlp_get_profile`
+  </Accordion>
+  <Accordion title="ロードバランシング & モニター (16個)">
+    `cloudflare_dlp_create_profile`, `cloudflare_dlp_update_profile`, `cloudflare_dlp_delete_profile`, `cloudflare_dlp_list_entries`, `cloudflare_list_load_balancers`, `cloudflare_get_load_balancer`, `cloudflare_create_load_balancer`, `cloudflare_update_load_balancer`, `cloudflare_delete_load_balancer`, `cloudflare_patch_load_balancer`, `cloudflare_list_pools`, `cloudflare_get_pool`, `cloudflare_create_pool`, `cloudflare_update_pool`, `cloudflare_delete_pool`, `cloudflare_list_monitors`
+  </Accordion>
+  <Accordion title="Turnstile & Waiting Rooms (13個)">
+    `cloudflare_get_monitor`, `cloudflare_create_monitor`, `cloudflare_update_monitor`, `cloudflare_delete_monitor`, `cloudflare_turnstile_list_widgets`, `cloudflare_turnstile_get_widget`, `cloudflare_turnstile_create_widget`, `cloudflare_turnstile_update_widget`, `cloudflare_turnstile_delete_widget`, `cloudflare_turnstile_rotate_secret`, `cloudflare_turnstile_verify_token`, `cloudflare_turnstile_get_analytics`, `cloudflare_list_waiting_rooms`
+  </Accordion>
+  <Accordion title="Images & Stream (12個)">
+    `cloudflare_get_waiting_room`, `cloudflare_create_waiting_room`, `cloudflare_delete_waiting_room`, `cloudflare_list_images`, `cloudflare_get_image`, `cloudflare_upload_image`, `cloudflare_delete_image`, `cloudflare_list_image_variants`, `cloudflare_create_image_variant`, `cloudflare_list_stream_videos`, `cloudflare_get_stream_video`, `cloudflare_upload_stream_video`
+  </Accordion>
+  <Accordion title="メールルーティング・シークレット & Logpush (18個)">
+    `cloudflare_delete_stream_video`, `cloudflare_get_stream_embed_code`, `cloudflare_create_stream_live_input`, `cloudflare_list_email_routing_rules`, `cloudflare_create_email_routing_rule`, `cloudflare_update_email_routing_rule`, `cloudflare_delete_email_routing_rule`, `cloudflare_secrets_store_list`, `cloudflare_secrets_store_get`, `cloudflare_secrets_store_create`, `cloudflare_secrets_store_delete`, `cloudflare_secrets_list`, `cloudflare_secrets_get`, `cloudflare_secrets_create`, `cloudflare_secrets_delete`, `cloudflare_list_logpush_jobs`, `cloudflare_get_logpush_job`, `cloudflare_create_logpush_job`
+  </Accordion>
+  <Accordion title="監査ログ (4個)">
+    `cloudflare_list_audit_logs`, `cloudflare_get_audit_log`, `cloudflare_export_audit_logs`, `cloudflare_get_audit_log_actions`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="DNS & ドメイン移行" icon="globe">
+    ドメインをCloudflareに移行する際に、DNSレコードとゾーン設定を一括管理する
+  </Card>
+  <Card title="サーバーレスデプロイ" icon="server">
+    Workers/Pagesをデプロイし、KV/D1/R2のバインディングを設定して、問題のあるデプロイをロールバックする
+  </Card>
+  <Card title="セキュリティ状況のレビュー" icon="shield-check">
+    ファイアウォールルール、Accessポリシー、Security Centerのインサイトを一度に確認する
+  </Card>
+  <Card title="AI Gatewayの可観測性" icon="activity">
+    AI Gatewayのログとアナリティクスを確認し、Cloudflare経由のLLMトラフィックをデバッグする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="トークンは有効なのに「Authentication error」が返る">
+    ほとんどのCloudflareツールにはAPIトークンとアカウントIDの両方が必要で(DNS/ゾーン系のツールにはさらに`zone_id`も必要)、必須フィールドは`shanone_get_tool_schema`で確認してください。アカウントスコープのリソースとゾーンスコープのリソースでは識別子が異なります。
+  </Accordion>
+  <Accordion title="cloudflare_d1_query / cloudflare_r2_*系のツールが権限エラーを返す">
+    APIトークンはプロダクトごとにスコープが分かれています。DNS権限のみで作成したトークンではD1、R2、Workersのエンドポイントを呼び出せません。必要なスコープを追加した新しいトークンを作成するか、より広いアカウントレベルのトークンを使用してください。
+  </Accordion>
+  <Accordion title="作成したばかりのDNSレコードがまだ解決されない">
+    DNSの変更はCloudflareのエッジネットワーク全体に伝播するため、API呼び出し自体は即座に成功していても反映には少し時間がかかります。これはツールの失敗ではなく想定された挙動です。
+  </Accordion>
+  <Accordion title="cloudflare_create_pages_deploymentが最新のコードを反映していない">
+    Pagesのデプロイは、トリガー時にプッシュされたビルド/アーティファクトに紐づきます。新しいデプロイをトリガーする前に、Git連携または直接アップロードした内容に変更が実際に含まれているか確認してください。
+  </Accordion>
+</AccordionGroup>
