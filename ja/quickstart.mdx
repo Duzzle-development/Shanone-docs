@@ -1,53 +1,147 @@
 ---
-title: クイックスタート
-description: 数分で Shanone を使い始めましょう
+title: "クイックスタート"
+description: "APIキーを取得し、CursorやClaude CodeをShanoneに接続して、最初のインテグレーションを認可し、最初のツール呼び出しを実行する——所要時間は約5分です。"
 ---
 
-# クイックスタート
-
-以下の手順に従って Shanone を始めましょう。
+このガイドでは、MCPクライアントとShanoneをエンドツーエンドでつなぎます。APIキーの取得 → クライアントの設定 → 最初のOAuth接続 → 最初のツール呼び出し、という流れです。
 
 ## 前提条件
 
-始める前に、以下を確認してください：
+- [app.shanone.ai](https://app.shanone.ai)のShanoneアカウント
+- **Cursor**、**Claude Code**、またはstdioサーバーやカスタムヘッダー付きのリモートStreamable HTTPサーバーに対応するその他のMCPクライアントのいずれか
+- ローカルのstdioプロキシ(下記の推奨手順)を使う場合はNode.js 18以上
 
-- Node.js 18 以上
-- npm または yarn
-
-## インストール
+## ステップ1: APIキーを取得する
 
 <Steps>
-  <Step title="パッケージをインストール">
-    ```bash
-    npm install Shanone
-    ```
+  <Step title="API Keysを開く">
+    Shanoneにサインインし、**Settings → API Keys**に移動します。
   </Step>
-  <Step title="プロジェクトを初期化">
-    ```bash
-    npx Shanone init
-    ```
+  <Step title="キーを作成する">
+    **Create API Key**をクリックし、わかりやすい名前(例: 「Cursor — laptop」)を付けて確定します。
   </Step>
-  <Step title="Shanone を使い始める">
-    ```javascript
-    import { Shanone } from 'Shanone';
-
-    const result = Shanone.run();
-    console.log(result);
-    ```
+  <Step title="今すぐコピーする">
+    平文のキーは`sh_xxxxxxxxxxxxxxxx`という形式で**一度だけ**表示されます。安全な場所に保管してください——それ以降Shanoneが保持するのはハッシュ値のみです。
   </Step>
 </Steps>
 
-## 設定
+<Warning>
+APIキーはパスワードと同様に扱ってください。これを持つ人は、あなたのアカウントが実行権限を持つすべてのツールを呼び出せます。バージョン管理にコミットしないでください。
+</Warning>
 
-プロジェクトルートに設定ファイルを作成します：
+## ステップ2: MCPクライアントにShanoneを追加する
 
-```json
-{
-  "name": "my-project",
-  "version": "1.0.0"
-}
+最も簡単な接続方法は、ローカルのstdioプロキシ`@duzzle/shanone-mcp`を使うことです。これは自分のマシン上で動作し、MCPツール呼び出しをAPIキーを使ってHTTPS経由でShanoneのAPIに転送します。
+
+<Tabs>
+  <Tab title="Cursor">
+    `~/.cursor/mcp.json`(または**Cursor Settings → MCP**)に以下を追加します。
+
+    ```json
+    {
+      "mcpServers": {
+        "shanone": {
+          "command": "npx",
+          "args": ["-y", "@duzzle/shanone-mcp"],
+          "env": {
+            "SHANONE_API_KEY": "sh_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+
+    Cursorを再起動する(またはMCPサーバー一覧をリロードする)と反映されます。
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add shanone \
+      --env SHANONE_API_KEY=sh_xxxxxxxxxxxxxxxx \
+      -- npx -y @duzzle/shanone-mcp
+    ```
+
+    またはプロジェクトの`.mcp.json`に追加します。
+
+    ```json
+    {
+      "mcpServers": {
+        "shanone": {
+          "command": "npx",
+          "args": ["-y", "@duzzle/shanone-mcp"],
+          "env": {
+            "SHANONE_API_KEY": "sh_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="任意のMCPクライアント(直接HTTP接続)">
+    お使いのクライアントがリモートStreamable HTTP MCPに対応し、カスタムヘッダーを送信できる場合は、ローカルプロキシを完全に省略して、Shanoneのホスト型エンドポイントに直接接続できます。
+
+    ```json
+    {
+      "mcpServers": {
+        "shanone": {
+          "url": "https://app.shanone.ai/mcp",
+          "headers": {
+            "Authorization": "Bearer sh_xxxxxxxxxxxxxxxx",
+            "X-Org-Id": "org_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+
+    この直接エンドポイントを使うにはAPIキーと組織ID(**API Keys**ページにも表示されています)の**両方**が必要です——この複合チェックにより、APIキーが1つ漏洩しただけではツールを呼び出せない仕組みになっています。ローカルプロキシとの詳しい比較は[MCPセットアップ](/ja/mcp/setup)を参照してください。
+  </Tab>
+</Tabs>
+
+## ステップ3: 最初のインテグレーションを接続する
+
+Shanoneでは、すべてのサービスを事前にまとめて認可しておく必要はありません——OAuthが必要なツールは、エージェントが最初にそのツールを使おうとしたタイミングで単純に`connect_link`を返します。
+
+<Steps>
+  <Step title="エージェントにサービスが必要な作業を依頼する">
+    例えば、Cursorのチャットで:「Slackの#generalチャンネルに'hello from Shanone'と投稿して」。
+  </Step>
+  <Step title="接続リンクをたどる">
+    Slackがまだ接続されていない場合、ツール呼び出しは`connect_link`とともに`Authentication Required`のようなメッセージを返します。それをブラウザで開き、OAuthフローを完了させます。
+  </Step>
+  <Step title="同じリクエストを再試行する">
+    エージェントに再試行してもらいます。今回はそのサービス・ユーザーに対する有効なOAuthトークンがShanoneに保存されているため、呼び出しは成功します。
+  </Step>
+</Steps>
+
+<Note>
+エージェントが認証の壁にぶつかるのを待たずに、Shanoneダッシュボードの**Integrations**から事前にインテグレーションを接続することもできます。
+</Note>
+
+## ステップ4: 最初のツール呼び出しを実行する
+
+いくつか自然なプロンプトを試して、エージェントがメタツールのワークフローをたどっていく様子を見てみましょう。
+
 ```
+"What Shanone tools are available for GitHub?"
+"Search Shanone for tools related to creating a Notion page"
+"Create a GitHub issue titled 'Fix login redirect bug' in my-org/my-repo"
+```
+
+裏側では、エージェントは`shanone_search_tools`(全件を確認したい場合は`shanone_list_service_tools`)を呼び出し、続いて自分で組み立てた引数で`shanone_execute_tool`を呼び出しています——あなたが手でJSONを用意する必要はありません。
 
 ## 次のステップ
 
-セットアップが完了したら、[ガイド](/ja/guides/overview) でより詳しい情報をご覧ください。
+<CardGroup cols={2}>
+  <Card title="MCP概要" icon="server" href="/ja/mcp/overview">
+    メタツールのワークフロー全体、Skill Vendor、Permission Vendorのツールを理解する
+  </Card>
+  <Card title="ベストプラクティス" icon="lightbulb" href="/ja/guides/best-practices">
+    エージェントへの指示の出し方を工夫して、より良い結果を得る
+  </Card>
+  <Card title="インテグレーション" icon="puzzle" href="/ja/integrations/overview">
+    Slack、GitHub、Notion、Stripeなどで利用できるものを見る
+  </Card>
+  <Card title="Skillを保存する" icon="bookmark" href="/ja/product-guide/skills">
+    今行ったワークフローを再利用可能なSkillにする
+  </Card>
+</CardGroup>

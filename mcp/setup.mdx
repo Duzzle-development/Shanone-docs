@@ -1,76 +1,97 @@
 ---
-title: Setup
-description: Configure the Shanone MCP Server in Cursor, Claude Code, or Codex to start using Shanone's tools and Skills from your agent.
+title: "Setup"
+description: "Configure the Shanone MCP Server in Cursor, Claude Code, or Codex — via the local stdio proxy (recommended) or a direct remote HTTP connection."
 ---
 
-This guide walks you through connecting to the Shanone MCP Server, a remote server hosted by Shanone — there's no local package to install.
+Shanone can be reached two ways. Most clients should use the **local stdio proxy** — it's simpler to configure and only needs your API key. Clients that support custom HTTP headers well (like Cursor) can optionally connect **directly** to Shanone's remote endpoint instead, with no local process to run.
+
+| | Local stdio proxy | Direct remote HTTP |
+|---|---|---|
+| Package/URL | `@duzzle/shanone-mcp` (npm) | `https://app.shanone.ai/mcp` |
+| Requires Node.js locally | Yes (18+) | No |
+| Auth needed | API key only | API key **and** organization ID |
+| Best for | Most clients, simplest setup | Clients comfortable sending custom headers |
 
 ## Prerequisites
 
-Before you begin, make sure you have:
-
 - One of the supported clients: **Cursor**, **Claude Code**, or **Codex**
-- An **Shanone account**
-- An **Shanone API Key** (create one from **API Keys** in the Shanone dashboard)
+- A Shanone account and an API key from **Settings → API Keys** (starts with `sh_`)
+- Node.js 18+ if using the local proxy
 
-## Step 1: Get Your API Key
+## Step 1: Get your API key
 
-1. Log in to [Shanone](https://app.Shanone.ai)
-2. Go to **API Keys**
-3. Click **Create API Key** and copy the generated key (it starts with `Shanone_sk_`)
+<Steps>
+  <Step title="Sign in">
+    Go to [app.shanone.ai](https://app.shanone.ai) and sign in.
+  </Step>
+  <Step title="Open API Keys">
+    Go to **Settings → API Keys**.
+  </Step>
+  <Step title="Create a key">
+    Click **Create API Key**, name it, and copy the plaintext value — shown only once, in the form `sh_xxxxxxxxxxxxxxxx`.
+  </Step>
+</Steps>
 
 <Warning>
 Treat your API key like a password. Never commit it to version control or share it publicly.
 </Warning>
 
-## Step 2: Configure Your Client
-
-Shanone exposes its MCP server over Streamable HTTP at:
-
-```
-https://app.Shanone.ai/api/v1/mcp
-```
-
-Authenticate by sending your API key as a bearer token: `Authorization: Bearer YOUR_API_KEY`.
+## Step 2: Configure your client
 
 <Tabs>
-  <Tab title="Cursor">
+  <Tab title="Cursor (local proxy)">
     Edit `~/.cursor/mcp.json` (or use **Cursor Settings → MCP** to add a server):
 
     ```json
     {
       "mcpServers": {
-        "Shanone": {
-          "url": "https://app.Shanone.ai/api/v1/mcp",
-          "headers": {
-            "Authorization": "Bearer YOUR_API_KEY"
+        "shanone": {
+          "command": "npx",
+          "args": ["-y", "@duzzle/shanone-mcp"],
+          "env": {
+            "SHANONE_API_KEY": "sh_xxxxxxxxxxxxxxxx"
           }
         }
       }
     }
     ```
 
-    Then restart Cursor to load the MCP server.
+    Restart Cursor to load the MCP server.
   </Tab>
-  <Tab title="Claude Code">
-    Claude Code can add a remote HTTP MCP server directly from the CLI:
-
-    ```bash
-    claude mcp add --transport http Shanone \
-      "https://app.Shanone.ai/api/v1/mcp" \
-      --header "Authorization: Bearer YOUR_API_KEY"
+  <Tab title="Cursor (direct HTTP)">
+    ```json
+    {
+      "mcpServers": {
+        "shanone": {
+          "url": "https://app.shanone.ai/mcp",
+          "headers": {
+            "Authorization": "Bearer sh_xxxxxxxxxxxxxxxx",
+            "X-Org-Id": "org_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
     ```
 
-    Or edit `.mcp.json` in your project manually:
+    Find your organization ID on the same **Settings → API Keys** page as your API key.
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add shanone \
+      --env SHANONE_API_KEY=sh_xxxxxxxxxxxxxxxx \
+      -- npx -y @duzzle/shanone-mcp
+    ```
+
+    Or edit `.mcp.json` in your project:
 
     ```json
     {
       "mcpServers": {
-        "Shanone": {
-          "type": "http",
-          "url": "https://app.Shanone.ai/api/v1/mcp",
-          "headers": {
-            "Authorization": "Bearer YOUR_API_KEY"
+        "shanone": {
+          "command": "npx",
+          "args": ["-y", "@duzzle/shanone-mcp"],
+          "env": {
+            "SHANONE_API_KEY": "sh_xxxxxxxxxxxxxxxx"
           }
         }
       }
@@ -81,96 +102,98 @@ Authenticate by sending your API key as a bearer token: `Authorization: Bearer Y
     Edit `~/.codex/config.toml`:
 
     ```toml
-    [mcp_servers.Shanone]
-    url = "https://app.Shanone.ai/api/v1/mcp"
-    http_headers = { Authorization = "Bearer YOUR_API_KEY" }
+    [mcp_servers.shanone]
+    command = "npx"
+    args = ["-y", "@duzzle/shanone-mcp"]
+
+    [mcp_servers.shanone.env]
+    SHANONE_API_KEY = "sh_xxxxxxxxxxxxxxxx"
     ```
   </Tab>
 </Tabs>
 
 <Warning>
-Replace `YOUR_API_KEY` with your actual Shanone API Key in every example above.
+Replace every placeholder key/org ID above with your actual values.
 </Warning>
 
-## Alternative: Local stdio Bridge
+## Python proxy (alternative)
 
-If your MCP client only supports the **stdio** transport (or doesn't support custom HTTP headers yet), use Shanone's local Node.js bridge instead. It proxies the same tools to the same backend over your API key.
+A Python package is also available for Python-centric environments:
+
+```bash
+pip install shanone-mcp
+```
 
 ```json
 {
   "mcpServers": {
-    "Shanone": {
-      "command": "npx",
-      "args": ["-y", "@duzzle/Shanone-mcp"],
+    "shanone": {
+      "command": "shanone-mcp",
       "env": {
-        "SHANONE_API_KEY": "YOUR_API_KEY"
+        "SHANONE_API_KEY": "sh_xxxxxxxxxxxxxxxx"
       }
     }
   }
 }
 ```
 
-<Note>
-The local bridge is published on npm as [`@duzzle/Shanone-mcp`](https://www.npmjs.com/package/@duzzle/Shanone-mcp) and requires Node.js 18+. It exposes the exact same tool set described in [Shanone MCP Server](/mcp/Shanone-mcp-server).
-</Note>
+## Verify the connection
 
-## Verify the Connection
+<Steps>
+  <Step title="Open your client's AI chat">
+    Any MCP-connected chat interface.
+  </Step>
+  <Step title="Ask for a health check">
+    "Check Shanone connection status."
+  </Step>
+  <Step title="Confirm the result">
+    `shanone_health_check` should report a healthy status with your API key valid and the database reachable.
+  </Step>
+</Steps>
 
-To verify that the Shanone MCP Server is working correctly, use the health check tool:
-
-1. Open your client's AI chat
-2. Ask: "Check Shanone connection status"
-3. The `Shanone_health_check` tool should report that the connection is healthy and your API key is valid
-
-## Configuration Reference
+## Configuration reference
 
 | Setting | Value |
 |---------|-------|
-| Remote MCP URL | `https://app.Shanone.ai/api/v1/mcp` |
-| Transport | Streamable HTTP |
-| Authentication header | `Authorization: Bearer <api_key>` (also accepts `X-API-Key: <api_key>`) |
-| Local bridge package | `@duzzle/Shanone-mcp` (npm), requires `SHANONE_API_KEY` env var |
+| Local proxy package | `@duzzle/shanone-mcp` (npm), requires `SHANONE_API_KEY` env var, Node.js 18+ |
+| Direct remote URL | `https://app.shanone.ai/mcp` (Streamable HTTP) |
+| Auth header (both) | `Authorization: Bearer <api_key>` (also accepts `X-API-Key`) |
+| Extra header (direct only) | `X-Org-Id: <org_id>` (or `?org_id=` query param fallback) |
 
 ## Troubleshooting
 
-### Connection Issues
-
 <AccordionGroup>
-  <Accordion title="401 Unauthorized / api_key_required">
-    No API key was sent with the request. Double-check that your client config includes the `Authorization: Bearer YOUR_API_KEY` header (or `X-API-Key`) exactly as shown above.
+  <Accordion title="401 api_key_required">
+    No API key was sent. Double-check your config's `env`/`headers` block matches exactly what's shown above.
   </Accordion>
-
-  <Accordion title="401 Unauthorized / invalid_api_key">
-    The API key is missing, malformed, or has been revoked. Generate a new key from **API Keys** in the Shanone dashboard and update your config.
+  <Accordion title="401 invalid_api_key">
+    The key is missing, malformed, or revoked. Generate a new one from **Settings → API Keys**.
   </Accordion>
-
-  <Accordion title="429 Rate Limited">
-    You've exceeded the request rate limit for your API key. Wait and retry — the response includes a `Retry-After` header.
+  <Accordion title="401 org_id_required / 403 invalid_org_id (direct HTTP only)">
+    You're using the direct `/mcp` endpoint without (or with the wrong) `X-Org-Id`. Copy the exact organization ID from **Settings → API Keys**, or switch to the local proxy, which doesn't need it.
   </Accordion>
-
+  <Accordion title="429 rate_limit_exceeded">
+    You've exceeded your key's rate limit. Wait for the duration in the `Retry-After` header, or ask an admin to raise the limit.
+  </Accordion>
   <Accordion title="Tools not appearing">
-    1. Restart your client completely after editing the MCP config
-    2. Check the config file for JSON/TOML syntax errors
-    3. Verify the server name matches what your client expects (usually `Shanone`)
-    4. Confirm the URL has no trailing typos: `https://app.Shanone.ai/api/v1/mcp`
-  </Accordion>
-
-  <Accordion title="Using the local stdio bridge instead">
-    If `npx -y @duzzle/Shanone-mcp` fails to start, make sure Node.js 18+ is installed and `SHANONE_API_KEY` is set in the `env` block of your MCP config.
+    1. Fully restart your client after editing the config.
+    2. Check for JSON/TOML syntax errors.
+    3. Confirm the server name in the config matches what you reference (usually `shanone`).
+    4. If using the local proxy, run `npx -y @duzzle/shanone-mcp` directly in a terminal to see startup errors.
   </Accordion>
 </AccordionGroup>
 
-## Security Best Practices
+## Security best practices
 
 <Steps>
-  <Step title="Use Environment Variables">
+  <Step title="Use environment variables">
     Where your client supports it, reference an environment variable instead of hardcoding the key in a committed config file.
   </Step>
-  <Step title="Scope and Name Your Keys">
-    Give each API key a descriptive name per machine/agent so you can revoke individual keys without affecting others.
+  <Step title="Name keys per machine/agent">
+    So you can revoke one without affecting others.
   </Step>
-  <Step title="Rotate Keys Regularly">
-    Periodically create new API keys and revoke old ones from **API Keys** in the Shanone dashboard.
+  <Step title="Rotate periodically">
+    Create new keys and revoke old ones from **Settings → API Keys**.
   </Step>
 </Steps>
 
@@ -178,9 +201,9 @@ To verify that the Shanone MCP Server is working correctly, use the health check
 
 <CardGroup cols={2}>
   <Card title="Shanone MCP Server" icon="server" href="/mcp/Shanone-mcp-server">
-    Learn about available tools and use cases
+    Available tools and use cases
   </Card>
   <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
-    Detailed documentation for all tools
+    Detailed documentation for all 18 tools
   </Card>
 </CardGroup>

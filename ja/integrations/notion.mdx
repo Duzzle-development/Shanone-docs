@@ -1,0 +1,88 @@
+---
+title: "Notion"
+description: "Notionのページやデータベースを読み取り・書き込み・検索する — Markdownをネイティブサポート"
+icon: /images/notion.svg
+---
+
+# Notion
+
+ShanoneのNotion連携では、ページ、データベース、ブロック、コメント、ビューを扱う45のツールをエージェントが利用できるようになります——Markdownネイティブな読み書きも含まれており、多くの場合これがエージェントがNotionのコンテンツを扱う最も便利な方法です。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにNotionで何か作業をしてもらう(例:「Q3 Roadmapという名前のページを作成して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
+  </Step>
+  <Step title="連携アプリにページを共有する">
+    Notionの権限モデルでは、各ページ・データベースを接続済みの連携アプリに明示的に共有する必要があります——OAuth接続後であっても、共有していないページは`notion_search`や`notion_read_page`から見えません。対象のNotionページで**Share → Invite**を使って共有してください。
+  </Step>
+  <Step title="リクエストを再試行する">
+    共有が完了すると、エージェントはそのコンテンツを読み取り・書き込み・検索できるようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはNotion用に**45のツール**を提供しており、以下のカテゴリに分類されています。
+
+<AccordionGroup>
+  <Accordion title="ページ">
+    `notion_create_page`, `notion_create_page_from_markdown`, `notion_read_page`, `notion_read_page_markdown`, `notion_update_page`, `notion_update_page_markdown`, `notion_delete_page`, `notion_duplicate_page`, `notion_move_page`, `notion_get_page_property`, `notion_batch_update_pages`
+  </Accordion>
+  <Accordion title="Markdownネイティブ編集">
+    `notion_append_markdown`, `notion_replace_content` — 生のブロックオブジェクトを組み立てる代わりに、プレーンなMarkdownでNotionページに書き込む。ほとんどのエージェント主導の編集ではこちらが推奨される方法
+  </Accordion>
+  <Accordion title="ブロック">
+    `notion_append_block`, `notion_update_block`, `notion_delete_block`
+  </Accordion>
+  <Accordion title="データベース">
+    `notion_create_database`, `notion_update_database`, `notion_get_database_schema`, `notion_query_database`, `notion_update_database_pages`, `notion_set_relation`
+  </Accordion>
+  <Accordion title="ビュー">
+    `notion_create_view`, `notion_update_view`, `notion_delete_view`, `notion_list_views`, `notion_retrieve_view`, `notion_create_view_query`, `notion_get_view_query_results`
+  </Accordion>
+  <Accordion title="コメント">
+    `notion_add_comment`, `notion_add_block_comment`, `notion_reply_to_comment`, `notion_list_comments`
+  </Accordion>
+  <Accordion title="検索 & 議事録">
+    `notion_search`, `notion_query_meeting_notes` — 連携アプリに共有されているすべてのページ/データベースを横断検索する、またはNotionが自動生成する議事録を特定して表示する
+  </Accordion>
+  <Accordion title="ファイル & アップロード">
+    `notion_add_file`, `notion_create_file_upload`, `notion_send_file_upload`, `notion_complete_file_upload`, `notion_retrieve_file_upload`, `notion_list_file_uploads`
+  </Accordion>
+  <Accordion title="ユーザー & ワークスペース">
+    `notion_get_me`, `notion_get_user`, `notion_get_users`, `notion_list_custom_emojis`
+  </Accordion>
+</AccordionGroup>
+
+## よくある使い方
+
+<CardGroup cols={2}>
+  <Card title="議事録からタスクへ" icon="clipboard-list">
+    Notionの議事録ページを読み取り、フォローアップ事項を別の場所(例: Linearのissue)に整理する
+  </Card>
+  <Card title="常時更新されるドキュメント" icon="file-pen">
+    ブロックツリーを手作業で組み立てる代わりに、Markdown経由でドキュメントの一部を追記・置換する
+  </Card>
+  <Card title="データベース駆動のレポート" icon="table">
+    フィルタ/ソートを指定してデータベースを照会し、結果を要約する
+  </Card>
+  <Card title="ナレッジ検索" icon="magnifying-glass">
+    Shanoneに共有されているすべてのコンテンツを横断検索して「Xはどこで決まった?」に答える
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="存在するはずのページでnotion_searchやnotion_read_pageが何も返さない">
+    そのページ(またはその親データベース)がNotion上でShanoneの連携アプリに共有されていません。Notionでページを開き、**Share**をクリックして連携アプリを明示的に追加してください——OAuthだけではページ単位のアクセス権は付与されません。
+  </Accordion>
+  <Accordion title="Markdownの往復変換で書式の一部が失われる">
+    `notion_append_markdown` / `notion_update_page_markdown`はNotionの一般的なブロックタイプ(見出し、リスト、コード、コールアウト、テーブル)をサポートしていますが、特殊なブロックタイプすべてには対応していません。サポートされていない場合は、ブロックレベルのツール(`notion_append_block`、`notion_update_block`)にフォールバックしてください。
+  </Accordion>
+  <Accordion title="データベースクエリの結果が期待より少ない">
+    まず`notion_get_database_schema`と照らし合わせてフィルタ/ソートのペイロードを確認してください——プロパティ名と型は大文字小文字を含めて完全に一致している必要があります。
+  </Accordion>
+</AccordionGroup>

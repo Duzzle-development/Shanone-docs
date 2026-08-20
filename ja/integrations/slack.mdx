@@ -1,299 +1,298 @@
 ---
-title: Slack
-description: ShanoneをSlackワークスペースに接続して、チームコラボレーションを強化
+title: "Slack"
+description: "ShanoneをSlackワークスペースに接続し、メッセージング・チャンネル管理・管理操作を行う"
 icon: /images/slack.svg
 ---
 
 # Slack
 
-ShanoneをSlackワークスペースに接続して、チームコラボレーションを強化します。
+ShanoneのSlack連携では、日常的なメッセージングからチャンネル管理、Canvas、Lists、Enterprise Gridの管理操作まで、125のツールをエージェントが利用できるようになります。
 
 ## はじめに
 
-### インストール
-
 <Steps>
-  <Step title="設定画面へ移動">
-    Shanoneダッシュボードで **設定 > 連携 > Slack** に移動します。
+  <Step title="OAuthで接続する">
+    エージェントにSlackで何か作業をしてもらう(例:「#generalに投稿して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。どちらの方法でも、ShanoneのSlackアプリをワークスペースに対して認可するための`connect_link`が発行されます。
   </Step>
-  <Step title="接続をクリック">
-    「Slackに接続」ボタンをクリックします。
+  <Step title="プライベートチャンネルにアプリを招待する">
+    Botトークンによる操作(投稿、履歴の取得など)は、Slackアプリが追加されているチャンネルでのみ動作します。パブリックチャンネルでは通常これは不要ですが、プライベートチャンネルではSlack上で明示的にアプリを招待する必要があります。
   </Step>
-  <Step title="認証">
-    ShanoneがSlackワークスペースにアクセスすることを許可します。
-  </Step>
-  <Step title="Shanoneをチャンネルに招待">
-    Shanoneを使用したいチャンネルで `/invite @Shanone` と入力します。
+  <Step title="リクエストを再試行する">
+    接続が完了したら、もう一度エージェントに依頼してください——`shanone_execute_tool`は`connect_link`を返す代わりに成功するようになります。
   </Step>
 </Steps>
 
+<Note>
+メッセージ検索(`slack_search_messages`、`slack_search_all`、`slack_search_files`)は、同じOAuthフローで取得されるSlackの**ユーザートークン**を使用します(Botトークンではありません)。他の機能は動くのに検索関連のツールだけ失敗する場合は、OAuth接続をやり直して両方のトークンが付与されているか確認してください。
+</Note>
+
 ## 利用可能なツール
 
-Shanoneは24カテゴリに分類された**113のツール**を提供しています：
+ShanoneはSlack用に**125のツール**を提供しており、以下のカテゴリに分類されています。
 
 <AccordionGroup>
   <Accordion title="メッセージ (7 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_search_messages` | キーワードと高度なフィルターでメッセージ履歴を検索 |
-    | `slack_get_channel_history` | 特定チャンネルの履歴を取得 |
-    | `slack_get_thread` | スレッドのすべての返信を取得 |
-    | `slack_post_message` | チャンネルまたはDMにメッセージを投稿 |
-    | `slack_reply_to_thread` | スレッドに返信 |
-    | `slack_update_message` | 既存のメッセージを編集 |
-    | `slack_delete_message` | チャンネルからメッセージを削除 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_search_messages` | キーワードや高度なフィルタでSlackのメッセージ履歴を検索する |
+    | `slack_get_channel_history` | 特定のSlackチャンネルの履歴を取得する |
+    | `slack_get_thread` | Slackスレッド内のすべての返信を取得する |
+    | `slack_post_message` | Slackチャンネルまたはダイレクトメッセージにメッセージを投稿する |
+    | `slack_reply_to_thread` | Slackスレッドに返信する |
+    | `slack_update_message` | 既存のメッセージを更新(編集)する |
+    | `slack_delete_message` | チャンネルからメッセージを削除する |
   </Accordion>
 
   <Accordion title="チャンネル (3 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_list_channels` | 利用可能なチャンネル一覧を取得 |
-    | `slack_get_channel_info` | チャンネルの詳細情報を取得 |
-    | `slack_get_channel_members` | チャンネルのメンバー一覧を取得 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_list_channels` | 利用可能なSlackチャンネルの一覧を取得する |
+    | `slack_get_channel_info` | チャンネルの詳細情報を取得する |
+    | `slack_get_channel_members` | チャンネルのメンバー一覧を取得する |
   </Accordion>
 
-  <Accordion title="会話管理 (12 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_create_channel` | 新しいパブリック/プライベートチャンネルを作成 |
-    | `slack_archive_channel` | チャンネルをアーカイブ |
-    | `slack_unarchive_channel` | アーカイブされたチャンネルを復元 |
-    | `slack_rename_channel` | チャンネル名を変更 |
-    | `slack_set_channel_topic` | チャンネルのトピックを設定 |
-    | `slack_set_channel_purpose` | チャンネルの目的を設定 |
-    | `slack_join_channel` | パブリックチャンネルに参加 |
-    | `slack_leave_channel` | チャンネルから退出 |
-    | `slack_invite_to_channel` | ユーザーをチャンネルに招待 |
-    | `slack_kick_from_channel` | ユーザーをチャンネルから削除 |
-    | `slack_mark_channel` | チャンネルの既読位置を設定 |
-    | `slack_get_conversation_replies` | スレッドのすべての返信を取得 |
+  <Accordion title="コンバセーション (12 tools)">
+    | Tool | Description |
+    |------|-------------|
+    | `slack_create_channel` | 新しいパブリックまたはプライベートチャンネルを作成する |
+    | `slack_archive_channel` | チャンネルをアーカイブする |
+    | `slack_unarchive_channel` | アーカイブ済みのチャンネルを復元する |
+    | `slack_rename_channel` | チャンネル名を変更する |
+    | `slack_set_channel_topic` | チャンネルのトピックを設定する |
+    | `slack_set_channel_purpose` | チャンネルの用途(説明)を設定する |
+    | `slack_join_channel` | パブリックチャンネルに参加する |
+    | `slack_leave_channel` | チャンネルから退出する |
+    | `slack_invite_to_channel` | チャンネルにユーザーを招待する |
+    | `slack_kick_from_channel` | チャンネルからユーザーを削除する |
+    | `slack_mark_channel` | チャンネルの既読位置を設定する |
+    | `slack_get_conversation_replies` | スレッド内のすべての返信を取得する |
   </Accordion>
 
   <Accordion title="ファイル (4 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_get_files_from_channel` | チャンネルにアップロードされたファイル一覧を取得 |
-    | `slack_get_file_info` | ファイルの詳細情報を取得 |
-    | `slack_extract_urls_from_messages` | メッセージからURLを抽出 |
-    | `slack_upload_file` | Slackにファイルをアップロード |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_get_files_from_channel` | 特定のチャンネルにアップロードされたファイルの一覧を取得する |
+    | `slack_get_file_info` | 特定のファイルの詳細情報を取得する |
+    | `slack_extract_urls_from_messages` | チャンネル内のメッセージからURLを抽出する |
+    | `slack_upload_file` | Slackにファイルをアップロードする |
   </Accordion>
 
   <Accordion title="ファイル拡張 (6 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_delete_file` | Slackからファイルを削除 |
-    | `slack_add_remote_file` | リモートファイルを追加 |
-    | `slack_list_remote_files` | リモートファイル一覧を取得 |
-    | `slack_share_remote_file` | リモートファイルをチャンネルに共有 |
-    | `slack_update_remote_file` | リモートファイルのメタデータを更新 |
-    | `slack_remove_remote_file` | リモートファイルを削除 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_delete_file` | Slackからファイルを削除する |
+    | `slack_add_remote_file` | Slackにリモートファイルを追加する |
+    | `slack_list_remote_files` | Slack上のリモートファイルを一覧表示する |
+    | `slack_share_remote_file` | リモートファイルを1つ以上のチャンネルに共有する |
+    | `slack_update_remote_file` | リモートファイルのメタデータを更新する |
+    | `slack_remove_remote_file` | Slackからリモートファイルを削除する |
   </Accordion>
 
   <Accordion title="ユーザー (2 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_list_users` | ワークスペースのユーザー一覧を取得 |
-    | `slack_get_user_icon` | ユーザーのアイコン画像URLを取得 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_list_users` | Slackワークスペースのユーザー一覧を取得する |
+    | `slack_get_user_icon` | 特定のユーザーのSlackアイコン画像URLを取得する |
   </Accordion>
 
   <Accordion title="ユーザー拡張 (8 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_get_user_info` | ユーザーの詳細情報を取得 |
-    | `slack_get_user_profile` | ユーザーのプロフィール情報を取得 |
-    | `slack_set_user_profile` | ユーザーのプロフィール情報を設定 |
-    | `slack_lookup_by_email` | メールアドレスでユーザーを検索 |
-    | `slack_get_presence` | ユーザーのプレゼンス状態を取得 |
-    | `slack_set_presence` | ユーザーのプレゼンス状態を設定 |
-    | `slack_list_conversations` | ユーザーが参加している会話一覧を取得 |
-    | `slack_get_bot_info` | ボットユーザーの情報を取得 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_get_user_info` | ユーザーの詳細情報を取得する |
+    | `slack_get_user_profile` | ユーザーのプロフィール情報を取得する |
+    | `slack_set_user_profile` | ユーザーのプロフィール情報を設定する |
+    | `slack_lookup_by_email` | メールアドレスでユーザーを検索する |
+    | `slack_get_presence` | ユーザーの在席状況を取得する |
+    | `slack_set_presence` | ユーザーの在席状況を設定する |
+    | `slack_list_conversations` | ユーザーが参加しているコンバセーション(チャンネル)を一覧表示する |
+    | `slack_get_bot_info` | Botユーザーの情報を取得する |
   </Accordion>
 
   <Accordion title="ダイレクトメッセージ (4 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_open_dm` | DMまたはグループDMを開く/再開 |
-    | `slack_close_dm` | DMまたはグループDMを閉じる |
-    | `slack_list_dm_channels` | すべてのDMチャンネルを一覧表示 |
-    | `slack_list_mpim_channels` | すべてのグループDMチャンネルを一覧表示 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_open_dm` | ダイレクトメッセージ(DM)またはマルチパーソンDMを開く/再開する |
+    | `slack_close_dm` | ダイレクトメッセージまたはマルチパーソンDMを閉じる |
+    | `slack_list_dm_channels` | すべてのダイレクトメッセージチャンネルを一覧表示する |
+    | `slack_list_mpim_channels` | すべてのマルチパーソンダイレクトメッセージチャンネルを一覧表示する |
   </Accordion>
 
   <Accordion title="リアクション (3 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_add_reaction` | メッセージにリアクション（絵文字）を追加 |
-    | `slack_remove_reaction` | メッセージからリアクションを削除 |
-    | `slack_get_reactions` | メッセージのすべてのリアクションを取得 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_add_reaction` | メッセージにリアクション(絵文字)を追加する |
+    | `slack_remove_reaction` | メッセージからリアクションを削除する |
+    | `slack_get_reactions` | メッセージに付いているすべてのリアクションを取得する |
   </Accordion>
 
   <Accordion title="ピン (3 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_add_pin` | メッセージをチャンネルにピン留め |
-    | `slack_remove_pin` | メッセージのピン留めを解除 |
-    | `slack_list_pins` | チャンネルのピン留めメッセージ一覧を取得 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_add_pin` | メッセージをチャンネルにピン留めする |
+    | `slack_remove_pin` | メッセージのピン留めを解除する |
+    | `slack_list_pins` | チャンネル内のピン留めされたメッセージをすべて一覧表示する |
   </Accordion>
 
   <Accordion title="スター (3 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_add_star` | アイテムにスターを追加 |
-    | `slack_remove_star` | アイテムからスターを削除 |
-    | `slack_list_stars` | スター付きアイテム一覧を取得 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_add_star` | アイテムにスター(後で見る用の保存)を付ける |
+    | `slack_remove_star` | アイテムからスターを外す |
+    | `slack_list_stars` | 認証済みユーザーのスター付きアイテムを一覧表示する |
   </Accordion>
 
   <Accordion title="ブックマーク (4 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_add_bookmark` | チャンネルにブックマークを追加 |
-    | `slack_edit_bookmark` | 既存のブックマークを編集 |
-    | `slack_list_bookmarks` | チャンネルのブックマーク一覧を取得 |
-    | `slack_remove_bookmark` | チャンネルからブックマークを削除 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_add_bookmark` | チャンネルにブックマークを追加する |
+    | `slack_edit_bookmark` | 既存のブックマークを編集する |
+    | `slack_list_bookmarks` | チャンネル内のすべてのブックマークを一覧表示する |
+    | `slack_remove_bookmark` | チャンネルからブックマークを削除する |
   </Accordion>
 
   <Accordion title="予約メッセージ (3 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_schedule_message` | 特定の時刻にメッセージを予約送信 |
-    | `slack_list_scheduled_messages` | すべての予約メッセージを一覧表示 |
-    | `slack_delete_scheduled_message` | 送信前に予約メッセージを削除 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_schedule_message` | 指定した時刻にメッセージを送信するよう予約する |
+    | `slack_list_scheduled_messages` | すべての予約済みメッセージを一覧表示する |
+    | `slack_delete_scheduled_message` | 送信前に予約済みメッセージを削除する |
   </Accordion>
 
   <Accordion title="リマインダー (5 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_create_reminder` | リマインダーを作成 |
-    | `slack_list_reminders` | すべてのリマインダーを一覧表示 |
-    | `slack_get_reminder_info` | リマインダーの詳細情報を取得 |
-    | `slack_delete_reminder` | リマインダーを削除 |
-    | `slack_complete_reminder` | リマインダーを完了としてマーク |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_create_reminder` | 自分用のリマインダーを作成する |
+    | `slack_list_reminders` | 認証済みユーザーのすべてのリマインダーを一覧表示する |
+    | `slack_get_reminder_info` | 特定のリマインダーの詳細情報を取得する |
+    | `slack_delete_reminder` | リマインダーを削除する |
+    | `slack_complete_reminder` | リマインダーを完了としてマークする |
   </Accordion>
 
-  <Accordion title="おやすみモード (4 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_get_dnd_info` | ユーザーのおやすみモード状態を取得 |
-    | `slack_set_dnd_snooze` | 指定時間おやすみモードを有効化 |
-    | `slack_end_dnd` | 現在のおやすみモードを終了 |
-    | `slack_get_team_dnd` | 複数メンバーのおやすみモード状態を取得 |
+  <Accordion title="取り込み中設定 (4 tools)">
+    | Tool | Description |
+    |------|-------------|
+    | `slack_get_dnd_info` | ユーザーの取り込み中(Do Not Disturb)ステータスを取得する |
+    | `slack_set_dnd_snooze` | 指定した期間、取り込み中モードを有効にする |
+    | `slack_end_dnd` | 現在の取り込み中セッションを終了する |
+    | `slack_get_team_dnd` | 複数のチームメンバーの取り込み中ステータスを取得する |
   </Accordion>
 
   <Accordion title="ユーザーグループ (7 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_list_usergroups` | ワークスペースのユーザーグループ一覧を取得 |
-    | `slack_create_usergroup` | 新しいユーザーグループを作成 |
-    | `slack_update_usergroup` | ユーザーグループのプロパティを更新 |
-    | `slack_disable_usergroup` | ユーザーグループを無効化 |
-    | `slack_enable_usergroup` | 無効化されたユーザーグループを再有効化 |
-    | `slack_list_usergroup_users` | ユーザーグループのメンバー一覧を取得 |
-    | `slack_update_usergroup_users` | ユーザーグループのメンバーを更新 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_list_usergroups` | ワークスペース内のすべてのユーザーグループを一覧表示する |
+    | `slack_create_usergroup` | 新しいユーザーグループを作成する |
+    | `slack_update_usergroup` | 既存のユーザーグループのプロパティを更新する |
+    | `slack_disable_usergroup` | ユーザーグループを無効化する |
+    | `slack_enable_usergroup` | 無効化されたユーザーグループを再度有効化する |
+    | `slack_list_usergroup_users` | ユーザーグループ内のすべてのユーザーを一覧表示する |
+    | `slack_update_usergroup_users` | ユーザーグループのメンバーを更新する |
   </Accordion>
 
   <Accordion title="チーム (4 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_get_team_info` | ワークスペースの情報を取得 |
-    | `slack_get_team_profile` | チームのプロフィールフィールド定義を取得 |
-    | `slack_get_access_logs` | ワークスペースのアクセスログを取得（管理者のみ） |
-    | `slack_get_billable_info` | 課金対象ユーザー情報を取得（管理者のみ） |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_get_team_info` | Slackワークスペースの情報を取得する |
+    | `slack_get_team_profile` | チームのプロフィールフィールド定義を取得する |
+    | `slack_get_access_logs` | ワークスペースのアクセスログを取得する(管理者のみ) |
+    | `slack_get_billable_info` | 課金対象ユーザーの情報を取得する(管理者のみ) |
   </Accordion>
 
   <Accordion title="絵文字 (3 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_list_emoji` | ワークスペースのカスタム絵文字一覧を取得 |
-    | `slack_get_emoji_url` | 特定のカスタム絵文字のURLを取得 |
-    | `slack_search_emoji` | 名前でカスタム絵文字を検索 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_list_emoji` | ワークスペース内のすべてのカスタム絵文字を一覧表示する |
+    | `slack_get_emoji_url` | 特定のカスタム絵文字のURLを取得する |
+    | `slack_search_emoji` | 名前でカスタム絵文字を検索する |
   </Accordion>
 
   <Accordion title="認証 (3 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_auth_test` | 認証をテストし、現在のID情報を取得 |
-    | `slack_auth_revoke` | 現在の認証トークンを取り消し |
-    | `slack_list_authorized_teams` | アプリを認証したチーム一覧を取得 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_auth_test` | 認証をテストし、現在のID情報を取得する |
+    | `slack_auth_revoke` | 現在の認証トークンを無効化する |
+    | `slack_list_authorized_teams` | アプリを認可したチームの一覧を取得する |
   </Accordion>
 
   <Accordion title="通話 (6 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_start_call` | Slackで新しい通話を開始/登録 |
-    | `slack_end_call` | アクティブな通話を終了 |
-    | `slack_get_call_info` | 通話の情報を取得 |
-    | `slack_update_call` | 通話情報を更新 |
-    | `slack_add_call_participants` | 通話に参加者を追加 |
-    | `slack_remove_call_participants` | 通話から参加者を削除 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_start_call` | Slack上で新しい通話を開始/登録する |
+    | `slack_end_call` | アクティブな通話を終了する |
+    | `slack_get_call_info` | 通話の情報を取得する |
+    | `slack_update_call` | 通話情報を更新する |
+    | `slack_add_call_participants` | アクティブな通話に参加者を追加する |
+    | `slack_remove_call_participants` | アクティブな通話から参加者を削除する |
   </Accordion>
 
-  <Accordion title="キャンバス (6 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_create_canvas` | 新しいキャンバスを作成 |
-    | `slack_edit_canvas` | 既存のキャンバスを編集 |
-    | `slack_delete_canvas` | キャンバスを削除 |
-    | `slack_set_canvas_access` | キャンバスのアクセス権限を設定 |
-    | `slack_delete_canvas_access` | キャンバスのアクセス権限を削除 |
-    | `slack_lookup_canvas_sections` | キャンバスのセクションを検索 |
+  <Accordion title="Canvas (6 tools)">
+    | Tool | Description |
+    |------|-------------|
+    | `slack_create_canvas` | 新しいCanvasを作成する |
+    | `slack_edit_canvas` | 既存のCanvasを編集する |
+    | `slack_delete_canvas` | Canvasを削除する |
+    | `slack_set_canvas_access` | Canvasのアクセス権限を設定する |
+    | `slack_delete_canvas_access` | Canvasのアクセス権限を削除する |
+    | `slack_lookup_canvas_sections` | Canvas内のセクションを検索する |
   </Accordion>
 
-  <Accordion title="リスト (9 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_create_list` | 新しいリストを作成 |
-    | `slack_update_list` | リストのプロパティを更新 |
-    | `slack_set_list_access` | リストのアクセス権限を設定 |
-    | `slack_delete_list_access` | リストのアクセス権限を削除 |
-    | `slack_create_list_item` | リストに新しいアイテムを作成 |
-    | `slack_update_list_item` | リストのアイテムを更新 |
-    | `slack_delete_list_item` | リストからアイテムを削除 |
-    | `slack_get_list_item` | リストアイテムの情報を取得 |
-    | `slack_list_list_items` | リストのすべてのアイテムを一覧表示 |
+  <Accordion title="Lists (9 tools)">
+    | Tool | Description |
+    |------|-------------|
+    | `slack_create_list` | 新しいListを作成する |
+    | `slack_update_list` | Listのプロパティを更新する |
+    | `slack_set_list_access` | Listのアクセス権限を設定する |
+    | `slack_delete_list_access` | Listのアクセス権限を削除する |
+    | `slack_create_list_item` | List内に新しいアイテムを作成する |
+    | `slack_update_list_item` | List内のアイテムを更新する |
+    | `slack_delete_list_item` | Listからアイテムを削除する |
+    | `slack_get_list_item` | 特定のListアイテムの情報を取得する |
+    | `slack_list_list_items` | List内のすべてのアイテムを一覧表示する |
   </Accordion>
 
   <Accordion title="チャット拡張 (6 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_post_ephemeral` | 特定ユーザーにのみ表示されるメッセージを送信 |
-    | `slack_get_permalink` | メッセージの永続URLを取得 |
-    | `slack_unfurl_url` | メッセージ内のURLプレビューをカスタマイズ |
-    | `slack_me_message` | /meスタイルのメッセージを送信 |
-    | `slack_search_all` | メッセージとファイルの両方を検索 |
-    | `slack_search_files` | Slackでファイルを検索 |
+    | Tool | Description |
+    |------|-------------|
+    | `slack_post_ephemeral` | 特定のユーザーにのみ表示される一時的なメッセージを送信する |
+    | `slack_get_permalink` | 特定のメッセージの固定URLを取得する |
+    | `slack_unfurl_url` | メッセージ内のURLプレビューをカスタマイズする |
+    | `slack_me_message` | チャンネルに/me形式のメッセージを送信する |
+    | `slack_search_all` | Slack内のメッセージとファイルの両方を検索する |
+    | `slack_search_files` | Slack内のファイルを検索する |
   </Accordion>
 
-  <Accordion title="管理者 - Enterprise Grid (10 tools)">
-    | ツール | 説明 |
-    |--------|------|
-    | `slack_admin_list_users` | ワークスペースのユーザー一覧を取得 |
-    | `slack_admin_invite_user` | ワークスペースにユーザーを招待 |
-    | `slack_admin_remove_user` | ワークスペースからユーザーを削除 |
-    | `slack_admin_set_admin` | ユーザーに管理者権限を付与 |
-    | `slack_admin_set_regular` | ユーザーを一般メンバーに降格 |
-    | `slack_admin_list_channels` | Enterprise組織のチャンネルを検索 |
-    | `slack_admin_archive_channel` | チャンネルをアーカイブ |
-    | `slack_admin_unarchive_channel` | チャンネルのアーカイブを解除 |
-    | `slack_admin_list_teams` | Enterprise組織のチーム一覧を取得 |
-    | `slack_admin_get_team_info` | チーム設定情報を取得 |
+  <Accordion title="管理 - Enterprise Grid (10 tools)">
+    | Tool | Description |
+    |------|-------------|
+    | `slack_admin_list_users` | ワークスペース内のユーザーを一覧表示する |
+    | `slack_admin_invite_user` | ワークスペースにユーザーを招待する |
+    | `slack_admin_remove_user` | ワークスペースからユーザーを削除する |
+    | `slack_admin_set_admin` | ユーザーに管理者権限を付与する |
+    | `slack_admin_set_regular` | ユーザーを一般メンバーに降格させる |
+    | `slack_admin_list_channels` | Enterprise Organization内のチャンネルを検索する |
+    | `slack_admin_archive_channel` | チャンネルをアーカイブする |
+    | `slack_admin_unarchive_channel` | チャンネルを復元する |
+    | `slack_admin_list_teams` | Enterprise Organization内のチームを一覧表示する |
+    | `slack_admin_get_team_info` | チームの設定情報を取得する |
   </Accordion>
 </AccordionGroup>
 
 ---
 
-## ユースケース
+## よくある使い方
 
 <CardGroup cols={2}>
   <Card title="デイリースタンドアップ" icon="sun">
-    自動スタンドアップリマインダーを予約し、チームの更新を収集します。
+    自動スタンドアップリマインダーを予約し、チームの近況アップデートを収集する。
   </Card>
-  <Card title="レポート配信" icon="chart-bar">
-    レポートを生成し、関連チャンネルに自動的に共有します。
+  <Card title="レポートの配信" icon="chart-bar">
+    レポートを生成し、関連チャンネルに自動で共有する。
   </Card>
   <Card title="ナレッジ検索" icon="magnifying-glass">
-    過去の会話を検索して、決定事項、リンク、情報を見つけます。
+    過去のやり取りを検索して、決定事項・リンク・情報を見つける。
   </Card>
-  <Card title="タスク追跡" icon="check">
-    リアクションを使用してタスクの完了を追跡し、フィードバックを収集します。
+  <Card title="タスク管理" icon="check">
+    リアクションを使ってタスクの完了状況を追跡し、フィードバックを集める。
   </Card>
 </CardGroup>
 
@@ -302,29 +301,23 @@ Shanoneは24カテゴリに分類された**113のツール**を提供してい�
 ## トラブルシューティング
 
 <AccordionGroup>
-  <Accordion title="Shanoneがチャンネルに投稿できない">
-    Shanoneは最初にチャンネルに招待される必要があります。チャンネルで `/invite @Shanone` と入力してShanoneを追加してください。
+  <Accordion title="プライベートチャンネルに投稿できない">
+    Botトークンによるツールがプライベートチャンネルに投稿できるようにするには、Slackアプリがそのチャンネルのメンバーである必要があります。Slack上でアプリを招待してから再試行してください。
   </Accordion>
   
-  <Accordion title="メッセージ検索が機能しない">
-    メッセージ検索にはユーザートークンによるOAuth認証が必要です。設定 > 連携 > SlackでOAuthフローを完了していることを確認してください。
+  <Accordion title="メッセージ検索が動作しない">
+    `slack_search_messages` / `slack_search_all` / `slack_search_files`にはOAuthの**ユーザートークン**が必要で、Botトークンだけでは動作しません。**Integrations**からSlackを再接続し、両方のトークンが付与されているか確認してください。
   </Accordion>
   
   <Accordion title="チャンネルが見つからない">
-    まず「チャンネル一覧」機能を使用して、利用可能なすべてのチャンネルとそのIDを確認してください。プライベートチャンネルにはShanoneがメンバーである必要があります。
+    まず`slack_list_channels`を呼び出して、利用可能なすべてのチャンネルとそのIDを確認してください。プライベートチャンネルはアプリがメンバーである場合のみ表示されます。
   </Accordion>
   
-  <Accordion title="ファイルのアップロードに失敗した">
-    以下を確認してください：
-    - ファイルサイズが1GB未満であること
-    - Shanoneが対象チャンネルに招待されていること
-    - ファイルパスまたはURLがアクセス可能であること
+  <Accordion title="ファイルのアップロードに失敗する">
+    ファイルパス/URLにアクセスできること、対象チャンネルへのアクセス権限がアプリにあること(上記参照)を確認してください。
   </Accordion>
   
-  <Accordion title="予約メッセージが失敗した">
-    予約時刻が以下の条件を満たしていることを確認してください：
-    - 少なくとも1分後であること
-    - 120日以内であること
-    - 有効な形式（UnixタイムスタンプまたはISO形式）であること
+  <Accordion title="予約メッセージの送信に失敗する">
+    予約時刻が少なくとも数秒後の未来であり、Slack自体の予約可能な範囲内であること、またタイムスタンプの形式が`slack_schedule_message`のスキーマで期待される形式と一致していることを確認してください(`shanone_get_tool_schema`で確認できます)。
   </Accordion>
 </AccordionGroup>

@@ -1,32 +1,32 @@
 ---
-title: Ethereum
-description: Query Ethereum blockchain data and interact with smart contracts
+title: "Ethereum"
+description: "Query Ethereum blockchain data and interact with smart contracts via a JSON-RPC endpoint you provide"
 icon: /images/ethereum.svg
 ---
 
 # Ethereum
 
-Query Ethereum blockchain data, check balances, track transactions, and interact with smart contracts.
+Query Ethereum blockchain data, check balances, track transactions, and interact with smart contracts — Shanone talks directly to the Ethereum JSON-RPC endpoint you configure.
 
 ## Getting Started
 
 ### Setup
 
 <Steps>
-  <Step title="Go to Settings">
-    Navigate to **Settings > Integrations > Ethereum** in the Shanone dashboard.
+  <Step title="Go to Integrations">
+    Navigate to **Integrations > Ethereum** in the Shanone dashboard.
   </Step>
-  <Step title="Add RPC Endpoint">
-    Enter your Ethereum RPC endpoint URL (e.g., Alchemy, Infura, or your own node).
+  <Step title="Add an RPC endpoint">
+    Enter your Ethereum JSON-RPC endpoint URL. Alchemy is recommended — it unlocks the token/NFT (`ethereum_alchemy_*`) tools that plain JSON-RPC providers don't support.
   </Step>
-  <Step title="Save Configuration">
-    Click "Save" to connect Shanone to the Ethereum network.
+  <Step title="Save">
+    Once saved, `shanone_execute_tool` calls for `ethereum_*` tools use this endpoint automatically — there's no separate OAuth step for this integration.
   </Step>
 </Steps>
 
 ## Available Features
 
-Shanone provides **57 tools** for comprehensive Ethereum blockchain interaction, organized into 16 categories:
+Shanone provides **76 tools** for Ethereum, organized into these categories:
 
 <CardGroup cols={2}>
   <Card title="Accounts" icon="wallet">

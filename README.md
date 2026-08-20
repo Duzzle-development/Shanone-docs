@@ -4,20 +4,23 @@
   <a href="README.md">English</a> | <a href="README.ja.md">日本語</a>
 </p>
 
-Official documentation for [Shanone](https://app.Shanone.ai).
+Official documentation for [Shanone](https://app.shanone.ai) — the Command Center for Agent Harnesses.
 
 **Live site:** [docs.shanone.ai](https://docs.shanone.ai)
 
 ## About Shanone
 
-Shanone is a product designed for ambitious engineering teams to streamline and automate back-office work.
+Shanone is a hosted MCP server, tool vendor, skill vendor, and permission-management platform for teams building on AI agent harnesses (Cursor, Claude Code, and any other [MCP](https://modelcontextprotocol.io/) client). It exposes 140+ integrations (269+ implemented today) as callable tools through a small set of meta-tools, lets users save reusable workflows as Skills, and gives teams IAM-style control over who can use which tool.
 
 ## Documentation
 
-- **Getting Started** - Introduction and quickstart guide
-- **Guides** - Best practices and troubleshooting
-- **Integrations** - Connect Shanone to Slack, GitHub, and other tools
-- **API Reference** - API documentation for developers
+- **Getting Started** — Introduction and quickstart
+- **How to Use Shanone** — Usage guides, best practices, and troubleshooting
+- **Product Guide** — Skills, Permissions & Access Control, and Webhooks
+- **Release Notes** — Changelog
+- **Integrations** — Slack, GitHub, Notion, Stripe, Linear, Gmail, HubSpot, Ethereum, and more
+- **API** — REST API overview and authentication
+- **MCP** — MCP server overview, setup, and full tools reference
 
 ## Links
 
@@ -27,4 +30,4 @@ Shanone is a product designed for ambitious engineering teams to streamline and 
 
 ## Support
 
-For questions or feedback, contact us at [support@duzzle.dev](mailto:support@duzzle.dev)
+For questions or feedback, contact us at [hey@duzzle.dev](mailto:hey@duzzle.dev)

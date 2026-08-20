@@ -1,53 +1,147 @@
 ---
-title: Quickstart
-description: Get up and running with Shanone in minutes
+title: "Quickstart"
+description: "Get an API key, connect Cursor or Claude Code to Shanone, authorize your first integration, and run your first tool call — in about five minutes."
 ---
 
-# Quickstart
-
-Follow these steps to get started with Shanone.
+This guide gets an MCP client talking to Shanone end to end: API key → client config → first OAuth connection → first tool call.
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+- A Shanone account at [app.shanone.ai](https://app.shanone.ai)
+- One of: **Cursor**, **Claude Code**, or any other MCP client that supports either stdio servers or remote Streamable HTTP servers with custom headers
+- Node.js 18+ if you're using the local stdio proxy (recommended path below)
 
-- Node.js 18 or higher
-- npm or yarn
-
-## Installation
+## Step 1: Get an API key
 
 <Steps>
-  <Step title="Install the package">
-    ```bash
-    npm install Shanone
-    ```
+  <Step title="Open API Keys">
+    Sign in to Shanone and go to **Settings → API Keys**.
   </Step>
-  <Step title="Initialize your project">
-    ```bash
-    npx Shanone init
-    ```
+  <Step title="Create a key">
+    Click **Create API Key**, give it a descriptive name (e.g. "Cursor — laptop"), and confirm.
   </Step>
-  <Step title="Start using Shanone">
-    ```javascript
-    import { Shanone } from 'Shanone';
-
-    const result = Shanone.run();
-    console.log(result);
-    ```
+  <Step title="Copy it now">
+    The plaintext key is shown **once**, in the form `sh_xxxxxxxxxxxxxxxx`. Copy it somewhere safe — Shanone only stores a hash of it afterward.
   </Step>
 </Steps>
 
-## Configuration
+<Warning>
+Treat your API key like a password. Anyone with it can call every tool your account has permission to run. Don't commit it to version control.
+</Warning>
 
-Create a configuration file in your project root:
+## Step 2: Add Shanone to your MCP client
 
-```json
-{
-  "name": "my-project",
-  "version": "1.0.0"
-}
+The simplest way to connect is the local stdio proxy, `@duzzle/shanone-mcp`, which runs on your machine and forwards MCP tool calls to Shanone's API over HTTPS using your API key.
+
+<Tabs>
+  <Tab title="Cursor">
+    Add this to `~/.cursor/mcp.json` (or **Cursor Settings → MCP**):
+
+    ```json
+    {
+      "mcpServers": {
+        "shanone": {
+          "command": "npx",
+          "args": ["-y", "@duzzle/shanone-mcp"],
+          "env": {
+            "SHANONE_API_KEY": "sh_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+
+    Restart Cursor (or reload the MCP server list) to pick it up.
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add shanone \
+      --env SHANONE_API_KEY=sh_xxxxxxxxxxxxxxxx \
+      -- npx -y @duzzle/shanone-mcp
+    ```
+
+    Or add it to `.mcp.json` in your project:
+
+    ```json
+    {
+      "mcpServers": {
+        "shanone": {
+          "command": "npx",
+          "args": ["-y", "@duzzle/shanone-mcp"],
+          "env": {
+            "SHANONE_API_KEY": "sh_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Any MCP client (direct HTTP)">
+    If your client speaks remote Streamable HTTP MCP and can send custom headers, you can skip the local proxy entirely and point it at Shanone's hosted endpoint:
+
+    ```json
+    {
+      "mcpServers": {
+        "shanone": {
+          "url": "https://app.shanone.ai/mcp",
+          "headers": {
+            "Authorization": "Bearer sh_xxxxxxxxxxxxxxxx",
+            "X-Org-Id": "org_xxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+
+    The direct endpoint requires **both** your API key and your organization ID (also visible on the **API Keys** page) — this composite check means a leaked API key alone isn't enough to call your tools. See [MCP Setup](/mcp/setup) for the full comparison between this and the local proxy.
+  </Tab>
+</Tabs>
+
+## Step 3: Connect your first integration
+
+Shanone doesn't ask you to pre-authorize every service up front — tools that need OAuth simply return a `connect_link` the first time your agent tries to use them.
+
+<Steps>
+  <Step title="Ask your agent to do something that needs a service">
+    For example, in Cursor's chat: *"Post 'hello from Shanone' to the #general channel on Slack."*
+  </Step>
+  <Step title="Follow the connect link">
+    If Slack isn't connected yet, the tool call returns a message like `Authentication Required` with a `connect_link`. Open it in your browser and complete the OAuth flow.
+  </Step>
+  <Step title="Retry the same request">
+    Ask your agent to try again. This time the call succeeds because Shanone now has a valid, stored OAuth token for that service and user.
+  </Step>
+</Steps>
+
+<Note>
+You can also connect integrations proactively from **Integrations** in the Shanone dashboard, without waiting for an agent to hit an auth wall.
+</Note>
+
+## Step 4: Run your first tool call
+
+Try a few natural prompts and watch your agent work through the meta-tool workflow:
+
+```
+"What Shanone tools are available for GitHub?"
+"Search Shanone for tools related to creating a Notion page"
+"Create a GitHub issue titled 'Fix login redirect bug' in my-org/my-repo"
 ```
 
-## Next Steps
+Under the hood, your agent is calling `shanone_search_tools` (or `shanone_list_service_tools` for a full listing), then `shanone_execute_tool` with the arguments it worked out — no manual JSON required from you.
 
-Now that you're set up, explore our [Guides](/guides/overview) for more detailed information.
+## What's next
+
+<CardGroup cols={2}>
+  <Card title="MCP Overview" icon="server" href="/mcp/overview">
+    Understand the full meta-tool workflow, Skill Vendor, and Permission Vendor tools
+  </Card>
+  <Card title="Best Practices" icon="lightbulb" href="/guides/best-practices">
+    Get better results by phrasing agent instructions well
+  </Card>
+  <Card title="Integrations" icon="puzzle" href="/integrations/overview">
+    Browse what's available for Slack, GitHub, Notion, Stripe, and more
+  </Card>
+  <Card title="Save a Skill" icon="bookmark" href="/product-guide/skills">
+    Turn a workflow you just did into a reusable Skill
+  </Card>
+</CardGroup>

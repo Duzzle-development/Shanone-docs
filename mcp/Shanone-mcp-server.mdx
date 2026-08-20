@@ -1,79 +1,63 @@
 ---
-title: Shanone MCP Server
-description: Connect your AI agent to Shanone's integrations and Skills using the official MCP server.
+title: "Shanone MCP Server"
+description: "All 18 tools available on Shanone's MCP server — Tool Vendor, Skill Vendor, and Permission Vendor — with recommended workflows."
 ---
 
-The Shanone MCP Server gives any MCP-compatible client — Cursor, Claude Code, Codex, and others — programmatic access to Shanone's integration ecosystem and Skill library, without exposing hundreds of individual tools to your agent's context window.
+The Shanone MCP Server gives any MCP-compatible client — Cursor, Claude Code, Codex, and others — programmatic access to Shanone's integration ecosystem, Skill library, and (for admins) permission controls, without exposing hundreds of individual integration actions to your agent's context window.
 
-Instead of registering a separate MCP tool for every Slack action, every GitHub action, every Notion action, and so on, Shanone follows a **Tool Vendor** pattern (similar to Composio): a small number of meta-tools let your agent *search* for the right integration, *inspect* its schema, and *execute* it on demand. A parallel **Skill Vendor** pattern does the same for reusable, saved workflows.
+## Available Tools
 
-## Features
+Shanone exposes **18 tools**, organized into four groups:
 
-<CardGroup cols={2}>
-  <Card title="Tool Discovery" icon="search">
-    Search across Shanone's integrations (Slack, GitHub, Notion, Gmail, and more) by keyword instead of memorizing tool names
-  </Card>
-  <Card title="Direct Execution" icon="zap">
-    Execute any discovered tool with structured arguments and get the result back inline
-  </Card>
-  <Card title="Built-in OAuth Handling" icon="key">
-    When a tool needs authentication, you get a connect link back automatically — no separate auth flow to build
-  </Card>
-  <Card title="Skill Library" icon="book">
-    Save a workflow once and reuse it from any machine, IDE, or agent — Skills are stored in Shanone's cloud
-  </Card>
-  <Card title="Health Monitoring" icon="heart-pulse">
-    Verify your API key and connection before running anything else
-  </Card>
-</CardGroup>
+### Health Check (1 tool)
+
+| Tool | Description |
+|------|-------------|
+| `shanone_health_check` | Verify connectivity, API key validity, and backend health. Returns a plain-text status screen. |
+
+### Tool Vendor (4 tools)
+
+| Tool | Description |
+|------|-------------|
+| `shanone_search_tools` | Search the integration catalog by keyword (relevance-ranked) |
+| `shanone_list_service_tools` | List every tool for one service, in name order (for full enumeration) |
+| `shanone_get_tool_schema` | Get a tool's input JSON Schema |
+| `shanone_execute_tool` | Execute a tool with arguments; returns a `connect_link` if OAuth is needed |
+
+### Skill Vendor (5 tools)
+
+| Tool | Description |
+|------|-------------|
+| `shanone_list_skills` | List saved Skills (metadata only), newest first |
+| `shanone_get_skill` | Get a Skill's full instructions |
+| `shanone_create_skill` | Save a new reusable Skill |
+| `shanone_update_skill` | Update an existing Skill's name/summary/instructions |
+| `shanone_delete_skill` | Permanently delete a Skill |
+
+### Permission Vendor (6 tools — Root / delegated SA2 only, except the first)
+
+| Tool | Description |
+|------|-------------|
+| `shanone_list_services` | List every registered service, with tool counts (no special permission required) |
+| `shanone_list_user_tool_permissions` | List a target user's permission overrides |
+| `shanone_set_user_tool_permission` | Enable/disable one specific tool for a target user |
+| `shanone_set_user_service_permission` | Enable/disable all tools of a service for a target user |
+| `shanone_get_permission_summary` | Aggregated counts of a target user's enabled/disabled access |
+| `shanone_batch_set_user_permissions` | Apply up to 500 service/tool operations for a target user at once |
+
+<Note>
+For full parameters, response formats, and examples for every tool, see the [Tools Reference](/mcp/tools-reference).
+</Note>
 
 ## Authentication
 
-The Shanone MCP Server requires an API key for authentication.
+The Shanone MCP Server requires an API key. Get one from **Settings → API Keys** in the Shanone dashboard — it's shown once, in the form `sh_xxxxxxxxxxxxxxxx`.
 
-### Getting Your API Key
-
-1. Log in to [Shanone](https://app.Shanone.ai)
-2. Go to **API Keys**
-3. Create or copy your API key
-
-Send it with every request as `Authorization: Bearer <api_key>` (or `X-API-Key: <api_key>`). See the [Setup Guide](/mcp/setup) for the exact client configuration.
+Send it as `Authorization: Bearer <api_key>` (or `X-API-Key: <api_key>`) with every request. If you connect directly to the remote endpoint (rather than through the local stdio proxy), you also need your organization ID as `X-Org-Id` — see [Setup](/mcp/setup) for exact client configuration.
 
 <Warning>
 Keep your API key secure. Do not commit it to version control or share it publicly.
 </Warning>
-
-## Available Tools
-
-The Shanone MCP Server provides 9 tools organized into three categories:
-
-### Health Check
-
-| Tool | Description |
-|------|-------------|
-| `Shanone_health_check` | Verify connectivity and that your API key is valid |
-
-### Tool Vendor
-
-| Tool | Description |
-|------|-------------|
-| `Shanone_search_tools` | Search Shanone's integrations by keyword (e.g. "post slack message") |
-| `Shanone_get_tool_schema` | Get the input schema for a specific integration tool |
-| `Shanone_execute_tool` | Execute a specific integration tool with arguments |
-
-### Skill Vendor
-
-| Tool | Description |
-|------|-------------|
-| `Shanone_list_skills` | List saved Skills (reusable workflows), newest first |
-| `Shanone_get_skill` | Get a Skill's full instructions |
-| `Shanone_create_skill` | Save a reusable workflow as a new Skill |
-| `Shanone_update_skill` | Update an existing Skill |
-| `Shanone_delete_skill` | Delete a Skill |
-
-<Note>
-For detailed parameters, response formats, and examples for every tool, see the [Tools Reference](/mcp/tools-reference).
-</Note>
 
 ## Recommended Workflows
 
@@ -81,13 +65,13 @@ For detailed parameters, response formats, and examples for every tool, see the 
 
 <Steps>
   <Step title="Search for a tool">
-    Call `Shanone_search_tools` with a natural-language query (optionally filtered by `service`) to find the right integration tool name.
+    Call `shanone_search_tools` with a task-shaped natural-language query (optionally filtered by `service`).
   </Step>
   <Step title="Inspect its schema (if needed)">
-    Call `Shanone_get_tool_schema` with the exact tool name to see its required and optional arguments.
+    Call `shanone_get_tool_schema` with the exact tool name to see required and optional arguments.
   </Step>
   <Step title="Execute it">
-    Call `Shanone_execute_tool` with the tool name and a JSON object of arguments. If the underlying service requires authentication you haven't set up yet, the response includes a `connect_link` — visit it, then retry.
+    Call `shanone_execute_tool` with the tool name and a JSON string of arguments. If the underlying service requires authentication you haven't set up, the response includes a `connect_link` — visit it, then retry.
   </Step>
 </Steps>
 
@@ -95,16 +79,30 @@ For detailed parameters, response formats, and examples for every tool, see the 
 
 <Steps>
   <Step title="Check for an existing Skill">
-    Call `Shanone_list_skills` before starting a task — it returns all your saved Skills (optionally filtered by `query`) with pagination.
+    Call `shanone_list_skills` before starting a task — it returns all your saved Skills (optionally filtered by `query`), paginated.
   </Step>
   <Step title="Read its instructions">
-    Call `Shanone_get_skill` with a `skill_id` to get the full step-by-step instructions.
+    Call `shanone_get_skill` with a `skill_id` to get the full step-by-step instructions.
   </Step>
   <Step title="Follow the instructions">
-    Your agent executes the steps itself, using `Shanone_search_tools` / `Shanone_execute_tool` for any integration actions along the way.
+    Your agent executes the steps itself, using `shanone_search_tools` / `shanone_execute_tool` for any integration actions along the way.
   </Step>
   <Step title="Save new workflows">
-    Once you've built a workflow worth reusing, call `Shanone_create_skill` so it's available from any machine or agent later.
+    Once you've built a workflow worth reusing, call `shanone_create_skill` so it's available from any machine or agent later.
+  </Step>
+</Steps>
+
+### Permission Vendor: for team administrators
+
+<Steps>
+  <Step title="Look up service names">
+    Call `shanone_list_services` (no special role required) to get exact `service_name` values.
+  </Step>
+  <Step title="Apply overrides">
+    Call `shanone_set_user_service_permission` / `shanone_set_user_tool_permission` for one change, or `shanone_batch_set_user_permissions` for many at once.
+  </Step>
+  <Step title="Verify">
+    Call `shanone_get_permission_summary` for the same user to confirm the change landed as intended.
   </Step>
 </Steps>
 
@@ -113,12 +111,12 @@ For detailed parameters, response formats, and examples for every tool, see the 
 ### Discover and use an integration from your IDE
 
 ```
-"Post 'Deploy finished ✅' to Slack #general"
+"Post 'Deploy finished' to Slack #general"
 "Create a GitHub issue titled 'Fix login redirect bug' in owner/repo"
 "Search for tools related to Notion"
 ```
 
-Your agent will call `Shanone_search_tools`, then `Shanone_execute_tool` (fetching the schema first if it's unsure of the arguments).
+Your agent will call `shanone_search_tools`, then `shanone_execute_tool` (fetching the schema first if it's unsure of the arguments).
 
 ### Handle authentication mid-task
 
@@ -126,7 +124,7 @@ Your agent will call `Shanone_search_tools`, then `Shanone_execute_tool` (fetchi
 "Send a message to my team on Slack"
 ```
 
-If you haven't connected Slack yet, `Shanone_execute_tool` returns `success: false` with `reason: "auth_required"` and a `connect_link`. Your agent should surface that link, wait for you to authenticate, then retry the same call.
+If Slack isn't connected yet, `shanone_execute_tool` returns `success: false` with `reason: "auth_required"` and a `connect_link`. Your agent should surface that link, wait for you to authenticate, then retry the same call.
 
 ### Save and reuse a workflow as a Skill
 
@@ -136,7 +134,7 @@ If you haven't connected Slack yet, `Shanone_execute_tool` returns `success: fal
 "Run my 'Weekly Status Report' skill"
 ```
 
-Skills created this way also appear in Shanone's Web UI under the **Skills** tab and can be used by Shanone's own agents — not just your MCP client.
+Skills created this way also appear in Shanone's web dashboard under **Skills**.
 
 ## Next Steps
 
@@ -145,6 +143,6 @@ Skills created this way also appear in Shanone's Web UI under the **Skills** tab
     Configure the Shanone MCP Server in Cursor, Claude Code, or Codex
   </Card>
   <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
-    Detailed documentation for all tools
+    Detailed documentation for all 18 tools
   </Card>
 </CardGroup>

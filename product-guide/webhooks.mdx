@@ -1,0 +1,88 @@
+---
+title: "Webhooks"
+description: "Trigger a connected agent platform automatically when an external event comes in — no polling required."
+icon: "webhook"
+---
+
+## What Webhooks do
+
+Shanone can receive inbound webhook events from external services and automatically hand them off as a task to an agent platform you've already connected — without you having to write and host a webhook receiver yourself.
+
+<Note>
+This replaced an earlier "Automations" concept built around internal scheduled/recurring tasks. The current, real implementation is event-driven: Shanone reacts to an external webhook event and launches an external agent, rather than running its own scheduler.
+</Note>
+
+```
+External source (e.g. a Typeform submission)
+  → Shanone receives the webhook
+  → Shanone summarizes the event payload
+  → Shanone launches a task on your connected target platform
+     (Devin, Cursor Cloud Agents, or Manus) with that summary
+```
+
+## Supported sources and targets
+
+<CardGroup cols={2}>
+  <Card title="Sources" icon="arrow-down-to-line">
+    **Typeform** today — new form submissions can trigger a webhook subscription
+  </Card>
+  <Card title="Targets" icon="arrow-up-from-line">
+    **Devin**, **Cursor Cloud Agents**, and **Manus** — each has a default task prompt, and you can override it per subscription
+  </Card>
+</CardGroup>
+
+Both lists are registry-based on Shanone's backend, so more sources and targets can be added over time without changing how existing subscriptions work.
+
+## Setting up a webhook subscription
+
+<Steps>
+  <Step title="Create the subscription">
+    Ask your agent to set it up for you — for example: *"Create a webhook for my Typeform form so new submissions get reviewed by Devin."* This calls the Typeform integration's webhook-creation tool, which registers the subscription and returns a unique webhook URL and signing secret.
+  </Step>
+  <Step title="Review it in the dashboard">
+    Open **Webhooks** in the Shanone dashboard to see the subscription: source, form, target platform, and whether it's active.
+  </Step>
+  <Step title="Choose a target platform and prompt">
+    Set `target_platform` to `devin`, `cursor`, or `manus`. Each platform has a sensible default prompt, but you can supply your own `target_prompt` — for Cursor Cloud Agents, you'll also need to set `target_repository`.
+  </Step>
+  <Step title="Toggle it on or off">
+    Subscriptions can be deactivated without deleting them, and reactivated later, from the same dashboard screen.
+  </Step>
+</Steps>
+
+<Note>
+Creating the webhook itself (the Typeform-side registration) happens through chat with your agent, via the Typeform integration tool. The **Webhooks** dashboard screen is for viewing and managing subscriptions that already exist — target platform, prompt, and active/inactive state.
+</Note>
+
+## What happens when an event fires
+
+<Steps>
+  <Step title="Shanone receives the raw payload">
+    The source-specific adapter (currently Typeform) parses and summarizes it.
+  </Step>
+  <Step title="Shanone checks for a target platform">
+    If none is configured for that subscription, Shanone just logs a summary of the event and stops there — nothing is launched automatically.
+  </Step>
+  <Step title="Shanone launches the target platform">
+    If a target is configured, Shanone builds a prompt (your custom `target_prompt`, or the platform's default) plus the event summary, and asks the target platform to start a session with it — e.g. creating a Devin session or a Cursor Cloud Agent run.
+  </Step>
+</Steps>
+
+<Warning>
+A webhook subscription with no `target_platform` set is inert by design — it will never automatically launch anything. This is intentional so that connecting a source can't silently start spending agent credits until you explicitly wire up a target.
+</Warning>
+
+## Why this isn't a general task scheduler
+
+Shanone itself doesn't run an autonomous planning/execution engine — that capability was deliberately removed from the platform as Shanone pivoted to being a tool and permission vendor for *other* agents. Webhooks reflect that: Shanone's role is to receive the event and delegate the "actually go do something" part to an agent platform you've separately connected (Devin, Cursor Cloud Agents, Manus), not to execute the task itself.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Integrations Overview" icon="puzzle" href="/integrations/overview">
+    Connect Typeform and your target agent platform first
+  </Card>
+  <Card title="Skills" icon="bookmark" href="/product-guide/skills">
+    Save the instructions your target platform should follow as a reusable Skill
+  </Card>
+</CardGroup>

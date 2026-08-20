@@ -1,0 +1,107 @@
+---
+title: "Skills"
+description: "Save a reusable, step-by-step workflow once in Shanone and reuse it from any machine, IDE, or agent."
+icon: "bookmark"
+---
+
+## What is a Skill?
+
+A **Skill** is a named, reusable instruction set — conceptually close to [Anthropic's Agent Skills](https://www.anthropic.com/news/skills). Each Skill has three fields:
+
+| Field | Purpose |
+|-------|---------|
+| `name` | Short, descriptive title |
+| `summary` | What the Skill does and when to use it — this is the lightweight metadata shown in list results |
+| `instructions` | The full step-by-step body — only fetched when the Skill is actually opened |
+
+Shanone itself never *executes* a Skill. The **Skill Vendor** is a storage-and-retrieval layer: your agent lists and reads Skills through MCP, then follows the `instructions` in its own context, calling `shanone_execute_tool` (or anything else it needs) along the way. This keeps Skills portable across whatever agent happens to be reading them — Cursor today, Claude Code tomorrow, on a different laptop next week.
+
+<Note>
+Skills are stored server-side (Shanone's Skill Vendor backend), not in a local file. Save one once and it's available everywhere your account connects.
+</Note>
+
+## Why Skills exist
+
+<CardGroup cols={2}>
+  <Card title="Stop repeating yourself" icon="repeat">
+    Give the same multi-step instructions once, save them, and reference them by name afterward
+  </Card>
+  <Card title="Portable across agents" icon="laptop">
+    A Skill created from Cursor is immediately readable from Claude Code, or any other MCP client on your account
+  </Card>
+  <Card title="Progressive disclosure" icon="layers">
+    Listing Skills only returns lightweight metadata (`name` + `summary`) — full `instructions` are fetched only when a Skill is actually opened, keeping token usage low
+  </Card>
+  <Card title="Shared with the web dashboard" icon="globe">
+    Skills you create via MCP also appear under **Skills** in the Shanone web UI, and vice versa
+  </Card>
+</CardGroup>
+
+## The Skill Vendor tools
+
+| Tool | Description |
+|------|-------------|
+| `shanone_list_skills` | List saved Skills (metadata only), optionally filtered by `query`, newest first |
+| `shanone_get_skill` | Get a Skill's full `instructions` by `skill_id` |
+| `shanone_create_skill` | Save a new Skill (`name`, `description`, `body` all required) |
+| `shanone_update_skill` | Update an existing Skill — only non-empty fields are changed |
+| `shanone_delete_skill` | Permanently delete a Skill |
+
+## Recommended workflow
+
+<Steps>
+  <Step title="Check first">
+    Before starting a non-trivial task, call `shanone_list_skills` (optionally with a `query` filter) to see if the workflow already exists.
+  </Step>
+  <Step title="Read it">
+    If a match exists, call `shanone_get_skill` with its `skill_id` to get the full instructions.
+  </Step>
+  <Step title="Follow it">
+    Your agent executes the steps itself in its own context — using `shanone_search_tools` / `shanone_execute_tool` for any integration actions the instructions call for.
+  </Step>
+  <Step title="Save new workflows">
+    Once you've done something worth reusing, call `shanone_create_skill` so it's available next time, from any agent.
+  </Step>
+</Steps>
+
+## Example
+
+```
+User: "Save this as a skill called 'Weekly Status Report'."
+
+Agent calls shanone_create_skill with:
+  name: "Weekly Status Report"
+  description: "Gathers last week's closed GitHub issues and posts a summary to Slack #team."
+  body: |
+    1. Use shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
+    2. Summarize them into 3-5 bullet points.
+    3. Use shanone_execute_tool with slack_post_message to post the summary to #team.
+```
+
+A week later, from a different machine:
+
+```
+User: "Run my Weekly Status Report skill."
+
+Agent calls shanone_list_skills, finds it, calls shanone_get_skill,
+then follows the instructions — calling github_list_issues and slack_post_message itself.
+```
+
+## Versioning
+
+Every `shanone_update_skill` call increments the Skill's `version` counter. Shanone doesn't currently keep prior versions around for rollback — treat `shanone_update_skill` as a full replacement of whichever fields you pass, and keep your own copy of anything you might want to revert to.
+
+<Warning>
+Deleting a Skill with `shanone_delete_skill` is permanent and cannot be undone.
+</Warning>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
+    Full parameters and example requests/responses for every Skill Vendor tool
+  </Card>
+  <Card title="Permissions & Access Control" icon="shield-check" href="/product-guide/permissions">
+    Skills are per-user today — see how tool/service access is controlled per team member
+  </Card>
+</CardGroup>

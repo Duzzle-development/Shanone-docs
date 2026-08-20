@@ -1,0 +1,88 @@
+---
+title: "Webhook"
+description: "外部イベントが届いた際に、接続済みのエージェントプラットフォームを自動的に起動します——ポーリングは不要です。"
+icon: "webhook"
+---
+
+## Webhookの役割
+
+Shanoneは外部サービスからのインバウンドWebhookイベントを受信し、あなたが既に接続済みのエージェントプラットフォームへタスクとして自動的に引き渡すことができます——自分でWebhookレシーバーを実装・ホスティングする必要はありません。
+
+<Note>
+これは、内部的なスケジュール/定期実行タスクを中心に構築されていた以前の「Automations」というコンセプトを置き換えたものです。現在の実際の実装はイベント駆動型です。Shanoneは自身でスケジューラを実行するのではなく、外部のWebhookイベントに反応して外部エージェントを起動します。
+</Note>
+
+```
+External source (e.g. a Typeform submission)
+  → Shanone receives the webhook
+  → Shanone summarizes the event payload
+  → Shanone launches a task on your connected target platform
+     (Devin, Cursor Cloud Agents, or Manus) with that summary
+```
+
+## 対応するソースとターゲット
+
+<CardGroup cols={2}>
+  <Card title="ソース" icon="arrow-down-to-line">
+    現時点では**Typeform**——新しいフォーム送信がWebhookサブスクリプションのトリガーになります
+  </Card>
+  <Card title="ターゲット" icon="arrow-up-from-line">
+    **Devin**、**Cursor Cloud Agents**、**Manus**——それぞれデフォルトのタスクプロンプトを持ち、サブスクリプションごとに上書きできます
+  </Card>
+</CardGroup>
+
+どちらのリストもShanoneのバックエンド上でレジストリ管理されているため、既存のサブスクリプションの動作を変えることなく、今後さらにソースやターゲットを追加できます。
+
+## Webhookサブスクリプションを設定する
+
+<Steps>
+  <Step title="サブスクリプションを作成する">
+    エージェントに設定を依頼します——たとえば:*「Typeformフォームの新しい送信をDevinにレビューさせるWebhookを作成して」*。これにより、Typeform連携のWebhook作成ツールが呼び出され、サブスクリプションが登録され、一意のWebhook URLと署名シークレットが返されます。
+  </Step>
+  <Step title="ダッシュボードで確認する">
+    Shanoneダッシュボードの**Webhooks**を開くと、サブスクリプションの内容(ソース、フォーム、ターゲットプラットフォーム、有効かどうか)を確認できます。
+  </Step>
+  <Step title="ターゲットプラットフォームとプロンプトを選ぶ">
+    `target_platform`を`devin`、`cursor`、`manus`のいずれかに設定します。各プラットフォームには適切なデフォルトプロンプトが用意されていますが、独自の`target_prompt`を指定することもできます——Cursor Cloud Agentsの場合は`target_repository`の設定も必要です。
+  </Step>
+  <Step title="オン/オフを切り替える">
+    サブスクリプションは削除せずに無効化でき、同じダッシュボード画面から後で再度有効化することもできます。
+  </Step>
+</Steps>
+
+<Note>
+Webhook自体の作成(Typeform側での登録)は、Typeform連携ツールを介してエージェントとのチャットの中で行われます。**Webhooks**ダッシュボード画面は、すでに存在するサブスクリプション——ターゲットプラットフォーム、プロンプト、有効/無効の状態——を表示・管理するためのものです。
+</Note>
+
+## イベント発生時に何が起こるか
+
+<Steps>
+  <Step title="Shanoneが生のペイロードを受信する">
+    ソース固有のアダプター(現時点ではTypeform)がそれを解析し、要約します。
+  </Step>
+  <Step title="Shanoneがターゲットプラットフォームの設定を確認する">
+    そのサブスクリプションにターゲットが設定されていない場合、Shanoneはイベントの要約をログに記録するだけで処理を終えます——何も自動的に起動されません。
+  </Step>
+  <Step title="Shanoneがターゲットプラットフォームを起動する">
+    ターゲットが設定されている場合、Shanoneはプロンプト(あなたが指定した`target_prompt`、またはプラットフォームのデフォルト)とイベントの要約を組み合わせて構築し、ターゲットプラットフォームにそれを使ってセッションを開始するよう依頼します——例えばDevinのセッションやCursor Cloud Agentsの実行を作成します。
+  </Step>
+</Steps>
+
+<Warning>
+`target_platform`が設定されていないWebhookサブスクリプションは、意図的に何もしない状態になっています——自動的に何かを起動することは決してありません。これは、ソースを接続しただけで、ターゲットを明示的に設定するまでの間、気づかないうちにエージェントのクレジットを消費し始めることがないようにするための設計です。
+</Warning>
+
+## これが汎用のタスクスケジューラではない理由
+
+Shanone自身は自律的なプランニング/実行エンジンを動かしていません——この機能は、Shanoneが*他の*エージェントのためのツール・権限ベンダーへと方向転換する過程で、意図的にプラットフォームから取り除かれました。Webhooksもこの方針を反映しています。Shanoneの役割はイベントを受け取り、「実際に何かを行う」部分を、あなたが別途接続したエージェントプラットフォーム(Devin、Cursor Cloud Agents、Manus)に委任することであり、タスク自体を実行することではありません。
+
+## 次のステップ
+
+<CardGroup cols={2}>
+  <Card title="インテグレーション概要" icon="puzzle" href="/ja/integrations/overview">
+    まずTypeformとターゲットのエージェントプラットフォームを接続する
+  </Card>
+  <Card title="スキル" icon="bookmark" href="/ja/product-guide/skills">
+    ターゲットプラットフォームが従うべき指示を、再利用可能なSkillとして保存する
+  </Card>
+</CardGroup>

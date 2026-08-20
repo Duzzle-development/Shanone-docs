@@ -1,27 +1,50 @@
 ---
-title: ガイド概要
-description: Shanone の詳細ガイドを探索
+title: "ガイド概要"
+description: "コーディングエージェント向けのツールベンダーとしてShanoneを最大限に活用する方法。"
 ---
 
-# ガイド
-
-Shanone ガイドセクションへようこそ。ここでは様々なトピックについての詳細なドキュメントをご覧いただけます。
-
-## 利用可能なガイド
+このセクションのガイドでは、Shanoneに接続した後の日々の運用について取り上げます。エージェントがメタツールを上手に使えるようにリクエストを組み立てる方法、チームの拡大に合わせて権限を健全に保つ方法、うまく動かないときに自分で解決する方法などです。
 
 <CardGroup cols={2}>
-  <Card title="はじめに" icon="play" href="/ja/quickstart">
-    基本を学び、すぐに使い始めましょう。
+  <Card title="ベストプラクティス" icon="lightbulb" href="/ja/guides/best-practices">
+    `shanone_search_tools`と`shanone_execute_tool`から、正確で無駄のないツール呼び出しを引き出す
   </Card>
-  <Card title="設定" icon="gear">
-    詳細な設定オプションと設定方法。
+  <Card title="トラブルシューティング" icon="wrench" href="/ja/guides/troubleshooting">
+    接続・認証・権限エラーを解決する
+  </Card>
+  <Card title="MCP概要" icon="server" href="/ja/mcp/overview">
+    メタツールアーキテクチャの詳細
+  </Card>
+  <Card title="権限とアクセス制御" icon="shield-check" href="/ja/product-guide/permissions">
+    RootユーザーとSA2ユーザーが誰に何を実行させるかを管理する方法
   </Card>
 </CardGroup>
 
-## ヘルプが必要ですか？
+## このガイド群が前提としていること
 
-質問やサポートが必要な場合：
+すでにShanoneを少なくとも1つのMCPクライアント(Cursor、Claude Codeなど)に接続済みであることを前提としています——まだの場合は[クイックスタート](/ja/quickstart)から始めてください。以降の内容はすべて、接続が済んだ後にShanoneを*効果的に使う*方法についてのものであり、最初の接続方法については触れません。
 
-- ドキュメントを確認
-- GitHub で Issue を作成
-- コミュニティに参加
+## メンタルモデル
+
+Shanoneはエージェントに巨大な静的ツールリストを渡すわけではありません。渡すのは一握りの**メタツール**であり、これらが269以上のインテグレーションからなる生きたカタログを検索し、該当するツールを実行します。
+
+| メタツール | 目的 |
+|-----------|---------|
+| `shanone_search_tools` | ツール名ではなくタスクの説明から、適切なツールを見つける |
+| `shanone_list_service_tools` | 1つのサービスの全ツールを列挙する(「Xで何ができるか」という質問向け) |
+| `shanone_get_tool_schema` | 呼び出す前に、そのツールが要求する引数を正確に確認する |
+| `shanone_execute_tool` | 実際に実行する。OAuthは`connect_link`により自動的に処理される |
+| `shanone_list_skills` / `shanone_get_skill` | 車輪の再発明をする前に、保存済みの再利用可能なワークフローがあるか確認して読む |
+
+[ベストプラクティス](/ja/guides/best-practices)にあるアドバイスの大半は、実質的には最初の`shanone_search_tools`呼び出しで正しいツールを選ばせるための十分な手がかりをエージェントに与えることに関するものであり、当てずっぽうで再試行を繰り返すことを避けるためのものです。
+
+## 早く助けが欲しいときは
+
+<CardGroup cols={2}>
+  <Card title="ドキュメント" icon="book" href="/ja/introduction">
+    トップページから始める
+  </Card>
+  <Card title="サポート" icon="headset" href="mailto:hey@duzzle.dev">
+    Shanoneチームに連絡する
+  </Card>
+</CardGroup>

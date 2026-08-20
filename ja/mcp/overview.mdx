@@ -1,66 +1,83 @@
 ---
-title: MCP 概要
-description: Model Context Protocol（MCP）について学び、Shanoneの機能を外部ツールで拡張する方法を理解しましょう。
+title: "MCP概要"
+description: "Shanoneが269以上の連携、Skill、権限管理を、少数のMCPメタツールを通じてどのように公開しているか。"
 ---
 
-## MCPとは？
+## MCPとは何か
 
-**Model Context Protocol（MCP）** は、AIアプリケーションが外部のデータソースやツールに安全に接続するためのオープンスタンダードです。MCPは、AIアプリケーションにとってのUSB-Cポートのようなもの — 様々なサービスに接続するための標準化された方法です。
+**Model Context Protocol (MCP)** は、AIアプリケーションを外部のツールやデータソースに接続するためのオープンスタンダードです。互換性のあるクライアント(Cursor、Claude Code、Codexなど)が、ペアごとに専用の統合コードを書かなくても互換性のあるサーバーと話せるようにする、標準化された「ポート」のようなものだと考えてください。
 
-MCPを使用することで、CursorやClaude CodeのようなAIコーディングエージェントに、統一されたインターフェースを通じてShanoneのツール、インテグレーション、保存済みSkillへのアクセスを、エディタやターミナルから離れることなく提供できます。
+Shanoneは*それ自体が*MCPサーバーです。一度接続すれば、どのMCPクライアントもShanoneの連携カタログ、Skillライブラリ、そして(管理者であれば)権限管理ツールにプログラムからアクセスできるようになります。
 
-## ShanoneでMCPを使うメリット
+## なぜアクションごとに1ツールではなく、メタツールパターンなのか
 
-AIコーディングエージェントをShanone MCP Serverに接続することで、以下のことが可能になります：
+Shanoneのバックエンドは269以上のサービス統合を実装しており、それぞれが数十から数百の個別アクションを持っています(Stripeだけで328個)。すべてのアクションを個別のMCPツールとして登録すると、エージェントが動き出す前にコンテキストウィンドウが溢れてしまいます。そこでShanoneは、Composioのカタログ構成に近い**Tool Vendor**パターンを採用し、カタログ全体に対してオンデマンドで検索・確認・実行を行う、小さく固定された一連のメタツールを公開しています。
 
 <CardGroup cols={2}>
-  <Card title="100以上のインテグレーションにアクセス" icon="puzzle-piece">
-    Slack、GitHub、Notion、GmailなどShanoneのインテグレーションを、エディタから離れずに検索・実行
+  <Card title="shanone_search_tools" icon="magnifying-glass">
+    タスクを自然言語で記述して、適切なツールを見つける
   </Card>
-  <Card title="保存済みSkillを再利用" icon="book">
-    一度Shanoneに保存したワークフローを、どのマシン・IDE・エージェントからでも再利用
+  <Card title="shanone_list_service_tools" icon="list">
+    「Xで何ができるか」を知りたいときに、1つのサービスの全ツールを列挙する
   </Card>
-  <Card title="OAuthを自動化" icon="key">
-    Shanoneが認証を代わりに処理 — 認証が必要な場合はツールが接続リンクを返す
+  <Card title="shanone_get_tool_schema" icon="code">
+    呼び出す前に、ツールの正確な入力スキーマを確認する
   </Card>
-  <Card title="標準化されたプロトコル" icon="plug">
-    異なるAIアプリケーション間で同じプロトコルを使用
+  <Card title="shanone_execute_tool" icon="zap">
+    実行する。OAuthが必要な場合は、返される`connect_link`で自動的に処理される
   </Card>
 </CardGroup>
 
-## 対応トランスポート
+再利用可能な保存済みワークフローについては、並行する**Skill Vendor**パターン(`shanone_list_skills` → `shanone_get_skill`)が同じ役割を果たします。また、**Permission Vendor**というツール群により、RootまたはSA2委任管理者が誰が何を使えるかを管理できます。
 
-Shanone MCP Serverは**リモートでホストされたMCPサーバー**で、**Streamable HTTP**で通信します。インストールは不要 — Shanone APIキーを使ってHTTPS経由でクライアントから直接接続できます。
+## サーバーアーキテクチャ
 
-| トランスポート | 状態 | 説明 |
-|--------------|------|------|
-| **Streamable HTTP** | 推奨 | `/api/v1/mcp` でShanoneがホストするリモートサーバー。URLとAPIキーを設定するだけで、ローカルプロセスのインストールや起動は不要 |
-| **stdio**（ローカル・任意） | 対応 | リモートHTTP MCPにまだ対応していないクライアント向けに、Shanoneは同じツール群を既存のAPIキーでプロキシするローカルstdioブリッジ（npmの`@duzzle/Shanone-mcp`）も提供 |
-| SSE | 未対応 | Server-Sent Events |
+Shanoneは実際には、同じツールセットを共有しつつ両方がMCPで話す、2つのものを提供しています。
 
-<Note>
-リモートのStreamable HTTPサーバーは、ローカルのstdioブリッジと完全に同じツール群を提供します。そのため、エージェントからのShanoneの使い方を変えずに両者を切り替えられます。
-</Note>
+| コンポーネント | トランスポート | 内容 |
+|-----------|-----------|-----------|
+| **リモートMCPサーバー** | `/mcp`でのStreamable HTTP | Shanoneのバックエンドプロセス自体の内部で動作します。`src.services.tool_vendor`を直接呼び出すため、余分なネットワークホップがありません。これが[セットアップ](/ja/mcp/setup)の`X-Org-Id`で保護された直接接続が話す相手です。 |
+| **ローカルstdioプロキシ**(npmパッケージ`@duzzle/shanone-mcp`、またはPython版の`apps/mcp-server`パッケージ) | stdio | あなたのマシン上で動作し、各MCPツール呼び出しを、あなたのAPIキーを使ってHTTPS経由でShanoneのREST API(`/api/v1/tools/...`、`/api/v1/skills/...`、`/api/v1/permissions/...`)に転送します。カスタムHTTPヘッダーに対応していないクライアントにとって、最も簡単な選択肢です。 |
 
-## 対応クライアント
+どちらも同じ名前・同じパラメータで同じメタツールを公開しています——お使いのクライアントがより良くサポートしている方のトランスポートを選んでください。正確な設定については[セットアップ](/ja/mcp/setup)を参照してください。
 
-Streamable HTTPトランスポート（認証用のカスタムヘッダー対応）をサポートするMCPクライアントであれば、Shanoneに接続できます。Shanoneが公式にセットアップ手順を用意しているのは：
+## 認証
 
-- **Cursor** — AI搭載コードエディタ
-- **Claude Code** — AnthropicのコーディングエージェントCLI
-- **Codex** — OpenAIのコーディングエージェントCLI
+すべてのリクエスト——直接のHTTPエンドポイント経由であっても、ローカルプロキシ経由であっても——は、あなたのShanone APIキーで認証されます。
 
-<Note>
-stdioトランスポートのみに対応するクライアント（またはカスタムHTTPヘッダーに未対応のクライアント）は、代わりにローカルの`@duzzle/Shanone-mcp`パッケージを使用できます。詳細は[セットアップガイド](/ja/mcp/setup)を参照してください。
-</Note>
+```
+Authorization: Bearer sh_xxxxxxxxxxxxxxxx
+```
+
+(`X-API-Key: sh_xxx`も使用可能です。)**直接リモートエンドポイント**では、追加でお使いの組織ID(organization ID)を第2の複合要素として要求します——`X-Org-Id`ヘッダーまたは`?org_id=`クエリパラメータとして送信します——これにより、APIキーだけが漏洩してもツールを呼び出すことはできません。ローカルstdioプロキシではこの第2要素は不要で、APIキーのみが必要です。レート制限を含めた全体像については[認証](/api-reference/authentication)を参照してください。
+
+## ツールカテゴリ
+
+<CardGroup cols={2}>
+  <Card title="Tool Vendor" icon="wrench" href="/ja/mcp/tools-reference#tool-vendor">
+    269以上の連携を検索・確認・実行する
+  </Card>
+  <Card title="Skill Vendor" icon="bookmark" href="/ja/mcp/tools-reference#skill-vendor">
+    複数ステップのワークフローを保存し、マシンやエージェントを越えて再利用する
+  </Card>
+  <Card title="Permission Vendor" icon="shield-check" href="/ja/mcp/tools-reference#permission-vendor">
+    チームメンバーのツール・サービスアクセスを管理する、Root/SA2専用ツール
+  </Card>
+  <Card title="Health Check" icon="heart-pulse" href="/ja/mcp/tools-reference#health-check">
+    他の何よりも先に、APIキーと接続を確認する
+  </Card>
+</CardGroup>
 
 ## 次のステップ
 
 <CardGroup cols={2}>
-  <Card title="Shanone MCP Server" icon="server" href="/ja/mcp/Shanone-mcp-server">
-    Shanone公式MCPサーバーと利用可能なツールについて学ぶ
+  <Card title="Shanone MCPサーバー" icon="server" href="/ja/mcp/Shanone-mcp-server">
+    利用可能なすべてのツールと、推奨されるワークフローを一目で確認する
   </Card>
   <Card title="セットアップガイド" icon="wrench" href="/ja/mcp/setup">
-    Shanone MCPの設定を始める
+    Cursor、Claude Code、Codexの正確な設定方法
+  </Card>
+  <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
+    すべてのツールの完全なパラメータ、例、エラーレスポンス
   </Card>
 </CardGroup>

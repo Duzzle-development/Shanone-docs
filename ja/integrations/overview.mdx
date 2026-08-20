@@ -1,50 +1,71 @@
 ---
-title: インテグレーション概要
-description: Shanone を既存のツールやワークフローに接続
+title: "インテグレーション概要"
+description: "Shanoneの連携カタログを見る — 140以上のサービス、そのうち269以上が実装済みで現在稼働中。アクションごとに専用ツールを用意するのではなく、少数のMCPメタツールを通じて公開されています。"
 ---
 
-# インテグレーション
+## カタログの仕組み
 
-Shanone はお気に入りのツールと統合して、ワークフローにシームレスにフィットします。
-
-## 利用可能なインテグレーション
-
-<CardGroup cols={2}>
-  <Card title="Slack" icon="slack" href="/ja/integrations/slack">
-    Slack ワークスペースで直接 Shanone とチャット。
-  </Card>
-  <Card title="GitHub" icon="github">
-    コードアシスタンスのためにリポジトリに Shanone を接続。
-  </Card>
-  <Card title="VS Code" icon="code">
-    IDE で直接 Shanone を使用。
-  </Card>
-  <Card title="API" icon="webhook" href="/ja/api-reference/overview">
-    REST API でカスタムインテグレーションを構築。
-  </Card>
-</CardGroup>
-
-## インテグレーションのセットアップ
+Shanoneはサービスのアクション1つごとに個別のMCPツールを登録するわけではありません——それをやると数千個のツールがエージェントのコンテキストウィンドウを埋め尽くしてしまいます。代わりに、すべての連携のツールは1つの検索可能なカタログにまとめられており、エージェントは3つのメタツールを通じてそこにアクセスします。
 
 <Steps>
-  <Step title="インテグレーションを選択">
-    上記のリストから接続したいツールを選択します。
+  <Step title="検索する">
+    タスクの内容をそのままクエリにして`shanone_search_tools`を呼び出します(`service`で絞り込むことも可能です)。
   </Step>
-  <Step title="認証">
-    選択したインテグレーションの認証手順に従います。
+  <Step title="確認する">
+    正確なツール名を指定して`shanone_get_tool_schema`を呼び出し、必須/任意の引数を確認します。
   </Step>
-  <Step title="設定">
-    ワークフローに合わせてインテグレーション設定をカスタマイズします。
-  </Step>
-  <Step title="使用開始">
-    接続したツール内で Shanone の使用を開始します。
+  <Step title="実行する">
+    ツール名と引数のJSON文字列を指定して`shanone_execute_tool`を呼び出します——OAuthが必要な場合は`connect_link`によって自動的に処理されます。
   </Step>
 </Steps>
 
-## 別のインテグレーションが必要ですか？
+仕組みの詳細は[MCP概要](/ja/mcp/overview)を参照してください。以下のページでは利用頻度の高い連携を厳選して詳しく紹介していますが、これは実際に使えるものの一部に過ぎません。
+
+## 規模
+
+Shanoneはエコシステム全体として**140以上の連携、10,000以上のツール**として紹介されています。現在バックエンドでは**269以上の連携が実装済みで稼働中**であり、以下でドキュメント化しているサービスに加え、さらに多くのサービス(GitLab、Bitbucket、Jira、Confluence、HubSpot、Airtable、Discord、Telegram、Microsoft Teams、Google Calendar/Docs/Sheets/Drive、Stripe、PayPal、Shopify、Datadog、Sentry、Cloudflare、Vercel、OpenAI、Anthropicなど)をカバーしています。必要なサービスがここに載っていない場合は、エージェントにそのサービス名で`shanone_search_tools`または`shanone_list_service_tools`を実行してもらってください。すでに登録されている可能性が高いです。
+
+## ドキュメント化されている連携
+
+<CardGroup cols={3}>
+  <Card title="Slack" icon="slack" href="/ja/integrations/slack">
+    メッセージング、チャンネル、Canvas、Lists、管理機能など139のツール
+  </Card>
+  <Card title="GitHub" icon="github" href="/ja/integrations/github">
+    Issue、PR、Actions、セキュリティスキャン、組織管理まで176のツール
+  </Card>
+  <Card title="Notion" icon="book" href="/ja/integrations/notion">
+    ページ、データベース、ブロック、コメント、Markdownネイティブ編集のための45のツール
+  </Card>
+  <Card title="Stripe" icon="credit-card" href="/ja/integrations/stripe">
+    決済、サブスクリプション、請求、Treasury、Issuingを扱う328のツール
+  </Card>
+  <Card title="Linear" icon="list-check" href="/ja/integrations/linear">
+    Issue、プロジェクト、サイクル、イニシアチブのための46のツール
+  </Card>
+  <Card title="Gmail" icon="mail" href="/ja/integrations/gmail">
+    メッセージ、スレッド、ドラフト、ラベル、メールボックス設定のための52のツール
+  </Card>
+  <Card title="HubSpot" icon="megaphone" href="/ja/integrations/hubspot">
+    CRMオブジェクト、マーケティング、商談、コマースのための214のツール
+  </Card>
+  <Card title="Ethereum" icon="link" href="/ja/integrations/ethereum">
+    アカウント、ブロック、トランザクション、ガス、ENS、コントラクト呼び出しのための76のツール
+  </Card>
+</CardGroup>
+
+## 連携を接続する
+
+ほとんどの連携はOAuthを使用し、事前設定は不要です——未接続のサービスに対してエージェントが初めてツールを呼び出すと、`shanone_execute_tool`は失敗する代わりに`connect_link`を返します。それを開いて認可し、再試行してください。手順は[クイックスタート](/ja/quickstart)を参照するか、Shanoneダッシュボードの**Integrations**から事前に接続しておくこともできます。
 
 <Note>
-必要なインテグレーションが見つかりませんか？お知らせください！ユーザーのフィードバックに基づいて常に新しいインテグレーションを追加しています。
+一部の連携(Ethereumなど)はOAuthではなく、設定済みのRPCエンドポイント/APIキーで認証します——詳細はそれぞれの連携ページを参照してください。
 </Note>
 
-インテグレーションのリクエストは [support@duzzle.dev](mailto:support@duzzle.dev) までご連絡ください。
+## ここに載っていないサービスが必要な場合
+
+<Note>
+このページで詳しく紹介しているのは、厳選された一部のみです。必要な連携が見当たらない場合は、まずエージェントに聞いてみてください——`shanone_search_tools`はここに書かれている以上の、実際に稼働中の全カタログをカバーしています。本当に存在しない場合は、ぜひご連絡ください。
+</Note>
+
+連携のリクエストは[hey@duzzle.dev](mailto:hey@duzzle.dev)までお問い合わせください。

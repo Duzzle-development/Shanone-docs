@@ -1,0 +1,88 @@
+---
+title: "Notion"
+description: "Read, write, and search Notion pages and databases — with native Markdown support"
+icon: /images/notion.svg
+---
+
+# Notion
+
+Shanone's Notion integration gives your agent 45 tools for pages, databases, blocks, comments, and views — including Markdown-native reading and writing, which is usually the most convenient way for an agent to work with Notion content.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Notion (e.g. "create a page called Q3 Roadmap"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Share pages with the integration">
+    Notion's permission model requires each page or database to be explicitly shared with the connected integration — even after OAuth, pages you haven't shared won't be visible to `notion_search` or `notion_read_page`. Use **Share → Invite** on the relevant Notion pages.
+  </Step>
+  <Step title="Retry your request">
+    Once shared, your agent can read, write, and search that content.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **45 tools** for Notion, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Pages">
+    `notion_create_page`, `notion_create_page_from_markdown`, `notion_read_page`, `notion_read_page_markdown`, `notion_update_page`, `notion_update_page_markdown`, `notion_delete_page`, `notion_duplicate_page`, `notion_move_page`, `notion_get_page_property`, `notion_batch_update_pages`
+  </Accordion>
+  <Accordion title="Markdown-native editing">
+    `notion_append_markdown`, `notion_replace_content` — write to a Notion page using plain Markdown instead of constructing raw block objects, which is the recommended path for most agent-driven edits
+  </Accordion>
+  <Accordion title="Blocks">
+    `notion_append_block`, `notion_update_block`, `notion_delete_block`
+  </Accordion>
+  <Accordion title="Databases">
+    `notion_create_database`, `notion_update_database`, `notion_get_database_schema`, `notion_query_database`, `notion_update_database_pages`, `notion_set_relation`
+  </Accordion>
+  <Accordion title="Views">
+    `notion_create_view`, `notion_update_view`, `notion_delete_view`, `notion_list_views`, `notion_retrieve_view`, `notion_create_view_query`, `notion_get_view_query_results`
+  </Accordion>
+  <Accordion title="Comments">
+    `notion_add_comment`, `notion_add_block_comment`, `notion_reply_to_comment`, `notion_list_comments`
+  </Accordion>
+  <Accordion title="Search & meeting notes">
+    `notion_search`, `notion_query_meeting_notes` — search across all pages/databases shared with the integration, or specifically surface Notion's auto-generated meeting notes
+  </Accordion>
+  <Accordion title="Files & uploads">
+    `notion_add_file`, `notion_create_file_upload`, `notion_send_file_upload`, `notion_complete_file_upload`, `notion_retrieve_file_upload`, `notion_list_file_uploads`
+  </Accordion>
+  <Accordion title="Users & workspace">
+    `notion_get_me`, `notion_get_user`, `notion_get_users`, `notion_list_custom_emojis`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Meeting notes to tasks" icon="clipboard-list">
+    Read a Notion meeting-notes page and file the follow-ups elsewhere (e.g. as Linear issues)
+  </Card>
+  <Card title="Living documentation" icon="file-pen">
+    Append or replace sections of a doc via Markdown instead of hand-building block trees
+  </Card>
+  <Card title="Database-driven reports" icon="table">
+    Query a database with filters/sorts and summarize the results
+  </Card>
+  <Card title="Knowledge search" icon="magnifying-glass">
+    Search across everything shared with Shanone to answer "where did we decide X?"
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="notion_search or notion_read_page returns nothing for a page I know exists">
+    The page (or its parent database) hasn't been shared with the Shanone integration in Notion. Open the page in Notion, click **Share**, and add the integration explicitly — OAuth alone doesn't grant per-page access.
+  </Accordion>
+  <Accordion title="Markdown round-trip loses some formatting">
+    `notion_append_markdown` / `notion_update_page_markdown` support Notion's common block types (headings, lists, code, callouts, tables) but not every exotic block type. For anything unsupported, fall back to the block-level tools (`notion_append_block`, `notion_update_block`).
+  </Accordion>
+  <Accordion title="Database query returns fewer results than expected">
+    Check the filter/sort payload against `notion_get_database_schema` first — property names and types must match exactly, including case.
+  </Accordion>
+</AccordionGroup>

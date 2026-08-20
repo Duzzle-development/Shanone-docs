@@ -1,50 +1,71 @@
 ---
-title: Integrations Overview
-description: Connect Shanone to your existing tools and workflows
+title: "Integrations Overview"
+description: "Browse Shanone's integration catalog — 140+ services, 269+ implemented and live today, exposed through a handful of MCP meta-tools instead of one dedicated tool per action."
 ---
 
-# Integrations
+## How the catalog works
 
-Shanone integrates with your favorite tools to fit seamlessly into your workflow.
-
-## Available Integrations
-
-<CardGroup cols={2}>
-  <Card title="Slack" icon="slack" href="/integrations/slack">
-    Chat with Shanone directly in your Slack workspace.
-  </Card>
-  <Card title="GitHub" icon="github">
-    Connect Shanone to your repositories for code assistance.
-  </Card>
-  <Card title="VS Code" icon="code">
-    Use Shanone directly in your IDE.
-  </Card>
-  <Card title="API" icon="webhook" href="/api-reference/overview">
-    Build custom integrations with our REST API.
-  </Card>
-</CardGroup>
-
-## Setting Up Integrations
+Shanone doesn't register a separate MCP tool for every action of every service — that would be thousands of tools competing for space in your agent's context window. Instead, every integration's tools live in one searchable catalog, and your agent reaches them through three meta-tools:
 
 <Steps>
-  <Step title="Choose an integration">
-    Select the tool you want to connect from the list above.
+  <Step title="Search">
+    `shanone_search_tools` with a task-shaped query (optionally filtered by `service`)
   </Step>
-  <Step title="Authenticate">
-    Follow the authentication steps for your chosen integration.
+  <Step title="Inspect">
+    `shanone_get_tool_schema` with the exact tool name, to see required/optional arguments
   </Step>
-  <Step title="Configure">
-    Customize the integration settings to match your workflow.
-  </Step>
-  <Step title="Start using">
-    Begin using Shanone within your connected tool.
+  <Step title="Execute">
+    `shanone_execute_tool` with the tool name and a JSON string of arguments — OAuth is handled automatically via a `connect_link` if needed
   </Step>
 </Steps>
 
-## Need a Different Integration?
+See [MCP Overview](/mcp/overview) for the full mechanics. The pages below go deeper on a curated set of high-usage integrations — but this is a small slice of what's actually available.
+
+## Scale
+
+Shanone is marketed at **140+ integrations and 10,000+ tools** across its full ecosystem. **269+ integrations are implemented and live** in the backend today, covering the services documented below plus many more (GitLab, Bitbucket, Jira, Confluence, HubSpot, Airtable, Discord, Telegram, Microsoft Teams, Google Calendar/Docs/Sheets/Drive, Stripe, PayPal, Shopify, Datadog, Sentry, Cloudflare, Vercel, OpenAI, Anthropic, and more). If a service you need isn't listed here, ask your agent to run `shanone_search_tools` or `shanone_list_service_tools` with that service's name — it's very likely already registered.
+
+## Documented integrations
+
+<CardGroup cols={3}>
+  <Card title="Slack" icon="slack" href="/integrations/slack">
+    139 tools across messaging, channels, canvases, lists, admin, and more
+  </Card>
+  <Card title="GitHub" icon="github" href="/integrations/github">
+    176 tools spanning issues, PRs, Actions, security scanning, and org administration
+  </Card>
+  <Card title="Notion" icon="book" href="/integrations/notion">
+    45 tools for pages, databases, blocks, comments, and Markdown-native editing
+  </Card>
+  <Card title="Stripe" icon="credit-card" href="/integrations/stripe">
+    328 tools covering payments, subscriptions, billing, Treasury, and Issuing
+  </Card>
+  <Card title="Linear" icon="list-check" href="/integrations/linear">
+    46 tools for issues, projects, cycles, and initiatives
+  </Card>
+  <Card title="Gmail" icon="mail" href="/integrations/gmail">
+    52 tools for messages, threads, drafts, labels, and mailbox settings
+  </Card>
+  <Card title="HubSpot" icon="megaphone" href="/integrations/hubspot">
+    214 tools for CRM objects, marketing, deals, and commerce
+  </Card>
+  <Card title="Ethereum" icon="link" href="/integrations/ethereum">
+    76 tools for accounts, blocks, transactions, gas, ENS, and contract calls
+  </Card>
+</CardGroup>
+
+## Connecting an integration
+
+Most integrations use OAuth and don't need to be pre-configured — the first time your agent calls a tool for a service you haven't connected, `shanone_execute_tool` returns a `connect_link` instead of failing. Visit it, authorize, and retry. See the [Quickstart](/quickstart) for a walkthrough, or connect proactively from **Integrations** in the Shanone dashboard.
 
 <Note>
-Don't see the integration you need? Let us know! We're always adding new integrations based on user feedback.
+A few integrations (like Ethereum) authenticate with a configured RPC endpoint/API key rather than OAuth — see that integration's page for specifics.
 </Note>
 
-Contact us at [support@duzzle.dev](mailto:support@duzzle.dev) with your integration requests.
+## Need something that's not documented here?
+
+<Note>
+This page only covers a curated subset in depth. Don't see the integration you need? Ask your agent — `shanone_search_tools` covers the full live catalog, not just what's written up here. If it's genuinely missing, reach out.
+</Note>
+
+Contact us at [hey@duzzle.dev](mailto:hey@duzzle.dev) with integration requests.

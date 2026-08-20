@@ -1,0 +1,88 @@
+---
+title: "HubSpot"
+description: "CRM objects, marketing, deals, commerce, and support — HubSpot's full breadth in one integration"
+icon: /images/hubspot.svg
+---
+
+# HubSpot
+
+Shanone's HubSpot integration gives your agent 214 tools spanning CRM (contacts, companies, deals), marketing (campaigns, emails, forms), commerce (invoices, orders, payments), and support (tickets, feedback).
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with HubSpot (e.g. "create a contact for this lead"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the requested scopes">
+    HubSpot's OAuth consent screen lists the scopes Shanone requests — approve the ones relevant to what you plan to use (CRM, marketing, commerce are separate scope groups).
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `hubspot_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **214 tools** for HubSpot — the second-largest integration in the catalog after Stripe.
+
+<AccordionGroup>
+  <Accordion title="Contacts, companies & leads">
+    `hubspot_create_contact`, `hubspot_get_contact`, `hubspot_update_contact`, `hubspot_search_contacts`, `hubspot_list_contacts`, `hubspot_merge_contacts`, `hubspot_batch_create_contacts`, `hubspot_batch_update_contacts`, `hubspot_gdpr_delete_contact`, `hubspot_create_company`, `hubspot_search_companies`, `hubspot_merge_companies`, `hubspot_create_lead`, `hubspot_get_lead`, `hubspot_search_leads`
+  </Accordion>
+  <Accordion title="Deals & pipelines">
+    `hubspot_create_deal`, `hubspot_get_deal`, `hubspot_update_deal`, `hubspot_search_deals`, `hubspot_merge_deals`, `hubspot_get_deal_analytics`, `hubspot_create_pipeline`, `hubspot_get_pipeline`, `hubspot_list_pipeline_stages`, `hubspot_get_forecast`, `hubspot_list_forecasts`
+  </Accordion>
+  <Accordion title="Associations">
+    `hubspot_create_association`, `hubspot_delete_association`, `hubspot_list_associations`, `hubspot_list_association_types`, `hubspot_batch_create_associations`, `hubspot_batch_read_associations`, `hubspot_batch_delete_associations`
+  </Accordion>
+  <Accordion title="Marketing (campaigns, email, forms)">
+    `hubspot_create_campaign`, `hubspot_get_campaign_metrics`, `hubspot_create_marketing_email`, `hubspot_clone_marketing_email`, `hubspot_create_form`, `hubspot_get_form_submissions`, `hubspot_create_marketing_event`, `hubspot_record_event_attendance`, `hubspot_create_workflow`, `hubspot_enroll_in_workflow`
+  </Accordion>
+  <Accordion title="Commerce (invoices, orders, payments, quotes)">
+    `hubspot_create_invoice`, `hubspot_get_invoice`, `hubspot_search_invoices`, `hubspot_create_order`, `hubspot_get_order`, `hubspot_create_payment`, `hubspot_search_payments`, `hubspot_create_quote`, `hubspot_create_line_item`, `hubspot_create_product`, `hubspot_search_products`
+  </Accordion>
+  <Accordion title="Engagements (calls, meetings, notes, tasks, tickets)">
+    `hubspot_create_call`, `hubspot_get_call_recording_url`, `hubspot_get_call_transcript`, `hubspot_create_meeting`, `hubspot_create_note`, `hubspot_create_task`, `hubspot_create_ticket`, `hubspot_merge_tickets`, `hubspot_create_feedback_submission`
+  </Accordion>
+  <Accordion title="Custom objects & properties">
+    `hubspot_create_custom_object`, `hubspot_create_custom_object_schema`, `hubspot_search_custom_objects`, `hubspot_create_property`, `hubspot_update_property`, `hubspot_create_property_group`
+  </Accordion>
+  <Accordion title="Lists, files & imports">
+    `hubspot_create_list`, `hubspot_associate_list_to_event`, `hubspot_upload_file`, `hubspot_search_files`, `hubspot_start_import`, `hubspot_get_import_status`, `hubspot_cancel_import`
+  </Accordion>
+  <Accordion title="Subscriptions & compliance">
+    `hubspot_subscribe_contact`, `hubspot_unsubscribe_contact`, `hubspot_get_contact_subscriptions`, `hubspot_batch_update_subscriptions`, `hubspot_gdpr_delete_company`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Lead enrichment" icon="user-plus">
+    Create/update contacts and companies from inbound signals elsewhere
+  </Card>
+  <Card title="Pipeline reporting" icon="chart-line">
+    Summarize deals by stage and flag stalled ones
+  </Card>
+  <Card title="Support ticket triage" icon="ticket">
+    Create and update tickets from customer messages surfaced in Slack or email
+  </Card>
+  <Card title="Campaign performance" icon="megaphone">
+    Pull campaign/email metrics for a status update
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Custom object tools fail with a schema not found error">
+    Custom objects must be defined (`hubspot_create_custom_object_schema`) before you can create records against them (`hubspot_create_custom_object`). Check `hubspot_get_custom_object_schema` for the exact object type name.
+  </Accordion>
+  <Accordion title="Batch tools silently skip some records">
+    Batch create/update tools (`hubspot_batch_create_contacts`, etc.) are best-effort per record — check the response for per-item errors rather than assuming a 200-level response means every record succeeded.
+  </Accordion>
+  <Accordion title="Association tools fail with an invalid association type">
+    Call `hubspot_list_association_types` for the two object types involved first — HubSpot's default and custom association type IDs differ per portal.
+  </Accordion>
+</AccordionGroup>

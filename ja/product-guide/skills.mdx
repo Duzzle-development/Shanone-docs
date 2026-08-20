@@ -1,0 +1,107 @@
+---
+title: "スキル"
+description: "再利用可能なステップバイステップのワークフローをShanoneに一度保存すれば、どのマシン・IDE・エージェントからでも再利用できます。"
+icon: "bookmark"
+---
+
+## Skillとは何か
+
+**Skill**とは、名前付きの再利用可能な指示セットのことで、コンセプトとしては[AnthropicのAgent Skills](https://www.anthropic.com/news/skills)に近いものです。各Skillは3つのフィールドを持ちます。
+
+| フィールド | 用途 |
+|-------|---------|
+| `name` | 短く分かりやすいタイトル |
+| `summary` | Skillが何を行い、いつ使うべきかを示す説明 — 一覧結果に表示される軽量なメタデータ |
+| `instructions` | ステップバイステップの完全な本文 — Skillが実際に開かれたときにのみ取得される |
+
+Shanone自身がSkillを*実行する*ことは決してありません。**Skill Vendor**は保存と取得だけを担うレイヤーです。エージェントはMCP経由でSkillを一覧表示・読み取りし、自身のコンテキストの中で`instructions`に従い、その過程で必要に応じて`shanone_execute_tool`(や他に必要なもの)を呼び出します。これによってSkillは、それを読み取るエージェントが何であっても——今日はCursor、明日はClaude Code、来週は別のノートPCでも——持ち運び可能な状態を保てます。
+
+<Note>
+Skillはローカルファイルではなく、サーバー側(ShanoneのSkill Vendorバックエンド)に保存されます。一度保存すれば、あなたのアカウントが接続するあらゆる場所で利用できます。
+</Note>
+
+## Skillが存在する理由
+
+<CardGroup cols={2}>
+  <Card title="繰り返しをなくす" icon="repeat">
+    同じ複数ステップの指示を一度だけ伝えて保存し、以降は名前で参照するだけで済みます
+  </Card>
+  <Card title="エージェント間で持ち運び可能" icon="laptop">
+    Cursorで作成したSkillは、Claude Codeや、あなたのアカウントに接続する他のどのMCPクライアントからもすぐに読み取れます
+  </Card>
+  <Card title="段階的な開示" icon="layers">
+    Skillの一覧表示では軽量なメタデータ(`name`と`summary`)のみが返され、完全な`instructions`はSkillが実際に開かれたときにのみ取得されるため、トークン使用量を低く抑えられます
+  </Card>
+  <Card title="Webダッシュボードとも共有される" icon="globe">
+    MCP経由で作成したSkillは、Shanoneの Web UIの**Skills**にも表示されます。逆方向も同様です
+  </Card>
+</CardGroup>
+
+## Skill Vendorのツール
+
+| ツール | 説明 |
+|------|-------------|
+| `shanone_list_skills` | 保存済みのSkillを一覧表示(メタデータのみ)。`query`で絞り込み可能、新しい順に表示 |
+| `shanone_get_skill` | `skill_id`を指定してSkillの完全な`instructions`を取得 |
+| `shanone_create_skill` | 新しいSkillを保存(`name`、`description`、`body`はすべて必須) |
+| `shanone_update_skill` | 既存のSkillを更新 — 空でないフィールドのみが変更される |
+| `shanone_delete_skill` | Skillを完全に削除 |
+
+## 推奨ワークフロー
+
+<Steps>
+  <Step title="まず確認する">
+    重要なタスクを始める前に、`shanone_list_skills`を(必要に応じて`query`フィルタ付きで)呼び出し、そのワークフローが既に存在しないか確認します。
+  </Step>
+  <Step title="読み込む">
+    一致するものが見つかったら、その`skill_id`を指定して`shanone_get_skill`を呼び出し、完全な指示を取得します。
+  </Step>
+  <Step title="従う">
+    エージェントは自身のコンテキストの中でステップを自ら実行します——指示が求める連携アクションには`shanone_search_tools` / `shanone_execute_tool`を使用します。
+  </Step>
+  <Step title="新しいワークフローを保存する">
+    再利用する価値のあることをやり終えたら、`shanone_create_skill`を呼び出しておけば、次回以降どのエージェントからでも利用できるようになります。
+  </Step>
+</Steps>
+
+## 例
+
+```
+User: "Save this as a skill called 'Weekly Status Report'."
+
+Agent calls shanone_create_skill with:
+  name: "Weekly Status Report"
+  description: "Gathers last week's closed GitHub issues and posts a summary to Slack #team."
+  body: |
+    1. Use shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
+    2. Summarize them into 3-5 bullet points.
+    3. Use shanone_execute_tool with slack_post_message to post the summary to #team.
+```
+
+1週間後、別のマシンから:
+
+```
+User: "Run my Weekly Status Report skill."
+
+Agent calls shanone_list_skills, finds it, calls shanone_get_skill,
+then follows the instructions — calling github_list_issues and slack_post_message itself.
+```
+
+## バージョン管理
+
+`shanone_update_skill`を呼び出すたびに、Skillの`version`カウンターが増加します。Shanoneは現在、ロールバック用に過去のバージョンを保持していません——`shanone_update_skill`は渡したフィールドの完全な置き換えとして扱い、元に戻す可能性があるものは自分自身でコピーを保管しておいてください。
+
+<Warning>
+`shanone_delete_skill`によるSkillの削除は永久的で、元に戻すことはできません。
+</Warning>
+
+## 次のステップ
+
+<CardGroup cols={2}>
+  <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
+    すべてのSkill Vendorツールの完全なパラメータとリクエスト/レスポンスの例
+  </Card>
+  <Card title="権限管理とアクセス制御" icon="shield-check" href="/ja/product-guide/permissions">
+    Skillは現在ユーザー単位で管理されています — チームメンバーごとのツール/サービスへのアクセス制御方法を確認してください
+  </Card>
+</CardGroup>

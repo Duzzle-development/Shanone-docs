@@ -1,73 +1,95 @@
 ---
-title: Best Practices
-description: Tips for getting the most out of Shanone
+title: "Best Practices"
+description: "How to phrase agent instructions so Shanone's meta-tools find and run the right tool, and how to keep permissions and Skills healthy as you scale."
 ---
 
-# Best Practices
+## Be task-shaped, not tool-shaped
 
-Follow these guidelines to maximize your success with Shanone.
-
-## Be Specific
-
-The more specific your instructions, the better Shanone can help you.
+`shanone_search_tools` is relevance-ranked against a description of the *task*, not a lookup by tool name. A specific, task-shaped query returns a small, usable set of results; a bare service name on a large integration (Slack has 139 tools, Stripe has 328) can return too much or the wrong thing.
 
 <Tabs>
   <Tab title="Good">
-    "Create a Python function that validates email addresses using regex, returns True for valid emails and False otherwise, and include docstrings."
+    "Post a message to a Slack channel"
+
+    "Create a GitHub issue with a title and body"
+
+    "Get the ETH balance of an address"
   </Tab>
   <Tab title="Bad">
-    "Make an email validator"
+    "Slack"
+
+    "github"
+
+    "do something with ethereum"
   </Tab>
 </Tabs>
 
-## Provide Context
+## Ask for a full listing when you mean "everything"
 
-Help Shanone understand your project by providing relevant context.
+If you (or your agent) actually want the complete set of tools for a service — not just the most relevant few — say so explicitly, and have the agent call `shanone_list_service_tools` instead of `shanone_search_tools`. This matters most for large integrations:
+
+| Service | Tool count |
+|---------|-----------|
+| Stripe | 328 |
+| HubSpot | 214 |
+| GitHub | 176 |
+| Slack | 139 |
+| Ethereum | 76 |
+| Google Calendar | 58 |
+| Gmail | 52 |
+| Jira | 55 |
+| Linear | 46 |
+| Notion | 45 |
+
+`shanone_search_tools` is not guaranteed to surface every tool for services this size — check `has_more` in the response, and if it's true, either narrow the query or switch to `shanone_list_service_tools`.
+
+## Let the schema step do its job
+
+For unfamiliar tools, have your agent call `shanone_get_tool_schema` before `shanone_execute_tool`. This avoids guessed argument names (Shanone tools use descriptive but not always obvious field names — e.g. `slack_post_message` takes `channel`, not `channel_id`) and surfaces required vs. optional fields up front.
 
 <Steps>
-  <Step title="Describe the goal">
-    Explain what you're trying to achieve at a high level.
+  <Step title="Search">
+    `shanone_search_tools` with a task-shaped query.
   </Step>
-  <Step title="Share relevant files">
-    Reference existing code or documentation that Shanone should consider.
+  <Step title="Inspect (when unsure)">
+    `shanone_get_tool_schema` with the exact tool name from the search result.
   </Step>
-  <Step title="Specify constraints">
-    Mention any requirements, limitations, or preferences.
+  <Step title="Execute">
+    `shanone_execute_tool` with a JSON string of arguments matching the schema.
   </Step>
 </Steps>
 
-## Break Down Complex Tasks
+## Save workflows as Skills, don't repeat yourself
 
-For large tasks, break them into smaller, manageable steps.
+If you find yourself giving your agent the same multi-step instructions more than once (e.g. "check the Notion project page, summarize it, post to Slack"), save it with `shanone_create_skill`. Skills are stored server-side, so the same workflow is available from any machine, IDE, or agent that connects to your Shanone account — and it shows up in Shanone's web dashboard too.
 
 <CardGroup cols={2}>
-  <Card title="Plan First" icon="map">
-    Outline the steps before diving into implementation.
+  <Card title="Check first" icon="magnifying-glass">
+    Call `shanone_list_skills` before starting a non-trivial multi-step task — someone on your team may have already saved it
   </Card>
-  <Card title="Iterate" icon="rotate">
-    Review and refine as you go rather than trying to get everything perfect at once.
+  <Card title="Name things clearly" icon="tag">
+    A Skill's `name` and `summary` are the only things shown in list results — make them specific enough to recognize later
   </Card>
 </CardGroup>
 
-## Use Feedback Loops
+## Handle the auth wall gracefully
+
+When `shanone_execute_tool` returns `reason: "auth_required"` or `"auth_expired"`, that's not a failure to work around — it's Shanone telling you the service isn't connected yet. Surface the `connect_link` to the user, wait for them to complete OAuth, then retry the *exact same* tool call.
 
 <Note>
-Shanone learns from your feedback. Let Shanone know when something works well or needs adjustment.
+Don't ask your agent to try alternate tools or workarounds when it hits `auth_required`. The fix is always: visit the connect link, then retry.
 </Note>
 
-- Review Shanone's output carefully
-- Provide corrections when needed
-- Build on successful patterns
+## Keep permissions least-privilege
 
-## Common Pitfalls to Avoid
+If you're a Root user or a delegated SA2 administrator, resist enabling every service for every teammate by default. Use `shanone_set_user_service_permission` to disable services a role doesn't need (e.g. billing tools for engineers, infra tools for sales), and reserve `shanone_batch_set_user_permissions` for onboarding a new hire's whole permission set in one call. See [Permissions & Access Control](/product-guide/permissions) for the full model.
 
-<Warning>
-Avoid these common mistakes when working with Shanone.
-</Warning>
+## Common pitfalls
 
-| Pitfall | Solution |
-|---------|----------|
-| Vague instructions | Be specific about what you want |
-| Missing context | Provide relevant background information |
-| Skipping verification | Always review and test the output |
-| Overloading requests | Break large tasks into smaller pieces |
+| Pitfall | Fix |
+|---------|-----|
+| Searching with a single-word service name on a large integration | Use `shanone_list_service_tools` for full enumeration, or add task detail to the query |
+| Guessing argument names for an unfamiliar tool | Call `shanone_get_tool_schema` first |
+| Re-explaining the same multi-step workflow every session | Save it once as a Skill |
+| Retrying a failed call with different tools after an `auth_required` error | Follow the `connect_link`, then retry the same call |
+| Granting every service to every teammate "just in case" | Scope permissions per role, tighten later is harder than starting tight |

@@ -1,0 +1,101 @@
+---
+title: "権限管理とアクセス制御"
+description: "チームがどのメンバーがどのツール・サービスを使えるかを、IAMのように正確にコントロールする方法。"
+icon: "shield-check"
+---
+
+## これが存在する理由
+
+Shanoneアカウントにエージェントを接続するチームメンバーは、デフォルトでは、Shanoneが実装している269以上の連携すべてにアクセスできてしまいます。ほとんどのチームにとって、これは範囲が広すぎます——エンジニアに請求関連のツールは必要ありませんし、誰もがエージェント経由で本番リポジトリにforce-pushできるべきではありません。Shanoneの**Permission Vendor**を使えば、**Root**ユーザー(または委任された管理者)が、2段階の粒度でアクセスを制御できます。
+
+<CardGroup cols={2}>
+  <Card title="サービスレベル" icon="layer-group">
+    1つの連携に属する*すべての*ツールを一括で有効化/無効化する(例:あるロールについて「stripe」を完全に無効化する)
+  </Card>
+  <Card title="ツールレベル" icon="wrench">
+    サービスレベルの設定を上書きして、*特定の*1つのツールだけを有効化/無効化する(例:`github_create_issue`は許可しつつ`github_delete_repo`はブロックする)
+  </Card>
+</CardGroup>
+
+ツールレベルのオーバーライドは常にサービスレベルのオーバーライドより優先され、サービスレベルのオーバーライドは常にロールのデフォルト設定より優先されます。
+
+## ロール
+
+| ロール | デフォルトのツールアクセス | 他ユーザーの権限を管理できるか |
+|------|---------------------|----------------------------------|
+| **Root** | すべてのサービス/ツールがデフォルトで有効 | 可能(すべてのユーザーに対して) |
+| **SA2**(委任された管理者) | すべてのサービス/ツールがデフォルトで無効 | `tool-permissions:ManageOthers`ポリシーアクションを明示的に委任された場合のみ可能——その場合でも、Rootユーザーの権限は変更できない |
+| 一般メンバー | デフォルトで無効(オーバーライドにより有効化) | 不可 |
+
+<Note>
+「SA2」はShanoneのセカンダリ管理者ロールの階層を指します——アカウントは、完全なRoot権限を与えることなく、特定のポリシーアクション(他ユーザーのツール権限の管理など)をSA2ユーザーに委任できます。
+</Note>
+
+## Permission Vendorのツール
+
+| ツール | 呼び出せるユーザー | 説明 |
+|------|------------------|-------------|
+| `shanone_list_services` | 誰でも | 登録済みの全サービス(連携)をツール数付きで一覧表示——特別な権限は不要 |
+| `shanone_list_user_tool_permissions` | Root / 委任されたSA2 | 対象ユーザーのサービスレベル・ツールレベルのオーバーライドを一覧表示 |
+| `shanone_set_user_tool_permission` | Root / 委任されたSA2 | 対象ユーザーに対して特定の1つのツールを有効化/無効化 |
+| `shanone_set_user_service_permission` | Root / 委任されたSA2 | 対象ユーザーに対して1つのサービスの全ツールを有効化/無効化 |
+| `shanone_get_permission_summary` | Root / 委任されたSA2 | 集計値:有効化されているサービス/ツール数と合計数、および無効化されているサービスの一覧 |
+| `shanone_batch_set_user_permissions` | Root / 委任されたSA2 | 対象ユーザーに対して最大500件のサービス/ツール操作を1回の呼び出しで適用 |
+
+<Warning>
+委任されたSA2ユーザーは一般メンバーの権限を管理できますが、どのようなポリシーアクションを許可されていても、Rootユーザーの権限を管理することは決してできません。
+</Warning>
+
+## よくあるワークフロー
+
+### 新しいメンバーに限定的な権限セットでオンボーディングする
+
+<Steps>
+  <Step title="サービス名を調べる">
+    `shanone_list_services`を呼び出して、必要な正確な`service_name`の値(例:`slack`、`github`、`notion`)を取得します。
+  </Step>
+  <Step title="操作のバッチを作成する">
+    `[{"type": "service", "name": "slack", "enabled": true}, {"type": "service", "name": "stripe", "enabled": false}]`のようなJSON配列を構築します。
+  </Step>
+  <Step title="1回の呼び出しで適用する">
+    新しいメンバーの`target_user_id`と操作の配列(1回あたり最大500件)を指定して`shanone_batch_set_user_permissions`を呼び出します。
+  </Step>
+  <Step title="確認する">
+    同じ`target_user_id`に対して`shanone_get_permission_summary`を呼び出し、意図した通りの件数になっているか確認します。
+  </Step>
+</Steps>
+
+### サービス全体を無効化せずに危険なツールだけをロックする
+
+```
+shanone_set_user_tool_permission(
+  target_user_id="usr_123",
+  tool_name="github_delete_repo",
+  enabled=False
+)
+```
+
+これにより、そのユーザーは他のすべてのGitHubツールを引き続き利用できる一方で、この1つのアクションだけがブロックされます。
+
+### 誰が実際に何を実行できるかを確認する
+
+```
+shanone_get_permission_summary(target_user_id="usr_123")
+```
+
+そのユーザーのロール、デフォルトのアクセス設定、サービスとツール両方の有効/無効件数を返します——無効化されているサービスの明示的な一覧も含まれます。サマリーではなく生のオーバーライド一覧が必要な場合は、`shanone_list_user_tool_permissions`を使用してください。
+
+## マスタデータに関する警告
+
+Shanoneがまだ認識していない`tool_name`や`service_name`に対して権限を設定した場合(たいていはタイプミス、または前回の同期以降に追加されたツール)、呼び出し自体は成功してオーバーライドは保存されますが、レスポンスには`not found in tool permission master data`のような警告が含まれます。オーバーライドが正しく機能していないと判断する前に、`shanone_list_services`や`shanone_search_tools`で正確な名前を再確認してください。
+
+## 次のステップ
+
+<CardGroup cols={2}>
+  <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
+    すべてのPermission Vendorツールの完全なパラメータとリクエスト例
+  </Card>
+  <Card title="トラブルシューティング" icon="wrench" href="/ja/guides/troubleshooting">
+    「Permission Denied」および関連エラーを解決する
+  </Card>
+</CardGroup>

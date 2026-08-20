@@ -1,0 +1,85 @@
+---
+title: "Gmail"
+description: "Search, send, and organize email — messages, threads, drafts, labels, filters, and mailbox settings"
+icon: /images/gmail.svg
+---
+
+# Gmail
+
+Shanone's Gmail integration gives your agent 52 tools covering everyday messaging plus the mailbox-configuration tools (filters, forwarding, delegates, vacation responder) most integrations skip.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Gmail (e.g. "search my email for invoices from last month"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the Google account">
+    Approve Google's OAuth consent screen for the mailbox you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `gmail_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **52 tools** for Gmail, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Messages">
+    `gmail_send_message`, `gmail_get_message`, `gmail_list_messages`, `gmail_search`, `gmail_reply_to_message`, `gmail_trash_message`, `gmail_untrash_message`, `gmail_delete_message`, `gmail_batch_delete_messages`, `gmail_batch_modify_labels`, `gmail_modify_message_labels`, `gmail_import_message`, `gmail_insert_message`, `gmail_get_attachment`
+  </Accordion>
+  <Accordion title="Threads">
+    `gmail_get_thread`, `gmail_list_threads`, `gmail_trash_thread`, `gmail_untrash_thread`, `gmail_delete_thread`, `gmail_modify_thread_labels`
+  </Accordion>
+  <Accordion title="Drafts">
+    `gmail_create_draft`, `gmail_get_draft`, `gmail_update_draft`, `gmail_delete_draft`, `gmail_list_drafts`, `gmail_send_draft`
+  </Accordion>
+  <Accordion title="Labels">
+    `gmail_create_label`, `gmail_get_label`, `gmail_update_label`, `gmail_delete_label`, `gmail_list_labels`
+  </Accordion>
+  <Accordion title="Filters">
+    `gmail_create_filter`, `gmail_get_filter`, `gmail_delete_filter`, `gmail_list_filters`
+  </Accordion>
+  <Accordion title="Mailbox settings">
+    `gmail_get_vacation`, `gmail_update_vacation`, `gmail_get_auto_forwarding`, `gmail_list_forwarding_addresses`, `gmail_get_imap`, `gmail_get_pop`, `gmail_get_language`, `gmail_get_send_as`, `gmail_list_send_as`
+  </Accordion>
+  <Accordion title="Delegates & profile">
+    `gmail_create_delegate`, `gmail_get_delegate`, `gmail_delete_delegate`, `gmail_list_delegates`, `gmail_get_profile`
+  </Accordion>
+  <Accordion title="History & push notifications">
+    `gmail_list_history`, `gmail_watch`, `gmail_stop`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Inbox triage" icon="inbox">
+    Search and summarize unread mail, then draft replies for review
+  </Card>
+  <Card title="Attendee follow-ups" icon="users">
+    Send a personalized email to every attendee pulled from a calendar event or event platform
+  </Card>
+  <Card title="Auto-forwarding audits" icon="shield-check">
+    Check forwarding addresses and filters for anything suspicious
+  </Card>
+  <Card title="Vacation responder management" icon="plane">
+    Turn an out-of-office reply on/off around travel dates
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="gmail_send_message fails with an invalid recipient error">
+    Check the exact payload shape with `shanone_get_tool_schema` for `gmail_send_message` — recipients, subject, and body are typically nested under a MIME-style structure rather than flat fields.
+  </Accordion>
+  <Accordion title="gmail_watch push notifications aren't arriving">
+    `gmail_watch` requires a Google Cloud Pub/Sub topic configured on the connected Google Cloud project; this is a project-level setup step outside Shanone. Call `gmail_stop` and re-run `gmail_watch` after fixing the topic configuration.
+  </Accordion>
+  <Accordion title="Can't find an older email">
+    Use `gmail_search` with Gmail's own search operators (`from:`, `after:`, `has:attachment`, etc.) rather than `gmail_list_messages`, which doesn't support keyword filtering.
+  </Accordion>
+</AccordionGroup>

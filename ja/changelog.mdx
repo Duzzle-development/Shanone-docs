@@ -1,53 +1,60 @@
 ---
-title: 変更履歴
-description: Shanone の変更と更新を追跡
+title: "更新履歴"
+description: "直近のプラットフォームの主なマイルストーン — リブランド、権限管理、マイクロサービス化など。"
 ---
-
-# 変更履歴
-
-Shanone の最新の変更を確認しましょう。
-
-## 2026年6月
-
-### 2026年6月9日
 
 <Note>
-初期ドキュメントリリース
+Shanoneは急速に進化しています。このページでは、内部的な変更すべてではなく、ユーザーの目に見える主要なプラットフォームのマイルストーンのみを取り上げています——ツールカタログへの最新の追加については[インテグレーション](/ja/integrations/overview)を参照してください。
 </Note>
 
-**追加：**
-- Mintlify でドキュメントサイトを公開
-- はじめにガイド
-- API リファレンスドキュメント
-- Slack インテグレーションガイド
-- 日本語ローカライゼーション
+## 2026年8月
+
+**リブランド: emma → Shanone**
+
+以前emmaという名前だったプロダクトは、現在**Shanone**——「Command Center for Agent Harnesses」——になりました。このリブランドは意図的な方向転換を反映しています。Shanoneはもはや自前の自律的なプランニング/実行エンジンを持ちません(以前のLangGraphベースのオーケストレーターは、それを呼び出すものがなくなった時点で、デッドコードとして完全に削除されました)。今日のShanoneの役割は、Cursor、Claude Code、その他あらゆるMCPクライアントといった*他の*エージェントが呼び出す**Toolベンダー・Skillベンダー・権限レイヤー**であることです。
+
+**追加:**
+- 権限ベンダー: IAM的なツール・サービス権限管理(`shanone_list_services`、`shanone_set_user_tool_permission`、`shanone_set_user_service_permission`、`shanone_get_permission_summary`、`shanone_batch_set_user_permissions`、`shanone_list_user_tool_permissions`)。Rootユーザーおよび委任されたSA2管理者に限定
+- Skillベンダーを、シンプルなDynamoDBベースのストレージモデル(`name` / `summary` / `instructions`)を中心に段階的開示(progressive disclosure)の形で再実装——一覧取得ではメタデータのみを返し、完全な指示内容は必要に応じて取得
+- `shanone_list_service_tools`メタツールを追加。関連度でランキングされた検索に頼らず、大規模なインテグレーションのツールをすべて網羅的に列挙できるように
+- Webhooks: 受信イベントソース(まずはTypeformから開始)が、連携先のエージェントプラットフォーム(Devin、Cursor Cloud Agents、Manus)を自動的に起動できるように
+
+**変更:**
+- 旧オーケストレーターに紐づいていたレガシーな階層型「Skill」システム(エージェントごとのプロンプトファイル、`excel_operator`など)を削除——「Skill」という用語は、現在はSkillベンダーのユーザー保存ワークフローのみを指します
+- バックエンドを、より細かい単位でスケールできるように、独立してデプロイ可能な複数のサービス(ツール実行、分析、課金、クローリング)に分割
+
+## 2026年6月〜7月
+
+**追加:**
+- `@duzzle/shanone-mcp`をnpmに公開——カスタムヘッダー付きのリモートStreamable HTTP MCPにまだ対応していないクライアント向けのローカルstdio MCPプロキシ
+- インテグレーションカタログの拡大を継続し、269以上の実運用サービス統合に到達
+
+## 2026年3月
+
+**変更:**
+- 本番環境および開発環境のインフラを、マルチアカウント構成のAWS Organizationsへ移行。環境間を分離し、インフラ変更時の影響範囲を縮小
+
+## 2026年1月
+
+**変更:**
+- コンピュートおよびデータ層のインフラ全体にわたる、バックエンドの自動スケーリングとコスト最適化の実施
 
 ---
 
-## 近日公開
-
-Shanone は常に改善されています。ロードマップの内容：
+## 今後の予定
 
 <CardGroup cols={2}>
-  <Card title="さらなるインテグレーション" icon="plug">
-    GitHub、VS Code などのインテグレーションが近日公開。
+  <Card title="さらなるインテグレーション" icon="puzzle">
+    140以上の連携・10,000以上のツールというマーケティング上のカタログ全体に向けて、継続的に拡大
   </Card>
-  <Card title="API の強化" icon="code">
-    新しいエンドポイントと機能。
-  </Card>
-  <Card title="チーム機能" icon="users">
-    チーム向けのコラボレーションツール。
-  </Card>
-  <Card title="アナリティクス" icon="chart-bar">
-    使用状況のインサイトとアナリティクスダッシュボード。
+  <Card title="Skill共有のさらなる強化" icon="users">
+    (ユーザー単位だけでなく)チーム単位でのSkill可視性についても検討中
   </Card>
 </CardGroup>
 
----
-
 ## フィードバック
 
-改善のご提案がありましたら、ぜひお聞かせください！
+ご提案や、このページの不正確な点を見つけた場合はお知らせください。
 
-- メール: [support@duzzle.dev](mailto:support@duzzle.dev)
-- GitHub: [github.com/your-org/Shanone](https://github.com/your-org/Shanone)
+- メール: [hey@duzzle.dev](mailto:hey@duzzle.dev)
+- GitHub: [github.com/Duzzle-development/Shanone-docs](https://github.com/Duzzle-development/Shanone-docs)

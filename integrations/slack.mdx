@@ -1,35 +1,34 @@
 ---
-title: Slack
-description: Connect Shanone to your Slack workspace for powerful team collaboration
+title: "Slack"
+description: "Connect Shanone to your Slack workspace for messaging, channel management, and admin operations"
 icon: /images/slack.svg
 ---
 
 # Slack
 
-Connect Shanone to your Slack workspace for powerful team collaboration.
+Shanone's Slack integration gives your agent 125 tools spanning everyday messaging, channel administration, Canvases, Lists, and Enterprise Grid admin operations.
 
 ## Getting Started
 
-### Installation
-
 <Steps>
-  <Step title="Go to Settings">
-    Navigate to **Settings > Integrations > Slack** in the Shanone dashboard.
+  <Step title="Connect via OAuth">
+    Ask your agent to do anything with Slack (e.g. "post to #general"), or connect proactively from **Integrations** in the Shanone dashboard. Either way, you'll get a `connect_link` to authorize Shanone's Slack app against your workspace.
   </Step>
-  <Step title="Click Connect">
-    Click the "Connect to Slack" button.
+  <Step title="Invite the app to private channels">
+    Bot-token operations (posting, reading history, etc.) only work in channels the Slack app has been added to. This usually isn't required for public channels; for private channels, invite the app explicitly from within Slack.
   </Step>
-  <Step title="Authorize">
-    Authorize Shanone to access your Slack workspace.
-  </Step>
-  <Step title="Invite Shanone to channels">
-    Type `/invite @Shanone` in any channel where you want Shanone to operate.
+  <Step title="Retry your request">
+    Once connected, ask your agent again — `shanone_execute_tool` will now succeed instead of returning a `connect_link`.
   </Step>
 </Steps>
 
+<Note>
+Message search (`slack_search_messages`, `slack_search_all`, `slack_search_files`) uses a Slack **user token** rather than the bot token, obtained through the same OAuth flow. If search-related tools fail while everything else works, redo the OAuth connection to make sure both tokens were granted.
+</Note>
+
 ## Available Tools
 
-Shanone provides **113 tools** for comprehensive Slack integration, organized into 24 categories:
+Shanone provides **125 tools** for Slack, organized into the categories below:
 
 <AccordionGroup>
   <Accordion title="Messages (7 tools)">
@@ -302,29 +301,23 @@ Shanone provides **113 tools** for comprehensive Slack integration, organized in
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Shanone can't post to a channel">
-    Shanone needs to be invited to the channel first. Type `/invite @Shanone` in the channel to add Shanone.
+  <Accordion title="Can't post to a private channel">
+    The Slack app needs to be a member of private channels before bot-token tools can post to them. Invite it from within Slack, then retry.
   </Accordion>
   
   <Accordion title="Message search isn't working">
-    Message search requires OAuth authentication with a User Token. Make sure you've completed the OAuth flow in Settings > Integrations > Slack.
+    `slack_search_messages` / `slack_search_all` / `slack_search_files` need the OAuth **user token**, not just the bot token. Reconnect Slack from **Integrations** to make sure both were granted.
   </Accordion>
   
   <Accordion title="Can't find a channel">
-    Use the "List Channels" feature first to see all available channels and their IDs. Private channels require Shanone to be a member.
+    Call `slack_list_channels` first to see all available channels and their IDs. Private channels only show up if the app is a member.
   </Accordion>
   
   <Accordion title="File upload failed">
-    Check that:
-    - The file size is under 1GB
-    - Shanone has been invited to the target channel
-    - The file path or URL is accessible
+    Check that the file path/URL is accessible and that the app has access to the target channel (see above).
   </Accordion>
   
   <Accordion title="Scheduled message failed">
-    Ensure the scheduled time is:
-    - At least 1 minute in the future
-    - No more than 120 days ahead
-    - In a valid format (Unix timestamp or ISO format)
+    Ensure the scheduled time is at least a few seconds in the future and within Slack's own scheduling window, and that the timestamp format matches what `slack_schedule_message`'s schema expects (check with `shanone_get_tool_schema`).
   </Accordion>
 </AccordionGroup>

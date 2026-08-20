@@ -1,27 +1,50 @@
 ---
-title: Guides Overview
-description: Explore detailed guides for Shanone
+title: "Guides Overview"
+description: "How to get the most out of Shanone as a tool vendor for your coding agents."
 ---
 
-# Guides
-
-Welcome to the Shanone guides section. Here you'll find detailed documentation on various topics.
-
-## Available Guides
+These guides cover the day-to-day mechanics of working with Shanone once you're connected: how to phrase requests so your agent uses the meta-tools well, how to keep permissions sane as your team grows, and how to unblock yourself when something doesn't work.
 
 <CardGroup cols={2}>
-  <Card title="Getting Started" icon="play" href="/quickstart">
-    Learn the basics and get up and running quickly.
+  <Card title="Best Practices" icon="lightbulb" href="/guides/best-practices">
+    Get precise, efficient tool calls out of `shanone_search_tools` and `shanone_execute_tool`
   </Card>
-  <Card title="Configuration" icon="gear">
-    Detailed configuration options and settings.
+  <Card title="Troubleshooting" icon="wrench" href="/guides/troubleshooting">
+    Fix connection, authentication, and permission errors
+  </Card>
+  <Card title="MCP Overview" icon="server" href="/mcp/overview">
+    The meta-tool architecture in depth
+  </Card>
+  <Card title="Permissions & Access Control" icon="shield-check" href="/product-guide/permissions">
+    How Root and SA2 users manage who can run what
   </Card>
 </CardGroup>
 
-## Need Help?
+## What these guides assume
 
-If you have questions or need assistance:
+You've already got Shanone connected to at least one MCP client (Cursor, Claude Code, etc.) — if not, start with the [Quickstart](/quickstart). Everything below is about how to *use* Shanone effectively once it's wired up, not how to wire it up in the first place.
 
-- Check our documentation
-- Open an issue on GitHub
-- Join our community
+## The mental model
+
+Shanone doesn't hand your agent a giant static list of tools. It hands it a handful of **meta-tools** that search a live catalog of 269+ integrations and execute whichever one turns out to be relevant:
+
+| Meta-tool | Purpose |
+|-----------|---------|
+| `shanone_search_tools` | Find the right tool by describing the task, not the tool name |
+| `shanone_list_service_tools` | Enumerate every tool for one service (for "what can I do with X" questions) |
+| `shanone_get_tool_schema` | See exactly what arguments a tool expects before calling it |
+| `shanone_execute_tool` | Actually run it, with OAuth handled automatically via `connect_link` |
+| `shanone_list_skills` / `shanone_get_skill` | Check for and read a saved, reusable workflow before reinventing it |
+
+Most of the guidance in [Best Practices](/guides/best-practices) is really about giving your agent enough signal to pick the right tool on the first `shanone_search_tools` call, instead of guessing and retrying.
+
+## Need help fast?
+
+<CardGroup cols={2}>
+  <Card title="Documentation" icon="book" href="/introduction">
+    Start from the top
+  </Card>
+  <Card title="Support" icon="headset" href="mailto:hey@duzzle.dev">
+    Contact the Shanone team
+  </Card>
+</CardGroup>

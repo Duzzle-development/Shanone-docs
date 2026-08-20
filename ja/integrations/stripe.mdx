@@ -1,0 +1,98 @@
+---
+title: "Stripe"
+description: "決済、サブスクリプション、請求、Treasury、Issuing — Shanoneカタログ最大の連携"
+icon: /images/stripe.svg
+---
+
+# Stripe
+
+ShanoneのStripe連携は、エージェントに328個のツールを提供します——カタログ中で最大の単一連携であり、基本的な課金処理からStripe TreasuryやIssuingまで幅広くカバーします。
+
+<Warning>
+Stripeのツールの多くは実際のお金を動かしたり、実際の金融レコードを作成したりします。読み取り専用のクエリ以外をエージェントに実行させる前には引数を必ず確認し、エージェントに本当に必要な範囲だけに絞った制限付きのAPIキーを接続することも検討してください。
+</Warning>
+
+## はじめに
+
+<Steps>
+  <Step title="Stripeアカウントを接続する">
+    エージェントにStripe関連の作業を依頼するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="テストモードかライブモードかを選ぶ">
+    Stripeはテスト用とライブ用のAPIキーを、どちらのキーを接続したかだけで区別します——エージェントのワークフローを構築・検証している間は**テストモード**のキーを接続してください。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`stripe_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはStripe向けに**328個のツール**を提供しています——群を抜いて最大の連携です。慣れないStripeツールを実行する前には必ず`shanone_get_tool_schema`を使ってください。フィールド名はStripe APIに厳密に準拠しており、書き込み操作で間違えた場合のコストは他の連携より大きくなります。
+
+<AccordionGroup>
+  <Accordion title="顧客、決済 & チェックアウト">
+    `stripe_create_customer`, `stripe_get_customer`, `stripe_update_customer`, `stripe_list_customers`, `stripe_search_customers`, `stripe_create_payment_intent`, `stripe_confirm_payment_intent`, `stripe_capture_payment_intent`, `stripe_cancel_payment_intent`, `stripe_get_payment_intent`, `stripe_list_payment_intents`, `stripe_create_checkout_session`, `stripe_get_checkout_session`, `stripe_list_checkout_sessions`, `stripe_expire_checkout_session`, `stripe_create_payment_link`, `stripe_update_payment_link`
+  </Accordion>
+  <Accordion title="チャージ & 返金">
+    `stripe_capture_charge`, `stripe_update_charge`, `stripe_get_charge`, `stripe_list_charges`, `stripe_search_charges`, `stripe_create_refund`, `stripe_update_refund`, `stripe_cancel_refund`, `stripe_get_refund`, `stripe_list_refunds`
+  </Accordion>
+  <Accordion title="サブスクリプション & 請求">
+    `stripe_create_subscription`, `stripe_update_subscription`, `stripe_cancel_subscription`, `stripe_pause_subscription`, `stripe_resume_subscription`, `stripe_get_subscription`, `stripe_list_subscriptions`, `stripe_create_subscription_item`, `stripe_delete_subscription_item`, `stripe_create_invoice`, `stripe_send_invoice`, `stripe_void_invoice`, `stripe_get_invoice`, `stripe_list_invoices`, `stripe_create_invoice_item`, `stripe_delete_invoice_item`, `stripe_create_credit_note`, `stripe_void_credit_note`
+  </Accordion>
+  <Accordion title="商品、価格 & クーポン">
+    `stripe_create_product`, `stripe_update_product`, `stripe_delete_product`, `stripe_list_products`, `stripe_search_products`, `stripe_create_price`, `stripe_update_price`, `stripe_list_prices`, `stripe_create_coupon`, `stripe_update_coupon`, `stripe_delete_coupon`, `stripe_list_coupons`, `stripe_create_promotion_code`, `stripe_list_promotion_codes`, `stripe_create_quote`, `stripe_finalize_quote`, `stripe_accept_quote`
+  </Accordion>
+  <Accordion title="Connect（アカウント、振替、支払い）">
+    `stripe_create_account`, `stripe_get_account`, `stripe_update_account`, `stripe_delete_account`, `stripe_list_accounts`, `stripe_create_account_link`, `stripe_create_account_session`, `stripe_create_transfer`, `stripe_get_transfer`, `stripe_list_transfers`, `stripe_create_transfer_reversal`, `stripe_create_payout`, `stripe_get_payout`, `stripe_list_payouts`, `stripe_create_application_fee_refund`
+  </Accordion>
+  <Accordion title="紛争、レビュー & 不正対策">
+    `stripe_get_dispute`, `stripe_update_dispute`, `stripe_close_dispute`, `stripe_list_disputes`, `stripe_get_review`, `stripe_approve_review`, `stripe_list_reviews`, `stripe_get_radar_early_fraud_warning`, `stripe_list_radar_early_fraud_warnings`
+  </Accordion>
+  <Accordion title="税務、本人確認 & ファイル">
+    `stripe_create_tax_calculation`, `stripe_create_tax_id`, `stripe_delete_tax_id`, `stripe_create_tax_rate`, `stripe_update_tax_rate`, `stripe_create_identity_verification_session`, `stripe_get_identity_verification_session`, `stripe_create_file`, `stripe_create_file_link`, `stripe_list_files`
+  </Accordion>
+  <Accordion title="Billing meter & 使用量ベースの請求">
+    `stripe_create_billing_meter`, `stripe_update_billing_meter`, `stripe_deactivate_billing_meter`, `stripe_reactivate_billing_meter`, `stripe_create_meter_event`, `stripe_create_meter_event_adjustment`, `stripe_list_meter_event_summaries`, `stripe_create_billing_alert`, `stripe_activate_billing_alert`, `stripe_archive_billing_alert`
+  </Accordion>
+  <Accordion title="Issuing（カード）& Treasury">
+    `stripe_create_issuing_card`, `stripe_update_issuing_card`, `stripe_create_issuing_cardholder`, `stripe_get_issuing_authorization`, `stripe_approve_issuing_authorization`, `stripe_decline_issuing_authorization`, `stripe_create_issuing_dispute`, `stripe_submit_issuing_dispute`, `stripe_create_treasury_financial_account`, `stripe_create_treasury_outbound_payment`, `stripe_create_treasury_outbound_transfer`, `stripe_create_treasury_inbound_transfer`
+  </Accordion>
+  <Accordion title="Terminal（対面決済）">
+    `stripe_create_terminal_reader`, `stripe_create_terminal_location`, `stripe_create_terminal_configuration`, `stripe_process_terminal_payment_intent`, `stripe_process_terminal_setup_intent`, `stripe_collect_terminal_inputs`, `stripe_set_terminal_reader_display`, `stripe_create_terminal_hardware_order`
+  </Accordion>
+  <Accordion title="Webhook & イベント">
+    `stripe_create_webhook_endpoint`, `stripe_update_webhook_endpoint`, `stripe_delete_webhook_endpoint`, `stripe_list_webhook_endpoints`, `stripe_test_webhook_endpoint`, `stripe_get_event`, `stripe_list_events`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="収益の照合" icon="scale">
+    直近のチャージ・支払いを取得し、別の台帳と突き合わせる
+  </Card>
+  <Card title="サブスクリプションのライフサイクル管理" icon="refresh-cw">
+    サポート業務からサブスクリプションを作成・一時停止・再開・解約する
+  </Card>
+  <Card title="紛争のトリアージ" icon="alert-triangle">
+    未対応の紛争と証拠提出期限を要約する
+  </Card>
+  <Card title="使用量ベースの請求" icon="gauge">
+    メーターイベントを報告し、使用量サマリーを確認する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="書き込み操作は成功したのにStripeダッシュボードに反映されない">
+    ダッシュボードで見ているのがテストモードかライブモードかを確認してください——接続しているAPIキーのモードと一致している必要があります。
+  </Accordion>
+  <Accordion title="Confirmation Required（確認が必要）というレスポンスが返る">
+    リスクの高いStripeツール(例: Issuingカードの操作、大口の返金)は`reason: "confirmation_required"`を返す場合があります。内容に問題がないことを確認してから、同じ引数に`"confirm": true`を加えて再実行してください。
+  </Accordion>
+  <Accordion title="有効に見えるIDでObject not foundエラーが出る">
+    StripeのIDはモードごとに異なります——テストモードで作成された`cus_...`や`pi_...`のIDはライブモードには存在せず、逆も同様です。
+  </Accordion>
+</AccordionGroup>

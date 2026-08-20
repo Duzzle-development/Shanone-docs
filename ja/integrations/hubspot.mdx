@@ -1,0 +1,88 @@
+---
+title: "HubSpot"
+description: "CRMオブジェクト、マーケティング、商談、コマース、サポート — HubSpotの広範な機能を1つの連携に"
+icon: /images/hubspot.svg
+---
+
+# HubSpot
+
+ShanoneのHubSpot連携は、CRM(コンタクト、会社、商談)、マーケティング(キャンペーン、メール、フォーム)、コマース(請求書、注文、決済)、サポート(チケット、フィードバック)にまたがる214個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにHubSpot関連の作業を依頼(例: 「このリードのコンタクトを作成して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="要求されたスコープを許可する">
+    HubSpotのOAuth同意画面には、Shanoneが要求するスコープが一覧表示されます——自分が使う予定の内容に関連するものを承認してください(CRM、マーケティング、コマースはそれぞれ別のスコープグループです)。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`hubspot_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはHubSpot向けに**214個のツール**を提供しています——カタログの中でStripeに次ぐ2番目に大きな連携です。
+
+<AccordionGroup>
+  <Accordion title="コンタクト、会社 & リード">
+    `hubspot_create_contact`, `hubspot_get_contact`, `hubspot_update_contact`, `hubspot_search_contacts`, `hubspot_list_contacts`, `hubspot_merge_contacts`, `hubspot_batch_create_contacts`, `hubspot_batch_update_contacts`, `hubspot_gdpr_delete_contact`, `hubspot_create_company`, `hubspot_search_companies`, `hubspot_merge_companies`, `hubspot_create_lead`, `hubspot_get_lead`, `hubspot_search_leads`
+  </Accordion>
+  <Accordion title="商談 & パイプライン">
+    `hubspot_create_deal`, `hubspot_get_deal`, `hubspot_update_deal`, `hubspot_search_deals`, `hubspot_merge_deals`, `hubspot_get_deal_analytics`, `hubspot_create_pipeline`, `hubspot_get_pipeline`, `hubspot_list_pipeline_stages`, `hubspot_get_forecast`, `hubspot_list_forecasts`
+  </Accordion>
+  <Accordion title="アソシエーション">
+    `hubspot_create_association`, `hubspot_delete_association`, `hubspot_list_associations`, `hubspot_list_association_types`, `hubspot_batch_create_associations`, `hubspot_batch_read_associations`, `hubspot_batch_delete_associations`
+  </Accordion>
+  <Accordion title="マーケティング(キャンペーン、メール、フォーム)">
+    `hubspot_create_campaign`, `hubspot_get_campaign_metrics`, `hubspot_create_marketing_email`, `hubspot_clone_marketing_email`, `hubspot_create_form`, `hubspot_get_form_submissions`, `hubspot_create_marketing_event`, `hubspot_record_event_attendance`, `hubspot_create_workflow`, `hubspot_enroll_in_workflow`
+  </Accordion>
+  <Accordion title="コマース(請求書、注文、決済、見積もり)">
+    `hubspot_create_invoice`, `hubspot_get_invoice`, `hubspot_search_invoices`, `hubspot_create_order`, `hubspot_get_order`, `hubspot_create_payment`, `hubspot_search_payments`, `hubspot_create_quote`, `hubspot_create_line_item`, `hubspot_create_product`, `hubspot_search_products`
+  </Accordion>
+  <Accordion title="エンゲージメント(通話、会議、メモ、タスク、チケット)">
+    `hubspot_create_call`, `hubspot_get_call_recording_url`, `hubspot_get_call_transcript`, `hubspot_create_meeting`, `hubspot_create_note`, `hubspot_create_task`, `hubspot_create_ticket`, `hubspot_merge_tickets`, `hubspot_create_feedback_submission`
+  </Accordion>
+  <Accordion title="カスタムオブジェクト & プロパティ">
+    `hubspot_create_custom_object`, `hubspot_create_custom_object_schema`, `hubspot_search_custom_objects`, `hubspot_create_property`, `hubspot_update_property`, `hubspot_create_property_group`
+  </Accordion>
+  <Accordion title="リスト、ファイル & インポート">
+    `hubspot_create_list`, `hubspot_associate_list_to_event`, `hubspot_upload_file`, `hubspot_search_files`, `hubspot_start_import`, `hubspot_get_import_status`, `hubspot_cancel_import`
+  </Accordion>
+  <Accordion title="サブスクリプション & コンプライアンス">
+    `hubspot_subscribe_contact`, `hubspot_unsubscribe_contact`, `hubspot_get_contact_subscriptions`, `hubspot_batch_update_subscriptions`, `hubspot_gdpr_delete_company`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="リードエンリッチメント" icon="user-plus">
+    他所からのインバウンド信号をもとにコンタクトや会社を作成・更新する
+  </Card>
+  <Card title="パイプラインレポート" icon="chart-line">
+    ステージ別に商談を要約し、停滞している商談にフラグを立てる
+  </Card>
+  <Card title="サポートチケットのトリアージ" icon="ticket">
+    Slackやメールで挙がった顧客からのメッセージをもとにチケットを作成・更新する
+  </Card>
+  <Card title="キャンペーンパフォーマンス" icon="megaphone">
+    ステータス更新のためにキャンペーン/メールの指標を取得する
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="カスタムオブジェクトのツールがschema not foundエラーで失敗する">
+    カスタムオブジェクトは、それに対するレコードを作成(`hubspot_create_custom_object`)する前に定義(`hubspot_create_custom_object_schema`)しておく必要があります。正確なオブジェクトタイプ名は`hubspot_get_custom_object_schema`で確認してください。
+  </Accordion>
+  <Accordion title="バッチツールが一部のレコードを黙ってスキップする">
+    バッチ作成/更新ツール(`hubspot_batch_create_contacts`など)はレコードごとにベストエフォートで処理されます——200系のレスポンスだからといって全レコードが成功したとは限らないため、レスポンス内の項目ごとのエラーを確認してください。
+  </Accordion>
+  <Accordion title="アソシエーションツールがinvalid association typeエラーで失敗する">
+    まず、対象となる2つのオブジェクトタイプについて`hubspot_list_association_types`を呼び出してください——HubSpotの標準およびカスタムのアソシエーションタイプIDはポータルごとに異なります。
+  </Accordion>
+</AccordionGroup>

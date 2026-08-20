@@ -27,7 +27,7 @@
     "primary": {
       "type": "button",
       "label": "Shanone",
-      "href": "https://app.Shanone.ai"
+      "href": "https://app.shanone.ai"
     }
   },
   "navigation": {
@@ -53,8 +53,9 @@
               {
                 "group": "Product Guide",
                 "pages": [
-                  "product-guide/automations",
-                  "product-guide/remotegraph"
+                  "product-guide/skills",
+                  "product-guide/permissions",
+                  "product-guide/webhooks"
                 ]
               },
               {
@@ -71,6 +72,12 @@
                 "pages": [
                   "integrations/overview",
                   "integrations/slack",
+                  "integrations/github",
+                  "integrations/notion",
+                  "integrations/stripe",
+                  "integrations/linear",
+                  "integrations/gmail",
+                  "integrations/hubspot",
                   "integrations/ethereum"
                 ]
               }
@@ -125,8 +132,9 @@
               {
                 "group": "製品ガイド",
                 "pages": [
-                  "ja/product-guide/automations",
-                  "ja/product-guide/remotegraph"
+                  "ja/product-guide/skills",
+                  "ja/product-guide/permissions",
+                  "ja/product-guide/webhooks"
                 ]
               },
               {
@@ -143,6 +151,12 @@
                 "pages": [
                   "ja/integrations/overview",
                   "ja/integrations/slack",
+                  "ja/integrations/github",
+                  "ja/integrations/notion",
+                  "ja/integrations/stripe",
+                  "ja/integrations/linear",
+                  "ja/integrations/gmail",
+                  "ja/integrations/hubspot",
                   "ja/integrations/ethereum"
                 ]
               }
@@ -181,8 +195,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/Duzzle_ai",
-      "github": "https://github.com/Duzzle-development/Shanone-docs",
-      "discord": "https://discord.gg/"
+      "github": "https://github.com/Duzzle-development/Shanone-docs"
     }
   },
   "feedback": {

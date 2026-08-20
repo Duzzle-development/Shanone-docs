@@ -1,19 +1,82 @@
 ---
-title: Shanoneの紹介
-description: Shanoneは、エンジニアリングチームがオフィスワークを一気に片付けるために設計されたA2A（Agent to Agent）Orchestratorです。
+title: "はじめに"
+description: "ShanoneはCursor・Claude Code・その他のMCPクライアントに140以上の連携ツールを提供するCommand Center for Agent Harnessesです。チームは誰がどのツールを使えるかを管理します。"
 ---
 
-## 特徴
+## Shanoneとは何か
+
+Shanoneは自分で考えて計画を立てる自律型エージェントでは**ありません**。ShanoneはCursor・Claude Code、あるいはその他の[Model Context Protocol (MCP)](https://modelcontextprotocol.io/)対応クライアントといった、チームが既に使っているエージェントの「下側」にあるレイヤーです。具体的には次の3つを提供します。
+
+- **ツールベンダー** — Slack、GitHub、Notion、Stripe、Google Workspace、Ethereumなど140以上のサービスを呼び出し可能なツールとして公開する、1つのホスト型MCPサーバー。エージェントごとに個別の連携を作り込む必要がありません。
+- **スキルベンダー** — 再利用可能なステップバイステップのワークフロー(「Skill」)を一度保存すれば、どのマシン・IDE・エージェントからでも呼び出せる仕組み。
+- **権限管理** — Shanoneアカウントを所有するチーム(または組織)が、どのメンバーがどのツール・サービスを使えるかを正確に決められる、IAM的な統制レイヤー。
+
+一言でいえば、**エージェントにはツールを、チームには権限管理を、すべて1つの場所で。**
+
+<Frame>
+  <img src="/images/Shanone-banner.png" alt="Shanone" />
+</Frame>
+
+## 数字について
+
+Shanoneはマーケティング上「140以上の連携、10,000以上のツール」として紹介されています——これはShanoneが構築を目指しているエコシステム全体の規模です。本ドキュメント執筆時点で、Shanoneのバックエンド(`apps/backend/src/tools/`)には**269以上のサービス統合が実装済みで実際に稼働**しています。カテゴリの例は以下の通りです。
 
 <CardGroup cols={2}>
-  <Card title="簡単セットアップ" icon="rocket">
-    シンプルなセットアッププロセスで数分で始められます。
+  <Card title="コミュニケーション" icon="messages-square">
+    Slack、Discord、Telegram、Microsoft Teams、Google Chat、LINEなど
   </Card>
-  <Card title="使いやすい" icon="book">
-    すべての機能について明確で簡潔なドキュメント。
+  <Card title="開発者プラットフォーム" icon="github">
+    GitHub、GitLab、Bitbucket、Linear、Jira、CircleCI、Sentry、Vercel
+  </Card>
+  <Card title="ドキュメント & 生産性" icon="notebook-pen">
+    Notion、Google Workspace(Gmail、Calendar、Docs、Sheets、Drive)、Confluence
+  </Card>
+  <Card title="ビジネス & 金融" icon="landmark">
+    Stripe、HubSpot、CRM関連ツール、Airtable
+  </Card>
+  <Card title="Web3" icon="link">
+    Ethereum JSON-RPC、ENS、Alchemy経由のトークン/NFTデータ
+  </Card>
+  <Card title="AI & インフラ" icon="server">
+    OpenAI、Anthropic、Modal、Replicate、Datadog、Cloudflareなど
   </Card>
 </CardGroup>
 
+[インテグレーション](/ja/integrations/overview)ページに載っていないサービスが必要な場合でも、実装済みである可能性は高いです——これらのページは一部を詳しく紹介しているだけです。エージェントにサービス名で`shanone_search_tools`を実行してもらってください。登録済みであれば見つかります。
+
+## エージェントがShanoneを使う仕組み
+
+外部AIエージェントは、可能なアクション1つにつき1つのMCPツールを持つわけではありません(それではエージェントのコンテキストウィンドウがすぐに溢れてしまいます)。代わりに、Shanoneは少数の**メタツール**を公開し、Composioのようなツールカタログ構成に近い「検索 → 確認 → 実行」のパターンに従います。
+
+<Steps>
+  <Step title="ツールを検索する">
+    エージェントは`shanone_search_tools`を自然言語のクエリ(例: 「Slackのチャンネルにメッセージを投稿する」)で呼び出し、適切なツール名を見つけます。あるサービスの全ツールを網羅的に知りたい場合は`shanone_list_service_tools`を使います。
+  </Step>
+  <Step title="スキーマを確認する">
+    エージェントは`shanone_get_tool_schema`を正確なツール名で呼び出し、必須/任意の引数をJSON Schemaとして確認します。
+  </Step>
+  <Step title="ツールを実行する">
+    エージェントは`shanone_execute_tool`をツール名と引数で呼び出します。対象サービスに認証が必要な場合、Shanoneは失敗の代わりに`connect_link`を返します——ユーザーがそれを開いて認可すれば、エージェントは再試行できます。
+  </Step>
+</Steps>
+
+再利用可能なワークフローについても同じパターンが繰り返されます: `shanone_list_skills` → `shanone_get_skill` → エージェントが自身で指示に従い、必要に応じてツールを呼び出します。チーム管理者向けには、`shanone_list_services` → `shanone_set_user_tool_permission` / `shanone_set_user_service_permission`によって、RootユーザーまたはSA2委任ユーザーが各メンバーのエージェントがどのツールを実行できるかを正確にコントロールできます。
+
+これらはすべて1つのMCP接続の中で行われます——サービスごとにOAuthアプリを登録したり、SDKをエージェントのランタイムに組み込む必要はありません。
+
 ## 次のステップ
 
-始める準備はできましたか？[クイックスタート](/ja/quickstart) ガイドへ進みましょう。
+<CardGroup cols={2}>
+  <Card title="クイックスタート" icon="rocket" href="/ja/quickstart">
+    APIキーを取得し、最初のクライアントを接続して、最初のツール呼び出しを実行する
+  </Card>
+  <Card title="MCP概要" icon="server" href="/ja/mcp/overview">
+    メタツールのワークフローとShanone MCPサーバーの構造を理解する
+  </Card>
+  <Card title="インテグレーション" icon="puzzle" href="/ja/integrations/overview">
+    Slack、GitHub、Notion、Stripeなどの連携カタログを見る
+  </Card>
+  <Card title="権限管理" icon="shield-check" href="/ja/product-guide/permissions">
+    チームが誰がどのツールを使えるかを管理する方法を学ぶ
+  </Card>
+</CardGroup>

@@ -1,150 +1,148 @@
 ---
-title: Shanone MCP Server
-description: 公式MCPサーバーを使用して、AIエージェントをShanoneのインテグレーションとSkillに接続します。
+title: "Shanone MCPサーバー"
+description: "Shanone MCPサーバーで利用可能な全18ツール——Tool Vendor、Skill Vendor、Permission Vendor——と、推奨されるワークフロー。"
 ---
 
-Shanone MCP Serverは、Cursor、Claude Code、Codexなど、あらゆるMCP対応クライアントに、Shanoneのインテグレーション群とSkillライブラリへのプログラマティックなアクセスを提供します。しかも、数百個の個別ツールでエージェントのコンテキストウィンドウを圧迫することはありません。
-
-Slack・GitHub・Notionなどのアクション1つひとつに個別のMCPツールを登録する代わりに、Shanoneは（Composioに似た）**Tool Vendor**パターンを採用しています：少数のメタツールによって、エージェントが適切なインテグレーションを*検索*し、そのスキーマを*確認*し、必要に応じて*実行*できるようにします。保存済みの再利用可能なワークフローに対しては、同様の**Skill Vendor**パターンが用意されています。
-
-## 機能
-
-<CardGroup cols={2}>
-  <Card title="ツールの発見" icon="search">
-    ツール名を覚える代わりに、キーワードでShanoneのインテグレーション（Slack、GitHub、Notion、Gmailなど）を検索
-  </Card>
-  <Card title="直接実行" icon="zap">
-    発見したツールを構造化された引数で実行し、結果をそのまま受け取る
-  </Card>
-  <Card title="組み込みのOAuth処理" icon="key">
-    ツールに認証が必要な場合、自動的に接続リンクが返される — 個別の認証フローを構築する必要はない
-  </Card>
-  <Card title="Skillライブラリ" icon="book">
-    ワークフローを一度保存すれば、どのマシン・IDE・エージェントからでも再利用可能 — SkillはShanoneのクラウドに保存される
-  </Card>
-  <Card title="ヘルスモニタリング" icon="heart-pulse">
-    他の操作を行う前にAPIキーと接続を確認
-  </Card>
-</CardGroup>
-
-## 認証
-
-Shanone MCP Serverは認証にAPI Keyを使用します。
-
-### API Keyの取得方法
-
-1. [Shanone](https://app.Shanone.ai)にログイン
-2. **API Keys**に移動
-3. API Keyを作成またはコピー
-
-すべてのリクエストで`Authorization: Bearer <api_key>`（または`X-API-Key: <api_key>`）として送信します。具体的なクライアント設定は[セットアップガイド](/ja/mcp/setup)を参照してください。
-
-<Warning>
-API Keyは安全に保管してください。バージョン管理にコミットしたり、公開したりしないでください。
-</Warning>
+Shanone MCPサーバーは、Cursor、Claude Code、Codexなど、MCP対応のあらゆるクライアントに、Shanoneの連携エコシステム、Skillライブラリ、そして(管理者であれば)権限管理へのプログラムによるアクセスを提供します。しかも、数百個の個別の連携アクションをエージェントのコンテキストウィンドウにさらすことはありません。
 
 ## 利用可能なツール
 
-Shanone MCP Serverは3つのカテゴリに分類された9つのツールを提供します：
+Shanoneは**18個のツール**を、4つのグループに分けて公開しています。
 
-### ヘルスチェック
-
-| ツール | 説明 |
-|--------|------|
-| `Shanone_health_check` | 接続とAPIキーの有効性を確認 |
-
-### Tool Vendor
+### Health Check(1ツール)
 
 | ツール | 説明 |
-|--------|------|
-| `Shanone_search_tools` | キーワードでShanoneのインテグレーションを検索（例：「post slack message」） |
-| `Shanone_get_tool_schema` | 特定のインテグレーションツールの入力スキーマを取得 |
-| `Shanone_execute_tool` | 特定のインテグレーションツールを引数付きで実行 |
+|------|-------------|
+| `shanone_health_check` | 接続性、APIキーの有効性、バックエンドの健全性を確認します。プレーンテキストのステータス画面を返します。 |
 
-### Skill Vendor
+### Tool Vendor(4ツール)
 
 | ツール | 説明 |
-|--------|------|
-| `Shanone_list_skills` | 保存済みSkill（再利用可能なワークフロー）を新しい順に一覧 |
-| `Shanone_get_skill` | Skillの完全な手順を取得 |
-| `Shanone_create_skill` | 再利用可能なワークフローを新しいSkillとして保存 |
-| `Shanone_update_skill` | 既存のSkillを更新 |
-| `Shanone_delete_skill` | Skillを削除 |
+|------|-------------|
+| `shanone_search_tools` | キーワードで連携カタログを検索します(関連度でランク付け) |
+| `shanone_list_service_tools` | 1つのサービスの全ツールを名前順に列挙します(完全な一覧が必要な場合) |
+| `shanone_get_tool_schema` | ツールの入力JSON Schemaを取得します |
+| `shanone_execute_tool` | 引数を指定してツールを実行します。OAuthが必要な場合は`connect_link`を返します |
+
+### Skill Vendor(5ツール)
+
+| ツール | 説明 |
+|------|-------------|
+| `shanone_list_skills` | 保存済みのSkill(メタデータのみ)を新しい順に一覧表示します |
+| `shanone_get_skill` | Skillの完全な指示内容を取得します |
+| `shanone_create_skill` | 新しい再利用可能なSkillを保存します |
+| `shanone_update_skill` | 既存のSkillの名前/概要/指示内容を更新します |
+| `shanone_delete_skill` | Skillを完全に削除します |
+
+### Permission Vendor(6ツール——最初の1つを除き、RootまたはSA2委任ユーザーのみ)
+
+| ツール | 説明 |
+|------|-------------|
+| `shanone_list_services` | 登録済みの全サービスをツール数とともに一覧表示します(特別な権限は不要) |
+| `shanone_list_user_tool_permissions` | 対象ユーザーの権限オーバーライドを一覧表示します |
+| `shanone_set_user_tool_permission` | 対象ユーザーに対して特定の1ツールを有効/無効にします |
+| `shanone_set_user_service_permission` | 対象ユーザーに対してあるサービスの全ツールを有効/無効にします |
+| `shanone_get_permission_summary` | 対象ユーザーの有効/無効なアクセス数の集計を取得します |
+| `shanone_batch_set_user_permissions` | 対象ユーザーに対して、最大500件のサービス/ツール操作を一度に適用します |
 
 <Note>
-各ツールの詳細なパラメータ、レスポンス形式、例は[ツールリファレンス](/ja/mcp/tools-reference)を参照してください。
+すべてのツールの完全なパラメータ、レスポンス形式、例については、[ツールリファレンス](/ja/mcp/tools-reference)を参照してください。
 </Note>
+
+## 認証
+
+Shanone MCPサーバーの利用にはAPIキーが必要です。Shanoneダッシュボードの**Settings → API Keys**から取得できます——キーは1度だけ`sh_xxxxxxxxxxxxxxxx`という形式で表示されます。
+
+すべてのリクエストで`Authorization: Bearer <api_key>`(または`X-API-Key: <api_key>`)として送信してください。(ローカルstdioプロキシ経由ではなく)リモートエンドポイントに直接接続する場合は、組織ID(organization ID)も`X-Org-Id`として必要です——正確なクライアント設定については[セットアップ](/ja/mcp/setup)を参照してください。
+
+<Warning>
+APIキーは安全に管理してください。バージョン管理にコミットしたり、公開して共有したりしないでください。
+</Warning>
 
 ## 推奨ワークフロー
 
 ### Tool Vendor: 検索 → スキーマ確認 → 実行
 
 <Steps>
-  <Step title="ツールを検索">
-    自然言語のクエリ（オプションで`service`によるフィルタ）を指定して`Shanone_search_tools`を呼び出し、適切なインテグレーションツール名を見つけます。
+  <Step title="ツールを検索する">
+    タスクの内容を表す自然言語のクエリで`shanone_search_tools`を呼び出します(必要に応じて`service`で絞り込み可能)。
   </Step>
-  <Step title="スキーマを確認（必要な場合）">
-    正確なツール名を指定して`Shanone_get_tool_schema`を呼び出し、必須・任意の引数を確認します。
+  <Step title="必要ならスキーマを確認する">
+    正確なツール名で`shanone_get_tool_schema`を呼び出し、必須・任意の引数を確認します。
   </Step>
-  <Step title="実行">
-    ツール名と引数のJSONオブジェクトを指定して`Shanone_execute_tool`を呼び出します。対象サービスの認証がまだ済んでいない場合、レスポンスに`connect_link`が含まれます — アクセスして認証後、再試行してください。
+  <Step title="実行する">
+    ツール名と引数のJSON文字列で`shanone_execute_tool`を呼び出します。対象サービスに未設定の認証が必要な場合、レスポンスには`connect_link`が含まれます——それにアクセスしてから再試行してください。
   </Step>
 </Steps>
 
 ### Skill Vendor: 一覧 → 取得 → 実行 → 保存
 
 <Steps>
-  <Step title="既存のSkillを確認">
-    タスクを始める前に`Shanone_list_skills`を呼び出します — （オプションで`query`によるフィルタ付きで）保存済みの全Skillをページネーション形式で返します。
+  <Step title="既存のSkillを確認する">
+    タスクを始める前に`shanone_list_skills`を呼び出します——保存済みのSkillをすべて(任意で`query`で絞り込み可能)、ページ分割して返します。
   </Step>
-  <Step title="手順を読む">
-    `skill_id`を指定して`Shanone_get_skill`を呼び出し、完全な手順を取得します。
+  <Step title="指示内容を読む">
+    `skill_id`を指定して`shanone_get_skill`を呼び出し、完全なステップバイステップの指示内容を取得します。
   </Step>
-  <Step title="手順に従って実行">
-    エージェント自身が手順を実行し、必要に応じて`Shanone_search_tools` / `Shanone_execute_tool`でインテグレーションアクションを行います。
+  <Step title="指示に従う">
+    エージェント自身がその手順を実行し、連携アクションが必要な箇所では`shanone_search_tools` / `shanone_execute_tool`を使用します。
   </Step>
-  <Step title="新しいワークフローを保存">
-    再利用する価値のあるワークフローが完成したら、`Shanone_create_skill`で保存し、後から他のマシンやエージェントでも使えるようにします。
+  <Step title="新しいワークフローを保存する">
+    再利用する価値のあるワークフローを構築したら、`shanone_create_skill`を呼び出しておけば、後で別のマシンやエージェントからでも利用できます。
   </Step>
 </Steps>
 
-## ユースケース
+### Permission Vendor: チーム管理者向け
 
-### IDEからインテグレーションを発見して使う
+<Steps>
+  <Step title="サービス名を確認する">
+    `shanone_list_services`を呼び出し(特別な権限は不要)、正確な`service_name`の値を取得します。
+  </Step>
+  <Step title="オーバーライドを適用する">
+    1件の変更であれば`shanone_set_user_service_permission` / `shanone_set_user_tool_permission`を、まとめて多数の変更を行うなら`shanone_batch_set_user_permissions`を呼び出します。
+  </Step>
+  <Step title="確認する">
+    同じユーザーに対して`shanone_get_permission_summary`を呼び出し、変更が意図どおりに反映されたことを確認します。
+  </Step>
+</Steps>
 
-```
-「'Deploy finished ✅' をSlackの#generalに投稿して」
-「owner/repoに 'Fix login redirect bug' というタイトルのGitHub issueを作成して」
-「Notionに関連するツールを検索して」
-```
+## 利用例
 
-エージェントは`Shanone_search_tools`を呼び出し、次に`Shanone_execute_tool`を呼び出します（引数がわからない場合は先にスキーマを取得します）。
-
-### タスク実行中に認証を処理する
-
-```
-「チームのSlackにメッセージを送って」
-```
-
-まだSlackを接続していない場合、`Shanone_execute_tool`は`success: false`と`reason: "auth_required"`、および`connect_link`を返します。エージェントはそのリンクを提示し、ユーザーの認証を待ってから同じ呼び出しを再試行してください。
-
-### ワークフローをSkillとして保存・再利用する
+### IDEから連携を見つけて使う
 
 ```
-「これを 'Weekly Status Report' というSkillとして保存して」
-「保存済みのSkillを一覧表示して」
-「'Weekly Status Report' Skillを実行して」
+"Post 'Deploy finished' to Slack #general"
+"Create a GitHub issue titled 'Fix login redirect bug' in owner/repo"
+"Search for tools related to Notion"
 ```
 
-この方法で作成したSkillはShanoneのWeb UIの**Skills**タブにも表示され、MCPクライアントだけでなくShanone自身のエージェントからも利用できます。
+エージェントは`shanone_search_tools`を呼び出し、続いて`shanone_execute_tool`を呼び出します(引数が不明な場合はまずスキーマを取得します)。
+
+### タスクの途中で認証を処理する
+
+```
+"Send a message to my team on Slack"
+```
+
+Slackがまだ接続されていない場合、`shanone_execute_tool`は`success: false`と`reason: "auth_required"`、そして`connect_link`を返します。エージェントはそのリンクを提示し、認証が完了するのを待ってから、同じ呼び出しを再試行してください。
+
+### ワークフローをSkillとして保存し再利用する
+
+```
+"Save this as a skill called 'Weekly Status Report'"
+"List my saved skills"
+"Run my 'Weekly Status Report' skill"
+```
+
+この方法で作成されたSkillは、Shanoneのウェブダッシュボードの**Skills**にも表示されます。
 
 ## 次のステップ
 
 <CardGroup cols={2}>
   <Card title="セットアップガイド" icon="wrench" href="/ja/mcp/setup">
-    Cursor、Claude Code、CodexでShanone MCP Serverを設定
+    Cursor、Claude Code、CodexでShanone MCPサーバーを設定する
   </Card>
   <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
-    全ツールの詳細ドキュメント
+    全18ツールの詳細なドキュメント
   </Card>
 </CardGroup>

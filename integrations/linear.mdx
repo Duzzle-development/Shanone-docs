@@ -1,0 +1,79 @@
+---
+title: "Linear"
+description: "Manage issues, projects, cycles, and initiatives in Linear from your agent"
+icon: /images/linear.svg
+---
+
+# Linear
+
+Shanone's Linear integration gives your agent 45 tools for issue tracking, project and cycle management, initiatives, and documents.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with Linear (e.g. "create an issue for this bug"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize workspace access">
+    Approve Linear's OAuth consent screen for the workspace you want Shanone to act on.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `linear_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **45 tools** for Linear, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Issues">
+    `linear_create_issue`, `linear_get_issue`, `linear_update_issue`, `linear_delete_issue`, `linear_archive_issue`, `linear_unarchive_issue`, `linear_list_issues`, `linear_search_issues`, `linear_get_my_issues`, `linear_add_label_to_issue`, `linear_add_issue_to_cycle`, `linear_add_issue_to_project`
+  </Accordion>
+  <Accordion title="Comments">
+    `linear_create_comment`, `linear_list_comments`, `linear_delete_comment`
+  </Accordion>
+  <Accordion title="Projects & updates">
+    `linear_create_project`, `linear_get_project`, `linear_update_project`, `linear_list_projects`, `linear_create_project_update`, `linear_list_project_updates`, `linear_list_project_labels`
+  </Accordion>
+  <Accordion title="Initiatives">
+    `linear_create_initiative`, `linear_get_initiative`, `linear_update_initiative`, `linear_list_initiatives`, `linear_create_initiative_update`
+  </Accordion>
+  <Accordion title="Cycles & milestones">
+    `linear_list_cycles`, `linear_create_milestone`, `linear_get_milestone`, `linear_update_milestone`, `linear_list_milestones`
+  </Accordion>
+  <Accordion title="Documents">
+    `linear_create_document`, `linear_get_document`, `linear_update_document`, `linear_list_documents`, `linear_search_documentation`
+  </Accordion>
+  <Accordion title="Teams, users & labels">
+    `linear_get_team`, `linear_list_teams`, `linear_get_user`, `linear_list_users`, `linear_get_viewer`, `linear_create_label`, `linear_list_labels`, `linear_list_workflow_states`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Bug triage" icon="bug">
+    Create issues directly from stack traces or bug reports surfaced elsewhere
+  </Card>
+  <Card title="Sprint reporting" icon="calendar-days">
+    Summarize a cycle's issues and post a status update
+  </Card>
+  <Card title="Cross-tool follow-ups" icon="arrow-right-left">
+    Turn Notion meeting notes or Slack threads into tracked Linear issues
+  </Card>
+  <Card title="Roadmap visibility" icon="map">
+    Query initiatives and projects to answer "what's planned for Q3?"
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="linear_create_issue fails with a team/workflow state error">
+    Linear issues require a valid `teamId` and, in some workflows, a valid state ID. Call `linear_list_teams` and `linear_list_workflow_states` first to get valid values, or check `shanone_get_tool_schema` for `linear_create_issue`.
+  </Accordion>
+  <Accordion title="Can't find an issue by its human-readable identifier (e.g. ENG-123)">
+    Use `linear_search_issues` with the identifier as the query, or `linear_list_issues` filtered by team — `linear_get_issue` expects Linear's internal issue ID, not the short identifier, unless the tool schema indicates otherwise.
+  </Accordion>
+</AccordionGroup>

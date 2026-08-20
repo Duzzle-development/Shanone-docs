@@ -1,19 +1,82 @@
 ---
-title: Introducing Shanone
-description: Shanone is an A2A (Agent to Agent) Orchestrator designed for engineering teams to streamline and automate office work at scale.
+title: "Introduction"
+description: "Shanone is the Command Center for Agent Harnesses — a hosted MCP server that gives Cursor, Claude Code, and any MCP client access to 140+ integrations, while your team controls who can use what."
 ---
 
-## Features
+## What is Shanone?
+
+Shanone is **not** an autonomous agent that thinks and plans on its own. Shanone is the layer *underneath* the agents your team already uses — Cursor, Claude Code, or any other [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) client. It is:
+
+- **A tool vendor** — a single hosted MCP server that exposes Slack, GitHub, Notion, Stripe, Google Workspace, Ethereum, and 140+ other services as callable tools, so your agents don't need a bespoke integration for every service they touch.
+- **A skill vendor** — a place to save reusable, step-by-step workflows ("Skills") once and reuse them from any machine, IDE, or agent.
+- **A permission manager** — an IAM-style control plane so the team (or organization) that owns the Shanone account decides exactly which member can use which tool or service, not just who has an account.
+
+Put simply: **tools for your agents, permissions for your team, all in one place.**
+
+<Frame>
+  <img src="/images/Shanone-banner.png" alt="Shanone" />
+</Frame>
+
+## The numbers
+
+Shanone is marketed as offering **140+ integrations and 10,000+ tools** — this is the full catalog Shanone is built toward across its integration ecosystem. As of this writing, **269+ service integrations are implemented and live** in the Shanone backend (`apps/backend/src/tools/`), spanning categories like:
 
 <CardGroup cols={2}>
-  <Card title="Quick Setup" icon="rocket">
-    Get started in minutes with our simple setup process.
+  <Card title="Communication" icon="messages-square">
+    Slack, Discord, Telegram, Microsoft Teams, Google Chat, LINE, and more
   </Card>
-  <Card title="Easy to Use" icon="book">
-    Clear and concise documentation for all features.
+  <Card title="Developer platforms" icon="github">
+    GitHub, GitLab, Bitbucket, Linear, Jira, CircleCI, Sentry, Vercel
+  </Card>
+  <Card title="Productivity & docs" icon="notebook-pen">
+    Notion, Google Workspace (Gmail, Calendar, Docs, Sheets, Drive), Confluence
+  </Card>
+  <Card title="Business & finance" icon="landmark">
+    Stripe, HubSpot, Salesforce-adjacent CRMs, QuickBooks-adjacent tools, Airtable
+  </Card>
+  <Card title="Web3" icon="link">
+    Ethereum JSON-RPC, ENS, token/NFT data via Alchemy
+  </Card>
+  <Card title="AI & infra" icon="server">
+    OpenAI, Anthropic, Modal, Replicate, Datadog, Cloudflare, AWS-adjacent services
   </Card>
 </CardGroup>
 
-## Next Steps
+Don't see a service you need listed on the [Integrations](/integrations/overview) pages? It's very likely already implemented — those pages only cover a curated subset in depth. Ask your agent to run `shanone_search_tools` with the service name; if it's registered, it will show up.
 
-Ready to get started? Head over to the [Quickstart](/quickstart) guide.
+## How agents use Shanone
+
+External AI agents don't get a separate MCP tool for every possible action (that would blow out their context window). Instead, Shanone exposes a small number of **meta-tools** that follow a search → inspect → execute pattern, similar to how Composio structures its tool catalog:
+
+<Steps>
+  <Step title="Search for a tool">
+    The agent calls `shanone_search_tools` with a natural-language query (e.g. "post a message to a slack channel") to find the right tool name. For a full listing of everything a service offers, it uses `shanone_list_service_tools` instead.
+  </Step>
+  <Step title="Inspect the schema">
+    The agent calls `shanone_get_tool_schema` with the exact tool name to see the required and optional arguments as JSON Schema.
+  </Step>
+  <Step title="Execute the tool">
+    The agent calls `shanone_execute_tool` with the tool name and arguments. If the underlying service needs authentication, Shanone returns a `connect_link` instead of failing outright — the user visits it, authorizes, and the agent retries.
+  </Step>
+</Steps>
+
+The same pattern repeats for reusable workflows: `shanone_list_skills` → `shanone_get_skill` → the agent follows the instructions itself, calling tools as needed. And for team administrators, `shanone_list_services` → `shanone_set_user_tool_permission` / `shanone_set_user_service_permission` lets a Root or delegated SA2 user control exactly which tools each teammate's agent is allowed to run.
+
+All of this happens over a single MCP connection — no per-service OAuth apps to register, no per-service SDKs to vendor into your agent's runtime.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get an API key, connect your first client, and run your first tool call
+  </Card>
+  <Card title="MCP Overview" icon="server" href="/mcp/overview">
+    Understand the meta-tool workflow and how Shanone's MCP server is structured
+  </Card>
+  <Card title="Integrations" icon="puzzle" href="/integrations/overview">
+    Browse the integration catalog, including Slack, GitHub, Notion, and Stripe
+  </Card>
+  <Card title="Permissions & Access Control" icon="shield-check" href="/product-guide/permissions">
+    Learn how teams control who can use which tools
+  </Card>
+</CardGroup>

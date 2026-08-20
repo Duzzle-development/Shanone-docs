@@ -1,0 +1,91 @@
+---
+title: "GitHub"
+description: "Manage issues, pull requests, Actions workflows, security alerts, and org administration from your agent"
+icon: /images/github.svg
+---
+
+# GitHub
+
+Shanone's GitHub integration gives your agent 176 tools — from everyday issue and PR workflows to CI/CD, code/secret scanning, org administration, and gists.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect via OAuth">
+    Ask your agent to do something with GitHub (e.g. "list open PRs in my-org/my-repo"), or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Authorize the requested scopes">
+    GitHub's OAuth consent screen shows the scopes Shanone requests (repo access, org read, etc.) — review and approve them.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, your agent's `shanone_execute_tool` calls for `github_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **176 tools** for GitHub, organized into these categories:
+
+<AccordionGroup>
+  <Accordion title="Issues & Labels">
+    `github_create_issue`, `github_get_issue`, `github_update_issue`, `github_list_issues`, `github_create_issue_comment`, `github_list_pr_comments` (issue comments), `github_create_label`, `github_update_label`, `github_delete_label`, `github_list_labels`, `github_get_label`, `github_create_milestone`, `github_update_milestone`, `github_delete_milestone`, `github_list_milestones`, `github_get_milestone`
+  </Accordion>
+  <Accordion title="Pull Requests & Reviews">
+    `github_create_pull_request`, `github_get_pull_request`, `github_update_pull_request`, `github_list_pull_requests`, `github_merge_pull_request`, `github_list_pr_files`, `github_create_pr_comment`, `github_list_pr_comments`, `github_create_pr_review`, `github_submit_pr_review`, `github_get_pr_review`, `github_list_pr_reviews`, `github_request_reviewers`, `github_list_requested_reviewers`
+  </Accordion>
+  <Accordion title="Repository content & branches">
+    `github_get_content`, `github_create_or_update_file`, `github_delete_file`, `github_get_readme`, `github_list_branches`, `github_get_branch`, `github_create_branch`, `github_rename_branch`, `github_delete_branch`, `github_compare_commits`, `github_list_commits`, `github_get_commit`, `github_create_commit_comment`, `github_list_commit_comments`
+  </Accordion>
+  <Accordion title="Repos & organizations">
+    `github_create_repo`, `github_get_repo`, `github_list_repos`, `github_list_org_repos`, `github_get_org`, `github_list_org_members`, `github_star_repo`, `github_unstar_repo`, `github_list_stargazers`, `github_list_contributors`, `github_list_languages`, `github_list_tags`, `github_get_authenticated_user`, `github_list_user_orgs`
+  </Accordion>
+  <Accordion title="Actions (workflows, runs, artifacts)">
+    `github_list_workflows`, `github_trigger_workflow`, `github_list_workflow_runs`, `github_get_workflow_run`, `github_cancel_workflow_run`, `github_rerun_workflow`, `github_rerun_workflow_failed_jobs`, `github_list_workflow_jobs`, `github_get_workflow_job`, `github_get_workflow_job_logs`, `github_list_workflow_artifacts`, `github_get_artifact`, `github_delete_artifact`, `github_get_archive_link`
+  </Accordion>
+  <Accordion title="Checks & deployments">
+    `github_create_check_run`, `github_update_check_run`, `github_get_check_run`, `github_list_check_runs_for_ref`, `github_rerequest_check_run`, `github_create_check_suite`, `github_get_check_suite`, `github_list_check_suites_for_ref`, `github_rerequest_check_suite`, `github_create_deployment`, `github_get_deployment`, `github_list_deployments`, `github_create_deployment_status`, `github_get_deployment_status`, `github_list_deployment_statuses`, `github_delete_deployment`, `github_list_deployment_branch_policies`
+  </Accordion>
+  <Accordion title="Security scanning & secrets">
+    `github_list_code_scanning_alerts`, `github_get_code_scanning_alert`, `github_update_code_scanning_alert`, `github_list_code_scanning_alert_instances`, `github_list_code_scanning_analyses`, `github_get_code_scanning_analysis`, `github_list_dependabot_alerts`, `github_get_dependabot_alert`, `github_update_dependabot_alert`, `github_list_org_dependabot_alerts`, `github_list_secret_scanning_alerts`, `github_get_secret_scanning_alert`, `github_update_secret_scanning_alert`, `github_list_secret_scanning_alert_locations`, `github_list_repo_security_advisories`, `github_get_repo_security_advisory`, `github_create_or_update_repo_secret`, `github_delete_repo_secret`, `github_list_repo_secrets`, `github_get_repo_secret`, `github_get_repo_public_key`, `github_create_or_update_org_secret`, `github_delete_org_secret`, `github_list_org_secrets`, `github_get_org_secret`, `github_get_org_public_key`
+  </Accordion>
+  <Accordion title="Variables, webhooks & teams">
+    `github_create_repo_variable`, `github_update_repo_variable`, `github_delete_repo_variable`, `github_list_repo_variables`, `github_get_repo_variable`, `github_create_org_variable`, `github_update_org_variable`, `github_delete_org_variable`, `github_list_org_variables`, `github_get_org_variable`, `github_create_repo_webhook`, `github_update_repo_webhook`, `github_delete_repo_webhook`, `github_list_repo_webhooks`, `github_get_repo_webhook`, `github_ping_repo_webhook`, `github_test_repo_webhook`, `github_list_webhook_deliveries`, `github_get_team`, `github_list_teams`, `github_list_team_members`, `github_list_team_repos`
+  </Accordion>
+  <Accordion title="Discussions, gists & notifications">
+    `github_create_discussion`, `github_update_discussion`, `github_delete_discussion`, `github_get_discussion`, `github_list_discussions`, `github_list_discussion_categories`, `github_create_discussion_comment`, `github_list_discussion_comments`, `github_create_gist`, `github_update_gist`, `github_delete_gist`, `github_get_gist`, `github_list_gists`, `github_star_gist`, `github_unstar_gist`, `github_fork_gist`, `github_list_public_gists`, `github_list_notifications`, `github_mark_notifications_read`, `github_mark_thread_read`
+  </Accordion>
+  <Accordion title="Search & releases">
+    `github_search_code`, `github_search_issues`, `github_search_repos`, `github_create_release`, `github_update_release`, `github_delete_release`, `github_get_release`, `github_get_latest_release`, `github_list_releases`, `github_list_release_assets`, `github_delete_release_asset`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Issue triage" icon="list-check">
+    Search, label, and comment on issues from natural-language requests
+  </Card>
+  <Card title="PR review automation" icon="git-pull-request">
+    List open PRs, fetch diffs, and submit reviews
+  </Card>
+  <Card title="CI/CD control" icon="play">
+    Trigger workflows, inspect run logs, and rerun failed jobs
+  </Card>
+  <Card title="Security monitoring" icon="shield-alert">
+    Surface open Dependabot, code scanning, and secret scanning alerts
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="403 or 404 on an org-level tool">
+    Org-scoped tools (`github_list_org_secrets`, `github_get_org`, etc.) require the connected account to have the appropriate org role. Reconnect with an account that has admin access if these fail.
+  </Accordion>
+  <Accordion title="Workflow trigger succeeds but nothing runs">
+    Confirm the workflow file actually declares a `workflow_dispatch` trigger — `github_trigger_workflow` can only start workflows that support it.
+  </Accordion>
+  <Accordion title="Secret/variable tools return empty values">
+    GitHub never returns secret values over the API by design — `github_get_repo_secret` and friends only return metadata (name, timestamps), never the plaintext value.
+  </Accordion>
+</AccordionGroup>

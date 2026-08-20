@@ -1,0 +1,85 @@
+---
+title: "Gmail"
+description: "メールの検索・送信・整理 — メッセージ、スレッド、ドラフト、ラベル、フィルタ、メールボックス設定"
+icon: /images/gmail.svg
+---
+
+# Gmail
+
+ShanoneのGmail連携は、日常的なメッセージングに加えて、他の連携ではあまり扱われないメールボックス設定系のツール(フィルタ、転送、代理人、休暇の自動応答)まで含む52個のツールをエージェントに提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにGmail関連の作業を依頼(例: 「先月の請求書のメールを検索して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="Googleアカウントを許可する">
+    Shanoneに操作させたいメールボックスについて、GoogleのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`gmail_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはGmail向けに**52個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="メッセージ">
+    `gmail_send_message`, `gmail_get_message`, `gmail_list_messages`, `gmail_search`, `gmail_reply_to_message`, `gmail_trash_message`, `gmail_untrash_message`, `gmail_delete_message`, `gmail_batch_delete_messages`, `gmail_batch_modify_labels`, `gmail_modify_message_labels`, `gmail_import_message`, `gmail_insert_message`, `gmail_get_attachment`
+  </Accordion>
+  <Accordion title="スレッド">
+    `gmail_get_thread`, `gmail_list_threads`, `gmail_trash_thread`, `gmail_untrash_thread`, `gmail_delete_thread`, `gmail_modify_thread_labels`
+  </Accordion>
+  <Accordion title="ドラフト">
+    `gmail_create_draft`, `gmail_get_draft`, `gmail_update_draft`, `gmail_delete_draft`, `gmail_list_drafts`, `gmail_send_draft`
+  </Accordion>
+  <Accordion title="ラベル">
+    `gmail_create_label`, `gmail_get_label`, `gmail_update_label`, `gmail_delete_label`, `gmail_list_labels`
+  </Accordion>
+  <Accordion title="フィルタ">
+    `gmail_create_filter`, `gmail_get_filter`, `gmail_delete_filter`, `gmail_list_filters`
+  </Accordion>
+  <Accordion title="メールボックス設定">
+    `gmail_get_vacation`, `gmail_update_vacation`, `gmail_get_auto_forwarding`, `gmail_list_forwarding_addresses`, `gmail_get_imap`, `gmail_get_pop`, `gmail_get_language`, `gmail_get_send_as`, `gmail_list_send_as`
+  </Accordion>
+  <Accordion title="代理人 & プロフィール">
+    `gmail_create_delegate`, `gmail_get_delegate`, `gmail_delete_delegate`, `gmail_list_delegates`, `gmail_get_profile`
+  </Accordion>
+  <Accordion title="履歴 & プッシュ通知">
+    `gmail_list_history`, `gmail_watch`, `gmail_stop`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="受信トレイのトリアージ" icon="inbox">
+    未読メールを検索・要約し、返信案をレビュー用に作成する
+  </Card>
+  <Card title="参加者へのフォローアップ" icon="users">
+    カレンダーイベントやイベントプラットフォームから取得した参加者一人ひとりに、個別のメールを送る
+  </Card>
+  <Card title="自動転送の監査" icon="shield-check">
+    転送アドレスやフィルタに不審なものがないか確認する
+  </Card>
+  <Card title="休暇の自動応答管理" icon="plane">
+    旅行の日程に合わせて不在時応答をオン/オフする
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="gmail_send_messageが宛先が無効というエラーで失敗する">
+    `gmail_send_message`の`shanone_get_tool_schema`で正確なペイロード形式を確認してください——宛先・件名・本文は通常、フラットなフィールドではなくMIME形式のネストされた構造の中に入っています。
+  </Accordion>
+  <Accordion title="gmail_watchのプッシュ通知が届かない">
+    `gmail_watch`には、接続先のGoogle Cloudプロジェクトに設定されたGoogle Cloud Pub/Subトピックが必要です。これはShanoneの範囲外のプロジェクトレベルの設定作業です。トピック設定を修正したら`gmail_stop`を呼び出し、`gmail_watch`を再実行してください。
+  </Accordion>
+  <Accordion title="古いメールが見つからない">
+    キーワードフィルタリングに対応していない`gmail_list_messages`ではなく、Gmail独自の検索演算子(`from:`、`after:`、`has:attachment`など)を使った`gmail_search`を使用してください。
+  </Accordion>
+</AccordionGroup>

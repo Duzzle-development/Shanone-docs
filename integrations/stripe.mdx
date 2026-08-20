@@ -1,0 +1,98 @@
+---
+title: "Stripe"
+description: "Payments, subscriptions, billing, Treasury, and Issuing — the largest integration in Shanone's catalog"
+icon: /images/stripe.svg
+---
+
+# Stripe
+
+Shanone's Stripe integration gives your agent 328 tools — the largest single integration in the catalog — covering everything from a basic charge to Stripe Treasury and Issuing.
+
+<Warning>
+Most Stripe tools can move real money or create real financial records. Review arguments carefully before asking your agent to execute anything beyond read-only queries, and consider connecting a restricted API key scoped to what your agent actually needs.
+</Warning>
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect your Stripe account">
+    Ask your agent to do something with Stripe, or connect proactively from **Integrations** in the Shanone dashboard.
+  </Step>
+  <Step title="Choose test or live mode">
+    Stripe distinguishes test and live API keys entirely by which key you connect — connect a **test mode** key while building and verifying agent workflows.
+  </Step>
+  <Step title="Retry your request">
+    Once connected, `shanone_execute_tool` calls for `stripe_*` tools will succeed.
+  </Step>
+</Steps>
+
+## Available Tools
+
+Shanone provides **328 tools** for Stripe — by far the largest integration. Always use `shanone_get_tool_schema` before executing an unfamiliar Stripe tool; field names closely follow the Stripe API and getting them wrong on a write operation is more costly here than on most integrations.
+
+<AccordionGroup>
+  <Accordion title="Customers, payments & checkout">
+    `stripe_create_customer`, `stripe_get_customer`, `stripe_update_customer`, `stripe_list_customers`, `stripe_search_customers`, `stripe_create_payment_intent`, `stripe_confirm_payment_intent`, `stripe_capture_payment_intent`, `stripe_cancel_payment_intent`, `stripe_get_payment_intent`, `stripe_list_payment_intents`, `stripe_create_checkout_session`, `stripe_get_checkout_session`, `stripe_list_checkout_sessions`, `stripe_expire_checkout_session`, `stripe_create_payment_link`, `stripe_update_payment_link`
+  </Accordion>
+  <Accordion title="Charges & refunds">
+    `stripe_capture_charge`, `stripe_update_charge`, `stripe_get_charge`, `stripe_list_charges`, `stripe_search_charges`, `stripe_create_refund`, `stripe_update_refund`, `stripe_cancel_refund`, `stripe_get_refund`, `stripe_list_refunds`
+  </Accordion>
+  <Accordion title="Subscriptions & billing">
+    `stripe_create_subscription`, `stripe_update_subscription`, `stripe_cancel_subscription`, `stripe_pause_subscription`, `stripe_resume_subscription`, `stripe_get_subscription`, `stripe_list_subscriptions`, `stripe_create_subscription_item`, `stripe_delete_subscription_item`, `stripe_create_invoice`, `stripe_send_invoice`, `stripe_void_invoice`, `stripe_get_invoice`, `stripe_list_invoices`, `stripe_create_invoice_item`, `stripe_delete_invoice_item`, `stripe_create_credit_note`, `stripe_void_credit_note`
+  </Accordion>
+  <Accordion title="Products, prices & coupons">
+    `stripe_create_product`, `stripe_update_product`, `stripe_delete_product`, `stripe_list_products`, `stripe_search_products`, `stripe_create_price`, `stripe_update_price`, `stripe_list_prices`, `stripe_create_coupon`, `stripe_update_coupon`, `stripe_delete_coupon`, `stripe_list_coupons`, `stripe_create_promotion_code`, `stripe_list_promotion_codes`, `stripe_create_quote`, `stripe_finalize_quote`, `stripe_accept_quote`
+  </Accordion>
+  <Accordion title="Connect (accounts, transfers, payouts)">
+    `stripe_create_account`, `stripe_get_account`, `stripe_update_account`, `stripe_delete_account`, `stripe_list_accounts`, `stripe_create_account_link`, `stripe_create_account_session`, `stripe_create_transfer`, `stripe_get_transfer`, `stripe_list_transfers`, `stripe_create_transfer_reversal`, `stripe_create_payout`, `stripe_get_payout`, `stripe_list_payouts`, `stripe_create_application_fee_refund`
+  </Accordion>
+  <Accordion title="Disputes, reviews & fraud">
+    `stripe_get_dispute`, `stripe_update_dispute`, `stripe_close_dispute`, `stripe_list_disputes`, `stripe_get_review`, `stripe_approve_review`, `stripe_list_reviews`, `stripe_get_radar_early_fraud_warning`, `stripe_list_radar_early_fraud_warnings`
+  </Accordion>
+  <Accordion title="Tax, identity & files">
+    `stripe_create_tax_calculation`, `stripe_create_tax_id`, `stripe_delete_tax_id`, `stripe_create_tax_rate`, `stripe_update_tax_rate`, `stripe_create_identity_verification_session`, `stripe_get_identity_verification_session`, `stripe_create_file`, `stripe_create_file_link`, `stripe_list_files`
+  </Accordion>
+  <Accordion title="Billing meters & usage-based billing">
+    `stripe_create_billing_meter`, `stripe_update_billing_meter`, `stripe_deactivate_billing_meter`, `stripe_reactivate_billing_meter`, `stripe_create_meter_event`, `stripe_create_meter_event_adjustment`, `stripe_list_meter_event_summaries`, `stripe_create_billing_alert`, `stripe_activate_billing_alert`, `stripe_archive_billing_alert`
+  </Accordion>
+  <Accordion title="Issuing (cards) & Treasury">
+    `stripe_create_issuing_card`, `stripe_update_issuing_card`, `stripe_create_issuing_cardholder`, `stripe_get_issuing_authorization`, `stripe_approve_issuing_authorization`, `stripe_decline_issuing_authorization`, `stripe_create_issuing_dispute`, `stripe_submit_issuing_dispute`, `stripe_create_treasury_financial_account`, `stripe_create_treasury_outbound_payment`, `stripe_create_treasury_outbound_transfer`, `stripe_create_treasury_inbound_transfer`
+  </Accordion>
+  <Accordion title="Terminal (in-person payments)">
+    `stripe_create_terminal_reader`, `stripe_create_terminal_location`, `stripe_create_terminal_configuration`, `stripe_process_terminal_payment_intent`, `stripe_process_terminal_setup_intent`, `stripe_collect_terminal_inputs`, `stripe_set_terminal_reader_display`, `stripe_create_terminal_hardware_order`
+  </Accordion>
+  <Accordion title="Webhooks & events">
+    `stripe_create_webhook_endpoint`, `stripe_update_webhook_endpoint`, `stripe_delete_webhook_endpoint`, `stripe_list_webhook_endpoints`, `stripe_test_webhook_endpoint`, `stripe_get_event`, `stripe_list_events`
+  </Accordion>
+</AccordionGroup>
+
+## Common Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Revenue reconciliation" icon="scale">
+    Pull recent charges/payouts and cross-check against another ledger
+  </Card>
+  <Card title="Subscription lifecycle" icon="refresh-cw">
+    Create, pause, resume, or cancel subscriptions from a support workflow
+  </Card>
+  <Card title="Dispute triage" icon="alert-triangle">
+    Summarize open disputes and their evidence deadlines
+  </Card>
+  <Card title="Usage-based billing" icon="gauge">
+    Report meter events and inspect usage summaries
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="A write operation succeeded but I don't see it in the Stripe Dashboard">
+    Check whether you're looking at test mode or live mode in the Dashboard — it must match the mode of the API key that's connected.
+  </Accordion>
+  <Accordion title="Confirmation Required response">
+    Higher-risk Stripe tools (e.g. issuing card actions, large refunds) may return `reason: "confirmation_required"`. Re-run with the same arguments plus `"confirm": true` once you're sure.
+  </Accordion>
+  <Accordion title="Object not found errors on IDs that look valid">
+    Stripe IDs are mode-specific — a `cus_...` or `pi_...` ID created in test mode doesn't exist in live mode and vice versa.
+  </Accordion>
+</AccordionGroup>

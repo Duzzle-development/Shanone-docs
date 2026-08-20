@@ -1,0 +1,101 @@
+---
+title: "Permissions & Access Control"
+description: "How teams control exactly which member can use which tool or service, IAM-style."
+icon: "shield-check"
+---
+
+## Why this exists
+
+Every teammate connecting an agent to your Shanone account could, by default, reach every one of the 269+ integrations Shanone implements. For most teams that's too broad — engineers don't need billing tools, and not everyone should be able to force-push to production repos through an agent. Shanone's **Permission Vendor** lets a **Root** user (or a delegated administrator) control access at two levels of granularity:
+
+<CardGroup cols={2}>
+  <Card title="Service-level" icon="layer-group">
+    Enable or disable *all* tools belonging to one integration at once (e.g. turn off "stripe" entirely for a role)
+  </Card>
+  <Card title="Tool-level" icon="wrench">
+    Enable or disable one *specific* tool, overriding the service-level setting (e.g. allow `github_create_issue` but block `github_delete_repo`)
+  </Card>
+</CardGroup>
+
+A tool-level override always wins over a service-level override, which always wins over the role default.
+
+## Roles
+
+| Role | Default tool access | Can manage others' permissions? |
+|------|---------------------|----------------------------------|
+| **Root** | All services/tools enabled by default | Yes, for any user |
+| **SA2** (delegated administrator) | All services/tools disabled by default | Only if explicitly delegated the `tool-permissions:ManageOthers` policy action — and even then, cannot modify a Root user's permissions |
+| Regular member | Disabled by default (enabled per override) | No |
+
+<Note>
+"SA2" refers to Shanone's secondary-administrator role tier — an account can delegate specific policy actions (like managing other users' tool permissions) to an SA2 user without granting full Root access.
+</Note>
+
+## The Permission Vendor tools
+
+| Tool | Who can call it | Description |
+|------|------------------|-------------|
+| `shanone_list_services` | Anyone | List every registered service (integration), with tool counts — no special permission required |
+| `shanone_list_user_tool_permissions` | Root / delegated SA2 | List a target user's service- and tool-level overrides |
+| `shanone_set_user_tool_permission` | Root / delegated SA2 | Enable/disable one specific tool for a target user |
+| `shanone_set_user_service_permission` | Root / delegated SA2 | Enable/disable every tool of one service for a target user |
+| `shanone_get_permission_summary` | Root / delegated SA2 | Aggregate counts: services/tools enabled vs. total, plus the list of disabled services |
+| `shanone_batch_set_user_permissions` | Root / delegated SA2 | Apply up to 500 service/tool operations for a target user in a single call |
+
+<Warning>
+Delegated SA2 users can manage permissions for regular members but never for Root users, regardless of what policy actions they've been granted.
+</Warning>
+
+## Common workflows
+
+### Onboard a new hire with a scoped permission set
+
+<Steps>
+  <Step title="Look up service names">
+    Call `shanone_list_services` to get the exact `service_name` values you'll need (e.g. `slack`, `github`, `notion`).
+  </Step>
+  <Step title="Build a batch of operations">
+    Construct a JSON array like `[{"type": "service", "name": "slack", "enabled": true}, {"type": "service", "name": "stripe", "enabled": false}]`.
+  </Step>
+  <Step title="Apply it in one call">
+    Call `shanone_batch_set_user_permissions` with the new hire's `target_user_id` and the operations array (max 500 per call).
+  </Step>
+  <Step title="Verify">
+    Call `shanone_get_permission_summary` for the same `target_user_id` to confirm the counts match what you intended.
+  </Step>
+</Steps>
+
+### Lock down one dangerous tool without disabling the whole service
+
+```
+shanone_set_user_tool_permission(
+  target_user_id="usr_123",
+  tool_name="github_delete_repo",
+  enabled=False
+)
+```
+
+This keeps every other GitHub tool available to that user while blocking just the one action.
+
+### Audit what someone can actually run
+
+```
+shanone_get_permission_summary(target_user_id="usr_123")
+```
+
+Returns their role, default access, and enabled/disabled counts for both services and tools — including the explicit list of disabled services. For the raw override list instead of a summary, use `shanone_list_user_tool_permissions`.
+
+## Master data warnings
+
+If you set a permission for a `tool_name` or `service_name` that Shanone doesn't recognize yet (usually a typo, or a tool added after your last sync), the call still succeeds and stores the override — but the response includes a warning like `not found in tool permission master data`. Double-check the exact name with `shanone_list_services` or `shanone_search_tools` before assuming the override is broken.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
+    Full parameters and example requests for every Permission Vendor tool
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/guides/troubleshooting">
+    Fix "Permission Denied" and related errors
+  </Card>
+</CardGroup>

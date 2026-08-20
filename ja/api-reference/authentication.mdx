@@ -1,117 +1,151 @@
 ---
-title: 認証
-description: Shanone API での認証方法
+title: "認証"
+description: "Shanoneの外部APIおよびMCPサーバーにおける、APIキーの形式、スコープ設定、レート制限、IP許可リスト、ローテーションについて。"
 ---
 
-# 認証
+## APIキー
 
-Shanone API へのリクエストを認証する方法を学びましょう。
+Shanoneへのすべての外部リクエストは——[MCPサーバー](/ja/mcp/overview)経由であれ[REST API](/ja/api-reference/overview)経由であれ——次の形式のAPIキーで認証します。
 
-## API キー
-
-すべての API リクエストには Authorization ヘッダーに API キーを含める必要があります。
-
-```bash
-Authorization: Bearer YOUR_API_KEY
+```
+sh_xxxxxxxxxxxxxxxx
 ```
 
-## API キーの取得
+ベアラートークンとして送信します。
+
+```
+Authorization: Bearer sh_xxxxxxxxxxxxxxxx
+```
+
+代替ヘッダーとして`X-API-Key: sh_xxxxxxxxxxxxxxxx`も利用できます。
+
+<Warning>
+平文のキーが表示されるのは作成時の一度きりです。それ以降Shanoneが保存するのはハッシュ値のみです——キーを失くした場合は、それを無効化して新しいキーを作成してください。
+</Warning>
+
+## キーを作成する
 
 <Steps>
-  <Step title="Shanone にサインイン">
-    [app.Shanone.ai](https://app.Shanone.ai) にアクセスしてアカウントにサインインします。
+  <Step title="サインインする">
+    [app.shanone.ai](https://app.shanone.ai)にアクセスしてサインインします。
   </Step>
-  <Step title="設定に移動">
-    プロフィールをクリックして **設定** を選択します。
+  <Step title="API Keysを開く">
+    **Settings → API Keys**に移動します。
   </Step>
-  <Step title="API セクションへ">
-    設定メニューで **API** タブを選択します。
-  </Step>
-  <Step title="キーを生成">
-    **API キーを作成** をクリックして、わかりやすい名前を付けます。
+  <Step title="キーを作成する">
+    **Create API Key**をクリックし、わかりやすい名前を付け、必要であればスコープ(下記)を設定します。
   </Step>
 </Steps>
 
-<Warning>
-API キーは安全に保管してください！クライアントサイドのコードや公開リポジトリに公開しないでください。
-</Warning>
+## キーのスコープを設定する
 
-## リクエスト例
+各キーは、デフォルトの設定に加えて、任意で制限を加えることができます。
+
+| 設定項目 | デフォルト値 | 補足 |
+|---------|---------|-------|
+| `permissions` | 全権限 | 必要であれば一部の権限のみに制限できます——詳細は下の表を参照 |
+| `rate_limit.requests_per_minute` | 60 | 1〜1,000の範囲で設定可能 |
+| `rate_limit.requests_per_day` | 10,000 | 1〜1,000,000の範囲で設定可能 |
+| `allowed_ips` | 任意のIP | 許可する送信元IPのリストに制限できます |
+| `expires_at` | 無期限 | ISO 8601形式の有効期限タイムスタンプを任意で設定可能 |
+
+利用可能な`permissions`の値:
+
+| 権限 | 説明 |
+|------------|-------------|
+| `tasks:create` | アクションの作成・実行 |
+| `tasks:read` | 実行状況の読み取り |
+| `tasks:cancel` | 実行中の処理のキャンセル |
+| `tasks:messages` | セッション内でのフォローアップメッセージの送信 |
+| `conversations:read` | 会話・セッション履歴の読み取り |
+| `integrations:read` | 連携済みインテグレーションの読み取り |
+
+`permissions`を指定しなかったキーはフルアクセス権を持ちます。完全には信頼していないスクリプトやサービスに組み込むキーは、スコープを絞り込んでください。
+
+## 直接MCPエンドポイントにはもう一つ必要なものがある
+
+Shanoneのローカルstdioプロキシを経由せず、`https://app.shanone.ai/mcp`(Streamable HTTP)に直接接続する場合は、セカンドファクターとして**組織ID(organization ID)**も必要になります。これは`X-Org-Id`として送信します(カスタムヘッダーを設定できないクライアントのフォールバックとして、URLの`?org_id=`も使えます)。
+
+```
+Authorization: Bearer sh_xxxxxxxxxxxxxxxx
+X-Org-Id: org_xxxxxxxxxxxxxxxx
+```
+
+この複合チェックにより、APIキーが漏洩しただけでは直接エンドポイント経由でツールを呼び出すことはできません——攻撃者は組織IDも合わせて手に入れる必要があります。REST API(`/api/v1/tools/...`など)とローカルstdioプロキシは、この第二要素を**必要としません**。これらはAPIキー単体で認証します。
+
+## リクエストの例
 
 <Tabs>
   <Tab title="cURL">
     ```bash
-    curl -X POST "https://api.Shanone.ai/v1/sessions" \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"prompt": "こんにちは、Shanone！"}'
+    curl "https://app.shanone.ai/api/v1/tools/search?query=create+github+issue" \
+      -H "Authorization: Bearer sh_xxxxxxxxxxxxxxxx"
     ```
   </Tab>
   <Tab title="Python">
     ```python
     import requests
 
-    headers = {
-        "Authorization": "Bearer YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
-
-    response = requests.post(
-        "https://api.Shanone.ai/v1/sessions",
+    headers = {"Authorization": "Bearer sh_xxxxxxxxxxxxxxxx"}
+    response = requests.get(
+        "https://app.shanone.ai/api/v1/tools/search",
+        params={"query": "create github issue"},
         headers=headers,
-        json={"prompt": "こんにちは、Shanone！"}
     )
     ```
   </Tab>
   <Tab title="JavaScript">
     ```javascript
-    const response = await fetch("https://api.Shanone.ai/v1/sessions", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer YOUR_API_KEY",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ prompt: "こんにちは、Shanone！" })
-    });
+    const response = await fetch(
+      "https://app.shanone.ai/api/v1/tools/search?query=create+github+issue",
+      { headers: { Authorization: "Bearer sh_xxxxxxxxxxxxxxxx" } }
+    );
     ```
   </Tab>
 </Tabs>
 
-## キー管理
+## レート制限
+
+| レスポンス | 意味 |
+|----------|---------|
+| `error: "rate_limit_exceeded"`を伴う`429` | このキーの`requests_per_minute`または`requests_per_day`の上限を超えました |
+| `Retry-After`ヘッダー | 再試行までに待つべき秒数 |
+
+制限に恒常的に達してしまう場合は、**Settings → API Keys**からキーの上限を上げてください。
+
+## キーの管理
 
 ### キーのローテーション
 
-セキュリティのため、API キーを定期的にローテーションすることをお勧めします：
+<Steps>
+  <Step title="新しいキーを作成する">
+    **Settings → API Keys**から作成します。
+  </Step>
+  <Step title="クライアント・スクリプトを更新する">
+    古いキーが設定されていた箇所を、新しいキーに置き換えます。
+  </Step>
+  <Step title="古いキーを無効化する">
+    新しいキーが正しく動作することを確認したうえで実施します。
+  </Step>
+</Steps>
 
-1. 新しい API キーを作成
-2. アプリケーションを新しいキーを使用するように更新
-3. 古いキーを取り消し
+### 無効化と削除の違い
 
-### キーの取り消し
-
-API キーを取り消すには：
-
-1. **設定 > API** に移動
-2. 取り消したいキーを見つける
-3. **取り消し** をクリック
-
-<Note>
-キーの取り消しは即座に行われ、元に戻すことはできません。取り消す前に、そのキーを使用しているすべてのアプリケーションを更新していることを確認してください。
-</Note>
+Shanoneでは、キーを無効化する(即座に使えなくなるが、監査目的でレコードは残る)ことと、完全に削除することの両方が可能です。無効化は即時かつ取り消せません——実施前に、そのキーに依存している処理が残っていないか必ず確認してください。
 
 ## セキュリティのベストプラクティス
 
 <CardGroup cols={2}>
-  <Card title="環境変数を使用" icon="lock">
-    API キーはコードではなく環境変数に保存します。
+  <Card title="環境変数を使う" icon="lock">
+    キーをコミット済みの設定ファイルやソースファイルにハードコードしないでください。
   </Card>
-  <Card title="権限を制限" icon="shield">
-    必要な権限のみを持つキーを作成します。
+  <Card title="必要な範囲にスコープを絞る" icon="shield">
+    `permissions`と`allowed_ips`を制限し、短命なものには`expires_at`を設定してください。
   </Card>
-  <Card title="定期的にローテーション" icon="rotate">
-    定期的に、また潜在的な漏洩後にキーをローテーションします。
+  <Card title="マシン・エージェントごとに1つのキー" icon="tag">
+    他に影響を与えずに個別に無効化できるようにするためです。
   </Card>
-  <Card title="使用状況を監視" icon="chart-line">
-    異常なアクティビティがないか API 使用ログを確認します。
+  <Card title="定期的にローテーションする" icon="rotate-cw">
+    特に漏洩が疑われた後は必ず実施してください。
   </Card>
 </CardGroup>

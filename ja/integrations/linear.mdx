@@ -1,0 +1,79 @@
+---
+title: "Linear"
+description: "エージェントからLinearのイシュー、プロジェクト、サイクル、イニシアチブを管理する"
+icon: /images/linear.svg
+---
+
+# Linear
+
+ShanoneのLinear連携は、エージェントにイシュー管理、プロジェクト・サイクル管理、イニシアチブ、ドキュメントのための45個のツールを提供します。
+
+## はじめに
+
+<Steps>
+  <Step title="OAuthで接続する">
+    エージェントにLinear関連の作業を依頼(例: 「このバグのイシューを作成して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  </Step>
+  <Step title="ワークスペースへのアクセスを許可する">
+    Shanoneに操作させたいワークスペースについて、LinearのOAuth同意画面を承認します。
+  </Step>
+  <Step title="リクエストを再実行する">
+    接続が完了すると、`linear_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
+  </Step>
+</Steps>
+
+## 利用可能なツール
+
+ShanoneはLinear向けに**45個のツール**を、以下のカテゴリに整理して提供しています。
+
+<AccordionGroup>
+  <Accordion title="イシュー">
+    `linear_create_issue`, `linear_get_issue`, `linear_update_issue`, `linear_delete_issue`, `linear_archive_issue`, `linear_unarchive_issue`, `linear_list_issues`, `linear_search_issues`, `linear_get_my_issues`, `linear_add_label_to_issue`, `linear_add_issue_to_cycle`, `linear_add_issue_to_project`
+  </Accordion>
+  <Accordion title="コメント">
+    `linear_create_comment`, `linear_list_comments`, `linear_delete_comment`
+  </Accordion>
+  <Accordion title="プロジェクト & アップデート">
+    `linear_create_project`, `linear_get_project`, `linear_update_project`, `linear_list_projects`, `linear_create_project_update`, `linear_list_project_updates`, `linear_list_project_labels`
+  </Accordion>
+  <Accordion title="イニシアチブ">
+    `linear_create_initiative`, `linear_get_initiative`, `linear_update_initiative`, `linear_list_initiatives`, `linear_create_initiative_update`
+  </Accordion>
+  <Accordion title="サイクル & マイルストーン">
+    `linear_list_cycles`, `linear_create_milestone`, `linear_get_milestone`, `linear_update_milestone`, `linear_list_milestones`
+  </Accordion>
+  <Accordion title="ドキュメント">
+    `linear_create_document`, `linear_get_document`, `linear_update_document`, `linear_list_documents`, `linear_search_documentation`
+  </Accordion>
+  <Accordion title="チーム、ユーザー & ラベル">
+    `linear_get_team`, `linear_list_teams`, `linear_get_user`, `linear_list_users`, `linear_get_viewer`, `linear_create_label`, `linear_list_labels`, `linear_list_workflow_states`
+  </Accordion>
+</AccordionGroup>
+
+## よくあるユースケース
+
+<CardGroup cols={2}>
+  <Card title="バグトリアージ" icon="bug">
+    他所で見つかったスタックトレースやバグ報告から直接イシューを作成する
+  </Card>
+  <Card title="スプリントレポート" icon="calendar-days">
+    サイクルのイシューを要約し、ステータス更新を投稿する
+  </Card>
+  <Card title="ツール間のフォローアップ" icon="arrow-right-left">
+    Notionの議事録やSlackのスレッドを、追跡可能なLinearイシューに変換する
+  </Card>
+  <Card title="ロードマップの可視化" icon="map">
+    イニシアチブやプロジェクトを問い合わせて「Q3の予定は?」に答える
+  </Card>
+</CardGroup>
+
+## トラブルシューティング
+
+<AccordionGroup>
+  <Accordion title="linear_create_issueがteam/workflow stateのエラーで失敗する">
+    Linearのイシューには有効な`teamId`が必要で、ワークフローによっては有効なstate IDも必要です。まず`linear_list_teams`と`linear_list_workflow_states`を呼び出して有効な値を取得するか、`linear_create_issue`の`shanone_get_tool_schema`を確認してください。
+  </Accordion>
+  <Accordion title="人が読める識別子(例: ENG-123)でイシューが見つからない">
+    その識別子をクエリとして`linear_search_issues`を使うか、チームでフィルタした`linear_list_issues`を使ってください——`linear_get_issue`はツールスキーマに特に記載がない限り、短い識別子ではなくLinear内部のイシューIDを想定しています。
+  </Accordion>
+</AccordionGroup>
