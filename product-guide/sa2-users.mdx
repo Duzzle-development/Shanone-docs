@@ -1,0 +1,109 @@
+---
+title: "SA2 Users"
+description: "Shanone's two-tier user model — one Root account holder, and any number of delegated SA2 users with scoped access."
+icon: "users"
+---
+
+## Root vs. SA2
+
+Every Shanone account has exactly one **Root** user and, optionally, any number of **SA2** users — Shanone's term for a delegated, scoped-access teammate. If you know AWS IAM, the shape is the same: one root account, many IAM users underneath it.
+
+| | Root | SA2 |
+|---|---|---|
+| How it's created | Automatically, the first time you sign in with Google, Microsoft, or GitHub OAuth | Created by Root (or by an SA2 user delegated the right policy) from the dashboard |
+| How it signs in | OAuth (Google, Microsoft, or GitHub) | Organization ID/alias + username + password |
+| Default access | Everything, always | Nothing, until Root attaches policies and/or tool permissions |
+| Can access be scoped down by policy? | No | Yes — entirely defined by attached policies |
+| Billing, organization deletion/transfer | Only Root | Never, regardless of what policies are attached |
+
+<Note>
+There's exactly one Root user per organization. To hand off ownership, transfer the organization rather than trying to create a second Root.
+</Note>
+
+## Creating an SA2 user
+
+<Steps>
+  <Step title="Open SA2 Users">
+    In the Shanone dashboard, go to **Settings → SA2 Users** (Root-only) and click **Create user**.
+  </Step>
+  <Step title="Set a username">
+    Pick a username that's unique within your organization — an SA2 user types this in alongside your Organization ID/alias to sign in.
+  </Step>
+  <Step title="Set up permissions">
+    Attach one or more Managed or Customer Managed policies, add the user to an existing group, or copy another user's permission set as a starting point.
+  </Step>
+  <Step title="Review and create">
+    Confirm the settings. Shanone generates a password and a direct sign-in link — share both with the new user through a secure channel.
+  </Step>
+</Steps>
+
+<Warning>
+The generated password is shown once, at creation time. Share it securely — if it's lost, the user can recover it themselves (see below) as long as an email address was set on their account, otherwise Root has to set a new one.
+</Warning>
+
+## Signing in as an SA2 user
+
+<Steps>
+  <Step title="Go to the sign-in page">
+    Open the Shanone sign-in page and choose the email/password option instead of Google, Microsoft, or GitHub.
+  </Step>
+  <Step title="Enter your Organization ID or alias">
+    Type your organization's ID (`org_...`) or its short alias instead of an email address. Shanone recognizes there's no `@` in the field and reveals a **Username** field for you to fill in.
+  </Step>
+  <Step title="Enter your username and password">
+    Fill in both and sign in.
+  </Step>
+</Steps>
+
+<Note>
+If your organization has multi-factor authentication turned on, you'll be prompted for a TOTP code (or a recovery code) after your password, with an option to trust the device for 7 days. Forgot your password? Use the "forgot password" link with your Organization ID and username — if your account has an email on file, a reset link is sent there.
+</Note>
+
+## Policies
+
+SA2 access is governed by **policies** — AWS IAM-style JSON documents made of `Allow`/`Deny` statements over `service:Action` strings (e.g. `sa2:CreateUser`, `analytics:Overview`, `organization:*`). Evaluation always follows the same order:
+
+1. **Explicit Deny** wins, no matter what else is attached.
+2. **Explicit Allow** grants access if nothing denies it.
+3. Everything else is **implicitly denied** — an SA2 user starts with zero access until something explicitly allows it.
+
+### Managed policies
+
+Shanone ships a set of ready-made policies so you don't have to hand-write JSON for common roles:
+
+| Policy | Grants |
+|---|---|
+| `AdministratorAccess` | Everything except billing, organization deletion/transfer, and other Root-only actions |
+| `SA2FullAccess` | Full control over other SA2 users, groups, and policies |
+| `SA2ReadOnlyAccess` | Read-only visibility into SA2 users, groups, and policies |
+| `OrganizationAdministrator` | Manage organization settings, excluding deletion, transfer, and owner-email changes |
+| `ToolPermissionAdministrator` | Manage other users' tool/service permissions (the Permission Vendor actions) |
+| `IntegrationsFullAccess` | Full access to every integration |
+| `IntegrationUseOnly` | Can use integrations, but not manage the connections |
+| `AnalyticsAdministrator` | Full analytics access, including alerts and reports |
+| `AnalyticsViewer` | Dashboard-only analytics access |
+| `AnalyticsLogsViewer` | Access to usage logs specifically |
+| `AuditViewer` | Read-only access to audit logs |
+
+You can also write **Customer Managed** policies for anything more specific, combining `Allow` and `Deny` statements the same way the managed policies do.
+
+## Groups and audit logs
+
+Attach the same set of policies to several SA2 users at once by creating a **group**, instead of repeating the attachment on every user individually. Every SA2-related action — user creation, policy changes, sign-ins — is written to the **audit log**, filterable by user, event type, and date, and exportable as CSV/JSON.
+
+## SA2 users and tool permissions
+
+Policies control access to Shanone's *management* surface — users, policies, analytics, organization settings. Access to the *tools themselves* — which of the 269+ integrations an SA2 user can actually call through their agent — is a separate layer, covered in [Permissions & Access Control](/product-guide/permissions).
+
+An SA2 user needs the `tool-permissions:ManageOthers` policy action (granted via `ToolPermissionAdministrator`, or a custom policy) before they can change *another* user's tool access — and even then, never a Root user's.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Permissions & Access Control" icon="shield-check" href="/product-guide/permissions">
+    Control exactly which integrations and tools an SA2 user (or any teammate) can call
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/guides/troubleshooting">
+    Fix "Permission Denied" and sign-in related errors
+  </Card>
+</CardGroup>

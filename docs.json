@@ -58,6 +58,7 @@
                 "pages": [
                   "product-guide/skills",
                   "product-guide/permissions",
+                  "product-guide/sa2-users",
                   "product-guide/webhooks"
                 ]
               },
@@ -282,6 +283,7 @@
                 "pages": [
                   "ja/product-guide/skills",
                   "ja/product-guide/permissions",
+                  "ja/product-guide/sa2-users",
                   "ja/product-guide/webhooks"
                 ]
               },

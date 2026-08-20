@@ -1,0 +1,109 @@
+---
+title: "SA2ユーザー"
+description: "Shanoneの2階層ユーザーモデル——1人のRootアカウント所有者と、権限を限定して委任できる任意数のSA2ユーザー。"
+icon: "users"
+---
+
+## Root と SA2
+
+Shanoneのアカウントには、必ず1人の**Root**ユーザーがおり、それに加えて任意の数の**SA2**ユーザーを持てます——SA2とは、権限を限定して委任されたチームメイトを指すShanoneの用語です。AWS IAMを知っている方には、1つのrootアカウントとその下にある複数のIAMユーザー、という構造そのものだとイメージしてください。
+
+| | Root | SA2 |
+|---|---|---|
+| 作成方法 | Google/Microsoft/GitHub OAuthで初めてサインインした際に自動作成 | Root(または適切なポリシーを委任されたSA2ユーザー)がダッシュボードから作成 |
+| ログイン方法 | OAuth(Google、Microsoft、GitHub) | Organization ID/alias + ユーザー名 + パスワード |
+| デフォルトのアクセス権 | 常にすべて | Rootがポリシーやツール権限を付与するまでは何もなし |
+| ポリシーで権限を制限できるか | 不可 | 可能——アタッチされたポリシーによって完全に定義される |
+| 請求管理、組織の削除/譲渡 | Rootのみ | どのポリシーがアタッチされていても不可 |
+
+<Note>
+Rootユーザーは組織につき必ず1人です。オーナー権限を引き渡す場合は、2人目のRootを作ろうとするのではなく、組織そのものを譲渡してください。
+</Note>
+
+## SA2ユーザーの作成
+
+<Steps>
+  <Step title="SA2 Usersを開く">
+    Shanoneダッシュボードで**Settings → SA2 Users**(Root専用)を開き、**Create user**をクリックします。
+  </Step>
+  <Step title="ユーザー名を設定する">
+    組織内で一意なユーザー名を選びます——SA2ユーザーはログイン時にこのユーザー名を、あなたのOrganization ID/aliasと合わせて入力します。
+  </Step>
+  <Step title="権限を設定する">
+    1つ以上のManaged PolicyまたはCustomer Managed Policyをアタッチする、既存のグループに追加する、あるいは別のユーザーの権限設定をコピーして出発点とする、のいずれかを行います。
+  </Step>
+  <Step title="確認して作成する">
+    設定内容を確認します。Shanoneがパスワードと直接サインイン用のリンクを生成するので、両方を安全な方法で新しいユーザーに共有してください。
+  </Step>
+</Steps>
+
+<Warning>
+生成されたパスワードは作成時に一度だけ表示されます。安全に共有してください——もしパスワードを失っても、アカウントにメールアドレスが設定されていれば本人がセルフサービスで再設定できます(下記参照)。設定されていない場合はRootが新しいパスワードを設定する必要があります。
+</Warning>
+
+## SA2ユーザーとしてログインする
+
+<Steps>
+  <Step title="サインインページを開く">
+    Shanoneのサインインページを開き、Google/Microsoft/GitHubではなくメール+パスワードの方法を選択します。
+  </Step>
+  <Step title="Organization IDまたはaliasを入力する">
+    メールアドレスの代わりに、組織のID(`org_...`)または短いaliasを入力します。入力欄に`@`が含まれていないことをShanoneが検知し、**Username**の入力欄が表示されます。
+  </Step>
+  <Step title="ユーザー名とパスワードを入力する">
+    両方を入力してサインインします。
+  </Step>
+</Steps>
+
+<Note>
+組織で多要素認証(MFA)が有効になっている場合、パスワード入力後にTOTPコード(またはリカバリーコード)の入力を求められます。デバイスを7日間信頼するオプションもあります。パスワードを忘れた場合は、「パスワードを忘れた」リンクからOrganization IDとユーザー名を入力してください——アカウントにメールアドレスが登録されていれば、そこにリセット用リンクが送られます。
+</Note>
+
+## ポリシー
+
+SA2のアクセス権は**ポリシー**によって管理されます——AWS IAM風の`service:Action`形式の文字列(例:`sa2:CreateUser`、`analytics:Overview`、`organization:*`)に対する`Allow`/`Deny`ステートメントで構成されたJSONドキュメントです。評価は常に同じ順序で行われます。
+
+1. **明示的なDeny**が最優先されます——他に何がアタッチされていても関係ありません。
+2. **明示的なAllow**があれば、Denyがない限りアクセスが許可されます。
+3. それ以外はすべて**暗黙的にDeny**されます——SA2ユーザーは、何かが明示的に許可するまではアクセス権を一切持ちません。
+
+### Managed Policy
+
+一般的なロールのためにJSONを手書きしなくて済むよう、Shanoneはあらかじめ用意されたポリシー一式を提供しています。
+
+| ポリシー | 付与される権限 |
+|---|---|
+| `AdministratorAccess` | 請求管理、組織の削除/譲渡、その他のRoot専用操作を除くすべて |
+| `SA2FullAccess` | 他のSA2ユーザー、グループ、ポリシーへの完全な管理権限 |
+| `SA2ReadOnlyAccess` | SA2ユーザー、グループ、ポリシーの読み取り専用の閲覧権限 |
+| `OrganizationAdministrator` | 組織設定の管理(削除・譲渡・オーナーメール変更は除く) |
+| `ToolPermissionAdministrator` | 他ユーザーのツール・サービス権限を管理する権限(Permission Vendorの操作) |
+| `IntegrationsFullAccess` | すべての連携への完全なアクセス |
+| `IntegrationUseOnly` | 連携の利用は可能だが接続自体の管理は不可 |
+| `AnalyticsAdministrator` | アラートやレポートを含む、Analyticsへの完全なアクセス |
+| `AnalyticsViewer` | ダッシュボードのみのAnalyticsアクセス |
+| `AnalyticsLogsViewer` | 利用ログへのアクセスのみ |
+| `AuditViewer` | 監査ログへの読み取り専用アクセス |
+
+より具体的な要件がある場合は、**Customer Managed Policy**を独自に記述することもできます。組み方は上記のManaged Policyと同じく、`Allow`と`Deny`のステートメントを組み合わせる形です。
+
+## グループと監査ログ
+
+複数のSA2ユーザーに同じポリシーの組み合わせをアタッチしたい場合、ユーザーごとに個別にアタッチする代わりに**グループ**を作成できます。ユーザー作成、ポリシー変更、ログインなど、SA2関連のすべての操作は**監査ログ**に記録され、ユーザー・イベントタイプ・日時でフィルタリングでき、CSV/JSON形式でエクスポートも可能です。
+
+## SA2ユーザーとツール権限
+
+ポリシーが管理するのは、Shanoneの*管理機能*へのアクセス——ユーザー、ポリシー、Analytics、組織設定です。*ツールそのもの*へのアクセス——SA2ユーザーがエージェント経由で実際に呼び出せる269以上の連携のどれか——は別のレイヤーであり、[権限管理とアクセス制御](/ja/product-guide/permissions)で説明しています。
+
+SA2ユーザーが*他の*ユーザーのツールアクセスを変更するには、`tool-permissions:ManageOthers`ポリシーアクション(`ToolPermissionAdministrator`またはカスタムポリシー経由で付与)が必要です——それを持っていても、Rootユーザーの権限を変更することは決してできません。
+
+## 次のステップ
+
+<CardGroup cols={2}>
+  <Card title="権限管理とアクセス制御" icon="shield-check" href="/ja/product-guide/permissions">
+    SA2ユーザー(や他のチームメンバー)がどの連携・ツールを呼び出せるかを正確に制御する
+  </Card>
+  <Card title="トラブルシューティング" icon="wrench" href="/ja/guides/troubleshooting">
+    「Permission Denied」やログイン関連のエラーを解決する
+  </Card>
+</CardGroup>
