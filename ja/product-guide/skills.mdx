@@ -8,16 +8,16 @@ icon: "bookmark"
 
 **Skill**とは、名前付きの再利用可能な指示セットのことで、コンセプトとしては[AnthropicのAgent Skills](https://www.anthropic.com/news/skills)に近いものです。各Skillは3つのフィールドを持ちます。
 
-| フィールド | 用途 |
-|-------|---------|
-| `name` | 短く分かりやすいタイトル |
-| `summary` | Skillが何を行い、いつ使うべきかを示す説明 — 一覧結果に表示される軽量なメタデータ |
-| `instructions` | ステップバイステップの完全な本文 — Skillが実際に開かれたときにのみ取得される |
+| フィールド | 用途 | 上限 |
+|-------|---------|------|
+| `name` | 短く分かりやすいタイトル | 1〜200文字 |
+| `summary` | Skillが何を行い、いつ使うべきかを示す説明 — 一覧結果に表示される軽量なメタデータ | 最大2,000文字 |
+| `instructions` | ステップバイステップの完全な本文 — Skillが実際に開かれたときにのみ取得される | 最大100,000文字 |
 
 Shanone自身がSkillを*実行する*ことは決してありません。**Skill Vendor**は保存と取得だけを担うレイヤーです。エージェントはMCP経由でSkillを一覧表示・読み取りし、自身のコンテキストの中で`instructions`に従い、その過程で必要に応じて`shanone_execute_tool`(や他に必要なもの)を呼び出します。これによってSkillは、それを読み取るエージェントが何であっても——今日はCursor、明日はClaude Code、来週は別のノートPCでも——持ち運び可能な状態を保てます。
 
 <Note>
-Skillはローカルファイルではなく、サーバー側(ShanoneのSkill Vendorバックエンド)に保存されます。一度保存すれば、あなたのアカウントが接続するあらゆる場所で利用できます。
+Skillはローカルファイルではなく、サーバー側(ShanoneのSkill Vendorバックエンド)に保存されます。一度保存すれば、あなたのアカウントが接続するあらゆる場所で利用できます。Skillはチームで共有されるものではなく、ユーザー単位で管理されます——Shanone全体へのアクセス管理については[権限管理とアクセス制御](/ja/product-guide/permissions)を参照してください。
 </Note>
 
 ## Skillが存在する理由
@@ -46,6 +46,12 @@ Skillはローカルファイルではなく、サーバー側(ShanoneのSkill V
 | `shanone_create_skill` | 新しいSkillを保存(`name`、`description`、`body`はすべて必須) |
 | `shanone_update_skill` | 既存のSkillを更新 — 空でないフィールドのみが変更される |
 | `shanone_delete_skill` | Skillを完全に削除 |
+
+<Note>
+`shanone_list_skills`の`query`は、`name`と`summary`のみを対象にした、大文字小文字を区別しない単純な部分一致検索です——`instructions`の中身は検索対象外で、意味検索(embedding)も行われません。曖昧な説明文ではなく、Skillのタイトルに含まれる短く正確なキーワードを使ってください。
+</Note>
+
+MCP以外から連携する場合(スクリプトやバックエンドサービスがAPIキーを直接使う場合など)は、同じ機能をプレーンなREST API `/api/v1/skills`(一覧取得・作成は`POST`/`GET`、個別のSkillに対する操作は`/api/v1/skills/{skill_id}`への`GET`/`PUT`/`DELETE`)としても利用できます。MCPツールはこのAPIを薄くラップしたものです。
 
 ## 推奨ワークフロー
 
@@ -87,9 +93,37 @@ Agent calls shanone_list_skills, finds it, calls shanone_get_skill,
 then follows the instructions — calling github_list_issues and slack_post_message itself.
 ```
 
+## ダッシュボードからSkillを管理する
+
+MCP経由でできることはすべて、Shanoneのダッシュボードの**Skills**からも行えます。長い指示を手で書きたいときや、エージェントが自分の代わりに何を保存したかを確認したいときに便利です。
+
+<Frame>
+  <img src="/images/skills/skills-list.png" alt="Shanoneダッシュボードに表示されたSkill一覧。複数の保存済みSkillの名前・説明・作成日が表示されている" />
+</Frame>
+
+Skillを開く(または**New Skill**をクリックする)と、名前フィールド、説明フィールド、そして3つのタブを持つ本文エディタが表示されます——生のMarkdownを表示する**Code**、レンダリング結果を表示する**Preview**、変更履歴を表示する**Blame**(既存Skillの編集時のみ)です。
+
+<Frame>
+  <img src="/images/skills/skill-editor.png" alt="Skill Name・Description欄と、MarkdownのinstructionsをCodeタブで表示したSkillエディタ" />
+</Frame>
+
+新規作成するSkillは、出発点として小さなMarkdownテンプレート(`## Overview` / `## Procedure` / `## Advice & Pointers` / `## Forbidden actions`)から始まります——このテンプレートから自由に外れて構いません。
+
+## 変更履歴(Blame)
+
+Skillの本文が更新されるたびに、Shanoneは内部的に更新前の全文スナップショットを保持します。**Blame**タブは、この履歴をgitの`git blame`と同様の行単位の表示に変換します——各行のブロックごとに、最後にそこを編集したユーザーと日時が、グレー(古い変更)からオレンジ(直近の変更)へのグラデーションで色分け表示されます。
+
+<Frame>
+  <img src="/images/skills/skill-blame.png" alt="Skillのinstructionsについて、行ごとの編集者・編集日時を古い順から新しい順のグラデーションで示すBlameタブ" />
+</Frame>
+
+<Note>
+Blameは読み取り専用です。現時点ではこの画面から過去のバージョンを復元するボタンはありません——変更を元に戻したい場合は、該当するテキストを自分でCodeタブにコピーし直してください。
+</Note>
+
 ## バージョン管理
 
-`shanone_update_skill`を呼び出すたびに、Skillの`version`カウンターが増加します。Shanoneは現在、ロールバック用に過去のバージョンを保持していません——`shanone_update_skill`は渡したフィールドの完全な置き換えとして扱い、元に戻す可能性があるものは自分自身でコピーを保管しておいてください。
+`shanone_update_skill`を呼び出すたびに、Skillの`version`カウンターが増加し、Shanoneは更新前の全文スナップショットを記録します(これが上記のBlame表示の元データです)。ただし、ユーザー向けのロールバックAPIは提供されていません——`shanone_update_skill`は渡したフィールドの完全な置き換えとして扱い、Blameで確認できる範囲を超えて元に戻す可能性があるものは、自分自身でコピーを保管しておいてください。
 
 <Warning>
 `shanone_delete_skill`によるSkillの削除は永久的で、元に戻すことはできません。

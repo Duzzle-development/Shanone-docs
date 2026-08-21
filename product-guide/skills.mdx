@@ -8,16 +8,16 @@ icon: "bookmark"
 
 A **Skill** is a named, reusable instruction set — conceptually close to [Anthropic's Agent Skills](https://www.anthropic.com/news/skills). Each Skill has three fields:
 
-| Field | Purpose |
-|-------|---------|
-| `name` | Short, descriptive title |
-| `summary` | What the Skill does and when to use it — this is the lightweight metadata shown in list results |
-| `instructions` | The full step-by-step body — only fetched when the Skill is actually opened |
+| Field | Purpose | Limit |
+|-------|---------|-------|
+| `name` | Short, descriptive title | 1–200 characters |
+| `summary` | What the Skill does and when to use it — this is the lightweight metadata shown in list results | Up to 2,000 characters |
+| `instructions` | The full step-by-step body — only fetched when the Skill is actually opened | Up to 100,000 characters |
 
 Shanone itself never *executes* a Skill. The **Skill Vendor** is a storage-and-retrieval layer: your agent lists and reads Skills through MCP, then follows the `instructions` in its own context, calling `shanone_execute_tool` (or anything else it needs) along the way. This keeps Skills portable across whatever agent happens to be reading them — Cursor today, Claude Code tomorrow, on a different laptop next week.
 
 <Note>
-Skills are stored server-side (Shanone's Skill Vendor backend), not in a local file. Save one once and it's available everywhere your account connects.
+Skills are stored server-side (Shanone's Skill Vendor backend), not in a local file. Save one once and it's available everywhere your account connects. They're per-user, not shared across a team — see [Permissions & Access Control](/product-guide/permissions) for how access to Shanone as a whole is managed.
 </Note>
 
 ## Why Skills exist
@@ -46,6 +46,12 @@ Skills are stored server-side (Shanone's Skill Vendor backend), not in a local f
 | `shanone_create_skill` | Save a new Skill (`name`, `description`, `body` all required) |
 | `shanone_update_skill` | Update an existing Skill — only non-empty fields are changed |
 | `shanone_delete_skill` | Permanently delete a Skill |
+
+<Note>
+`query` in `shanone_list_skills` is a simple, case-insensitive substring match against `name` and `summary` only — it doesn't search inside `instructions`, and there's no semantic/embedding search. Use short, exact keywords from the Skill's title rather than a vague description.
+</Note>
+
+If you're integrating from outside MCP (e.g. a script or a backend service using an API key directly), the same functionality is available as a plain REST API under `/api/v1/skills` (`POST`/`GET` for listing and creating, `GET`/`PUT`/`DELETE` on `/api/v1/skills/{skill_id}` for a single Skill) — the MCP tools are a thin wrapper around it.
 
 ## Recommended workflow
 
@@ -87,9 +93,37 @@ Agent calls shanone_list_skills, finds it, calls shanone_get_skill,
 then follows the instructions — calling github_list_issues and slack_post_message itself.
 ```
 
+## Managing Skills from the dashboard
+
+Everything you can do over MCP is also available under **Skills** in the Shanone web dashboard — useful for writing longer instructions by hand, or just reviewing what your agents have saved on your behalf.
+
+<Frame>
+  <img src="/images/skills/skills-list.png" alt="Skills list in the Shanone dashboard, showing name, description, and creation date for several saved Skills" />
+</Frame>
+
+Opening a Skill (or clicking **New Skill**) gives you a name field, a description field, and a body editor with three tabs — **Code** for the raw Markdown, **Preview** for the rendered version, and **Blame** for change history (editing an existing Skill only):
+
+<Frame>
+  <img src="/images/skills/skill-editor.png" alt="Skill editor showing the Skill Name and Description fields, and the Code tab with Markdown instructions" />
+</Frame>
+
+New Skills start from a small Markdown template (`## Overview` / `## Procedure` / `## Advice & Pointers` / `## Forbidden actions`) as a starting structure — you're free to deviate from it.
+
+## Change history (Blame)
+
+Every time a Skill's body is updated, Shanone keeps a full snapshot of the previous version internally. The **Blame** tab turns that history into a line-by-line view, similar to `git blame`: each block of lines shows who last touched it and when, color-coded from grey (older) to orange (most recently changed).
+
+<Frame>
+  <img src="/images/skills/skill-blame.png" alt="Blame tab showing line-by-line authorship and timestamps for a Skill's instructions, with an older-to-newer color gradient" />
+</Frame>
+
+<Note>
+Blame is read-only. There's currently no button to restore an older version from this view — if you need to revert a change, copy the relevant text back into the Code tab yourself.
+</Note>
+
 ## Versioning
 
-Every `shanone_update_skill` call increments the Skill's `version` counter. Shanone doesn't currently keep prior versions around for rollback — treat `shanone_update_skill` as a full replacement of whichever fields you pass, and keep your own copy of anything you might want to revert to.
+Every `shanone_update_skill` call increments the Skill's `version` counter, and Shanone records the full previous snapshot (that's what powers the Blame view above). There's no user-facing rollback API, though — treat `shanone_update_skill` as a full replacement of whichever fields you pass, and keep your own copy of anything you might want to revert to outside of what Blame lets you inspect.
 
 <Warning>
 Deleting a Skill with `shanone_delete_skill` is permanent and cannot be undone.
