@@ -23,7 +23,118 @@ ShanoneのSlack連携では、日常的なメッセージングからチャン�
 </Steps>
 
 <Note>
-メッセージ検索(`slack_search_messages`、`slack_search_all`、`slack_search_files`)は、同じOAuthフローで取得されるSlackの**ユーザートークン**を使用します(Botトークンではありません)。他の機能は動くのに検索関連のツールだけ失敗する場合は、OAuth接続をやり直して両方のトークンが付与されているか確認してください。
+リマインダー・スター・検索・DND設定などの一部ツールは、Botトークンではなく同じOAuthフローで取得されるSlackの**ユーザートークン**を使用します。他の機能は動くのにこれらのツールだけ失敗する場合は、OAuth接続をやり直して両方のトークンが付与されているか確認してください。詳しくは[Bot名義とユーザー名義の切り替え](#bot名義とユーザー名義の切り替え)を参照してください。
+</Note>
+
+## Bot名義とユーザー名義の切り替え
+
+SlackのOAuthでは、**Botトークン**(`xoxb-`)と**ユーザートークン**(`xoxp-`)の2種類が発行されます。Shanoneはどちらも保存しており、ツールごとに`act_as`パラメータで送り手を切り替えられます。
+
+| `act_as` | 使われるトークン | Slack上での見え方 |
+|----------|-----------------|------------------|
+| `"bot"`(既定) | Botトークン `xoxb-` | **Shanone**アプリからの投稿として表示される |
+| `"user"` | ユーザートークン `xoxp-` | **あなた本人**の投稿として表示される |
+
+`act_as`を省略した場合はこれまでと同じくBot名義で動作するため、既存の使い方に影響はありません。
+
+### 使い分け
+
+<CardGroup cols={2}>
+  <Card title="Bot名義が向いているケース" icon="robot">
+    自動レポートの配信、CI/CDの通知、定期的なリマインドなど。**自動化された処理であることが明示される**ため、チームにとって分かりやすくなります。
+  </Card>
+  <Card title="ユーザー名義が向いているケース" icon="user">
+    同僚へのDM返信、自分の代理での発言など。**本人の発言として自然に見せたい**場合や、Botが参加していないチャンネルの履歴を読みたい場合に使います。
+  </Card>
+</CardGroup>
+
+### 使用例
+
+同じ`slack_post_message`でも、`act_as`だけで送り手が変わります。
+
+```json
+// Shanoneアプリからの投稿として表示される(既定)
+{
+  "tool_name": "slack_post_message",
+  "arguments": {
+    "channel": "#general",
+    "text": "デプロイが完了しました"
+  }
+}
+```
+
+```json
+// あなた本人の投稿として表示される
+{
+  "tool_name": "slack_post_message",
+  "arguments": {
+    "channel": "#general",
+    "text": "確認しました、ありがとうございます",
+    "act_as": "user"
+  }
+}
+```
+
+エージェントに対して「**私名義で**送って」「**Botとして**通知して」と自然言語で伝えるだけでも、エージェントが`act_as`を適切に指定します。
+
+### `act_as`に対応しているツール(31)
+
+投稿・履歴取得・チャンネル操作など、Bot／ユーザーのどちらでも意味を持つツールが対応しています。
+
+<AccordionGroup>
+  <Accordion title="対応ツールの一覧を表示">
+    | カテゴリ | ツール |
+    |---------|-------|
+    | メッセージ | `slack_post_message`, `slack_reply_to_thread`, `slack_update_message`, `slack_delete_message`, `slack_get_channel_history`, `slack_get_thread` |
+    | チャット拡張 | `slack_post_ephemeral`, `slack_me_message` |
+    | 予約メッセージ | `slack_schedule_message`, `slack_list_scheduled_messages`, `slack_delete_scheduled_message` |
+    | チャンネル | `slack_list_channels`, `slack_create_channel`, `slack_archive_channel`, `slack_join_channel`, `slack_leave_channel`, `slack_invite_to_channel`, `slack_kick_from_channel` |
+    | コンバセーション | `slack_get_conversation_replies` |
+    | ダイレクトメッセージ | `slack_open_dm`, `slack_close_dm` |
+    | リアクション・ピン | `slack_add_reaction`, `slack_remove_reaction`, `slack_add_pin`, `slack_remove_pin` |
+    | ファイル | `slack_upload_file`, `slack_delete_file`, `slack_get_files_from_channel`, `slack_extract_urls_from_messages` |
+    | Canvas | `slack_create_canvas`, `slack_edit_canvas` |
+  </Accordion>
+</AccordionGroup>
+
+### `act_as`を指定できないツール
+
+Slackの仕様上、片方のトークンでしか動作しないツールがあります。これらは`act_as`を指定しても**自動的に正しいトークンが選択される**ため、エラーにはなりません。
+
+<AccordionGroup>
+  <Accordion title="ユーザートークン専用(27ツール)">
+    Slackがユーザートークンのみを許可しているため、常に**あなた本人**として実行されます。
+
+    | カテゴリ | ツール |
+    |---------|-------|
+    | 検索 | `slack_search_messages`, `slack_search_all`, `slack_search_files` |
+    | リマインダー | `slack_create_reminder`, `slack_list_reminders`, `slack_get_reminder_info`, `slack_delete_reminder`, `slack_complete_reminder` |
+    | スター | `slack_add_star`, `slack_remove_star`, `slack_list_stars` |
+    | 取り込み中設定 | `slack_set_dnd_snooze`, `slack_end_dnd` |
+    | プロフィール | `slack_set_user_profile` |
+    | チーム | `slack_get_access_logs`, `slack_get_billable_info`, `slack_list_authorized_teams` |
+    | 管理(Enterprise Grid) | `slack_admin_list_users`, `slack_admin_invite_user`, `slack_admin_remove_user`, `slack_admin_set_admin`, `slack_admin_set_regular`, `slack_admin_list_channels`, `slack_admin_archive_channel`, `slack_admin_unarchive_channel`, `slack_admin_list_teams`, `slack_admin_get_team_info` |
+  </Accordion>
+
+  <Accordion title="Botトークン専用(3ツール)">
+    リモートファイルの登録・更新・削除は、Slackがアプリ自身の所有物として扱うためBotトークン専用です。
+
+    `slack_add_remote_file`, `slack_update_remote_file`, `slack_remove_remote_file`
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+**Bot名義で投稿できるのはBotが参加できる場所だけです。** 人間同士の1対1のDMはメンバーが2人で固定されており、Botを含む第三者は参加できません。そのようなDMへ`act_as="bot"`で投稿しようとすると`channel_not_found`が返ります。他の人とのDMには`act_as="user"`を使ってください。
+</Warning>
+
+### 既定値を固定する
+
+毎回`act_as`を指定するのが面倒な場合は、**パラメータポリシー**でツールごとの既定値を設定できます。`default_value`ポリシーを使うと、エージェントが`act_as`を省略したときだけその値が適用され、明示的に指定された場合はそちらが尊重されます。
+
+たとえば`slack_post_message`の`act_as`に`default_value: "user"`を設定すると、以降の投稿は既定で本人名義になります。
+
+<Note>
+常に強制したい場合は`forced_value`ポリシーを使ってください。この場合はエージェントの指定を無視して必ずその値が使われます。
 </Note>
 
 ## 利用可能なツール
@@ -307,6 +418,18 @@ ShanoneはSlack用に**125のツール**を提供しており、以下のカテ�
   
   <Accordion title="メッセージ検索が動作しない">
     `slack_search_messages` / `slack_search_all` / `slack_search_files`にはOAuthの**ユーザートークン**が必要で、Botトークンだけでは動作しません。**Integrations**からSlackを再接続し、両方のトークンが付与されているか確認してください。
+  </Accordion>
+
+  <Accordion title="投稿がBotからになってしまう / 本人名義にしたい">
+    `act_as`を省略すると既定でBot名義になります。本人の投稿として表示したい場合は`act_as="user"`を指定してください(詳細は[Bot名義とユーザー名義の切り替え](#bot名義とユーザー名義の切り替え))。毎回指定したくない場合は、パラメータポリシーの`default_value`で既定値を`user`に変更できます。
+  </Accordion>
+
+  <Accordion title="他の人とのDMに投稿すると channel_not_found になる">
+    人間同士の1対1のDMはメンバーが2人で固定されており、Botは参加できません。`act_as="user"`を指定して本人名義で投稿してください。Bot名義で送れるのは、Bot自身とのDM・Botを招待済みのチャンネル・Botを含むグループDMだけです。
+  </Accordion>
+
+  <Accordion title="連携後もツールが権限エラーになる">
+    ツールが必要とするスコープが、現在の連携に含まれていない可能性があります。Shanoneのアップデートで新しいスコープが追加された場合、**Integrations**からSlackを再連携すると解消します。BotトークンとユーザートークンではSlackが要求するスコープ名が異なるため、片方の名義でだけ失敗することもあります。
   </Accordion>
   
   <Accordion title="チャンネルが見つからない">

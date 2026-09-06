@@ -23,7 +23,118 @@ Shanone's Slack integration gives your agent 125 tools spanning everyday messagi
 </Steps>
 
 <Note>
-Message search (`slack_search_messages`, `slack_search_all`, `slack_search_files`) uses a Slack **user token** rather than the bot token, obtained through the same OAuth flow. If search-related tools fail while everything else works, redo the OAuth connection to make sure both tokens were granted.
+Some tools — reminders, stars, search, and DND settings among them — use a Slack **user token** rather than the bot token, obtained through the same OAuth flow. If these specific tools fail while everything else works, redo the OAuth connection to make sure both tokens were granted. See [Acting as the bot vs. as yourself](#acting-as-the-bot-vs-as-yourself) for details.
+</Note>
+
+## Acting as the Bot vs. as Yourself
+
+Slack's OAuth flow issues two tokens: a **bot token** (`xoxb-`) and a **user token** (`xoxp-`). Shanone stores both, and you can choose which identity to act as per tool via the `act_as` parameter.
+
+| `act_as` | Token used | How it appears in Slack |
+|----------|------------|-------------------------|
+| `"bot"` (default) | Bot token `xoxb-` | Posted by the **Shanone** app |
+| `"user"` | User token `xoxp-` | Posted by **you** |
+
+Omitting `act_as` keeps the previous bot-token behavior, so existing usage is unaffected.
+
+### When to use which
+
+<CardGroup cols={2}>
+  <Card title="Prefer the bot" icon="robot">
+    Automated report delivery, CI/CD notifications, recurring reminders. It's **clearly identifiable as automation**, which keeps things transparent for your team.
+  </Card>
+  <Card title="Prefer your own identity" icon="user">
+    Replying to a colleague's DM, or speaking on your behalf. Use this when the message should **read naturally as coming from you**, or to read history in channels the bot hasn't joined.
+  </Card>
+</CardGroup>
+
+### Example
+
+The same `slack_post_message` call changes sender based on `act_as` alone:
+
+```json
+// Appears as a post from the Shanone app (default)
+{
+  "tool_name": "slack_post_message",
+  "arguments": {
+    "channel": "#general",
+    "text": "Deployment completed"
+  }
+}
+```
+
+```json
+// Appears as a post from you
+{
+  "tool_name": "slack_post_message",
+  "arguments": {
+    "channel": "#general",
+    "text": "Confirmed, thanks!",
+    "act_as": "user"
+  }
+}
+```
+
+You can also just tell your agent "send this **as me**" or "notify **as the bot**" in natural language — it will set `act_as` accordingly.
+
+### Tools that support `act_as` (31)
+
+Tools where either identity is meaningful — posting, reading history, channel operations, and so on.
+
+<AccordionGroup>
+  <Accordion title="Show supported tools">
+    | Category | Tools |
+    |----------|-------|
+    | Messages | `slack_post_message`, `slack_reply_to_thread`, `slack_update_message`, `slack_delete_message`, `slack_get_channel_history`, `slack_get_thread` |
+    | Chat extras | `slack_post_ephemeral`, `slack_me_message` |
+    | Scheduled messages | `slack_schedule_message`, `slack_list_scheduled_messages`, `slack_delete_scheduled_message` |
+    | Channels | `slack_list_channels`, `slack_create_channel`, `slack_archive_channel`, `slack_join_channel`, `slack_leave_channel`, `slack_invite_to_channel`, `slack_kick_from_channel` |
+    | Conversations | `slack_get_conversation_replies` |
+    | Direct messages | `slack_open_dm`, `slack_close_dm` |
+    | Reactions & pins | `slack_add_reaction`, `slack_remove_reaction`, `slack_add_pin`, `slack_remove_pin` |
+    | Files | `slack_upload_file`, `slack_delete_file`, `slack_get_files_from_channel`, `slack_extract_urls_from_messages` |
+    | Canvas | `slack_create_canvas`, `slack_edit_canvas` |
+  </Accordion>
+</AccordionGroup>
+
+### Tools that don't accept `act_as`
+
+Slack only permits one token type for certain methods. For these, the correct token is **selected automatically** — passing `act_as` won't cause an error.
+
+<AccordionGroup>
+  <Accordion title="User token only (27 tools)">
+    Slack allows only user tokens here, so these always run as **you**.
+
+    | Category | Tools |
+    |----------|-------|
+    | Search | `slack_search_messages`, `slack_search_all`, `slack_search_files` |
+    | Reminders | `slack_create_reminder`, `slack_list_reminders`, `slack_get_reminder_info`, `slack_delete_reminder`, `slack_complete_reminder` |
+    | Stars | `slack_add_star`, `slack_remove_star`, `slack_list_stars` |
+    | Do Not Disturb | `slack_set_dnd_snooze`, `slack_end_dnd` |
+    | Profile | `slack_set_user_profile` |
+    | Team | `slack_get_access_logs`, `slack_get_billable_info`, `slack_list_authorized_teams` |
+    | Admin (Enterprise Grid) | `slack_admin_list_users`, `slack_admin_invite_user`, `slack_admin_remove_user`, `slack_admin_set_admin`, `slack_admin_set_regular`, `slack_admin_list_channels`, `slack_admin_archive_channel`, `slack_admin_unarchive_channel`, `slack_admin_list_teams`, `slack_admin_get_team_info` |
+  </Accordion>
+
+  <Accordion title="Bot token only (3 tools)">
+    Remote file registration, updates, and deletion are bot-token only because Slack treats those files as owned by the app itself.
+
+    `slack_add_remote_file`, `slack_update_remote_file`, `slack_remove_remote_file`
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+**The bot can only post where it's able to join.** A one-on-one DM between two people has a fixed two-member roster, and no third party — including the bot — can join it. Posting to such a DM with `act_as="bot"` returns `channel_not_found`. Use `act_as="user"` for DMs with other people.
+</Warning>
+
+### Setting a default
+
+If passing `act_as` every time is tedious, use a **parameter policy** to set a per-tool default. The `default_value` policy applies only when the agent omits `act_as`; an explicit value always wins.
+
+For example, setting `default_value: "user"` on `act_as` for `slack_post_message` makes your posts default to your own identity.
+
+<Note>
+To enforce a value unconditionally, use the `forced_value` policy instead — it overrides whatever the agent specifies.
 </Note>
 
 ## Available Tools
@@ -307,6 +418,18 @@ Shanone provides **125 tools** for Slack, organized into the categories below:
   
   <Accordion title="Message search isn't working">
     `slack_search_messages` / `slack_search_all` / `slack_search_files` need the OAuth **user token**, not just the bot token. Reconnect Slack from **Integrations** to make sure both were granted.
+  </Accordion>
+
+  <Accordion title="Messages post as the bot, but I want them to come from me">
+    Omitting `act_as` defaults to the bot identity. Pass `act_as="user"` to post as yourself (see [Acting as the Bot vs. as Yourself](#acting-as-the-bot-vs-as-yourself)). To avoid setting it every time, use a `default_value` parameter policy to make `user` the default.
+  </Accordion>
+
+  <Accordion title="Posting to someone else's DM returns channel_not_found">
+    A one-on-one DM between two people has a fixed two-member roster that the bot can't join. Pass `act_as="user"` to post under your own identity. The bot can only post in its own DMs, channels it's been invited to, and group DMs that include it.
+  </Accordion>
+
+  <Accordion title="Tools still fail with permission errors after connecting">
+    The tool may require a scope that your current connection doesn't include. If a Shanone update added new scopes, reconnecting Slack from **Integrations** resolves it. Note that Slack requires different scope names for bot and user tokens, so a tool can fail under one identity while working under the other.
   </Accordion>
   
   <Accordion title="Can't find a channel">
