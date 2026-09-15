@@ -28,7 +28,7 @@ Shanoneには2つの接続方法があります。ほとんどのクライアン
     **Settings → API Keys**に移動します。
   </Step>
   <Step title="キーを作成する">
-    **Create API Key**をクリックし、名前を付けて、平文の値をコピーします——`sh_xxxxxxxxxxxxxxxx`という形式で、1度だけ表示されます。
+    **Create API Key**をクリックし、名前を付けて有効期限を選択します（初期値は**30日**）。7日・60日・90日・カスタム（1〜366日）・無期限も選べます。作成後に平文の値をコピーしてください——`sh_xxxxxxxxxxxxxxxx`という形式で、1度だけ表示されます。有効期間や切り替え方法の詳細は[有効期限](/ja/api-reference/authentication#有効期限)を参照してください。
   </Step>
 </Steps>
 
@@ -167,7 +167,7 @@ pip install shanone-mcp
     APIキーが送信されていません。設定の`env`/`headers`ブロックが、上記の内容と正確に一致しているか確認してください。
   </Accordion>
   <Accordion title="401 invalid_api_key">
-    キーが欠落している、不正な形式である、または無効化されています。**Settings → API Keys**から新しいキーを生成してください。
+    キーが欠落している、不正な形式である、無効化されている、または期限切れです。**Settings → API Keys**で状態と有効期限を確認してください。期限切れ・無効化済みの場合は、新しいキーを作成してクライアント設定を更新します。古いキーの再有効化はできません。[有効期限](/ja/api-reference/authentication#有効期限)も参照してください。
   </Accordion>
   <Accordion title="401 org_id_required / 403 invalid_org_id (direct HTTP only)">
     `X-Org-Id`を指定せずに(あるいは誤った値で)、直接`/mcp`エンドポイントを使用しています。**Settings → API Keys**から正確な組織IDをコピーするか、この設定が不要なローカルプロキシに切り替えてください。
@@ -193,7 +193,7 @@ pip install shanone-mcp
     そうすることで、1つを無効化しても他に影響が及びません。
   </Step>
   <Step title="定期的にローテーションする">
-    **Settings → API Keys**から新しいキーを作成し、古いキーを無効化してください。
+    期限が切れる前に**Settings → API Keys**から新しいキーを作成し、クライアント設定を更新してください。新しいキーで動作することを確認してから、古いキーを無効化します。
   </Step>
 </Steps>
 

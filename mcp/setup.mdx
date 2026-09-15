@@ -28,7 +28,7 @@ Shanone can be reached two ways. Most clients should use the **local stdio proxy
     Go to **Settings → API Keys**.
   </Step>
   <Step title="Create a key">
-    Click **Create API Key**, name it, and copy the plaintext value — shown only once, in the form `sh_xxxxxxxxxxxxxxxx`.
+    Click **Create API Key**, name it, and choose an expiration (**30 days** by default). You can also choose 7, 60, or 90 days, Custom (1–366 days), or Never. Create the key and copy the plaintext value — shown only once, in the form `sh_xxxxxxxxxxxxxxxx`. See [Expiration](/api-reference/authentication#expiration) for lifetime and renewal details.
   </Step>
 </Steps>
 
@@ -167,7 +167,7 @@ pip install shanone-mcp
     No API key was sent. Double-check your config's `env`/`headers` block matches exactly what's shown above.
   </Accordion>
   <Accordion title="401 invalid_api_key">
-    The key is missing, malformed, or revoked. Generate a new one from **Settings → API Keys**.
+    The key is missing, malformed, revoked, or expired. Check its status and expiration in **Settings → API Keys**. For an expired or revoked key, create a new one and update your client configuration; the old key cannot be reactivated. See [Expiration](/api-reference/authentication#expiration).
   </Accordion>
   <Accordion title="401 org_id_required / 403 invalid_org_id (direct HTTP only)">
     You're using the direct `/mcp` endpoint without (or with the wrong) `X-Org-Id`. Copy the exact organization ID from **Settings → API Keys**, or switch to the local proxy, which doesn't need it.
@@ -193,7 +193,7 @@ pip install shanone-mcp
     So you can revoke one without affecting others.
   </Step>
   <Step title="Rotate periodically">
-    Create new keys and revoke old ones from **Settings → API Keys**.
+    Before a key expires, create a new one from **Settings → API Keys**, update your client configuration, and confirm it works before revoking the old key.
   </Step>
 </Steps>
 

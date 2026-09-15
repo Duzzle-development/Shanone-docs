@@ -1,6 +1,6 @@
 ---
 title: "Authentication"
-description: "API key format, scoping, rate limits, IP allowlists, and rotation for Shanone's external API and MCP server."
+description: "API key creation, expiration, scoping, rate limits, and rotation for Shanone's external API and MCP server."
 ---
 
 ## API keys
@@ -33,9 +33,44 @@ The plaintext key is shown exactly once, at creation time. Shanone only stores a
     Go to **Settings → API Keys**.
   </Step>
   <Step title="Create a key">
-    Click **Create API Key**, give it a descriptive name, and optionally configure scoping (below).
+    Click **Create API Key**, give it a descriptive name, and choose an expiration. The default is **30 days**.
+  </Step>
+  <Step title="Copy the key">
+    Click **Create** and copy the plaintext key. Save it securely before closing the dialog; it cannot be displayed again.
   </Step>
 </Steps>
+
+## Expiration
+
+Choose how long a key can be used when you create it:
+
+| Option | Lifetime |
+|--------|----------|
+| 7 days | 7 days after creation |
+| **30 days (default)** | 30 days after creation |
+| 60 days | 60 days after creation |
+| 90 days | 90 days after creation |
+| Custom | A whole number of days from **1 to 366** |
+| Never | No expiration; valid until revoked or deleted |
+
+The lifetime starts when Shanone creates the key, using the server's clock. One day means **24 hours**. Using a key does not extend its lifetime. The creation confirmation and API Keys list show the expiration date and time, including the time zone.
+
+<Note>
+Existing keys created without an expiration remain non-expiring. The 30-day default applies to new keys; it does not add an expiration to existing keys. Choose **Never** explicitly when creating a new non-expiring key.
+</Note>
+
+### When a key expires
+
+At the expiration time, the key stops authenticating new requests to the REST API and MCP server. Expired keys remain in the API Keys list with an **Expired** status.
+
+| Connection | Response for an expired key |
+|------------|-----------------------------|
+| REST API | HTTP `401`, with `detail: "Invalid or expired API key"` |
+| Direct MCP endpoint | HTTP `401`, with `error: "invalid_api_key"` |
+
+You cannot extend a key's lifetime after creation or reactivate an expired or revoked key. Create a new key and update every client, environment variable, or secret that used the old one. Follow [Rotating keys](#rotating-keys) **before expiration** to avoid interruptions.
+
+Expiration and revocation apply to new authentication checks. They do not cancel work or streams that have already been authenticated.
 
 ## Scoping a key
 
@@ -47,7 +82,7 @@ Every key can optionally be restricted beyond the defaults:
 | `rate_limit.requests_per_minute` | 60 | Configurable 1–1,000 |
 | `rate_limit.requests_per_day` | 10,000 | Configurable 1–1,000,000 |
 | `allowed_ips` | Any IP | Optionally restrict to a list of allowed source IPs |
-| `expires_at` | Never | Optional ISO 8601 expiration timestamp |
+| Expiration | 30 days | Choose a preset, Custom (1–366 days), or Never; see [Expiration](#expiration) |
 
 Available `permissions` values:
 
@@ -119,7 +154,7 @@ Raise a key's limits from **Settings → API Keys** if you're consistently hitti
 
 <Steps>
   <Step title="Create a new key">
-    From **Settings → API Keys**.
+    From **Settings → API Keys**, create a replacement before the current key expires and choose its expiration.
   </Step>
   <Step title="Update your clients/scripts">
     Swap the new key in wherever the old one was configured.
@@ -131,7 +166,9 @@ Raise a key's limits from **Settings → API Keys** if you're consistently hitti
 
 ### Revoking vs. deleting
 
-Shanone supports both revoking a key (immediately disables it, keeps the record for audit purposes) and deleting it outright. Revocation is immediate and cannot be undone — make sure nothing still depends on the key first.
+To revoke an active key, open its **…** menu in **Settings → API Keys**, select **Revoke**, and confirm. New authentication attempts are rejected as soon as revocation completes. The key remains in the list with a **Revoked** status so you can keep its record.
+
+**Delete** removes the key's record and also prevents further authentication. Neither operation can be undone. Replace a key in your clients before revoking or deleting it if they still need access. Revoke a key immediately if you suspect it has been exposed.
 
 ## Security best practices
 
@@ -140,12 +177,12 @@ Shanone supports both revoking a key (immediately disables it, keeps the record 
     Never hardcode a key in a committed config file or source file.
   </Card>
   <Card title="Scope to what's needed" icon="shield">
-    Restrict `permissions`, `allowed_ips`, and set an `expires_at` for anything short-lived.
+    Restrict `permissions` and `allowed_ips`, and choose a lifetime that matches how long the key is needed.
   </Card>
   <Card title="One key per machine/agent" icon="tag">
     So you can revoke individually without breaking everything else.
   </Card>
   <Card title="Rotate periodically" icon="rotate-cw">
-    Especially after any suspected exposure.
+    Replace keys before they expire. Revoke exposed or unused keys, including non-expiring ones.
   </Card>
 </CardGroup>
