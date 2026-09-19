@@ -1,507 +1,455 @@
 ---
 title: "ツールリファレンス"
-description: "Shanone MCPサーバーの全18ツールの完全なリファレンス——パラメータ、例、エラーレスポンス。"
+description: "Remote MCP の29ツールについて、引数・プラン・課金・利用回数の扱いを説明します。"
 ---
 
-このページでは、Shanone MCPサーバーで利用可能な全18ツールについて説明します。すべてのツールは構造化されたJSONではなく、プレーンテキスト(Markdown形式)を返します——以下の例のレスポンスは、そのテキストの形を示すものです。
+Remote MCP の29ツールについて、引数・プラン・課金・利用回数の扱いを説明します。
+
+このリファレンスは **Remote MCP（Streamable HTTP）** を対象とします。ローカルプロキシの公開ツールや引数形式はパッケージ・バージョンにより異なります。実際の一覧は接続先の `tools/list` で確認してください。
+
+以下のプラン表は契約上の利用可否です。API キーの権限、ユーザーの権限、対象リソースへのアクセス許可、外部サービスへの接続も必要です。プランだけで権限が付与されるわけではありません。
+
+「課金対象」はプランの Tool Call 利用枠を消費する意味で、呼び出しごとの追加請求を意味しません。管理ツールと接続診断は非課金です。スキル13ツールは Plus 以上で利用でき、成功した呼び出しだけが１回分を消費します。
+
+スキルツールは Free にも名前・説明・入力スキーマを公開します。Free からの実行は、スキルデータにアクセスする前に `PLAN_UPGRADE_REQUIRED` で拒否します。再ログインでは解消しません。
+
+応答はツールにより Markdown テキスト、JSON を含むテキスト、構造化エラーを返します。スキルのプラン拒否・操作失敗は MCP の `isError: true` で返ります。実行ツールでは JSON 内の `status`、`success`、`reason` と外部サービスの結果も確認してください。
+
+## プラン・課金・Analytics の一覧
+
+| ツール | 利用可能プラン | 課金 | Analytics |
+|---|---|---|---|
+| [`shanone_health_check`](#shanone_health_check) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_search_tools`](#shanone_search_tools) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_list_service_tools`](#shanone_list_service_tools) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_get_tool_schema`](#shanone_get_tool_schema) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_list_connections`](#shanone_list_connections) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_check_connection`](#shanone_check_connection) | Free 以上 | 非課金 | 親１回、内部 API は加算しない |
+| [`shanone_execute_tool`](#shanone_execute_tool) | Free 以上 | 実行先に従う | 実行先ツール名で記録 |
+| [`shanone_list_skills`](#shanone_list_skills) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_get_skill`](#shanone_get_skill) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_create_skill`](#shanone_create_skill) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_update_skill`](#shanone_update_skill) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_delete_skill`](#shanone_delete_skill) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_list_skill_files`](#shanone_list_skill_files) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_read_skill_file`](#shanone_read_skill_file) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_write_skill_file`](#shanone_write_skill_file) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_delete_skill_file`](#shanone_delete_skill_file) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_grep_skill`](#shanone_grep_skill) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_create_skill_folder`](#shanone_create_skill_folder) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_delete_skill_folder`](#shanone_delete_skill_folder) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_rename_skill_path`](#shanone_rename_skill_path) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
+| [`shanone_list_services`](#shanone_list_services) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_list_user_tool_permissions`](#shanone_list_user_tool_permissions) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_set_user_tool_permission`](#shanone_set_user_tool_permission) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_set_user_service_permission`](#shanone_set_user_service_permission) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_get_permission_summary`](#shanone_get_permission_summary) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_batch_set_user_permissions`](#shanone_batch_set_user_permissions) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_get_tool_parameter_policy`](#shanone_get_tool_parameter_policy) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_set_tool_parameter_policy`](#shanone_set_tool_parameter_policy) | Free 以上 | 非課金 | 呼び出しを記録 |
+| [`shanone_delete_tool_parameter_policy`](#shanone_delete_tool_parameter_policy) | Free 以上 | 非課金 | 呼び出しを記録 |
+
+通常の外部ツールは成功・外部エラーとも原則課金されますが、内部エラー等には例外があります。実行前の接続選択拒否などは利用回数に含めません。接続確認はアカウント数によらず、１呼び出しを非課金で１回として記録し、内部 API の結果は診断結果に残します。
+
+認証前の拒否、未知の MCP ツール、入力スキーマの検証で処理に到達しないリクエストは Tool Call として集計しません。新しく集計対象になったツールの導入前の履歴は遡って補完しません。
 
 ## Health Check
 
 ### shanone_health_check
 
-Shanone MCPサーバーの接続性、認証、バックエンドの健全性を確認します。パラメータは不要です。
+MCP の接続、API キー認証、バックエンドの稼働状態を確認します。外部サービスの認証は検証しません。
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {}
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    STATUS: HEALTHY   SERVICE: Shanone MCP   USER: usr_a1b2c3d4   TIME: 2026-08-20T09:30:00Z
-
-    ┌─────────────┬────────┬────────────┐
-    │ Check       │ Status │ Latency    │
-    ├─────────────┼────────┼────────────┤
-    │ api_key     │ PASS   │ 4ms        │
-    │ database    │ PASS   │ 11ms       │
-    └─────────────┴────────┴────────────┘
-    ```
-  </Tab>
-</Tabs>
-
----
+パラメーターはありません。`{}` を渡します。
 
 ## Tool Vendor
 
-アクションごとに専用のMCPツールを用意することなく、Shanoneの269以上の連携を検索・確認・実行します。
-
-**推奨ワークフロー:** `shanone_search_tools`(完全な一覧が必要な場合は`shanone_list_service_tools`) → `shanone_get_tool_schema`(必要な場合) → `shanone_execute_tool`。
-
 ### shanone_search_tools
 
-キーワードで連携ツールを検索します(関連度でランク付け)。
+キーワードで連携ツールを検索し、関連度順に返します。サービスの全ツールを列挙する場合は list_service_tools を使います。
 
-<ParamField path="query" type="string" required>
-  自然言語またはキーワードによる検索。例: `"post slack message"`、`"create github issue"`。
-</ParamField>
-<ParamField path="service" type="string">
-  任意のサービスフィルター。例: `"slack"`、`"github"`、`"notion"`。
-</ParamField>
-<ParamField path="limit" type="integer" default="20">
-  最大結果件数(最大100)。
-</ParamField>
-<ParamField path="offset" type="integer" default="0">
-  ページネーション用に、スキップする一致結果の件数。
-</ParamField>
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `query` | string | 必須 | 検索文字列。任意項目の場合は空文字で省略できます。 |
+| `service` | string | `""` | gmail、slack などの正確なサービス識別子。 |
+| `limit` | integer | `20` | １ページあたりの最大件数。 最大100件。 |
+| `offset` | integer | `0` | 先頭からスキップする件数。 |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "query": "post slack message", "service": "slack", "limit": 5 }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Showing 1 of 1 matching tool(s) for "post slack message" (service: slack) (offset=0):
-
-    - **slack_post_message** (slack)
-      Post a message to a Slack channel or user.
-
-    **Next steps:**
-    1. Use `shanone_get_tool_schema` to see the input schema for a tool
-    2. Use `shanone_execute_tool` to execute the tool with arguments
-    ```
-  </Tab>
-</Tabs>
-
-<Note>
-大規模な連携(Slackは125ツール、Stripeは328ツール)の場合、関連度ランキングではすべての一致結果が表示されないことがあります——`has_more`を確認し、trueであればクエリを絞り込むか、代わりに`shanone_list_service_tools`を使用してください。
-</Note>
-
----
+```json
+{
+  "query": "profile",
+  "service": "gmail",
+  "limit": 5
+}
+```
 
 ### shanone_list_service_tools
 
-1つのサービスの**すべての**ツールを名前順に列挙します——ランキングよりも網羅性が重要な「Xで何ができるか」のような質問向けです。
+指定サービスのツールをページ単位で取得します。全件取得する場合は後続ページも取得してください。
 
-<ParamField path="service" type="string" required>
-  正確なサービス名。例: `"slack"`、`"github"`、`"notion"`。
-</ParamField>
-<ParamField path="limit" type="integer" default="50">
-  1ページあたりの最大結果件数(最大200)。
-</ParamField>
-<ParamField path="offset" type="integer" default="0">
-  ページネーション用に、スキップする結果の件数。
-</ParamField>
-
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "service": "linear", "limit": 50, "offset": 0 }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    linear: showing 45 of 45 tool(s) total (offset=0):
-
-    - **linear_create_issue**
-      Create a new issue in a Linear team.
-    - **linear_list_issues**
-      List issues, optionally filtered by team, assignee, or state.
-    ... (43 more)
-
-    **Next steps:**
-    1. Use `shanone_get_tool_schema` to see the input schema for a tool
-    2. Use `shanone_execute_tool` to execute the tool with arguments
-    ```
-  </Tab>
-</Tabs>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `service` | string | 必須 | gmail、slack などの正確なサービス識別子。 |
+| `limit` | integer | `50` | １ページあたりの最大件数。 最大200件。 |
+| `offset` | integer | `0` | 先頭からスキップする件数。 |
 
 ### shanone_get_tool_schema
 
-ツールの入力引数のJSON Schemaを取得します。
+実行する連携ツールの入力 JSON Schema を取得します。
 
-<ParamField path="tool_name" type="string" required>
-  正確なツール名(例: `"slack_post_message"`)。`shanone_search_tools`または`shanone_list_service_tools`から取得してください。
-</ParamField>
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "tool_name": "slack_post_message" }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    **slack_post_message**
+## 接続管理
 
-    Post a message to a Slack channel or user.
+### shanone_list_connections
 
-    **Input Schema:**
-    ```json
-    {
-      "type": "object",
-      "properties": {
-        "channel": { "type": "string", "description": "Channel name or ID, e.g. #general" },
-        "text": { "type": "string", "description": "Message text to post" }
-      },
-      "required": ["channel", "text"]
-    }
-    ```
+呼出元が参照できる保存済み接続を一覧表示します。登録済みであることは、認証が現在も有効であることを意味しません。
 
-    **Required arguments:** channel, text
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `service` | string | `""` | gmail、slack などの正確なサービス識別子。 |
 
-    **Next step:** Use `shanone_execute_tool` with tool_name="slack_post_message" and the required arguments.
-    ```
-  </Tab>
-</Tabs>
+```json
+{
+  "service": "gmail"
+}
+```
 
----
+`supports_account_selection: true` の ID だけを execute_tool に渡せます。現在の複数アカウント選択は Gmail が対象です。`legacy:<service>` は単一接続の診断用 ID で、check_connection には使えますが通常実行の接続指定には使えません。API キーには `integrations:read`（または `all`）が必要です。
+
+### shanone_check_connection
+
+読み取り専用の外部 API を使い、保存済み接続の有効性を確認します。service を省略すると、接続済みサービスをページ単位で確認します。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `service` | string | `""` | gmail、slack などの正確なサービス識別子。 |
+| `connection_id` | string | `""` | 保存済み接続の識別子。 |
+| `offset` | integer | `0` | 先頭からスキップする件数。 |
+| `limit` | integer | `10` | １ページあたりの最大件数。 最大20件。 |
+
+```json
+{
+  "service": "gmail",
+  "offset": 0,
+  "limit": 10
+}
+```
+
+`connection_id` で１接続に絞れます。最大20件、同時検証３件、各検証の期限は30秒です。API キーには `integrations:read` と `tasks:create`（または `all`）が必要で、対象ツールの権限確認も行います。
+
+主な結果: `verified`、`reauth_required`、`insufficient_permissions`、`permission_denied`、`rate_limited`、`temporarily_unavailable`、`verification_failed`、`unsupported`、`not_connected`。`verified` は指定された読み取り API の成功を意味し、全操作・全権限の保証ではありません。未対応サービスは `unsupported` と返し、成功として扱いません。
+
+## ツール実行
 
 ### shanone_execute_tool
 
-引数を指定してツールを実行します。OAuthは自動的に処理されます——ツールに未設定の接続が必要な場合、エラーで失敗する代わりに`connect_link`が返されます。
+連携ツールを実行します。実行結果の外側のステータスと外部サービスの結果を確認してください。呼び出しの完了だけで業務処理の成功とは判断しません。
 
-<ParamField path="tool_name" type="string" required>
-  実行する正確なツール名。
-</ParamField>
-<ParamField path="arguments" type="string" required>
-  **JSON文字列**としてのツール引数(ネイティブオブジェクトではありません)。例: `'{"channel": "#general", "text": "Hello!"}'`。引数のないツールには`'{}'`を渡してください。
-</ParamField>
-<ParamField path="session_id" type="string">
-  ステートフルな複数ステップの実行のための任意のセッションID。ステートレスな呼び出しの場合は省略してください。
-</ParamField>
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
+| `arguments` | string | 必須 | 連携ツールへの引数を JSON 文字列で指定します。引数なしは "{}" です。 |
+| `session_id` | string | `""` | 任意の既存実行・セッション識別子。OAuth アカウントの選択には使いません。状態を持たない呼び出しでは省略します。 |
+| `connection_id` | string | `""` | Gmail の実行には必須。supports_account_selection が true の接続 ID を指定します。 |
+| `request_id` | string | `""` | 任意の再試行識別子。同一の操作・引数・アカウントの再試行に限って再利用し、別の操作には使い回さないでください。 |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {
-      "tool_name": "slack_post_message",
-      "arguments": "{\"channel\": \"#general\", \"text\": \"Hello from Cursor!\"}"
-    }
-    ```
-  </Tab>
-  <Tab title="Success">
-    ```
-    Tool: slack_post_message
-    Duration: 412ms
-    Session: tool_a1b2c3d4e5f6
+```json
+{
+  "tool_name": "gmail_get_profile",
+  "arguments": "{}",
+  "connection_id": "conn_example"
+}
+```
 
-    Result:
-    { "ok": true, "message_ts": "1735282800.000100" }
-    ```
-  </Tab>
-  <Tab title="Auth required">
-    ```
-    Authentication Required
+Gmail は先に list_connections で接続 ID を取得し、呼び出しごとに明示します。省略すると `CONNECTION_SELECTION_REQUIRED` を返します。別アカウントへの切替は次の呼び出しで ID を変更するだけです。`execution_context_id` は受け付けません。
 
-    Tool: slack_post_message
-    Service: slack
-    Reason: auth_required
-    Auth Type: oauth2
-
-    Slack への接続が必要です。
-
-    Connect Link: https://app.shanone.ai/connect/slack?request=req_abc123
-
-    Please ask the user to visit the connect link to authenticate, then retry the request.
-    ```
-  </Tab>
-  <Tab title="Confirmation required">
-    ```
-    Confirmation Required
-
-    Tool: github_delete_repo
-    Risk tier: destructive
-
-    This action is irreversible. Please confirm you want to proceed.
-
-    Ask the user to explicitly confirm this action. Once confirmed, call
-    shanone_execute_tool again with the SAME arguments plus an additional
-    "confirm": true field in the arguments JSON.
-    ```
-  </Tab>
-</Tabs>
-
-<Note>
-`reason`が`auth_required`または`auth_expired`の場合は、`Connect Link`をユーザーに提示してください。ユーザーが認証を完了したら、まったく同じ`shanone_execute_tool`の呼び出しを再試行してください。
-</Note>
-
----
+`auth_required` / `auth_expired` の場合は返された接続案内に従います。`confirmation_required` の場合は操作の確認を得てから、同じ引数に `"confirm": true` を加えて再実行します。通常の実行は実行先ツール名で記録し、execute_tool 自体を追加で課金・集計しません。
 
 ## Skill Vendor
 
-**Skill**とは、タスクの実行方法を記述した、名前付きの再利用可能なプロンプトです(`name` + `summary` + `instructions`)。Skillはサーバー側に保存されるため、マシン、IDE、エージェントを越えて再現可能であり、Shanoneのウェブダッシュボードの**Skills**にも表示されます。
-
-**推奨ワークフロー:** タスクを始める前に`shanone_list_skills` → `shanone_get_skill`で読み込み、自分でその指示に従う。
+13ツールすべて Plus 以上・成功時のみ課金です。スキルやファイルの所有者・共有権限の確認も適用されます。
 
 ### shanone_list_skills
 
-保存済みのSkillを新しい順に一覧表示します。デフォルトでは**すべての**Skillを返します(ページ分割あり)——`query`は必須の検索語ではなく任意のフィルターです。
+保存済みスキルを新しい順に一覧表示します。query は任意で、空の場合は対象の保存済みスキルをページ単位で取得します。
 
-<ParamField path="query" type="string">
-  名前/概要に対する任意のフィルター。すべてのSkillを返す場合は空のままにしてください。
-</ParamField>
-<ParamField path="limit" type="integer" default="20">1ページあたりの最大結果件数(最大100)。</ParamField>
-<ParamField path="offset" type="integer" default="0">スキップする結果の件数。</ParamField>
-
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "query": "", "limit": 20, "offset": 0 }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Showing 2 of 2 skill(s) (offset=0):
-
-    - **Weekly Status Report** (skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab)
-      Gathers last week's closed issues and posts a summary to Slack #team.
-    - **Daily Standup Reminder** (skill_id: 7c2b5f8d-5678-4d9e-bcde-234567890abc)
-      Posts a standup reminder to Slack #general every weekday morning.
-
-    **Next step:** Use `shanone_get_skill` with a skill_id to read the full instructions, then follow them.
-    ```
-  </Tab>
-</Tabs>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `query` | string | `""` | 検索文字列。任意項目の場合は空文字で省略できます。 |
+| `limit` | integer | `20` | １ページあたりの最大件数。 最大100件。 |
+| `offset` | integer | `0` | 先頭からスキップする件数。 |
 
 ### shanone_get_skill
 
-Skillの完全な`instructions`を取得します。読み込んだ後、エージェント自身がその手順に従うべきです。
+スキルの名前、説明、指示本文を取得します。指示の実行は呼出元のエージェントが行い、この呼び出し自体がワークフローを実行するわけではありません。
 
-<ParamField path="skill_id" type="string" required>
-  `shanone_list_skills`から取得した、正確なSkill ID。
-</ParamField>
-
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "skill_id": "3f1a9e2b-1234-4c56-9abc-1234567890ab" }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    **Weekly Status Report**
-
-    Gathers last week's closed issues and posts a summary to Slack #team.
-
-    **Instructions:**
-    1. Use shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
-    2. Summarize them into 3-5 bullet points.
-    3. Use shanone_execute_tool with slack_post_message to post the summary to #team.
-
-    **Next step:** Follow these instructions. Use `shanone_execute_tool` for any integration actions required.
-    ```
-  </Tab>
-</Tabs>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
 
 ### shanone_create_skill
 
-新しい再利用可能なSkillを保存します。3つの引数すべてが必須です。
+再利用可能なスキルを作成します。３項目すべてに空でない値が必要です。description と body は summary と instructions として保存されます。
 
-<ParamField path="name" type="string" required>短く分かりやすいSkill名。</ParamField>
-<ParamField path="description" type="string" required>そのSkillが何を行い、いつ使うべきか。</ParamField>
-<ParamField path="body" type="string" required>従うべきステップバイステップの指示内容。</ParamField>
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `name` | string | 必須 | スキル名。 |
+| `description` | string | 必須 | スキルの用途と利用する場面。 |
+| `body` | string | 必須 | スキルの指示本文。 |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {
-      "name": "Weekly Status Report",
-      "description": "Gathers last week's closed issues and posts a summary to Slack #team.",
-      "body": "1. Use shanone_execute_tool with github_list_issues (last 7 days).\n2. Summarize into 3-5 bullets.\n3. Post to Slack #team with slack_post_message."
-    }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Skill created.
-    skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab
-    name: Weekly Status Report
-
-    Retrieve it later with `shanone_get_skill` or find it with `shanone_list_skills`.
-    ```
-  </Tab>
-</Tabs>
-
----
+```json
+{
+  "name": "Weekly report",
+  "description": "Prepare a weekly status report.",
+  "body": "Read the relevant issues and summarize the completed work."
+}
+```
 
 ### shanone_update_skill
 
-既存のSkillを更新します。空でないフィールドのみが変更されます。
+既存スキルを更新します。任意項目は空でない値だけを更新し、空文字の場合は既存の値を保持します。
 
-<ParamField path="skill_id" type="string" required>正確なSkill ID。</ParamField>
-<ParamField path="name" type="string">新しい名前。</ParamField>
-<ParamField path="summary" type="string">新しい概要/説明。</ParamField>
-<ParamField path="instructions" type="string">新しい指示内容の本文。</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    Skill updated.
-    skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab
-    name: Weekly Status Report
-    version: 2
-    ```
-  </Tab>
-</Tabs>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `name` | string | `""` | スキル名。 |
+| `summary` | string | `""` | 更新後のスキル説明。 |
+| `instructions` | string | `""` | 更新後のスキル指示本文。 |
 
 ### shanone_delete_skill
 
-Skillを削除します。**永久的な操作であり、取り消せません。**
+スキルを完全に削除します。
 
-<ParamField path="skill_id" type="string" required>正確なSkill ID。</ParamField>
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
 
----
+### shanone_list_skill_files
+
+スキルに付属する追加ファイルのパスやサイズを一覧表示します。指示本文は get_skill で取得します。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+
+### shanone_read_skill_file
+
+スキルのテキストファイルを読み取ります。バイナリの場合は内容の代わりに説明を返すため、表示やダウンロードにはダッシュボードを使ってください。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `path` | string | 必須 | references/guide.md など、スキルディレクトリからの相対パス。 |
+
+### shanone_write_skill_file
+
+UTF-8 テキストファイルを作成、または上書きします。親フォルダーがなければ自動作成します。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `path` | string | 必須 | references/guide.md など、スキルディレクトリからの相対パス。 |
+| `content` | string | 必須 | 書き込む UTF-8 テキスト全文。既存の内容は置き換えます。 |
+
+```json
+{
+  "skill_id": "skill_example",
+  "path": "references/checklist.md",
+  "content": "Review completed tasks.\n"
+}
+```
+
+### shanone_delete_skill_file
+
+スキルに付属するファイルを１件削除します。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `path` | string | 必須 | references/guide.md など、スキルディレクトリからの相対パス。 |
+
+### shanone_grep_skill
+
+正規表現でスキルファイルを検索します。結果にはパスと行番号が含まれます。打ち切られた場合は検索条件を絞ってください。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `pattern` | string | 必須 | 検索する正規表現。 |
+| `path_glob` | string | `""` | references/*.md などのファイル絞り込み。空の場合は全ファイルを検索します。 |
+| `case_sensitive` | boolean | `false` | 検索で大文字・小文字を区別するか。 |
+
+```json
+{
+  "skill_id": "skill_example",
+  "pattern": "completed",
+  "path_glob": "references/*.md"
+}
+```
+
+### shanone_create_skill_folder
+
+スキル内に空のフォルダーを作成します。write_skill_file は親フォルダーを作成するため、ファイル書き込み前の必須操作ではありません。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `path` | string | 必須 | references/guide.md など、スキルディレクトリからの相対パス。 |
+
+### shanone_delete_skill_folder
+
+フォルダーと、その中のファイル・サブフォルダーを削除します。元に戻せない操作です。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `path` | string | 必須 | references/guide.md など、スキルディレクトリからの相対パス。 |
+
+### shanone_rename_skill_path
+
+ファイルまたはフォルダーを移動・改名します。フォルダーの内容も移動します。移動先が存在する場合は上書きせずエラーになります。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
+| `from_path` | string | 必須 | 移動元のファイル・フォルダーの相対パス。 |
+| `to_path` | string | 必須 | 移動先の相対パス。既存パスは指定できません。 |
 
 ## Permission Vendor
 
-IAM形式のツール/サービスアクセス制御です。`shanone_list_services`は誰でも利用できますが、他の5つのツールを利用するには、呼び出し元が**Root**ユーザーであるか、`tool-permissions:ManageOthers`というポリシーアクションを明示的に委任された**SA2**ユーザーである必要があります(委任されたSA2の呼び出し元はRootユーザーを対象にすることはできません)。
+list_services を除く権限管理とパラメーターポリシー管理は、Root、または `tool-permissions:ManageOthers` を委任された SA2 ユーザー向けです。委任された SA2 ユーザーは Root ユーザーを対象にできません。すべて非課金です。
 
 ### shanone_list_services
 
-登録済みの全サービスを、表示名とツール数とともに一覧表示します。特別な権限は不要です。
+登録済みサービスの名前、表示名、ツール数を取得します。管理者ロールは不要です。
 
-<ParamField path="limit" type="integer" default="100">1ページあたりの最大結果件数(最大500)。</ParamField>
-<ParamField path="offset" type="integer" default="0">スキップする結果の件数。</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    Showing 3 of 269 service(s) (offset=0):
-
-    - **slack** (Slack) - 125 tool(s)
-    - **github** (GitHub) - 176 tool(s)
-    - **notion** (Notion) - 45 tool(s)
-
-    More services available. Call again with offset=3.
-
-    **Next steps:** Use a `service_name` above with `shanone_set_user_service_permission`,
-    `shanone_list_user_tool_permissions`, or `shanone_batch_set_user_permissions`.
-    ```
-  </Tab>
-</Tabs>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `limit` | integer | `100` | １ページあたりの最大件数。 最大500件。 |
+| `offset` | integer | `0` | 先頭からスキップする件数。 |
 
 ### shanone_list_user_tool_permissions
 
-対象ユーザーのサービスレベルおよびツールレベルの権限オーバーライドを一覧表示します。
+対象ユーザーのツール・サービス権限の個別設定を一覧表示します。
 
-<ParamField path="target_user_id" type="string" required>確認対象のuser_id。</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    User: usr_123
-    Role: member
-    Default (no override): disabled
-
-    Service-level overrides (2):
-    - slack: enabled
-    - stripe: disabled
-
-    Tool-level overrides (1):
-    - github_delete_repo: disabled
-    ```
-  </Tab>
-</Tabs>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
 
 ### shanone_set_user_tool_permission
 
-対象ユーザーに対して、特定の1ツールを有効/無効にします。サービスレベルのオーバーライドやロールのデフォルト設定よりも常に優先されます。
+対象ユーザーの１つのツールを許可・拒否します。ツール単位の設定は、サービス単位やロールの既定設定より優先されます。
 
-<ParamField path="target_user_id" type="string" required>変更対象のuser_id。</ParamField>
-<ParamField path="tool_name" type="string" required>正確なツール名。</ParamField>
-<ParamField path="enabled" type="boolean" required>許可する場合はtrue、拒否する場合はfalse。</ParamField>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
+| `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
+| `enabled` | boolean | 必須 | true で許可、false で拒否します。 |
 
 ### shanone_set_user_service_permission
 
-対象ユーザーに対して、1つのサービスの全ツールを一度に有効/無効にします。
+対象ユーザーのサービス単位のツール利用を許可・拒否します。ツール単位の個別設定がある場合はそちらが優先されます。
 
-<ParamField path="target_user_id" type="string" required>変更対象のuser_id。</ParamField>
-<ParamField path="service_name" type="string" required>正確なサービス名。</ParamField>
-<ParamField path="enabled" type="boolean" required>このサービスの全ツールを許可する場合はtrue、拒否する場合はfalse。</ParamField>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
+| `service_name` | string | 必須 | list_services で取得した正確なサービス名。 |
+| `enabled` | boolean | 必須 | true で許可、false で拒否します。 |
 
 ### shanone_get_permission_summary
 
-対象ユーザーの権限を集計したサマリーです。
+対象ユーザーの許可・拒否されたサービスとツールを集計します。
 
-<ParamField path="target_user_id" type="string" required>集計対象のuser_id。</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    User: usr_123
-    Role: member
-    Default (no override): disabled
-
-    Services: 12 enabled / 269 total (2 with explicit override)
-    Tools: 340 enabled / 9600 total (1 with explicit override)
-
-    Disabled services (257): stripe, ...
-    ```
-  </Tab>
-</Tabs>
-
----
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
 
 ### shanone_batch_set_user_permissions
 
-対象ユーザーに対して、多数のサービスやツールを1回の呼び出しで有効/無効にします。最大500操作まで、個々の失敗があってもバッチ全体は中断されません。
+最大500件のサービス・ツール権限操作をまとめて適用します。１件の失敗で全体は中断しないため、各操作の結果を確認してください。
 
-<ParamField path="target_user_id" type="string" required>変更対象のuser_id。</ParamField>
-<ParamField path="operations" type="string" required>
-  `{"type": "service"|"tool", "name": "...", "enabled": true|false}`のJSON配列文字列。
-</ParamField>
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
+| `operations` | string | 必須 | type（service または tool）、name、enabled を持つ空でない JSON 配列文字列。最大500件。 |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {
-      "target_user_id": "usr_123",
-      "operations": "[{\"type\": \"service\", \"name\": \"slack\", \"enabled\": true}, {\"type\": \"service\", \"name\": \"stripe\", \"enabled\": false}]"
-    }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Applied 2 update(s) for user usr_123:
+```json
+{
+  "target_user_id": "user_example",
+  "operations": "[{\"type\":\"service\",\"name\":\"slack\",\"enabled\":true}]"
+}
+```
 
-    - service 'slack' -> enabled
-    - service 'stripe' -> disabled
-    ```
-  </Tab>
-</Tabs>
+## パラメーターポリシー
 
----
+### shanone_get_tool_parameter_policy
 
-## エラーレスポンス
+対象ユーザーのツールに設定された引数制約を取得します。ツールの利用可否と、許可する引数の値は別の制御です。
 
-| 状況 | レスポンス |
-|-----------|----------|
-| 不明なツール名 | `Tool not found: <tool_name>`、`shanone_search_tools`の利用を促すヒント付き |
-| 不明な`skill_id` | `Skill not found: <skill_id>`、`shanone_list_skills`の利用を促すヒント付き |
-| `shanone_execute_tool`の`arguments`内のJSONが不正 | `Invalid JSON in arguments: ...`、期待される形式とともに |
-| 連携にOAuthが必要だが未接続 | `reason: "auth_required"`(または`"auth_expired"`)と`connect_link` |
-| リスクの高いアクションに明示的な確認が必要 | `reason: "confirmation_required"`；`"confirm": true`を付けて再試行 |
-| 呼び出し元にPermission Vendorツールの権限がない | `Permission Denied`——呼び出し元はRoot、または`tool-permissions:ManageOthers`を委任されたSA2である必要があります |
-| HTTPレベルの認証失敗(不正/欠落したAPIキー) | `401`、`error: "api_key_required"`または`"invalid_api_key"` |
-| 組織IDの欠落/不正(直接`/mcp`接続のみ) | `401 org_id_required`または`403 invalid_org_id` |
-| リクエストが多すぎる | `429`、`error: "rate_limit_exceeded"`と`Retry-After`ヘッダー |
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
+| `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
+
+### shanone_set_tool_parameter_policy
+
+１つの引数フィールドの制約を設定・置換します。制約は実行時にサーバー側で適用されます。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
+| `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
+| `field_name` | string | 必須 | 制約を設定・取得・削除する正確な入力パラメーター名。 |
+| `policy_type` | string | 必須 | 後述するポリシー種別のいずれか。 |
+| `policy_value` | string | `"{}"` | ポリシーの設定を JSON オブジェクト文字列で指定します。後述の一覧を参照してください。 |
+
+```json
+{
+  "target_user_id": "user_example",
+  "tool_name": "gmail_send_message",
+  "field_name": "to",
+  "policy_type": "domain_allowlist",
+  "policy_value": "{\"values\":[\"example.com\"]}"
+}
+```
+
+| policy_type | policy_value の例（JSON 文字列の内容） | 意味 |
+|---|---|---|
+| `allowlist / denylist` | `{"values":["a","b"]}` | 指定した値を許可・拒否。 |
+| `domain_allowlist` | `{"values":["example.com"]}` | ドメインを制限。 |
+| `pattern` | `{"value":"^[A-Z].*"}` | 正規表現への一致を要求。 |
+| `range` | `{"min":0,"max":100}` | 数値の範囲を制限。 |
+| `max_length / max_items` | `{"value":200}` | 文字数・要素数を制限。 |
+| `forced_value` | `{"value":"audit@example.com"}` | 値を常に上書き。 |
+| `forced_append` | `{"value":"audit@example.com"}` | 設定した値を追加。 |
+| `default_value` | `{"value":"user"}` | 省略された場合だけ補完。 |
+| `required_override` | `{}` | フィールドを必須にする。 |
+
+### shanone_delete_tool_parameter_policy
+
+１つの引数フィールドの制約を削除します。ツール自体の許可・拒否設定は変更しません。
+
+| 引数 | 型 | 必須 / 既定値 | 説明 |
+|---|---|---|---|
+| `target_user_id` | string | 必須 | 権限を確認・変更する対象ユーザーの ID。 |
+| `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
+| `field_name` | string | 必須 | 制約を設定・取得・削除する正確な入力パラメーター名。 |
+
+## エラーと移行
+
+| 結果 | 対処 |
+|---|---|
+| `PLAN_UPGRADE_REQUIRED` | Plus 以上のプランが必要です。拒否された呼び出しは非課金です。 |
+| `TOOL_CALL_LIMIT_EXCEEDED` | 利用枠を確認します。スキルの操作は実行されず非課金です。 |
+| `SUBSCRIPTION_UNAVAILABLE` | 契約情報を確認できません。時間をおいて再試行します。 |
+| `CONNECTION_SELECTION_REQUIRED` | list_connections で取得した Gmail 接続 ID を明示します。 |
+| `CONNECTION_NOT_FOUND` / `connection_not_found` | 接続の所有者・存在を確認します。別アカウントへの自動フォールバックはしません。 |
+| `401` / `403` | API キー、組織 ID、必要な権限を確認します。MCP のプラン拒否とは区別してください。 |
+
+`shanone_create_execution_context`、`shanone_get_execution_context`、`shanone_switch_connection` は廃止されました。クライアントのツール一覧を再取得し、接続 ID の明示指定へ移行してください。
+
+Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開済みツールには含まれません。
+
+[接続設定を見る](/ja/mcp/setup)。

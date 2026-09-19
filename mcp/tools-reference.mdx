@@ -1,507 +1,455 @@
 ---
 title: "Tools Reference"
-description: "Complete reference for all 18 Shanone MCP Server tools — parameters, examples, and error responses."
+description: "Parameters, plan availability, billing, and usage accounting for the 29 Remote MCP tools."
 ---
 
-This page documents all 18 tools available on the Shanone MCP Server. All tools return plain text (Markdown-formatted), not structured JSON — the example responses below show the shape of that text.
+Parameters, plan availability, billing, and usage accounting for the 29 Remote MCP tools.
+
+This reference describes **Remote MCP over Streamable HTTP**. Local proxies differ by package and version; check your server’s `tools/list` for the actual tools and schemas.
+
+Plan availability does not grant authorization: API-key scopes, user permissions, access to the target resource, and provider connections still apply.
+
+“Billable” means consuming a Tool Call from your plan allowance, not necessarily an additional monetary charge. Administration and connection diagnostics are non-billable. All 13 skill tools require Plus or above and consume one Tool Call only on success.
+
+Free users can discover skill names, descriptions, and input schemas. Execution is rejected with `PLAN_UPGRADE_REQUIRED` before accessing skill data. Signing in again does not resolve a plan restriction.
+
+Results vary by tool: Markdown text, text containing JSON, or structured errors. Skill plan denials and operation failures use MCP `isError: true`. For execution tools, also inspect JSON fields such as `status`, `success`, and `reason`, plus the provider result.
+
+## Plans, billing, and Analytics
+
+| Tool | Plans | Billing | Analytics |
+|---|---|---|---|
+| [`shanone_health_check`](#shanone_health_check) | Free and above | Non-billable | Call recorded |
+| [`shanone_search_tools`](#shanone_search_tools) | Free and above | Non-billable | Call recorded |
+| [`shanone_list_service_tools`](#shanone_list_service_tools) | Free and above | Non-billable | Call recorded |
+| [`shanone_get_tool_schema`](#shanone_get_tool_schema) | Free and above | Non-billable | Call recorded |
+| [`shanone_list_connections`](#shanone_list_connections) | Free and above | Non-billable | Call recorded |
+| [`shanone_check_connection`](#shanone_check_connection) | Free and above | Non-billable | 1 parent call; no probe counts |
+| [`shanone_execute_tool`](#shanone_execute_tool) | Free and above | Per executed tool | Executed tool name |
+| [`shanone_list_skills`](#shanone_list_skills) | Plus and above | 1 on success | Call recorded |
+| [`shanone_get_skill`](#shanone_get_skill) | Plus and above | 1 on success | Call recorded |
+| [`shanone_create_skill`](#shanone_create_skill) | Plus and above | 1 on success | Call recorded |
+| [`shanone_update_skill`](#shanone_update_skill) | Plus and above | 1 on success | Call recorded |
+| [`shanone_delete_skill`](#shanone_delete_skill) | Plus and above | 1 on success | Call recorded |
+| [`shanone_list_skill_files`](#shanone_list_skill_files) | Plus and above | 1 on success | Call recorded |
+| [`shanone_read_skill_file`](#shanone_read_skill_file) | Plus and above | 1 on success | Call recorded |
+| [`shanone_write_skill_file`](#shanone_write_skill_file) | Plus and above | 1 on success | Call recorded |
+| [`shanone_delete_skill_file`](#shanone_delete_skill_file) | Plus and above | 1 on success | Call recorded |
+| [`shanone_grep_skill`](#shanone_grep_skill) | Plus and above | 1 on success | Call recorded |
+| [`shanone_create_skill_folder`](#shanone_create_skill_folder) | Plus and above | 1 on success | Call recorded |
+| [`shanone_delete_skill_folder`](#shanone_delete_skill_folder) | Plus and above | 1 on success | Call recorded |
+| [`shanone_rename_skill_path`](#shanone_rename_skill_path) | Plus and above | 1 on success | Call recorded |
+| [`shanone_list_services`](#shanone_list_services) | Free and above | Non-billable | Call recorded |
+| [`shanone_list_user_tool_permissions`](#shanone_list_user_tool_permissions) | Free and above | Non-billable | Call recorded |
+| [`shanone_set_user_tool_permission`](#shanone_set_user_tool_permission) | Free and above | Non-billable | Call recorded |
+| [`shanone_set_user_service_permission`](#shanone_set_user_service_permission) | Free and above | Non-billable | Call recorded |
+| [`shanone_get_permission_summary`](#shanone_get_permission_summary) | Free and above | Non-billable | Call recorded |
+| [`shanone_batch_set_user_permissions`](#shanone_batch_set_user_permissions) | Free and above | Non-billable | Call recorded |
+| [`shanone_get_tool_parameter_policy`](#shanone_get_tool_parameter_policy) | Free and above | Non-billable | Call recorded |
+| [`shanone_set_tool_parameter_policy`](#shanone_set_tool_parameter_policy) | Free and above | Non-billable | Call recorded |
+| [`shanone_delete_tool_parameter_policy`](#shanone_delete_tool_parameter_policy) | Free and above | Non-billable | Call recorded |
+
+Normal provider tools are generally billable on success and provider errors, with exceptions such as internal errors. Pre-execution rejection such as a missing account selection is not counted as execution usage. Connection checks record one non-billable parent call regardless of the number of accounts, and retain individual probe outcomes in the diagnostic result.
+
+Unauthenticated requests, unknown MCP tools, and schema validation failures that do not reach execution are not counted as Tool Calls. Newly instrumented tools do not receive retroactive usage history.
 
 ## Health Check
 
 ### shanone_health_check
 
-Check Shanone MCP server connectivity, authentication, and backend health. Takes no parameters.
+Check MCP connectivity, API-key authentication, and backend health. No provider credentials are tested.
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {}
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    STATUS: HEALTHY   SERVICE: Shanone MCP   USER: usr_a1b2c3d4   TIME: 2026-08-20T09:30:00Z
-
-    ┌─────────────┬────────┬────────────┐
-    │ Check       │ Status │ Latency    │
-    ├─────────────┼────────┼────────────┤
-    │ api_key     │ PASS   │ 4ms        │
-    │ database    │ PASS   │ 11ms       │
-    └─────────────┴────────┴────────────┘
-    ```
-  </Tab>
-</Tabs>
-
----
+No parameters. Pass `{}`.
 
 ## Tool Vendor
 
-Search, inspect, and execute any of Shanone's 269+ integrations without a dedicated MCP tool per action.
-
-**Recommended workflow:** `shanone_search_tools` (or `shanone_list_service_tools` for a full listing) → `shanone_get_tool_schema` (if needed) → `shanone_execute_tool`.
-
 ### shanone_search_tools
 
-Search for integration tools by keyword, relevance-ranked.
+Search integration tools by keyword, ranked by relevance. Use list_service_tools when you need a complete service listing.
 
-<ParamField path="query" type="string" required>
-  Natural-language or keyword search. Example: `"post slack message"`, `"create github issue"`.
-</ParamField>
-<ParamField path="service" type="string">
-  Optional service filter, e.g. `"slack"`, `"github"`, `"notion"`.
-</ParamField>
-<ParamField path="limit" type="integer" default="20">
-  Maximum results (max 100).
-</ParamField>
-<ParamField path="offset" type="integer" default="0">
-  Number of matching results to skip, for pagination.
-</ParamField>
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `query` | string | Required | Search text; empty where optional. |
+| `service` | string | `""` | Exact service identifier, such as gmail or slack. |
+| `limit` | integer | `20` | Maximum results per page. Maximum 100. |
+| `offset` | integer | `0` | Number of results to skip. |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "query": "post slack message", "service": "slack", "limit": 5 }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Showing 1 of 1 matching tool(s) for "post slack message" (service: slack) (offset=0):
-
-    - **slack_post_message** (slack)
-      Post a message to a Slack channel or user.
-
-    **Next steps:**
-    1. Use `shanone_get_tool_schema` to see the input schema for a tool
-    2. Use `shanone_execute_tool` to execute the tool with arguments
-    ```
-  </Tab>
-</Tabs>
-
-<Note>
-For large integrations (Slack has 125 tools, Stripe has 328), relevance ranking may not surface every match — check `has_more`; if true, narrow the query or use `shanone_list_service_tools` instead.
-</Note>
-
----
+```json
+{
+  "query": "profile",
+  "service": "gmail",
+  "limit": 5
+}
+```
 
 ### shanone_list_service_tools
 
-List **every** tool for one service, in name order — for "what's available for X" style questions where completeness matters more than ranking.
+List tools for one service with pagination. Follow subsequent pages to retrieve the full list.
 
-<ParamField path="service" type="string" required>
-  Exact service name, e.g. `"slack"`, `"github"`, `"notion"`.
-</ParamField>
-<ParamField path="limit" type="integer" default="50">
-  Maximum results per page (max 200).
-</ParamField>
-<ParamField path="offset" type="integer" default="0">
-  Number of results to skip, for pagination.
-</ParamField>
-
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "service": "linear", "limit": 50, "offset": 0 }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    linear: showing 45 of 45 tool(s) total (offset=0):
-
-    - **linear_create_issue**
-      Create a new issue in a Linear team.
-    - **linear_list_issues**
-      List issues, optionally filtered by team, assignee, or state.
-    ... (43 more)
-
-    **Next steps:**
-    1. Use `shanone_get_tool_schema` to see the input schema for a tool
-    2. Use `shanone_execute_tool` to execute the tool with arguments
-    ```
-  </Tab>
-</Tabs>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `service` | string | Required | Exact service identifier, such as gmail or slack. |
+| `limit` | integer | `50` | Maximum results per page. Maximum 200. |
+| `offset` | integer | `0` | Number of results to skip. |
 
 ### shanone_get_tool_schema
 
-Get the JSON Schema for a tool's input arguments.
+Get the input JSON Schema for an integration tool before executing it.
 
-<ParamField path="tool_name" type="string" required>
-  The exact tool name (e.g. `"slack_post_message"`). Get this from `shanone_search_tools` or `shanone_list_service_tools`.
-</ParamField>
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "tool_name": "slack_post_message" }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    **slack_post_message**
+## Connections
 
-    Post a message to a Slack channel or user.
+### shanone_list_connections
 
-    **Input Schema:**
-    ```json
-    {
-      "type": "object",
-      "properties": {
-        "channel": { "type": "string", "description": "Channel name or ID, e.g. #general" },
-        "text": { "type": "string", "description": "Message text to post" }
-      },
-      "required": ["channel", "text"]
-    }
-    ```
+List saved connections visible to the caller. Stored configuration is not proof that authentication still works.
 
-    **Required arguments:** channel, text
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `service` | string | `""` | Exact service identifier, such as gmail or slack. |
 
-    **Next step:** Use `shanone_execute_tool` with tool_name="slack_post_message" and the required arguments.
-    ```
-  </Tab>
-</Tabs>
+```json
+{
+  "service": "gmail"
+}
+```
 
----
+Only IDs with `supports_account_selection: true` can be passed to execute_tool. Multiple-account selection currently supports Gmail. A `legacy:<service>` ID identifies a single connection for diagnostics; use it with check_connection, not execution account selection. Requires API-key scope `integrations:read` or `all`.
+
+### shanone_check_connection
+
+Verify saved connections using read-only provider APIs. Omitting service checks all connected services, with pagination.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `service` | string | `""` | Exact service identifier, such as gmail or slack. |
+| `connection_id` | string | `""` | Saved connection identifier. |
+| `offset` | integer | `0` | Number of results to skip. |
+| `limit` | integer | `10` | Maximum results per page. Maximum 20. |
+
+```json
+{
+  "service": "gmail",
+  "offset": 0,
+  "limit": 10
+}
+```
+
+Use connection_id to check one account. A page contains at most 20 connections, with three probes running concurrently and a 30-second timeout per probe. Requires `integrations:read` and `tasks:create`, or `all`, plus permission for the probe tool.
+
+Results include `verified`, `reauth_required`, `insufficient_permissions`, `permission_denied`, `rate_limited`, `temporarily_unavailable`, `verification_failed`, `unsupported`, and `not_connected`. `verified` means the named read-only probe succeeded, not that every API operation or permission is available. Unsupported probes are not reported as successful.
+
+## Execution
 
 ### shanone_execute_tool
 
-Execute a specific tool with arguments. OAuth is handled automatically — if the tool needs a connection you haven't set up, you get a `connect_link` back instead of a hard error.
+Execute an integration tool. Inspect both the execution envelope and the provider result; completing a tool invocation does not by itself prove the provider operation succeeded.
 
-<ParamField path="tool_name" type="string" required>
-  The exact tool name to execute.
-</ParamField>
-<ParamField path="arguments" type="string" required>
-  Tool arguments as a **JSON string** (not a native object). Example: `'{"channel": "#general", "text": "Hello!"}'`. Pass `'{}'` for tools with no arguments.
-</ParamField>
-<ParamField path="session_id" type="string">
-  Optional session ID for stateful/multi-step execution. Omit for a stateless call.
-</ParamField>
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
+| `arguments` | string | Required | Integration tool arguments encoded as a JSON string; use "{}" for no arguments. |
+| `session_id` | string | `""` | Optional legacy execution/session identifier. It does not select an OAuth account; omit for a stateless call. |
+| `connection_id` | string | `""` | Required for Gmail execution. Use an ID whose supports_account_selection is true. |
+| `request_id` | string | `""` | Optional retry identifier. Reuse only for the same request, arguments, and account; do not reuse for a different operation. |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {
-      "tool_name": "slack_post_message",
-      "arguments": "{\"channel\": \"#general\", \"text\": \"Hello from Cursor!\"}"
-    }
-    ```
-  </Tab>
-  <Tab title="Success">
-    ```
-    Tool: slack_post_message
-    Duration: 412ms
-    Session: tool_a1b2c3d4e5f6
+```json
+{
+  "tool_name": "gmail_get_profile",
+  "arguments": "{}",
+  "connection_id": "conn_example"
+}
+```
 
-    Result:
-    { "ok": true, "message_ts": "1735282800.000100" }
-    ```
-  </Tab>
-  <Tab title="Auth required">
-    ```
-    Authentication Required
+For Gmail, obtain an account ID with list_connections and provide it on each call. Omitting it returns `CONNECTION_SELECTION_REQUIRED`. To use another account, change the ID on the next call. `execution_context_id` is no longer supported.
 
-    Tool: slack_post_message
-    Service: slack
-    Reason: auth_required
-    Auth Type: oauth2
-
-    Slack への接続が必要です。
-
-    Connect Link: https://app.shanone.ai/connect/slack?request=req_abc123
-
-    Please ask the user to visit the connect link to authenticate, then retry the request.
-    ```
-  </Tab>
-  <Tab title="Confirmation required">
-    ```
-    Confirmation Required
-
-    Tool: github_delete_repo
-    Risk tier: destructive
-
-    This action is irreversible. Please confirm you want to proceed.
-
-    Ask the user to explicitly confirm this action. Once confirmed, call
-    shanone_execute_tool again with the SAME arguments plus an additional
-    "confirm": true field in the arguments JSON.
-    ```
-  </Tab>
-</Tabs>
-
-<Note>
-When `reason` is `auth_required` or `auth_expired`, surface the `Connect Link` to the user. Once they authenticate, retry the exact same `shanone_execute_tool` call.
-</Note>
-
----
+For `auth_required` / `auth_expired`, follow the returned connection instructions. For `confirmation_required`, obtain confirmation and retry with `"confirm": true` in the same arguments. Usage is recorded under the executed tool’s name, without an additional execute_tool charge or count.
 
 ## Skill Vendor
 
-A **Skill** is a named, reusable prompt describing how to accomplish a task (`name` + `summary` + `instructions`). Skills are stored server-side, so they're reproducible across machines, IDEs, and agents, and also appear in Shanone's web dashboard under **Skills**.
-
-**Recommended workflow:** `shanone_list_skills` before starting a task → `shanone_get_skill` to read it and follow its instructions yourself.
+All 13 tools require Plus or above and are billable only on success. Skill ownership and resource-sharing permissions still apply.
 
 ### shanone_list_skills
 
-List saved Skills, newest first. Returns **all** Skills by default (paginated) — `query` is an optional filter, not a required search term.
+List saved skills, newest first. The query is optional; an empty query lists your saved skills with pagination.
 
-<ParamField path="query" type="string">
-  Optional filter matched against name/summary. Leave empty to return all Skills.
-</ParamField>
-<ParamField path="limit" type="integer" default="20">Maximum results per page (max 100).</ParamField>
-<ParamField path="offset" type="integer" default="0">Number of results to skip.</ParamField>
-
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "query": "", "limit": 20, "offset": 0 }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Showing 2 of 2 skill(s) (offset=0):
-
-    - **Weekly Status Report** (skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab)
-      Gathers last week's closed issues and posts a summary to Slack #team.
-    - **Daily Standup Reminder** (skill_id: 7c2b5f8d-5678-4d9e-bcde-234567890abc)
-      Posts a standup reminder to Slack #general every weekday morning.
-
-    **Next step:** Use `shanone_get_skill` with a skill_id to read the full instructions, then follow them.
-    ```
-  </Tab>
-</Tabs>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `query` | string | `""` | Search text; empty where optional. |
+| `limit` | integer | `20` | Maximum results per page. Maximum 100. |
+| `offset` | integer | `0` | Number of results to skip. |
 
 ### shanone_get_skill
 
-Get a Skill's full `instructions`. After reading it, your agent should follow the steps itself.
+Read a skill’s name, summary, and full instructions. The agent follows the instructions itself; this call does not execute the workflow.
 
-<ParamField path="skill_id" type="string" required>
-  The exact Skill ID, from `shanone_list_skills`.
-</ParamField>
-
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    { "skill_id": "3f1a9e2b-1234-4c56-9abc-1234567890ab" }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    **Weekly Status Report**
-
-    Gathers last week's closed issues and posts a summary to Slack #team.
-
-    **Instructions:**
-    1. Use shanone_execute_tool with github_list_issues to fetch issues closed in the last 7 days.
-    2. Summarize them into 3-5 bullet points.
-    3. Use shanone_execute_tool with slack_post_message to post the summary to #team.
-
-    **Next step:** Follow these instructions. Use `shanone_execute_tool` for any integration actions required.
-    ```
-  </Tab>
-</Tabs>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
 
 ### shanone_create_skill
 
-Save a new reusable Skill. All three arguments are required.
+Create a reusable skill. All three fields must be non-empty. description and body are stored as summary and instructions.
 
-<ParamField path="name" type="string" required>Short, descriptive Skill name.</ParamField>
-<ParamField path="description" type="string" required>What the Skill does and when to use it.</ParamField>
-<ParamField path="body" type="string" required>Step-by-step instructions to follow.</ParamField>
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `name` | string | Required | Skill name. |
+| `description` | string | Required | What the skill does and when to use it. |
+| `body` | string | Required | Skill instructions. |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {
-      "name": "Weekly Status Report",
-      "description": "Gathers last week's closed issues and posts a summary to Slack #team.",
-      "body": "1. Use shanone_execute_tool with github_list_issues (last 7 days).\n2. Summarize into 3-5 bullets.\n3. Post to Slack #team with slack_post_message."
-    }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Skill created.
-    skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab
-    name: Weekly Status Report
-
-    Retrieve it later with `shanone_get_skill` or find it with `shanone_list_skills`.
-    ```
-  </Tab>
-</Tabs>
-
----
+```json
+{
+  "name": "Weekly report",
+  "description": "Prepare a weekly status report.",
+  "body": "Read the relevant issues and summarize the completed work."
+}
+```
 
 ### shanone_update_skill
 
-Update an existing Skill. Only non-empty fields are changed.
+Update an existing skill. Only non-empty optional fields are changed; empty strings leave the existing values unchanged.
 
-<ParamField path="skill_id" type="string" required>The exact Skill ID.</ParamField>
-<ParamField path="name" type="string">New name.</ParamField>
-<ParamField path="summary" type="string">New summary/description.</ParamField>
-<ParamField path="instructions" type="string">New instructions body.</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    Skill updated.
-    skill_id: 3f1a9e2b-1234-4c56-9abc-1234567890ab
-    name: Weekly Status Report
-    version: 2
-    ```
-  </Tab>
-</Tabs>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `name` | string | `""` | Skill name. |
+| `summary` | string | `""` | Updated skill description. |
+| `instructions` | string | `""` | Updated skill instructions. |
 
 ### shanone_delete_skill
 
-Delete a Skill. **Permanent — cannot be undone.**
+Permanently delete a skill.
 
-<ParamField path="skill_id" type="string" required>The exact Skill ID.</ParamField>
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
 
----
+### shanone_list_skill_files
+
+List additional files bundled with a skill, including paths and sizes. The main instructions are read with get_skill.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+
+### shanone_read_skill_file
+
+Read a text file bundled with a skill. Binary files return a description instead of their contents; use the dashboard to view or download them.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `path` | string | Required | Path relative to the skill directory, such as references/guide.md. |
+
+### shanone_write_skill_file
+
+Create or overwrite a UTF-8 text file. Missing parent folders are created automatically.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `path` | string | Required | Path relative to the skill directory, such as references/guide.md. |
+| `content` | string | Required | Full UTF-8 text to write. Existing file content is replaced. |
+
+```json
+{
+  "skill_id": "skill_example",
+  "path": "references/checklist.md",
+  "content": "Review completed tasks.\n"
+}
+```
+
+### shanone_delete_skill_file
+
+Delete one file bundled with a skill.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `path` | string | Required | Path relative to the skill directory, such as references/guide.md. |
+
+### shanone_grep_skill
+
+Search skill files with a regular expression. Results include file paths and line numbers; narrow the pattern if results are truncated.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `pattern` | string | Required | Regular expression to search for. |
+| `path_glob` | string | `""` | Optional file glob, such as references/*.md; empty searches all files. |
+| `case_sensitive` | boolean | `false` | Whether the search distinguishes letter case. |
+
+```json
+{
+  "skill_id": "skill_example",
+  "pattern": "completed",
+  "path_glob": "references/*.md"
+}
+```
+
+### shanone_create_skill_folder
+
+Create an empty skill folder. This is optional before writing files because write_skill_file creates parent folders.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `path` | string | Required | Path relative to the skill directory, such as references/guide.md. |
+
+### shanone_delete_skill_folder
+
+Delete a folder and all files and subfolders inside it. This operation cannot be undone.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `path` | string | Required | Path relative to the skill directory, such as references/guide.md. |
+
+### shanone_rename_skill_path
+
+Rename or move a file or folder. Moving a folder moves its contents. An existing destination is rejected rather than overwritten.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
+| `from_path` | string | Required | Existing relative file or folder path. |
+| `to_path` | string | Required | New relative path; must not already exist. |
 
 ## Permission Vendor
 
-IAM-style tool/service access control. `shanone_list_services` is open to anyone; the other five require the caller to be a **Root** user, or an **SA2** user explicitly delegated the `tool-permissions:ManageOthers` policy action (delegated SA2 callers cannot target a Root user).
+Permission and parameter-policy management, except list_services, requires Root or an SA2 user delegated `tool-permissions:ManageOthers`. Delegated SA2 users cannot target Root users. All are non-billable.
 
 ### shanone_list_services
 
-List every registered service, with display names and tool counts. No special permission required.
+List registered service names, display names, and tool counts. No administrator role is required.
 
-<ParamField path="limit" type="integer" default="100">Max results per page (max 500).</ParamField>
-<ParamField path="offset" type="integer" default="0">Results to skip.</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    Showing 3 of 269 service(s) (offset=0):
-
-    - **slack** (Slack) - 125 tool(s)
-    - **github** (GitHub) - 176 tool(s)
-    - **notion** (Notion) - 45 tool(s)
-
-    More services available. Call again with offset=3.
-
-    **Next steps:** Use a `service_name` above with `shanone_set_user_service_permission`,
-    `shanone_list_user_tool_permissions`, or `shanone_batch_set_user_permissions`.
-    ```
-  </Tab>
-</Tabs>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `limit` | integer | `100` | Maximum results per page. Maximum 500. |
+| `offset` | integer | `0` | Number of results to skip. |
 
 ### shanone_list_user_tool_permissions
 
-List a target user's service- and tool-level permission overrides.
+List a target user’s tool and service permission overrides.
 
-<ParamField path="target_user_id" type="string" required>The user_id to inspect.</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    User: usr_123
-    Role: member
-    Default (no override): disabled
-
-    Service-level overrides (2):
-    - slack: enabled
-    - stripe: disabled
-
-    Tool-level overrides (1):
-    - github_delete_repo: disabled
-    ```
-  </Tab>
-</Tabs>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
 
 ### shanone_set_user_tool_permission
 
-Enable/disable one specific tool for a target user. Always takes priority over a service-level override or role default.
+Allow or deny one tool for a target user. A tool override takes priority over a service override or role default.
 
-<ParamField path="target_user_id" type="string" required>The user_id to modify.</ParamField>
-<ParamField path="tool_name" type="string" required>The exact tool name.</ParamField>
-<ParamField path="enabled" type="boolean" required>True to allow, false to deny.</ParamField>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
+| `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
+| `enabled` | boolean | Required | true to allow; false to deny. |
 
 ### shanone_set_user_service_permission
 
-Enable/disable every tool of one service at once for a target user.
+Allow or deny the tools of a service for a target user, subject to individual tool overrides.
 
-<ParamField path="target_user_id" type="string" required>The user_id to modify.</ParamField>
-<ParamField path="service_name" type="string" required>The exact service name.</ParamField>
-<ParamField path="enabled" type="boolean" required>True to allow all tools of this service, false to deny.</ParamField>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
+| `service_name` | string | Required | Exact service name from list_services. |
+| `enabled` | boolean | Required | true to allow; false to deny. |
 
 ### shanone_get_permission_summary
 
-Aggregated summary of a target user's permissions.
+Summarize a target user’s enabled and disabled services and tools.
 
-<ParamField path="target_user_id" type="string" required>The user_id to summarize.</ParamField>
-
-<Tabs>
-  <Tab title="Example Response">
-    ```
-    User: usr_123
-    Role: member
-    Default (no override): disabled
-
-    Services: 12 enabled / 269 total (2 with explicit override)
-    Tools: 340 enabled / 9600 total (1 with explicit override)
-
-    Disabled services (257): stripe, ...
-    ```
-  </Tab>
-</Tabs>
-
----
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
 
 ### shanone_batch_set_user_permissions
 
-Enable/disable many services and/or tools for a target user in one call. Max 500 operations; individual failures don't abort the batch.
+Apply up to 500 service/tool permission operations in one call. Inspect each operation’s result; one failure does not abort the entire batch.
 
-<ParamField path="target_user_id" type="string" required>The user_id to modify.</ParamField>
-<ParamField path="operations" type="string" required>
-  JSON array string of `{"type": "service"|"tool", "name": "...", "enabled": true|false}`.
-</ParamField>
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
+| `operations` | string | Required | Non-empty JSON array string containing type (service or tool), name, and enabled; maximum 500 entries. |
 
-<Tabs>
-  <Tab title="Example Request">
-    ```json
-    {
-      "target_user_id": "usr_123",
-      "operations": "[{\"type\": \"service\", \"name\": \"slack\", \"enabled\": true}, {\"type\": \"service\", \"name\": \"stripe\", \"enabled\": false}]"
-    }
-    ```
-  </Tab>
-  <Tab title="Example Response">
-    ```
-    Applied 2 update(s) for user usr_123:
+```json
+{
+  "target_user_id": "user_example",
+  "operations": "[{\"type\":\"service\",\"name\":\"slack\",\"enabled\":true}]"
+}
+```
 
-    - service 'slack' -> enabled
-    - service 'stripe' -> disabled
-    ```
-  </Tab>
-</Tabs>
+## Parameter Policies
 
----
+### shanone_get_tool_parameter_policy
 
-## Error Responses
+Read the argument constraints configured for a target user’s tool. Tool access and allowed argument values are separate controls.
 
-| Situation | Response |
-|-----------|----------|
-| Unknown tool name | `Tool not found: <tool_name>` with a hint to use `shanone_search_tools` |
-| Unknown `skill_id` | `Skill not found: <skill_id>` with a hint to use `shanone_list_skills` |
-| Invalid JSON in `shanone_execute_tool`'s `arguments` | `Invalid JSON in arguments: ...` with the expected format |
-| Integration needs OAuth and isn't connected | `reason: "auth_required"` (or `"auth_expired"`) plus a `connect_link` |
-| High-risk action needs explicit confirmation | `reason: "confirmation_required"`; retry with `"confirm": true` |
-| Caller lacks permission for a Permission Vendor tool | `Permission Denied` — caller must be Root, or SA2 delegated `tool-permissions:ManageOthers` |
-| HTTP-level auth failure (bad/missing API key) | `401` with `error: "api_key_required"` or `"invalid_api_key"` |
-| Missing/invalid organization ID (direct `/mcp` connection only) | `401 org_id_required` or `403 invalid_org_id` |
-| Too many requests | `429` with `error: "rate_limit_exceeded"` and a `Retry-After` header |
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
+| `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
+
+### shanone_set_tool_parameter_policy
+
+Set or replace one field’s argument policy. Constraints are applied by the server during execution.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
+| `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
+| `field_name` | string | Required | Exact input parameter name to constrain. |
+| `policy_type` | string | Required | One of the policy types listed below. |
+| `policy_value` | string | `"{}"` | Policy configuration as a JSON object string; see the policy table below. |
+
+```json
+{
+  "target_user_id": "user_example",
+  "tool_name": "gmail_send_message",
+  "field_name": "to",
+  "policy_type": "domain_allowlist",
+  "policy_value": "{\"values\":[\"example.com\"]}"
+}
+```
+
+| policy_type | Example policy_value contents (encode as a JSON string) | Meaning |
+|---|---|---|
+| `allowlist / denylist` | `{"values":["a","b"]}` | Allow / reject listed values. |
+| `domain_allowlist` | `{"values":["example.com"]}` | Restrict domains. |
+| `pattern` | `{"value":"^[A-Z].*"}` | Require a regex match. |
+| `range` | `{"min":0,"max":100}` | Bound a numeric value. |
+| `max_length / max_items` | `{"value":200}` | Limit length / item count. |
+| `forced_value` | `{"value":"audit@example.com"}` | Always replace the value. |
+| `forced_append` | `{"value":"audit@example.com"}` | Append the configured value. |
+| `default_value` | `{"value":"user"}` | Fill only when omitted. |
+| `required_override` | `{}` | Require the field. |
+
+### shanone_delete_tool_parameter_policy
+
+Remove the policy on one field. This does not change the tool’s allow/deny permission.
+
+| Parameter | Type | Required / default | Description |
+|---|---|---|---|
+| `target_user_id` | string | Required | User whose permissions are being inspected or changed. |
+| `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
+| `field_name` | string | Required | Exact input parameter name to constrain. |
+
+## Errors and migration
+
+| Result | Action |
+|---|---|
+| `PLAN_UPGRADE_REQUIRED` | Upgrade to Plus or above. Denied calls are non-billable. |
+| `TOOL_CALL_LIMIT_EXCEEDED` | Check the plan allowance. The skill operation is not executed or billed. |
+| `SUBSCRIPTION_UNAVAILABLE` | Subscription data could not be verified. Retry later. |
+| `CONNECTION_SELECTION_REQUIRED` | Provide a Gmail ID returned by list_connections. |
+| `CONNECTION_NOT_FOUND` / `connection_not_found` | Check connection ownership and existence. Another account is not selected automatically. |
+| `401` / `403` | Check your API key, organization ID, and permissions. Distinguish transport errors from MCP plan denials. |
+
+`shanone_create_execution_context`, `shanone_get_execution_context`, and `shanone_switch_connection` have been removed. Refresh the client’s tool list and migrate to explicit connection IDs.
+
+`shanone_get_tool_usage` is a design proposal, not an available tool.
+
+[Configure your connection](/mcp/setup).

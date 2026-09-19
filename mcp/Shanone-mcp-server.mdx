@@ -1,148 +1,55 @@
 ---
 title: "Shanone MCP Server"
-description: "All 18 tools available on Shanone's MCP server — Tool Vendor, Skill Vendor, and Permission Vendor — with recommended workflows."
+description: "29 tools, plan availability, billing, and explicit account selection."
 ---
 
-The Shanone MCP Server gives any MCP-compatible client — Cursor, Claude Code, Codex, and others — programmatic access to Shanone's integration ecosystem, Skill library, and (for admins) permission controls, without exposing hundreds of individual integration actions to your agent's context window.
+Remote MCP exposes **29 tools**: one health check, four discovery/schema/execution tools, two connection tools, 13 skill tools, and nine service/permission tools.
 
-## Available Tools
+## Available tools
 
-Shanone exposes **18 tools**, organized into four groups:
+| Tool | Purpose | Plans and billing |
+|---|---|---|
+| [`shanone_health_check`](/mcp/tools-reference#shanone_health_check) | Check MCP connectivity, API-key authentication, and backend health. No provider credentials are tested. | Free+; non-billable |
+| [`shanone_search_tools`](/mcp/tools-reference#shanone_search_tools) | Search integration tools by keyword, ranked by relevance. Use list_service_tools when you need a complete service listing. | Free+; non-billable |
+| [`shanone_list_service_tools`](/mcp/tools-reference#shanone_list_service_tools) | List tools for one service with pagination. Follow subsequent pages to retrieve the full list. | Free+; non-billable |
+| [`shanone_get_tool_schema`](/mcp/tools-reference#shanone_get_tool_schema) | Get the input JSON Schema for an integration tool before executing it. | Free+; non-billable |
+| [`shanone_list_connections`](/mcp/tools-reference#shanone_list_connections) | List saved connections visible to the caller. Stored configuration is not proof that authentication still works. | Free+; non-billable |
+| [`shanone_check_connection`](/mcp/tools-reference#shanone_check_connection) | Verify saved connections using read-only provider APIs. Omitting service checks all connected services, with pagination. | Free+; non-billable |
+| [`shanone_execute_tool`](/mcp/tools-reference#shanone_execute_tool) | Execute an integration tool. Inspect both the execution envelope and the provider result; completing a tool invocation does not by itself prove the provider operation succeeded. | Free+; per executed tool |
+| [`shanone_list_skills`](/mcp/tools-reference#shanone_list_skills) | List saved skills, newest first. The query is optional; an empty query lists your saved skills with pagination. | Plus+; billable on success |
+| [`shanone_get_skill`](/mcp/tools-reference#shanone_get_skill) | Read a skill’s name, summary, and full instructions. The agent follows the instructions itself; this call does not execute the workflow. | Plus+; billable on success |
+| [`shanone_create_skill`](/mcp/tools-reference#shanone_create_skill) | Create a reusable skill. All three fields must be non-empty. description and body are stored as summary and instructions. | Plus+; billable on success |
+| [`shanone_update_skill`](/mcp/tools-reference#shanone_update_skill) | Update an existing skill. Only non-empty optional fields are changed; empty strings leave the existing values unchanged. | Plus+; billable on success |
+| [`shanone_delete_skill`](/mcp/tools-reference#shanone_delete_skill) | Permanently delete a skill. | Plus+; billable on success |
+| [`shanone_list_skill_files`](/mcp/tools-reference#shanone_list_skill_files) | List additional files bundled with a skill, including paths and sizes. The main instructions are read with get_skill. | Plus+; billable on success |
+| [`shanone_read_skill_file`](/mcp/tools-reference#shanone_read_skill_file) | Read a text file bundled with a skill. Binary files return a description instead of their contents; use the dashboard to view or download them. | Plus+; billable on success |
+| [`shanone_write_skill_file`](/mcp/tools-reference#shanone_write_skill_file) | Create or overwrite a UTF-8 text file. Missing parent folders are created automatically. | Plus+; billable on success |
+| [`shanone_delete_skill_file`](/mcp/tools-reference#shanone_delete_skill_file) | Delete one file bundled with a skill. | Plus+; billable on success |
+| [`shanone_grep_skill`](/mcp/tools-reference#shanone_grep_skill) | Search skill files with a regular expression. Results include file paths and line numbers; narrow the pattern if results are truncated. | Plus+; billable on success |
+| [`shanone_create_skill_folder`](/mcp/tools-reference#shanone_create_skill_folder) | Create an empty skill folder. This is optional before writing files because write_skill_file creates parent folders. | Plus+; billable on success |
+| [`shanone_delete_skill_folder`](/mcp/tools-reference#shanone_delete_skill_folder) | Delete a folder and all files and subfolders inside it. This operation cannot be undone. | Plus+; billable on success |
+| [`shanone_rename_skill_path`](/mcp/tools-reference#shanone_rename_skill_path) | Rename or move a file or folder. Moving a folder moves its contents. An existing destination is rejected rather than overwritten. | Plus+; billable on success |
+| [`shanone_list_services`](/mcp/tools-reference#shanone_list_services) | List registered service names, display names, and tool counts. No administrator role is required. | Free+; non-billable |
+| [`shanone_list_user_tool_permissions`](/mcp/tools-reference#shanone_list_user_tool_permissions) | List a target user’s tool and service permission overrides. | Free+; non-billable |
+| [`shanone_set_user_tool_permission`](/mcp/tools-reference#shanone_set_user_tool_permission) | Allow or deny one tool for a target user. A tool override takes priority over a service override or role default. | Free+; non-billable |
+| [`shanone_set_user_service_permission`](/mcp/tools-reference#shanone_set_user_service_permission) | Allow or deny the tools of a service for a target user, subject to individual tool overrides. | Free+; non-billable |
+| [`shanone_get_permission_summary`](/mcp/tools-reference#shanone_get_permission_summary) | Summarize a target user’s enabled and disabled services and tools. | Free+; non-billable |
+| [`shanone_batch_set_user_permissions`](/mcp/tools-reference#shanone_batch_set_user_permissions) | Apply up to 500 service/tool permission operations in one call. Inspect each operation’s result; one failure does not abort the entire batch. | Free+; non-billable |
+| [`shanone_get_tool_parameter_policy`](/mcp/tools-reference#shanone_get_tool_parameter_policy) | Read the argument constraints configured for a target user’s tool. Tool access and allowed argument values are separate controls. | Free+; non-billable |
+| [`shanone_set_tool_parameter_policy`](/mcp/tools-reference#shanone_set_tool_parameter_policy) | Set or replace one field’s argument policy. Constraints are applied by the server during execution. | Free+; non-billable |
+| [`shanone_delete_tool_parameter_policy`](/mcp/tools-reference#shanone_delete_tool_parameter_policy) | Remove the policy on one field. This does not change the tool’s allow/deny permission. | Free+; non-billable |
 
-### Health Check (1 tool)
+API-key, user, and resource permissions apply separately from plan availability. Managing or inspecting another user’s permissions requires Root or delegated SA2 access.
 
-| Tool | Description |
-|------|-------------|
-| `shanone_health_check` | Verify connectivity, API key validity, and backend health. Returns a plain-text status screen. |
+## Recommended workflows
 
-### Tool Vendor (4 tools)
+1. **Provider tools:** search_tools or list_service_tools → get_tool_schema → execute_tool.
+2. **Gmail accounts:** list_connections → check_connection when needed → execute_tool with an explicit connection_id.
+3. **Skills (Plus+):** list_skills → get_skill → the agent follows the instructions. Bundled files can also be listed, read, and searched.
+4. **Administration:** list_services → set permissions or argument constraints → inspect get_permission_summary.
 
-| Tool | Description |
-|------|-------------|
-| `shanone_search_tools` | Search the integration catalog by keyword (relevance-ranked) |
-| `shanone_list_service_tools` | List every tool for one service, in name order (for full enumeration) |
-| `shanone_get_tool_schema` | Get a tool's input JSON Schema |
-| `shanone_execute_tool` | Execute a tool with arguments; returns a `connect_link` if OAuth is needed |
+## Usage and allowance
 
-### Skill Vendor (5 tools)
+Administrative calls are recorded in Analytics without consuming billable allowance. Skills consume one Tool Call only on success. A connection check and its internal probes are non-billable, and only the parent call is counted. Provider execution follows the underlying tool’s normal billing rules.
 
-| Tool | Description |
-|------|-------------|
-| `shanone_list_skills` | List saved Skills (metadata only), newest first |
-| `shanone_get_skill` | Get a Skill's full instructions |
-| `shanone_create_skill` | Save a new reusable Skill |
-| `shanone_update_skill` | Update an existing Skill's name/summary/instructions |
-| `shanone_delete_skill` | Permanently delete a Skill |
-
-### Permission Vendor (6 tools — Root / delegated SA2 only, except the first)
-
-| Tool | Description |
-|------|-------------|
-| `shanone_list_services` | List every registered service, with tool counts (no special permission required) |
-| `shanone_list_user_tool_permissions` | List a target user's permission overrides |
-| `shanone_set_user_tool_permission` | Enable/disable one specific tool for a target user |
-| `shanone_set_user_service_permission` | Enable/disable all tools of a service for a target user |
-| `shanone_get_permission_summary` | Aggregated counts of a target user's enabled/disabled access |
-| `shanone_batch_set_user_permissions` | Apply up to 500 service/tool operations for a target user at once |
-
-<Note>
-For full parameters, response formats, and examples for every tool, see the [Tools Reference](/mcp/tools-reference).
-</Note>
-
-## Authentication
-
-The Shanone MCP Server requires an API key. Get one from **Settings → API Keys** in the Shanone dashboard — it's shown once, in the form `sh_xxxxxxxxxxxxxxxx`.
-
-Send it as `Authorization: Bearer <api_key>` (or `X-API-Key: <api_key>`) with every request. If you connect directly to the remote endpoint (rather than through the local stdio proxy), you also need your organization ID as `X-Org-Id` — see [Setup](/mcp/setup) for exact client configuration.
-
-<Warning>
-Keep your API key secure. Do not commit it to version control or share it publicly.
-</Warning>
-
-## Recommended Workflows
-
-### Tool Vendor: search → schema → execute
-
-<Steps>
-  <Step title="Search for a tool">
-    Call `shanone_search_tools` with a task-shaped natural-language query (optionally filtered by `service`).
-  </Step>
-  <Step title="Inspect its schema (if needed)">
-    Call `shanone_get_tool_schema` with the exact tool name to see required and optional arguments.
-  </Step>
-  <Step title="Execute it">
-    Call `shanone_execute_tool` with the tool name and a JSON string of arguments. If the underlying service requires authentication you haven't set up, the response includes a `connect_link` — visit it, then retry.
-  </Step>
-</Steps>
-
-### Skill Vendor: list → get → follow → save
-
-<Steps>
-  <Step title="Check for an existing Skill">
-    Call `shanone_list_skills` before starting a task — it returns all your saved Skills (optionally filtered by `query`), paginated.
-  </Step>
-  <Step title="Read its instructions">
-    Call `shanone_get_skill` with a `skill_id` to get the full step-by-step instructions.
-  </Step>
-  <Step title="Follow the instructions">
-    Your agent executes the steps itself, using `shanone_search_tools` / `shanone_execute_tool` for any integration actions along the way.
-  </Step>
-  <Step title="Save new workflows">
-    Once you've built a workflow worth reusing, call `shanone_create_skill` so it's available from any machine or agent later.
-  </Step>
-</Steps>
-
-### Permission Vendor: for team administrators
-
-<Steps>
-  <Step title="Look up service names">
-    Call `shanone_list_services` (no special role required) to get exact `service_name` values.
-  </Step>
-  <Step title="Apply overrides">
-    Call `shanone_set_user_service_permission` / `shanone_set_user_tool_permission` for one change, or `shanone_batch_set_user_permissions` for many at once.
-  </Step>
-  <Step title="Verify">
-    Call `shanone_get_permission_summary` for the same user to confirm the change landed as intended.
-  </Step>
-</Steps>
-
-## Use Cases
-
-### Discover and use an integration from your IDE
-
-```
-"Post 'Deploy finished' to Slack #general"
-"Create a GitHub issue titled 'Fix login redirect bug' in owner/repo"
-"Search for tools related to Notion"
-```
-
-Your agent will call `shanone_search_tools`, then `shanone_execute_tool` (fetching the schema first if it's unsure of the arguments).
-
-### Handle authentication mid-task
-
-```
-"Send a message to my team on Slack"
-```
-
-If Slack isn't connected yet, `shanone_execute_tool` returns `success: false` with `reason: "auth_required"` and a `connect_link`. Your agent should surface that link, wait for you to authenticate, then retry the same call.
-
-### Save and reuse a workflow as a Skill
-
-```
-"Save this as a skill called 'Weekly Status Report'"
-"List my saved skills"
-"Run my 'Weekly Status Report' skill"
-```
-
-Skills created this way also appear in Shanone's web dashboard under **Skills**.
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Setup Guide" icon="wrench" href="/mcp/setup">
-    Configure the Shanone MCP Server in Cursor, Claude Code, or Codex
-  </Card>
-  <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
-    Detailed documentation for all 18 tools
-  </Card>
-</CardGroup>
+[All parameters and errors](/mcp/tools-reference) · [Setup](/mcp/setup)

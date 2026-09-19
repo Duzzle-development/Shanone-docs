@@ -1,148 +1,55 @@
 ---
-title: "Shanone MCPサーバー"
-description: "Shanone MCPサーバーで利用可能な全18ツール——Tool Vendor、Skill Vendor、Permission Vendor——と、推奨されるワークフロー。"
+title: "Shanone MCP サーバー"
+description: "29ツールの構成、プラン、課金とアカウント選択。"
 ---
 
-Shanone MCPサーバーは、Cursor、Claude Code、Codexなど、MCP対応のあらゆるクライアントに、Shanoneの連携エコシステム、Skillライブラリ、そして(管理者であれば)権限管理へのプログラムによるアクセスを提供します。しかも、数百個の個別の連携アクションをエージェントのコンテキストウィンドウにさらすことはありません。
+Remote MCP は **29ツール**を公開します。内訳はヘルスチェック１、検索・スキーマ・実行４、接続管理２、スキル13、サービス・権限管理９です。
 
-## 利用可能なツール
+## ツール一覧
 
-Shanoneは**18個のツール**を、4つのグループに分けて公開しています。
+| ツール | 用途 | プラン・課金 |
+|---|---|---|
+| [`shanone_health_check`](/ja/mcp/tools-reference#shanone_health_check) | MCP の接続、API キー認証、バックエンドの稼働状態を確認します。外部サービスの認証は検証しません。 | Free 以上・非課金 |
+| [`shanone_search_tools`](/ja/mcp/tools-reference#shanone_search_tools) | キーワードで連携ツールを検索し、関連度順に返します。サービスの全ツールを列挙する場合は list_service_tools を使います。 | Free 以上・非課金 |
+| [`shanone_list_service_tools`](/ja/mcp/tools-reference#shanone_list_service_tools) | 指定サービスのツールをページ単位で取得します。全件取得する場合は後続ページも取得してください。 | Free 以上・非課金 |
+| [`shanone_get_tool_schema`](/ja/mcp/tools-reference#shanone_get_tool_schema) | 実行する連携ツールの入力 JSON Schema を取得します。 | Free 以上・非課金 |
+| [`shanone_list_connections`](/ja/mcp/tools-reference#shanone_list_connections) | 呼出元が参照できる保存済み接続を一覧表示します。登録済みであることは、認証が現在も有効であることを意味しません。 | Free 以上・非課金 |
+| [`shanone_check_connection`](/ja/mcp/tools-reference#shanone_check_connection) | 読み取り専用の外部 API を使い、保存済み接続の有効性を確認します。service を省略すると、接続済みサービスをページ単位で確認します。 | Free 以上・非課金 |
+| [`shanone_execute_tool`](/ja/mcp/tools-reference#shanone_execute_tool) | 連携ツールを実行します。実行結果の外側のステータスと外部サービスの結果を確認してください。呼び出しの完了だけで業務処理の成功とは判断しません。 | Free 以上・実行先に従う |
+| [`shanone_list_skills`](/ja/mcp/tools-reference#shanone_list_skills) | 保存済みスキルを新しい順に一覧表示します。query は任意で、空の場合は対象の保存済みスキルをページ単位で取得します。 | Plus 以上・成功時課金 |
+| [`shanone_get_skill`](/ja/mcp/tools-reference#shanone_get_skill) | スキルの名前、説明、指示本文を取得します。指示の実行は呼出元のエージェントが行い、この呼び出し自体がワークフローを実行するわけではありません。 | Plus 以上・成功時課金 |
+| [`shanone_create_skill`](/ja/mcp/tools-reference#shanone_create_skill) | 再利用可能なスキルを作成します。３項目すべてに空でない値が必要です。description と body は summary と instructions として保存されます。 | Plus 以上・成功時課金 |
+| [`shanone_update_skill`](/ja/mcp/tools-reference#shanone_update_skill) | 既存スキルを更新します。任意項目は空でない値だけを更新し、空文字の場合は既存の値を保持します。 | Plus 以上・成功時課金 |
+| [`shanone_delete_skill`](/ja/mcp/tools-reference#shanone_delete_skill) | スキルを完全に削除します。 | Plus 以上・成功時課金 |
+| [`shanone_list_skill_files`](/ja/mcp/tools-reference#shanone_list_skill_files) | スキルに付属する追加ファイルのパスやサイズを一覧表示します。指示本文は get_skill で取得します。 | Plus 以上・成功時課金 |
+| [`shanone_read_skill_file`](/ja/mcp/tools-reference#shanone_read_skill_file) | スキルのテキストファイルを読み取ります。バイナリの場合は内容の代わりに説明を返すため、表示やダウンロードにはダッシュボードを使ってください。 | Plus 以上・成功時課金 |
+| [`shanone_write_skill_file`](/ja/mcp/tools-reference#shanone_write_skill_file) | UTF-8 テキストファイルを作成、または上書きします。親フォルダーがなければ自動作成します。 | Plus 以上・成功時課金 |
+| [`shanone_delete_skill_file`](/ja/mcp/tools-reference#shanone_delete_skill_file) | スキルに付属するファイルを１件削除します。 | Plus 以上・成功時課金 |
+| [`shanone_grep_skill`](/ja/mcp/tools-reference#shanone_grep_skill) | 正規表現でスキルファイルを検索します。結果にはパスと行番号が含まれます。打ち切られた場合は検索条件を絞ってください。 | Plus 以上・成功時課金 |
+| [`shanone_create_skill_folder`](/ja/mcp/tools-reference#shanone_create_skill_folder) | スキル内に空のフォルダーを作成します。write_skill_file は親フォルダーを作成するため、ファイル書き込み前の必須操作ではありません。 | Plus 以上・成功時課金 |
+| [`shanone_delete_skill_folder`](/ja/mcp/tools-reference#shanone_delete_skill_folder) | フォルダーと、その中のファイル・サブフォルダーを削除します。元に戻せない操作です。 | Plus 以上・成功時課金 |
+| [`shanone_rename_skill_path`](/ja/mcp/tools-reference#shanone_rename_skill_path) | ファイルまたはフォルダーを移動・改名します。フォルダーの内容も移動します。移動先が存在する場合は上書きせずエラーになります。 | Plus 以上・成功時課金 |
+| [`shanone_list_services`](/ja/mcp/tools-reference#shanone_list_services) | 登録済みサービスの名前、表示名、ツール数を取得します。管理者ロールは不要です。 | Free 以上・非課金 |
+| [`shanone_list_user_tool_permissions`](/ja/mcp/tools-reference#shanone_list_user_tool_permissions) | 対象ユーザーのツール・サービス権限の個別設定を一覧表示します。 | Free 以上・非課金 |
+| [`shanone_set_user_tool_permission`](/ja/mcp/tools-reference#shanone_set_user_tool_permission) | 対象ユーザーの１つのツールを許可・拒否します。ツール単位の設定は、サービス単位やロールの既定設定より優先されます。 | Free 以上・非課金 |
+| [`shanone_set_user_service_permission`](/ja/mcp/tools-reference#shanone_set_user_service_permission) | 対象ユーザーのサービス単位のツール利用を許可・拒否します。ツール単位の個別設定がある場合はそちらが優先されます。 | Free 以上・非課金 |
+| [`shanone_get_permission_summary`](/ja/mcp/tools-reference#shanone_get_permission_summary) | 対象ユーザーの許可・拒否されたサービスとツールを集計します。 | Free 以上・非課金 |
+| [`shanone_batch_set_user_permissions`](/ja/mcp/tools-reference#shanone_batch_set_user_permissions) | 最大500件のサービス・ツール権限操作をまとめて適用します。１件の失敗で全体は中断しないため、各操作の結果を確認してください。 | Free 以上・非課金 |
+| [`shanone_get_tool_parameter_policy`](/ja/mcp/tools-reference#shanone_get_tool_parameter_policy) | 対象ユーザーのツールに設定された引数制約を取得します。ツールの利用可否と、許可する引数の値は別の制御です。 | Free 以上・非課金 |
+| [`shanone_set_tool_parameter_policy`](/ja/mcp/tools-reference#shanone_set_tool_parameter_policy) | １つの引数フィールドの制約を設定・置換します。制約は実行時にサーバー側で適用されます。 | Free 以上・非課金 |
+| [`shanone_delete_tool_parameter_policy`](/ja/mcp/tools-reference#shanone_delete_tool_parameter_policy) | １つの引数フィールドの制約を削除します。ツール自体の許可・拒否設定は変更しません。 | Free 以上・非課金 |
 
-### Health Check(1ツール)
+プランとは別に、API キー・ユーザー・リソースの権限を確認します。権限の変更・他ユーザーの権限参照には Root または委任された SA2 権限が必要です。
 
-| ツール | 説明 |
-|------|-------------|
-| `shanone_health_check` | 接続性、APIキーの有効性、バックエンドの健全性を確認します。プレーンテキストのステータス画面を返します。 |
+## 推奨する使い方
 
-### Tool Vendor(4ツール)
+1. **外部ツール:** search_tools または list_service_tools → get_tool_schema → execute_tool。
+2. **Gmail のアカウント選択:** list_connections → 必要に応じて check_connection → connection_id を明示して execute_tool。
+3. **スキル（Plus 以上）:** list_skills → get_skill → エージェントが指示に沿って実行。追加ファイルも一覧・読み取り・検索できます。
+4. **管理操作:** list_services → 権限・引数制約の設定 → get_permission_summary などで確認。
 
-| ツール | 説明 |
-|------|-------------|
-| `shanone_search_tools` | キーワードで連携カタログを検索します(関連度でランク付け) |
-| `shanone_list_service_tools` | 1つのサービスの全ツールを名前順に列挙します(完全な一覧が必要な場合) |
-| `shanone_get_tool_schema` | ツールの入力JSON Schemaを取得します |
-| `shanone_execute_tool` | 引数を指定してツールを実行します。OAuthが必要な場合は`connect_link`を返します |
+## 集計と利用枠
 
-### Skill Vendor(5ツール)
+管理操作は非課金でも Analytics に記録されます。スキルは成功時だけ１回分を消費します。接続確認は内部の確認用 API を含めて非課金で、親１回だけを集計します。外部ツールの実行は実行先の通常の課金ルールに従います。
 
-| ツール | 説明 |
-|------|-------------|
-| `shanone_list_skills` | 保存済みのSkill(メタデータのみ)を新しい順に一覧表示します |
-| `shanone_get_skill` | Skillの完全な指示内容を取得します |
-| `shanone_create_skill` | 新しい再利用可能なSkillを保存します |
-| `shanone_update_skill` | 既存のSkillの名前/概要/指示内容を更新します |
-| `shanone_delete_skill` | Skillを完全に削除します |
-
-### Permission Vendor(6ツール——最初の1つを除き、RootまたはSA2委任ユーザーのみ)
-
-| ツール | 説明 |
-|------|-------------|
-| `shanone_list_services` | 登録済みの全サービスをツール数とともに一覧表示します(特別な権限は不要) |
-| `shanone_list_user_tool_permissions` | 対象ユーザーの権限オーバーライドを一覧表示します |
-| `shanone_set_user_tool_permission` | 対象ユーザーに対して特定の1ツールを有効/無効にします |
-| `shanone_set_user_service_permission` | 対象ユーザーに対してあるサービスの全ツールを有効/無効にします |
-| `shanone_get_permission_summary` | 対象ユーザーの有効/無効なアクセス数の集計を取得します |
-| `shanone_batch_set_user_permissions` | 対象ユーザーに対して、最大500件のサービス/ツール操作を一度に適用します |
-
-<Note>
-すべてのツールの完全なパラメータ、レスポンス形式、例については、[ツールリファレンス](/ja/mcp/tools-reference)を参照してください。
-</Note>
-
-## 認証
-
-Shanone MCPサーバーの利用にはAPIキーが必要です。Shanoneダッシュボードの**Settings → API Keys**から取得できます——キーは1度だけ`sh_xxxxxxxxxxxxxxxx`という形式で表示されます。
-
-すべてのリクエストで`Authorization: Bearer <api_key>`(または`X-API-Key: <api_key>`)として送信してください。(ローカルstdioプロキシ経由ではなく)リモートエンドポイントに直接接続する場合は、組織ID(organization ID)も`X-Org-Id`として必要です——正確なクライアント設定については[セットアップ](/ja/mcp/setup)を参照してください。
-
-<Warning>
-APIキーは安全に管理してください。バージョン管理にコミットしたり、公開して共有したりしないでください。
-</Warning>
-
-## 推奨ワークフロー
-
-### Tool Vendor: 検索 → スキーマ確認 → 実行
-
-<Steps>
-  <Step title="ツールを検索する">
-    タスクの内容を表す自然言語のクエリで`shanone_search_tools`を呼び出します(必要に応じて`service`で絞り込み可能)。
-  </Step>
-  <Step title="必要ならスキーマを確認する">
-    正確なツール名で`shanone_get_tool_schema`を呼び出し、必須・任意の引数を確認します。
-  </Step>
-  <Step title="実行する">
-    ツール名と引数のJSON文字列で`shanone_execute_tool`を呼び出します。対象サービスに未設定の認証が必要な場合、レスポンスには`connect_link`が含まれます——それにアクセスしてから再試行してください。
-  </Step>
-</Steps>
-
-### Skill Vendor: 一覧 → 取得 → 実行 → 保存
-
-<Steps>
-  <Step title="既存のSkillを確認する">
-    タスクを始める前に`shanone_list_skills`を呼び出します——保存済みのSkillをすべて(任意で`query`で絞り込み可能)、ページ分割して返します。
-  </Step>
-  <Step title="指示内容を読む">
-    `skill_id`を指定して`shanone_get_skill`を呼び出し、完全なステップバイステップの指示内容を取得します。
-  </Step>
-  <Step title="指示に従う">
-    エージェント自身がその手順を実行し、連携アクションが必要な箇所では`shanone_search_tools` / `shanone_execute_tool`を使用します。
-  </Step>
-  <Step title="新しいワークフローを保存する">
-    再利用する価値のあるワークフローを構築したら、`shanone_create_skill`を呼び出しておけば、後で別のマシンやエージェントからでも利用できます。
-  </Step>
-</Steps>
-
-### Permission Vendor: チーム管理者向け
-
-<Steps>
-  <Step title="サービス名を確認する">
-    `shanone_list_services`を呼び出し(特別な権限は不要)、正確な`service_name`の値を取得します。
-  </Step>
-  <Step title="オーバーライドを適用する">
-    1件の変更であれば`shanone_set_user_service_permission` / `shanone_set_user_tool_permission`を、まとめて多数の変更を行うなら`shanone_batch_set_user_permissions`を呼び出します。
-  </Step>
-  <Step title="確認する">
-    同じユーザーに対して`shanone_get_permission_summary`を呼び出し、変更が意図どおりに反映されたことを確認します。
-  </Step>
-</Steps>
-
-## 利用例
-
-### IDEから連携を見つけて使う
-
-```
-"Post 'Deploy finished' to Slack #general"
-"Create a GitHub issue titled 'Fix login redirect bug' in owner/repo"
-"Search for tools related to Notion"
-```
-
-エージェントは`shanone_search_tools`を呼び出し、続いて`shanone_execute_tool`を呼び出します(引数が不明な場合はまずスキーマを取得します)。
-
-### タスクの途中で認証を処理する
-
-```
-"Send a message to my team on Slack"
-```
-
-Slackがまだ接続されていない場合、`shanone_execute_tool`は`success: false`と`reason: "auth_required"`、そして`connect_link`を返します。エージェントはそのリンクを提示し、認証が完了するのを待ってから、同じ呼び出しを再試行してください。
-
-### ワークフローをSkillとして保存し再利用する
-
-```
-"Save this as a skill called 'Weekly Status Report'"
-"List my saved skills"
-"Run my 'Weekly Status Report' skill"
-```
-
-この方法で作成されたSkillは、Shanoneのウェブダッシュボードの**Skills**にも表示されます。
-
-## 次のステップ
-
-<CardGroup cols={2}>
-  <Card title="セットアップガイド" icon="wrench" href="/ja/mcp/setup">
-    Cursor、Claude Code、CodexでShanone MCPサーバーを設定する
-  </Card>
-  <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
-    全18ツールの詳細なドキュメント
-  </Card>
-</CardGroup>
+[全パラメーターとエラー](/ja/mcp/tools-reference) · [接続設定](/ja/mcp/setup)

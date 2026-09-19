@@ -1,83 +1,48 @@
 ---
 title: "MCP Overview"
-description: "How Shanone exposes 269+ integrations, Skills, and permission management through a small set of MCP meta-tools."
+description: "Shanone MCP tools, transports, plan availability, and usage accounting."
 ---
 
-## What is MCP?
+Shanone uses the Model Context Protocol (MCP) to give AI clients access to external services, saved skills, and permission management. Remote MCP exposes **29 tools**.
 
-The **Model Context Protocol (MCP)** is an open standard for connecting AI applications to external tools and data sources — think of it as a standardized port that lets any compatible client (Cursor, Claude Code, Codex, etc.) talk to any compatible server without custom integration code per pair.
+## Discover and execute tools
 
-Shanone *is* an MCP server: connect once, and any MCP client gets programmatic access to Shanone's integration catalog, Skill library, and (for admins) permission-management tools.
+Instead of registering every provider API operation as an MCP tool, discover the operation you need:
 
-## Why a meta-tool pattern, not one tool per action
+1. Find it with `shanone_search_tools` or `shanone_list_service_tools`.
+2. Inspect its input parameters with `shanone_get_tool_schema`.
+3. Pass its name and arguments to `shanone_execute_tool`.
 
-Shanone's backend implements 269+ service integrations, each with dozens to hundreds of individual actions (Stripe alone has 328). Registering every single action as its own MCP tool would flood your agent's context window before it even started working. Instead, Shanone follows a **Tool Vendor** pattern — similar to how Composio structures its catalog — exposing a small, fixed set of meta-tools that search, inspect, and execute against the full catalog on demand:
+When provider OAuth is required, follow the connection instructions in the execution result. For Gmail, select an account with `shanone_list_connections` and pass an explicit `connection_id` when executing. Use `shanone_check_connection` to verify whether stored connections still work.
 
-<CardGroup cols={2}>
-  <Card title="shanone_search_tools" icon="magnifying-glass">
-    Find the right tool by describing the task in natural language
-  </Card>
-  <Card title="shanone_list_service_tools" icon="list">
-    Enumerate every tool for one service, for "what can I do with X" questions
-  </Card>
-  <Card title="shanone_get_tool_schema" icon="code">
-    See a tool's exact input schema before calling it
-  </Card>
-  <Card title="shanone_execute_tool" icon="zap">
-    Run it, with OAuth handled automatically via a returned `connect_link`
-  </Card>
-</CardGroup>
+## Connection methods
 
-A parallel **Skill Vendor** pattern does the same for reusable, saved workflows (`shanone_list_skills` → `shanone_get_skill`), and a **Permission Vendor** set of tools lets Root/delegated administrators control who can use what.
+| Transport | Behavior |
+|---|---|
+| Remote MCP (Streamable HTTP) | Connect to `https://mcp.shanone.ai/mcp`. The 29 tools and parameters in this documentation describe this transport. |
+| Local stdio proxy | Run the npm package `@duzzle/shanone-mcp` or Python package `shanone-mcp` to forward calls to Shanone’s REST API. Available tools and argument formats depend on the package and version. |
 
-## Server architecture
+Use Remote MCP for all 29 tools. Check MCP `tools/list` for the tools actually exposed by your connection. For example, `shanone_execute_tool.arguments` is a JSON string on Remote MCP and an object in the Node.js proxy.
 
-Shanone actually ships two things that both speak MCP, sharing the exact same tool set:
+## Authentication and access control
 
-| Component | Transport | What it is |
-|-----------|-----------|-----------|
-| **Remote MCP server** | Streamable HTTP at `/mcp` | Runs inside Shanone's backend process itself. Calls `src.services.tool_vendor` directly — no extra network hop. This is what the `X-Org-Id`-gated direct connection in [Setup](/mcp/setup) talks to. |
-| **Local stdio proxy** (`@duzzle/shanone-mcp` npm package, or the Python `apps/mcp-server` package) | stdio | Runs on your machine, forwards each MCP tool call to Shanone's REST API (`/api/v1/tools/...`, `/api/v1/skills/...`, `/api/v1/permissions/...`) over HTTPS using your API key. This is the easiest path for clients that don't support custom HTTP headers. |
+Remote MCP requires an API key (`Authorization: Bearer sh_...`, or `X-API-Key`) and an organization ID (`X-Org-Id`, or the `org_id` query parameter). The organization ID identifies the organization being accessed. Configure `SHANONE_API_KEY` for a local proxy.
 
-Both expose the same meta-tools with the same names and parameters — pick whichever transport your client supports better. See [Setup](/mcp/setup) for exact configuration.
+Plan availability does not replace API-key scopes, user permissions, resource access, or provider connections. Managing other users’ permissions requires Root or delegated SA2 access.
 
-## Authentication
+## Tool categories and billing
 
-Every request — whether through the direct HTTP endpoint or the local proxy — is authenticated with your Shanone API key:
+| Category | Count | Plans | Tool Call consumption |
+|---|---|---|---|
+| Health check | 1 | Free and above | Non-billable |
+| Provider discovery, listing, and schema | 3 | Free and above | Non-billable |
+| Provider execution | 1 | Free and above | Underlying tool’s billing rules |
+| Connection listing and verification | 2 | Free and above | Non-billable |
+| Skills, files, and folders | 13 | Plus / Pro / Team / Enterprise | 1 on success |
+| Service listing, permissions, and argument policies | 9 | Free and above | Non-billable |
 
-```
-Authorization: Bearer sh_xxxxxxxxxxxxxxxx
-```
+Free users can still discover all 13 skill tools, including their names, descriptions, and input schemas. The server checks the plan at execution time and returns `PLAN_UPGRADE_REQUIRED` before accessing skill data on Free.
 
-(`X-API-Key: sh_xxx` also works.) The **direct remote endpoint** additionally requires your organization ID as a second, composite factor — sent as an `X-Org-Id` header or `?org_id=` query parameter — so a leaked API key alone can't be used to call your tools. The local stdio proxy doesn't need this second factor; it only requires the API key. See [Authentication](/api-reference/authentication) for the full picture, including rate limits.
+Non-billable tools are also recorded in Analytics. Connection verification counts one parent call, not each internal API probe. Provider execution is recorded under the actual provider tool name without adding a separate `shanone_execute_tool` count. “Billable” means consuming your plan’s Tool Call allowance, not necessarily an additional monetary charge.
 
-## Tool categories
-
-<CardGroup cols={2}>
-  <Card title="Tool Vendor" icon="wrench" href="/mcp/tools-reference#tool-vendor">
-    Search, inspect, and execute any of the 269+ integrations
-  </Card>
-  <Card title="Skill Vendor" icon="bookmark" href="/mcp/tools-reference#skill-vendor">
-    Save and reuse multi-step workflows across machines and agents
-  </Card>
-  <Card title="Permission Vendor" icon="shield-check" href="/mcp/tools-reference#permission-vendor">
-    Root/SA2-only tools for controlling teammates' tool and service access
-  </Card>
-  <Card title="Health Check" icon="heart-pulse" href="/mcp/tools-reference#health-check">
-    Verify your API key and connection before anything else
-  </Card>
-</CardGroup>
-
-## Next steps
-
-<CardGroup cols={2}>
-  <Card title="Shanone MCP Server" icon="server" href="/mcp/Shanone-mcp-server">
-    All available tools, at a glance, with recommended workflows
-  </Card>
-  <Card title="Setup Guide" icon="wrench" href="/mcp/setup">
-    Exact configuration for Cursor, Claude Code, and Codex
-  </Card>
-  <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
-    Full parameters, examples, and error responses for every tool
-  </Card>
-</CardGroup>
+[Tool catalog](/mcp/Shanone-mcp-server) · [All parameters and errors](/mcp/tools-reference) · [Setup](/mcp/setup)

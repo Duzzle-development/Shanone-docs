@@ -1,16 +1,16 @@
 ---
 title: "セットアップ"
-description: "Cursor、Claude Code、CodexでShanone MCPサーバーを設定する——ローカルstdioプロキシ経由(推奨)、またはリモートHTTPへの直接接続。"
+description: "Remote MCP またはローカル stdio プロキシで Shanone に接続する。"
 ---
 
-Shanoneには2つの接続方法があります。ほとんどのクライアントは**ローカルstdioプロキシ**を使うべきです——設定が簡単で、必要なのはAPIキーだけです。カスタムHTTPヘッダーをうまく扱えるクライアント(Cursorなど)であれば、代わりにShanoneのリモートエンドポイントに**直接**接続することもできます。この場合ローカルプロセスを動かす必要はありません。
+全 29 ツールを利用するには、**Remote MCP（Streamable HTTP）** に直接接続してください。ローカル stdio プロキシも利用できますが、公開ツールとパラメーターはパッケージ・バージョンによって異なります。実際の一覧は MCP の `tools/list` で確認できます。
 
 | | ローカルstdioプロキシ | リモートHTTP直接接続 |
 |---|---|---|
-| パッケージ/URL | `@duzzle/shanone-mcp`(npm) | `https://app.shanone.ai/mcp` |
+| パッケージ/URL | `@duzzle/shanone-mcp`(npm) | `https://mcp.shanone.ai/mcp` |
 | ローカルにNode.jsが必要か | 必要(18以上) | 不要 |
 | 必要な認証 | APIキーのみ | APIキー**と**組織ID |
-| 向いている用途 | ほとんどのクライアント、最も簡単な設定 | カスタムヘッダーの送信に対応したクライアント |
+| 向いている用途 | stdio が必要なクライアント | 現在の全 29 ツールを利用する場合 |
 
 ## 前提条件
 
@@ -38,6 +38,14 @@ APIキーはパスワードと同じように扱ってください。バージ�
 
 ## ステップ2: クライアントを設定する
 
+HTTP 接続に対応したクライアントでは、以下の URL とヘッダーを設定します。下の Cursor の直接接続例も参照してください。stdio 専用クライアント向けのプロキシ例は別のタブに掲載しています。
+
+```text
+URL: https://mcp.shanone.ai/mcp
+Authorization: Bearer sh_xxxxxxxxxxxxxxxx
+X-Org-Id: org_xxxxxxxxxxxxxxxx
+```
+
 <Tabs>
   <Tab title="Cursor (local proxy)">
     `~/.cursor/mcp.json`を編集します(または**Cursor Settings → MCP**からサーバーを追加します)。
@@ -63,7 +71,7 @@ APIキーはパスワードと同じように扱ってください。バージ�
     {
       "mcpServers": {
         "shanone": {
-          "url": "https://app.shanone.ai/mcp",
+          "url": "https://mcp.shanone.ai/mcp",
           "headers": {
             "Authorization": "Bearer sh_xxxxxxxxxxxxxxxx",
             "X-Org-Id": "org_xxxxxxxxxxxxxxxx"
@@ -75,7 +83,7 @@ APIキーはパスワードと同じように扱ってください。バージ�
 
     組織IDは、APIキーと同じ**Settings → API Keys**ページで確認できます。
   </Tab>
-  <Tab title="Claude Code">
+  <Tab title="Claude Code (local proxy)">
     ```bash
     claude mcp add shanone \
       --env SHANONE_API_KEY=sh_xxxxxxxxxxxxxxxx \
@@ -98,7 +106,7 @@ APIキーはパスワードと同じように扱ってください。バージ�
     }
     ```
   </Tab>
-  <Tab title="Codex">
+  <Tab title="Codex (local proxy)">
     `~/.codex/config.toml`を編集します。
 
     ```toml
@@ -115,6 +123,14 @@ APIキーはパスワードと同じように扱ってください。バージ�
 <Warning>
 上記のプレースホルダーのキー/組織IDは、すべて実際の値に置き換えてください。
 </Warning>
+
+## プランと接続先の確認
+
+- Remote Skills は Plus / Pro / Team / Enterprise で利用できます。Free でもツールは表示されますが、実行時は `PLAN_UPGRADE_REQUIRED` になります。
+- `shanone_health_check` は Shanone への接続確認です。Gmail など外部サービスの認証確認には `shanone_check_connection` を使います。
+- Gmail の実行には `shanone_list_connections` で取得した `connection_id` が必要です。`CONNECTION_SELECTION_REQUIRED` が返ったら ID を指定してください。
+- `shanone_create_execution_context`、`shanone_get_execution_context`、`shanone_switch_connection` は削除されました。クライアントのツール一覧を更新してください。
+- Remote MCP の `shanone_execute_tool.arguments` は JSON 文字列です。Node.js プロキシ用のオブジェクト形式をそのまま渡さないでください。
 
 ## Pythonプロキシ(代替手段)
 
@@ -156,7 +172,7 @@ pip install shanone-mcp
 | 設定項目 | 値 |
 |---------|-------|
 | ローカルプロキシパッケージ | `@duzzle/shanone-mcp`(npm)、環境変数`SHANONE_API_KEY`が必要、Node.js 18以上 |
-| リモート直接接続URL | `https://app.shanone.ai/mcp`(Streamable HTTP) |
+| リモート直接接続URL | `https://mcp.shanone.ai/mcp`(Streamable HTTP) |
 | 認証ヘッダー(両方式共通) | `Authorization: Bearer <api_key>`(`X-API-Key`も可) |
 | 追加ヘッダー(直接接続のみ) | `X-Org-Id: <org_id>`(または`?org_id=`クエリパラメータでも可) |
 
@@ -204,6 +220,6 @@ pip install shanone-mcp
     利用可能なツールと利用例
   </Card>
   <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
-    全18ツールの詳細なドキュメント
+    Remote MCP 全29ツールの詳細なドキュメント
   </Card>
 </CardGroup>

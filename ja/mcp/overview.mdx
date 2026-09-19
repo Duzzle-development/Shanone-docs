@@ -1,83 +1,48 @@
 ---
-title: "MCP概要"
-description: "Shanoneが269以上の連携、Skill、権限管理を、少数のMCPメタツールを通じてどのように公開しているか。"
+title: "MCP 概要"
+description: "Shanone の MCP ツール、接続方式、プランと利用回数の仕組み。"
 ---
 
-## MCPとは何か
+Shanone は Model Context Protocol（MCP）を通じて、AI クライアントから外部サービス、保存したスキル、権限管理を利用できるようにします。Remote MCP は **29 ツール**を公開しています。
 
-**Model Context Protocol (MCP)** は、AIアプリケーションを外部のツールやデータソースに接続するためのオープンスタンダードです。互換性のあるクライアント(Cursor、Claude Code、Codexなど)が、ペアごとに専用の統合コードを書かなくても互換性のあるサーバーと話せるようにする、標準化された「ポート」のようなものだと考えてください。
+## 必要なツールを探して実行する
 
-Shanoneは*それ自体が*MCPサーバーです。一度接続すれば、どのMCPクライアントもShanoneの連携カタログ、Skillライブラリ、そして(管理者であれば)権限管理ツールにプログラムからアクセスできるようになります。
+外部サービスの API をすべて MCP ツールとして並べる代わりに、次の順で必要な操作を見つけます。
 
-## なぜアクションごとに1ツールではなく、メタツールパターンなのか
+1. `shanone_search_tools` または `shanone_list_service_tools` で操作を探す。
+2. `shanone_get_tool_schema` で入力パラメーターを確認する。
+3. `shanone_execute_tool` にツール名と引数を渡して実行する。
 
-Shanoneのバックエンドは269以上のサービス統合を実装しており、それぞれが数十から数百の個別アクションを持っています(Stripeだけで328個)。すべてのアクションを個別のMCPツールとして登録すると、エージェントが動き出す前にコンテキストウィンドウが溢れてしまいます。そこでShanoneは、Composioのカタログ構成に近い**Tool Vendor**パターンを採用し、カタログ全体に対してオンデマンドで検索・確認・実行を行う、小さく固定された一連のメタツールを公開しています。
+サービス側の OAuth 認証が必要な場合は、実行結果の接続案内に従います。Gmail では `shanone_list_connections` でアカウントを選び、実行時に `connection_id` を明示します。保存済みの接続が現在も有効かどうかは、`shanone_check_connection` で確認できます。
 
-<CardGroup cols={2}>
-  <Card title="shanone_search_tools" icon="magnifying-glass">
-    タスクを自然言語で記述して、適切なツールを見つける
-  </Card>
-  <Card title="shanone_list_service_tools" icon="list">
-    「Xで何ができるか」を知りたいときに、1つのサービスの全ツールを列挙する
-  </Card>
-  <Card title="shanone_get_tool_schema" icon="code">
-    呼び出す前に、ツールの正確な入力スキーマを確認する
-  </Card>
-  <Card title="shanone_execute_tool" icon="zap">
-    実行する。OAuthが必要な場合は、返される`connect_link`で自動的に処理される
-  </Card>
-</CardGroup>
+## 接続方式
 
-再利用可能な保存済みワークフローについては、並行する**Skill Vendor**パターン(`shanone_list_skills` → `shanone_get_skill`)が同じ役割を果たします。また、**Permission Vendor**というツール群により、RootまたはSA2委任管理者が誰が何を使えるかを管理できます。
+| 方式 | 特徴 |
+|---|---|
+| Remote MCP（Streamable HTTP） | `https://mcp.shanone.ai/mcp` に接続します。このドキュメントの 29 ツールとパラメーターはこの方式を対象にしています。 |
+| ローカル stdio プロキシ | npm の `@duzzle/shanone-mcp` または Python の `shanone-mcp` を起動し、Shanone の REST API に転送します。公開ツールと引数形式はパッケージ・バージョンによって異なります。 |
 
-## サーバーアーキテクチャ
+全 29 ツールを使う場合は Remote MCP を利用してください。接続先が実際に公開しているツールは MCP の `tools/list` で確認できます。例えば `shanone_execute_tool.arguments` は Remote MCP では JSON 文字列、Node.js プロキシではオブジェクトです。
 
-Shanoneは実際には、同じツールセットを共有しつつ両方がMCPで話す、2つのものを提供しています。
+## 認証とアクセス制御
 
-| コンポーネント | トランスポート | 内容 |
-|-----------|-----------|-----------|
-| **リモートMCPサーバー** | `/mcp`でのStreamable HTTP | Shanoneのバックエンドプロセス自体の内部で動作します。`src.services.tool_vendor`を直接呼び出すため、余分なネットワークホップがありません。これが[セットアップ](/ja/mcp/setup)の`X-Org-Id`で保護された直接接続が話す相手です。 |
-| **ローカルstdioプロキシ**(npmパッケージ`@duzzle/shanone-mcp`、またはPython版の`apps/mcp-server`パッケージ) | stdio | あなたのマシン上で動作し、各MCPツール呼び出しを、あなたのAPIキーを使ってHTTPS経由でShanoneのREST API(`/api/v1/tools/...`、`/api/v1/skills/...`、`/api/v1/permissions/...`)に転送します。カスタムHTTPヘッダーに対応していないクライアントにとって、最も簡単な選択肢です。 |
+Remote MCP には API キー（`Authorization: Bearer sh_...`、または `X-API-Key`）と組織 ID（`X-Org-Id`、または `org_id` クエリパラメーター）を渡します。組織 ID はアクセス対象の組織を指定する識別子です。ローカルプロキシでは `SHANONE_API_KEY` を設定します。
 
-どちらも同じ名前・同じパラメータで同じメタツールを公開しています——お使いのクライアントがより良くサポートしている方のトランスポートを選んでください。正確な設定については[セットアップ](/ja/mcp/setup)を参照してください。
+プランで利用できる機能でも、API キーのスコープ、ユーザー権限、対象リソースへのアクセス権、外部サービスの接続が必要です。他ユーザーの権限管理には Root または委譲された SA2 の権限が必要です。
 
-## 認証
+## ツールの分類と課金
 
-すべてのリクエスト——直接のHTTPエンドポイント経由であっても、ローカルプロキシ経由であっても——は、あなたのShanone APIキーで認証されます。
+| 分類 | 件数 | 利用プラン | Tool Call の消費 |
+|---|---|---|---|
+| ヘルスチェック | 1 | Free 以上 | 非課金 |
+| 外部ツールの検索・一覧・スキーマ | 3 | Free 以上 | 非課金 |
+| 外部ツールの実行 | 1 | Free 以上 | 実行した外部ツールの課金ルールに従う |
+| 接続一覧・接続確認 | 2 | Free 以上 | 非課金 |
+| スキル・ファイル・フォルダー操作 | 13 | Plus / Pro / Team / Enterprise | 成功時に 1 回 |
+| サービス一覧・権限管理・引数ポリシー | 9 | Free 以上 | 非課金 |
 
-```
-Authorization: Bearer sh_xxxxxxxxxxxxxxxx
-```
+Free でもスキル 13 ツールの名前・説明・入力スキーマは表示されます。実行時にはサーバーがプランを確認し、Free の場合はスキルデータにアクセスする前に `PLAN_UPGRADE_REQUIRED` を返します。
 
-(`X-API-Key: sh_xxx`も使用可能です。)**直接リモートエンドポイント**では、追加でお使いの組織ID(organization ID)を第2の複合要素として要求します——`X-Org-Id`ヘッダーまたは`?org_id=`クエリパラメータとして送信します——これにより、APIキーだけが漏洩してもツールを呼び出すことはできません。ローカルstdioプロキシではこの第2要素は不要で、APIキーのみが必要です。レート制限を含めた全体像については[認証](/api-reference/authentication)を参照してください。
+非課金ツールも Analytics の利用回数に集計されます。接続確認は内部の API 確認回数ではなく、親の呼び出し 1 回として集計します。外部ツール実行は実際のツール名で集計し、`shanone_execute_tool` を別途加算しません。「課金対象」はプランの Tool Call 枠を消費する意味で、必ず追加料金が発生するという意味ではありません。
 
-## ツールカテゴリ
-
-<CardGroup cols={2}>
-  <Card title="Tool Vendor" icon="wrench" href="/ja/mcp/tools-reference#tool-vendor">
-    269以上の連携を検索・確認・実行する
-  </Card>
-  <Card title="Skill Vendor" icon="bookmark" href="/ja/mcp/tools-reference#skill-vendor">
-    複数ステップのワークフローを保存し、マシンやエージェントを越えて再利用する
-  </Card>
-  <Card title="Permission Vendor" icon="shield-check" href="/ja/mcp/tools-reference#permission-vendor">
-    チームメンバーのツール・サービスアクセスを管理する、Root/SA2専用ツール
-  </Card>
-  <Card title="Health Check" icon="heart-pulse" href="/ja/mcp/tools-reference#health-check">
-    他の何よりも先に、APIキーと接続を確認する
-  </Card>
-</CardGroup>
-
-## 次のステップ
-
-<CardGroup cols={2}>
-  <Card title="Shanone MCPサーバー" icon="server" href="/ja/mcp/Shanone-mcp-server">
-    利用可能なすべてのツールと、推奨されるワークフローを一目で確認する
-  </Card>
-  <Card title="セットアップガイド" icon="wrench" href="/ja/mcp/setup">
-    Cursor、Claude Code、Codexの正確な設定方法
-  </Card>
-  <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
-    すべてのツールの完全なパラメータ、例、エラーレスポンス
-  </Card>
-</CardGroup>
+[ツール一覧](/ja/mcp/Shanone-mcp-server) · [全パラメーターとエラー](/ja/mcp/tools-reference) · [接続設定](/ja/mcp/setup)
