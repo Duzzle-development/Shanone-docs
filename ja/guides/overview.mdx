@@ -32,7 +32,7 @@ Shanoneはエージェントに巨大な静的ツールリストを渡すわけ�
 |-----------|---------|
 | `shanone_search_tools` | ツール名ではなくタスクの説明から、適切なツールを見つける |
 | `shanone_list_service_tools` | 1つのサービスの全ツールを列挙する(「Xで何ができるか」という質問向け) |
-| `shanone_get_tool_schema` | 呼び出す前に、そのツールが要求する引数を正確に確認する |
+| `shanone_get_tool_schema` | 検索結果がschemaRefの場合に追加取得する、または既知のスキーマを更新する |
 | `shanone_execute_tool` | 実際に実行する。OAuthは`connect_link`により自動的に処理される |
 | `shanone_list_skills` / `shanone_get_skill` | 車輪の再発明をする前に、保存済みの再利用可能なワークフローがあるか確認して読む |
 

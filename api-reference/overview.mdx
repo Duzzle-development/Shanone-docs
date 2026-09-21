@@ -83,20 +83,35 @@ Shanone's dashboard (Settings, API Keys, Webhooks, Integrations, etc.) is backed
 
 ## Response shape
 
-Tool Vendor and Skill Vendor endpoints return plain JSON objects (not the Markdown-formatted text the MCP tools produce) — e.g. `shanone_search_tools`'s underlying endpoint returns:
+Tool Vendor and Skill Vendor REST endpoints return JSON objects. Updated MCP search also returns JSON text. Example search response structure (values and schema simplified for illustration):
 
 ```json
 {
-  "tools": [{ "name": "slack_post_message", "service": "slack", "description": "Post a message to a Slack channel or user." }],
+  "tools": [
+    {
+      "name": "linear_list_teams",
+      "service": "linear",
+      "description": "List all teams in the Linear workspace.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ],
   "total": 1,
-  "query": "post slack message",
+  "query": "list teams",
+  "service": "linear",
   "offset": 0,
   "limit": 5,
-  "has_more": false
+  "has_more": false,
+  "next_step": "Use shanone_execute_tool with an arguments object when inputSchema is present; otherwise fetch the schema."
 }
 ```
 
-Execution results follow the same `success` / `reason` / `connect_link` shape described in [Tools Reference](/mcp/tools-reference#error-responses), whether you call `shanone_execute_tool` over MCP or `POST /v1/tools/{tool_name}/execute` over REST.
+`GET /v1/tools/search` includes schemas for top candidates using `schema_limit` (default 3, range 0–5). Schemas exceeding the combined 24,000 UTF-8 byte budget, among other fallback cases, use `schemaRef` instead of `inputSchema`. See the [MCP search reference](/mcp/tools-reference#shanone_search_tools).
+
+Execution envelopes differ between REST and MCP implementations. Inspect the outer `status`, `success`, or `reason` fields as applicable, as well as the provider result.
 
 ## Rate limits
 

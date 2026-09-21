@@ -9,9 +9,10 @@ Shanone uses the Model Context Protocol (MCP) to give AI clients access to exter
 
 Instead of registering every provider API operation as an MCP tool, discover the operation you need:
 
-1. Find it with `shanone_search_tools` or `shanone_list_service_tools`.
-2. Inspect its input parameters with `shanone_get_tool_schema`.
-3. Pass its name and arguments to `shanone_execute_tool`.
+1. Use `shanone_search_tools` to discover an operation and its input schema. Use `shanone_list_service_tools` for full listings.
+2. If `inputSchema` is present, call `shanone_execute_tool` with an `arguments` object matching it.
+
+Only fetch `shanone_get_tool_schema` before execution when the result contains `schemaRef` instead. Search includes schemas for the top three candidates by default, within a combined 24,000 UTF-8 byte budget. Set `schema_limit` from 0 to 5 to adjust this.
 
 When provider OAuth is required, follow the connection instructions in the execution result. For Gmail, select an account with `shanone_list_connections` and pass an explicit `connection_id` when executing. Use `shanone_check_connection` to verify whether stored connections still work.
 
@@ -22,7 +23,11 @@ When provider OAuth is required, follow the connection instructions in the execu
 | Remote MCP (Streamable HTTP) | Connect to `https://mcp.shanone.ai/mcp`. The 29 tools and parameters in this documentation describe this transport. |
 | Local stdio proxy | Run the npm package `@duzzle/shanone-mcp` or Python package `shanone-mcp` to forward calls to Shanone’s REST API. Available tools and argument formats depend on the package and version. |
 
-Use Remote MCP for all 29 tools. Check MCP `tools/list` for the tools actually exposed by your connection. For example, `shanone_execute_tool.arguments` is a JSON string on Remote MCP and an object in the Node.js proxy.
+Updated implementations use object arguments across all transports. Check `tools/list` for the actual contract of your endpoint and installed package version.
+
+<Note>
+This update has been verified on the dev/akaso remote environment. Production rollout and npm/PyPI publication are separate release steps. The corresponding local source versions are Node.js 0.6.0 and Python 0.3.0. If an older server advertises string arguments, follow its schema or switch to an updated endpoint.
+</Note>
 
 ## Authentication and access control
 

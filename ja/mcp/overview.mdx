@@ -9,9 +9,10 @@ Shanone は Model Context Protocol（MCP）を通じて、AI クライアント�
 
 外部サービスの API をすべて MCP ツールとして並べる代わりに、次の順で必要な操作を見つけます。
 
-1. `shanone_search_tools` または `shanone_list_service_tools` で操作を探す。
-2. `shanone_get_tool_schema` で入力パラメーターを確認する。
-3. `shanone_execute_tool` にツール名と引数を渡して実行する。
+1. `shanone_search_tools` で操作と入力スキーマを取得する。全件列挙には `shanone_list_service_tools` を使う。
+2. `inputSchema` があれば、その定義に従う `arguments` オブジェクトで `shanone_execute_tool` を呼ぶ。
+
+`schemaRef` だけが返った場合に限り、実行前に `shanone_get_tool_schema` で追加取得します。検索では標準で上位３件、合計24,000 UTF-8バイト以内のスキーマを同梱します。`schema_limit` で0〜5件を指定できます。
 
 サービス側の OAuth 認証が必要な場合は、実行結果の接続案内に従います。Gmail では `shanone_list_connections` でアカウントを選び、実行時に `connection_id` を明示します。保存済みの接続が現在も有効かどうかは、`shanone_check_connection` で確認できます。
 
@@ -22,7 +23,11 @@ Shanone は Model Context Protocol（MCP）を通じて、AI クライアント�
 | Remote MCP（Streamable HTTP） | `https://mcp.shanone.ai/mcp` に接続します。このドキュメントの 29 ツールとパラメーターはこの方式を対象にしています。 |
 | ローカル stdio プロキシ | npm の `@duzzle/shanone-mcp` または Python の `shanone-mcp` を起動し、Shanone の REST API に転送します。公開ツールと引数形式はパッケージ・バージョンによって異なります。 |
 
-全 29 ツールを使う場合は Remote MCP を利用してください。接続先が実際に公開しているツールは MCP の `tools/list` で確認できます。例えば `shanone_execute_tool.arguments` は Remote MCP では JSON 文字列、Node.js プロキシではオブジェクトです。
+更新後の実装では `shanone_execute_tool.arguments` は全方式でオブジェクトです。接続先・インストール済みバージョンの実際の仕様は `tools/list` で確認してください。
+
+<Note>
+この更新はdev/akasoのリモート環境で検証済みです。本番への反映とnpm/PyPIへの公開は別工程です。ローカル版の対応ソースはNode.js 0.6.0／Python 0.3.0です。古いサーバーが文字列型を公開している場合は、そのスキーマに従うか、更新済みの接続先へ切り替えてください。
+</Note>
 
 ## 認証とアクセス制御
 

@@ -130,7 +130,7 @@ Replace every placeholder key/org ID above with your actual values.
 - `shanone_health_check` verifies connectivity to Shanone. Use `shanone_check_connection` to verify provider authentication such as Gmail.
 - Gmail execution requires a `connection_id` from `shanone_list_connections`. Supply it when you receive `CONNECTION_SELECTION_REQUIRED`.
 - `shanone_create_execution_context`, `shanone_get_execution_context`, and `shanone_switch_connection` have been removed. Refresh your client’s tool list.
-- Remote MCP expects `shanone_execute_tool.arguments` as a JSON string. Do not pass the Node.js proxy’s object format unchanged.
+- Updated implementations accept `shanone_execute_tool.arguments` as an object; use `{}` for no arguments. Reconnect to refresh `tools/list` and check [version and rollout compatibility](/mcp/overview#connection-methods).
 
 ## Python proxy (alternative)
 

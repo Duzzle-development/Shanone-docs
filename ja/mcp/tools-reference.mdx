@@ -63,24 +63,50 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 
 ## Tool Vendor
 
+対応バージョンと反映状況は[MCP概要](/ja/mcp/overview#接続方式)を参照してください。更新前の接続先では、実際の `tools/list` の定義に従ってください。
+
 ### shanone_search_tools
 
-キーワードで連携ツールを検索し、関連度順に返します。サービスの全ツールを列挙する場合は list_service_tools を使います。
+キーワードで連携ツールを検索し、関連度順に返します。上位候補の入力スキーマも同じ応答に含めるため、`inputSchema` があれば追加取得せず実行できます。サービスの全ツールを列挙する場合は `shanone_list_service_tools` を使います。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
-| `query` | string | 必須 | 検索文字列。任意項目の場合は空文字で省略できます。 |
-| `service` | string | `""` | gmail、slack などの正確なサービス識別子。 |
-| `limit` | integer | `20` | １ページあたりの最大件数。 最大100件。 |
-| `offset` | integer | `0` | 先頭からスキップする件数。 |
+| `query` | string | 必須 | 実行したい操作を具体的に表す検索文字列。 |
+| `service` | string | `""` | linear、gmail などの正確なサービス識別子。分かる場合は指定すると検索と初回の読み込みを絞れます。 |
+| `limit` | integer | `20` | １ページあたりの最大件数。1〜100。 |
+| `offset` | integer | `0` | 先頭からスキップする件数。0以上。 |
+| `schema_limit` | integer | `3` | 入力スキーマを同梱する上位候補数。0〜5。0は同梱なし。 |
 
 ```json
 {
-  "query": "profile",
-  "service": "gmail",
-  "limit": 5
+  "query": "list teams",
+  "service": "linear",
+  "limit": 5,
+  "schema_limit": 3
 }
 ```
+
+検索結果は JSON テキストです。`tools`、`total`、`query`、`service`、`offset`、`limit`、`has_more` と、次の操作を示す `next_step` を返します。各ツールには `name`、`service`、`description` と、次のどちらかが含まれます。
+
+| フィールド | 次の操作 |
+|---|---|
+| `inputSchema` | この完全な JSON Schema に従う `arguments` オブジェクトで、そのまま `shanone_execute_tool` を呼びます。 |
+| `schemaRef` | 値は正確なツール名です。その名前で `shanone_get_tool_schema` を呼んでから実行します。 |
+
+同梱するスキーマの合計上限は **24,000 UTF-8 バイト**です。上位候補数の対象外、サイズ超過、取得失敗の場合は `schemaRef` を返します。スキーマの必須項目や制約を省略してサイズを縮めることはありません。この上限はスキーマ部分に対するもので、検索応答全体の上限ではありません。
+
+スキーマには呼出元ユーザーのパラメーター制約が反映されます。取得済みスキーマは同じ利用コンテキストの後続呼び出しで再利用でき、変更された場合は再取得します。権限・引数制約は実行時にも検証されます。
+
+たとえば検索結果の `linear_list_teams` に `inputSchema` が含まれていれば、次の呼び出しで実行できます。
+
+```json
+{
+  "tool_name": "linear_list_teams",
+  "arguments": {}
+}
+```
+
+これで通常の「検索 → スキーマ取得 → 実行」は「検索（スキーマ同梱）→ 実行」の２呼び出しになります。認証や前提となるデータ取得が必要な場合は、その操作が別途必要です。
 
 ### shanone_list_service_tools
 
@@ -94,7 +120,7 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 
 ### shanone_get_tool_schema
 
-実行する連携ツールの入力 JSON Schema を取得します。
+検索結果が `inputSchema` ではなく `schemaRef` を返した場合や、取得済みスキーマを更新したい場合に使います。このツールは廃止していません。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
@@ -150,7 +176,7 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
 | `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
-| `arguments` | string | 必須 | 連携ツールへの引数を JSON 文字列で指定します。引数なしは "{}" です。 |
+| `arguments` | object | 必須 | 連携ツールへの引数を JSON オブジェクトで指定します。引数なしは `{}` です。 |
 | `session_id` | string | `""` | 任意の既存実行・セッション識別子。OAuth アカウントの選択には使いません。状態を持たない呼び出しでは省略します。 |
 | `connection_id` | string | `""` | Gmail の実行には必須。supports_account_selection が true の接続 ID を指定します。 |
 | `request_id` | string | `""` | 任意の再試行識別子。同一の操作・引数・アカウントの再試行に限って再利用し、別の操作には使い回さないでください。 |
@@ -158,10 +184,12 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 ```json
 {
   "tool_name": "gmail_get_profile",
-  "arguments": "{}",
+  "arguments": {},
   "connection_id": "conn_example"
 }
 ```
+
+更新後の Remote MCP・Node.js 版・Python 版は、すべて `arguments` をオブジェクトとして公開します。旧クライアントの JSON 文字列も移行互換として受け付けますが、新しい呼び出しでは文字列化しないでください。配列、null、数値などのスカラー、不正な JSON 文字列は外部サービスを実行する前に拒否されます。更新後は再接続して `tools/list` を再取得してください。
 
 Gmail は先に list_connections で接続 ID を取得し、呼び出しごとに明示します。省略すると `CONNECTION_SELECTION_REQUIRED` を返します。別アカウントへの切替は次の呼び出しで ID を変更するだけです。`execution_context_id` は受け付けません。
 

@@ -64,7 +64,7 @@ description: "Fix common connection, authentication, permission, and rate-limit 
     Some destructive or high-risk tools require an explicit confirmation step. Re-run `shanone_execute_tool` with the same arguments plus `"confirm": true` in the JSON payload once you're sure you want to proceed.
   </Accordion>
   <Accordion title="Invalid JSON in arguments">
-    `shanone_execute_tool`'s `arguments` parameter is a **JSON string**, not a native object — make sure it's actually serialized (e.g. `'{"channel": "#general", "text": "hi"}'`), including for tools that take no arguments (`'{}'`, not an empty string).
+    Updated `shanone_execute_tool.arguments` takes a JSON object, such as `{"channel": "#general", "text": "hi"}`. Use `{}` for no arguments. Arrays, null, and scalars are rejected. Legacy JSON strings must decode to an object. If you still receive an error requiring a string, check your endpoint and package version, then reconnect to refresh `tools/list`.
   </Accordion>
 </AccordionGroup>
 

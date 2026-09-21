@@ -10,9 +10,9 @@ Remote MCP は **29ツール**を公開します。内訳はヘルスチェッ�
 | ツール | 用途 | プラン・課金 |
 |---|---|---|
 | [`shanone_health_check`](/ja/mcp/tools-reference#shanone_health_check) | MCP の接続、API キー認証、バックエンドの稼働状態を確認します。外部サービスの認証は検証しません。 | Free 以上・非課金 |
-| [`shanone_search_tools`](/ja/mcp/tools-reference#shanone_search_tools) | キーワードで連携ツールを検索し、関連度順に返します。サービスの全ツールを列挙する場合は list_service_tools を使います。 | Free 以上・非課金 |
+| [`shanone_search_tools`](/ja/mcp/tools-reference#shanone_search_tools) | 上位候補の入力スキーマも同梱して検索します。schemaRef の場合のみ追加取得し、全件列挙には list_service_tools を使います。 | Free 以上・非課金 |
 | [`shanone_list_service_tools`](/ja/mcp/tools-reference#shanone_list_service_tools) | 指定サービスのツールをページ単位で取得します。全件取得する場合は後続ページも取得してください。 | Free 以上・非課金 |
-| [`shanone_get_tool_schema`](/ja/mcp/tools-reference#shanone_get_tool_schema) | 実行する連携ツールの入力 JSON Schema を取得します。 | Free 以上・非課金 |
+| [`shanone_get_tool_schema`](/ja/mcp/tools-reference#shanone_get_tool_schema) | schemaRef の場合に入力スキーマを追加取得するか、既知のスキーマを更新します。 | Free 以上・非課金 |
 | [`shanone_list_connections`](/ja/mcp/tools-reference#shanone_list_connections) | 呼出元が参照できる保存済み接続を一覧表示します。登録済みであることは、認証が現在も有効であることを意味しません。 | Free 以上・非課金 |
 | [`shanone_check_connection`](/ja/mcp/tools-reference#shanone_check_connection) | 読み取り専用の外部 API を使い、保存済み接続の有効性を確認します。service を省略すると、接続済みサービスをページ単位で確認します。 | Free 以上・非課金 |
 | [`shanone_execute_tool`](/ja/mcp/tools-reference#shanone_execute_tool) | 連携ツールを実行します。実行結果の外側のステータスと外部サービスの結果を確認してください。呼び出しの完了だけで業務処理の成功とは判断しません。 | Free 以上・実行先に従う |
@@ -43,7 +43,7 @@ Remote MCP は **29ツール**を公開します。内訳はヘルスチェッ�
 
 ## 推奨する使い方
 
-1. **外部ツール:** search_tools または list_service_tools → get_tool_schema → execute_tool。
+1. **外部ツール:** search_tools（inputSchema同梱）→ execute_tool。schemaRef の場合や list_service_tools の後に必要な場合のみ get_tool_schema を呼びます。
 2. **Gmail のアカウント選択:** list_connections → 必要に応じて check_connection → connection_id を明示して execute_tool。
 3. **スキル（Plus 以上）:** list_skills → get_skill → エージェントが指示に沿って実行。追加ファイルも一覧・読み取り・検索できます。
 4. **管理操作:** list_services → 権限・引数制約の設定 → get_permission_summary などで確認。

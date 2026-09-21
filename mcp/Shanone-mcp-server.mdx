@@ -10,9 +10,9 @@ Remote MCP exposes **29 tools**: one health check, four discovery/schema/executi
 | Tool | Purpose | Plans and billing |
 |---|---|---|
 | [`shanone_health_check`](/mcp/tools-reference#shanone_health_check) | Check MCP connectivity, API-key authentication, and backend health. No provider credentials are tested. | Free+; non-billable |
-| [`shanone_search_tools`](/mcp/tools-reference#shanone_search_tools) | Search integration tools by keyword, ranked by relevance. Use list_service_tools when you need a complete service listing. | Free+; non-billable |
+| [`shanone_search_tools`](/mcp/tools-reference#shanone_search_tools) | Search tools with inline input schemas for top candidates. Fetch a schema separately only for schemaRef results; use list_service_tools for complete listings. | Free+; non-billable |
 | [`shanone_list_service_tools`](/mcp/tools-reference#shanone_list_service_tools) | List tools for one service with pagination. Follow subsequent pages to retrieve the full list. | Free+; non-billable |
-| [`shanone_get_tool_schema`](/mcp/tools-reference#shanone_get_tool_schema) | Get the input JSON Schema for an integration tool before executing it. | Free+; non-billable |
+| [`shanone_get_tool_schema`](/mcp/tools-reference#shanone_get_tool_schema) | Fetch an input schema for schemaRef results, or refresh a known schema. | Free+; non-billable |
 | [`shanone_list_connections`](/mcp/tools-reference#shanone_list_connections) | List saved connections visible to the caller. Stored configuration is not proof that authentication still works. | Free+; non-billable |
 | [`shanone_check_connection`](/mcp/tools-reference#shanone_check_connection) | Verify saved connections using read-only provider APIs. Omitting service checks all connected services, with pagination. | Free+; non-billable |
 | [`shanone_execute_tool`](/mcp/tools-reference#shanone_execute_tool) | Execute an integration tool. Inspect both the execution envelope and the provider result; completing a tool invocation does not by itself prove the provider operation succeeded. | Free+; per executed tool |
@@ -43,7 +43,7 @@ API-key, user, and resource permissions apply separately from plan availability.
 
 ## Recommended workflows
 
-1. **Provider tools:** search_tools or list_service_tools → get_tool_schema → execute_tool.
+1. **Provider tools:** search_tools (with inputSchema) → execute_tool. Fetch get_tool_schema only for schemaRef results or after list_service_tools.
 2. **Gmail accounts:** list_connections → check_connection when needed → execute_tool with an explicit connection_id.
 3. **Skills (Plus+):** list_skills → get_skill → the agent follows the instructions. Bundled files can also be listed, read, and searched.
 4. **Administration:** list_services → set permissions or argument constraints → inspect get_permission_summary.

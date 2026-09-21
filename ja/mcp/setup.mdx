@@ -130,7 +130,7 @@ X-Org-Id: org_xxxxxxxxxxxxxxxx
 - `shanone_health_check` は Shanone への接続確認です。Gmail など外部サービスの認証確認には `shanone_check_connection` を使います。
 - Gmail の実行には `shanone_list_connections` で取得した `connection_id` が必要です。`CONNECTION_SELECTION_REQUIRED` が返ったら ID を指定してください。
 - `shanone_create_execution_context`、`shanone_get_execution_context`、`shanone_switch_connection` は削除されました。クライアントのツール一覧を更新してください。
-- Remote MCP の `shanone_execute_tool.arguments` は JSON 文字列です。Node.js プロキシ用のオブジェクト形式をそのまま渡さないでください。
+- 更新後の実装は `shanone_execute_tool.arguments` をオブジェクトとして受け付けます。引数なしは `{}` です。再接続して `tools/list` を更新し、[対応バージョンと反映状況](/ja/mcp/overview#接続方式)も確認してください。
 
 ## Pythonプロキシ(代替手段)
 

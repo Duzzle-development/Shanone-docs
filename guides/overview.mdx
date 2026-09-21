@@ -32,7 +32,7 @@ Shanone doesn't hand your agent a giant static list of tools. It hands it a hand
 |-----------|---------|
 | `shanone_search_tools` | Find the right tool by describing the task, not the tool name |
 | `shanone_list_service_tools` | Enumerate every tool for one service (for "what can I do with X" questions) |
-| `shanone_get_tool_schema` | See exactly what arguments a tool expects before calling it |
+| `shanone_get_tool_schema` | Fetch a schema when search returns schemaRef, or refresh a known schema |
 | `shanone_execute_tool` | Actually run it, with OAuth handled automatically via `connect_link` |
 | `shanone_list_skills` / `shanone_get_skill` | Check for and read a saved, reusable workflow before reinventing it |
 

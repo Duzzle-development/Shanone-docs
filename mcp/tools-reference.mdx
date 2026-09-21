@@ -63,24 +63,50 @@ No parameters. Pass `{}`.
 
 ## Tool Vendor
 
+See [MCP overview](/mcp/overview#connection-methods) for version and rollout compatibility. For endpoints that have not been updated, follow their actual `tools/list` definitions.
+
 ### shanone_search_tools
 
-Search integration tools by keyword, ranked by relevance. Use list_service_tools when you need a complete service listing.
+Search integration tools by keyword, ranked by relevance. The same response includes input schemas for top candidates, so a result with `inputSchema` can be executed without a separate schema request. Use `shanone_list_service_tools` for a complete service listing.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
-| `query` | string | Required | Search text; empty where optional. |
-| `service` | string | `""` | Exact service identifier, such as gmail or slack. |
-| `limit` | integer | `20` | Maximum results per page. Maximum 100. |
-| `offset` | integer | `0` | Number of results to skip. |
+| `query` | string | Required | A specific description of the operation you want to perform. |
+| `service` | string | `""` | Exact service identifier, such as linear or gmail. Specify it when known to narrow search and initial provider loading. |
+| `limit` | integer | `20` | Maximum results per page, from 1 to 100. |
+| `offset` | integer | `0` | Number of results to skip, at least 0. |
+| `schema_limit` | integer | `3` | Number of top candidates to include schemas for, from 0 to 5. Set 0 to disable inline schemas. |
 
 ```json
 {
-  "query": "profile",
-  "service": "gmail",
-  "limit": 5
+  "query": "list teams",
+  "service": "linear",
+  "limit": 5,
+  "schema_limit": 3
 }
 ```
+
+Search returns JSON text containing `tools`, `total`, `query`, `service`, `offset`, `limit`, `has_more`, and `next_step` instructions. Each tool contains `name`, `service`, `description`, and one of these fields:
+
+| Field | Next action |
+|---|---|
+| `inputSchema` | Call `shanone_execute_tool` directly with an `arguments` object matching this complete JSON Schema. |
+| `schemaRef` | The value is the exact tool name. Fetch it with `shanone_get_tool_schema` before executing. |
+
+The combined inline schemas have a **24,000 UTF-8 byte** budget. Results outside the requested top candidates, oversized schemas, and schemas that could not be retrieved use `schemaRef`. Required fields and constraints are never removed to fit the budget. This budget covers schemas, not the entire search response.
+
+Schemas reflect the calling user's parameter policies. Reuse known schemas for subsequent calls in the same user context, refreshing them when they change. Authorization and parameter policies are still enforced at execution time.
+
+For example, if the search result for `linear_list_teams` includes `inputSchema`, execute it in the next call:
+
+```json
+{
+  "tool_name": "linear_list_teams",
+  "arguments": {}
+}
+```
+
+This reduces the usual search → schema retrieval → execution path to two calls: search with schema → execution. Authentication and prerequisite data lookups may still require additional calls.
 
 ### shanone_list_service_tools
 
@@ -94,7 +120,7 @@ List tools for one service with pagination. Follow subsequent pages to retrieve 
 
 ### shanone_get_tool_schema
 
-Get the input JSON Schema for an integration tool before executing it.
+Fetch the input JSON Schema when search returns `schemaRef` instead of `inputSchema`, or to refresh a known schema. This tool remains available; it is not required after every search.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
@@ -150,7 +176,7 @@ Execute an integration tool. Inspect both the execution envelope and the provide
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
 | `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
-| `arguments` | string | Required | Integration tool arguments encoded as a JSON string; use "{}" for no arguments. |
+| `arguments` | object | Required | Integration tool arguments as a JSON object; use `{}` for no arguments. |
 | `session_id` | string | `""` | Optional legacy execution/session identifier. It does not select an OAuth account; omit for a stateless call. |
 | `connection_id` | string | `""` | Required for Gmail execution. Use an ID whose supports_account_selection is true. |
 | `request_id` | string | `""` | Optional retry identifier. Reuse only for the same request, arguments, and account; do not reuse for a different operation. |
@@ -158,10 +184,12 @@ Execute an integration tool. Inspect both the execution envelope and the provide
 ```json
 {
   "tool_name": "gmail_get_profile",
-  "arguments": "{}",
+  "arguments": {},
   "connection_id": "conn_example"
 }
 ```
+
+Updated Remote MCP, Node.js, and Python implementations all advertise object arguments. Legacy JSON strings are accepted during migration, but new calls should not serialize the object. Arrays, null, scalars, and malformed JSON strings are rejected before provider execution. Reconnect after updating to refresh `tools/list`.
 
 For Gmail, obtain an account ID with list_connections and provide it on each call. Omitting it returns `CONNECTION_SELECTION_REQUIRED`. To use another account, change the ID on the next call. `execution_context_id` is no longer supported.
 

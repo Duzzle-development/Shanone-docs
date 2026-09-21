@@ -83,20 +83,35 @@ Shanoneのダッシュボード(Settings、API Keys、Webhooks、Integrationsな
 
 ## レスポンスの形式
 
-ToolベンダーとSkillベンダーのエンドポイントは、(MCPツールが生成するMarkdown形式のテキストではなく)素のJSONオブジェクトを返します。例えば`shanone_search_tools`の裏側にあるエンドポイントは、次のような値を返します。
+ToolベンダーとSkillベンダーのRESTエンドポイントはJSONオブジェクトを返します。更新後のMCP検索もJSONテキストを返します。検索レスポンスの構造例（値とスキーマは説明用に簡略化）:
 
 ```json
 {
-  "tools": [{ "name": "slack_post_message", "service": "slack", "description": "Post a message to a Slack channel or user." }],
+  "tools": [
+    {
+      "name": "linear_list_teams",
+      "service": "linear",
+      "description": "List all teams in the Linear workspace.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ],
   "total": 1,
-  "query": "post slack message",
+  "query": "list teams",
+  "service": "linear",
   "offset": 0,
   "limit": 5,
-  "has_more": false
+  "has_more": false,
+  "next_step": "Use shanone_execute_tool with an arguments object when inputSchema is present; otherwise fetch the schema."
 }
 ```
 
-実行結果は、MCP経由で`shanone_execute_tool`を呼んだ場合でもREST経由で`POST /v1/tools/{tool_name}/execute`を呼んだ場合でも、[Toolsリファレンス](/ja/mcp/tools-reference#error-responses)で説明されている同じ`success` / `reason` / `connect_link`の形式に従います。
+`GET /v1/tools/search` は `schema_limit`（既定3、0〜5）で上位候補のスキーマを同梱します。合計24,000 UTF-8バイトを超える場合などは `inputSchema` の代わりに `schemaRef` を返します。詳しくは[MCP検索リファレンス](/ja/mcp/tools-reference#shanone_search_tools)を参照してください。
+
+実行結果の外側の形式はREST・MCPの実装によって異なります。`status`、`success`、`reason`などの外側の結果と、外部サービスの結果を確認してください。
 
 ## レート制限
 

@@ -46,14 +46,14 @@ Don't see a service you need listed on the [Integrations](/integrations/overview
 
 ## How agents use Shanone
 
-External AI agents don't get a separate MCP tool for every possible action (that would blow out their context window). Instead, Shanone exposes a small number of **meta-tools** that follow a search → inspect → execute pattern, similar to how Composio structures its tool catalog:
+External AI agents don't get a separate MCP tool for every possible action (that would blow out their context window). Instead, Shanone exposes a small number of **meta-tools** that follow a search with schema → execute pattern, similar to how Composio structures its tool catalog:
 
 <Steps>
   <Step title="Search for a tool">
     The agent calls `shanone_search_tools` with a natural-language query (e.g. "post a message to a slack channel") to find the right tool name. For a full listing of everything a service offers, it uses `shanone_list_service_tools` instead.
   </Step>
   <Step title="Inspect the schema">
-    The agent calls `shanone_get_tool_schema` with the exact tool name to see the required and optional arguments as JSON Schema.
+    The agent reads `inputSchema` in the search result. It calls `shanone_get_tool_schema` only when the result has `schemaRef` instead.
   </Step>
   <Step title="Execute the tool">
     The agent calls `shanone_execute_tool` with the tool name and arguments. If the underlying service needs authentication, Shanone returns a `connect_link` instead of failing outright — the user visits it, authorizes, and the agent retries.
