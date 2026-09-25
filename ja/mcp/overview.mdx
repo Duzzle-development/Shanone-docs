@@ -59,6 +59,6 @@ Free でもスキル 13 ツールの名前・説明・入力スキーマは表�
 
 ## Analytics MCP
 
-Analyticsの3ツールはPlus以上限定・成功時に1 Tool Callを消費します。空の検索結果と次ページも課金対象です。APIキーの `analytics:read` とユーザーのAnalytics閲覧権限が必要です。本人のデータが既定で、組織全体には `analytics:Users`、本文には `analytics:ReadLogPayload` も必要です。
+Analyticsの3ツールはPlus以上限定・成功時に1 Tool Callを消費します。空の検索結果と次ページも課金対象です。APIキーは認証に使い、ユーザーのAnalytics閲覧権限で認可します。Analytics専用のキー権限設定やキー再発行は不要です。本人のデータが既定で、組織全体には `analytics:Users`、本文には `analytics:ReadLogPayload` も必要です。
 
 [集計・検索・詳細と権限の仕様](/ja/mcp/tools-reference#analytics)

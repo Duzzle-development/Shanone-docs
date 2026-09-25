@@ -59,6 +59,6 @@ Non-billable tools are also recorded in Analytics. Connection verification count
 
 ## Analytics MCP
 
-The three Analytics tools require Plus or above and consume one Tool Call on success, including empty searches and each page. Both `analytics:read` API-key scope and user Analytics permissions are required. Self is the default scope; organization reads also require `analytics:Users`, and payloads require `analytics:ReadLogPayload`.
+The three Analytics tools require Plus or above and consume one Tool Call on success, including empty searches and each page. API keys authenticate the caller; user Analytics permissions authorize access. No Analytics-specific key scope or key reissue is required. Self is the default scope; organization reads also require `analytics:Users`, and payloads require `analytics:ReadLogPayload`.
 
 [Aggregation, search, details, and permissions](/mcp/tools-reference#analytics)

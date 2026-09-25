@@ -491,7 +491,7 @@ Remove the policy on one field. This does not change the tool’s allow/deny per
 
 ## Analytics
 
-All three tools require Plus, Pro, Team, or Enterprise. API keys need `analytics:read` (or `all`); add this scope to existing keys that do not have it. Plan access does not grant user permissions. The existing Root/SA2 policy engine evaluates user/group policies, permission boundaries, and organization controls. No roles or policies are automatically granted by this release.
+All three tools require Plus, Pro, Team, or Enterprise. API keys authenticate the caller. Analytics authorization uses the live subscription and user policy; no Analytics-specific key scope, permission migration, or key reissue is required. Plan access does not grant user permissions. The existing Root/SA2 policy engine evaluates user/group policies, permission boundaries, and organization controls. No roles or policies are automatically granted by this release.
 
 | Operation | Required user actions |
 |---|---|
@@ -552,5 +552,7 @@ Reads are bounded to 50 database pages, 50,000 evaluated records, and a 10-secon
 ```
 
 Payload values may be marked `not_stored`, `unstructured_or_truncated`, `size_limit`, or `redacted`; unavailable content is not reconstructed. Recognized credential keys, token patterns, and URLs are redacted. Structured payload output is limited to 16 KB per field. Existing provider-specific audit redaction still applies. Legacy IDs that are not directly addressable are returned as `LOG_NOT_FOUND`; this endpoint does not scan the entire table.
+
+Permission denials include `reason`; user-policy denials also include `required_action` to identify the missing action.
 
 Errors use MCP `isError: true`: `PLAN_UPGRADE_REQUIRED`, `PERMISSION_DENIED`, `INVALID_ARGUMENTS`, `INVALID_SERVICE`, `TOOL_CALL_LIMIT_EXCEEDED`, `LOG_NOT_FOUND`, `INVALID_CURSOR`, `CURSOR_EXPIRED`, `READ_LIMIT_EXCEEDED`, or `ANALYTICS_UNAVAILABLE`. The local proxies use the same server policy through `POST /api/v1/analytics/usage`, `/logs/search`, and `/logs/detail`.

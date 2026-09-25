@@ -491,7 +491,7 @@ Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開�
 
 ## Analytics
 
-3ツールともPlus / Pro / Team / Enterpriseで利用できます。APIキーには `analytics:read`（または `all`）が必要です。既存キーに含まれていなければ追加してください。プラン契約だけでユーザー権限は付与されません。既存のRoot/SA2ポリシー判定で、ユーザー・グループのポリシー、Permission Boundary、組織の制御を評価します。この更新でロールやポリシーを自動付与することはありません。
+3ツールともPlus / Pro / Team / Enterpriseで利用できます。APIキーは呼出元の認証に使います。Analyticsの認可は契約プランとユーザーポリシーで判定するため、Analytics専用のキー権限設定・権限移行・キー再発行は不要です。プラン契約だけでユーザー権限は付与されません。既存のRoot/SA2ポリシー判定で、ユーザー・グループのポリシー、Permission Boundary、組織の制御を評価します。この更新でロールやポリシーを自動付与することはありません。
 
 | 操作 | 必要なユーザー権限 |
 |---|---|
@@ -552,5 +552,7 @@ Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開�
 ```
 
 本文は `not_stored`、`unstructured_or_truncated`、`size_limit`、`redacted` の状態を返します。未保存の内容は復元しません。認識できる認証情報キー・トークン形式・URLをマスキングし、構造化された本文はフィールドごと16 KBまでに制限します。各外部サービスの監査時マスキングも維持します。直接取得できない旧形式のIDは `LOG_NOT_FOUND` とし、テーブル全体を検索しません。
+
+権限拒否には `reason`、ユーザーポリシーによる拒否には不足したアクションを示す `required_action` も返します。
 
 エラーはMCPの `isError: true` です。主なコードは `PLAN_UPGRADE_REQUIRED`、`PERMISSION_DENIED`、`INVALID_ARGUMENTS`、`INVALID_SERVICE`、`TOOL_CALL_LIMIT_EXCEEDED`、`LOG_NOT_FOUND`、`INVALID_CURSOR`、`CURSOR_EXPIRED`、`READ_LIMIT_EXCEEDED`、`ANALYTICS_UNAVAILABLE`。ローカル版も `POST /api/v1/analytics/usage`、`/logs/search`、`/logs/detail` を通じて同じサーバー側の判定を使います。
