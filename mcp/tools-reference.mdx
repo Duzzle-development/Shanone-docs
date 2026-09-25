@@ -506,11 +506,11 @@ Each successful call consumes one Tool Call, including zero matching records and
 
 ### shanone_get_tool_usage
 
-Returns `totals`, grouped `rows`, `period`, `as_of`, `next_cursor`, `complete`, `read_consistency`, `coverage`, and `warnings`. Totals cover the full matching period, not just the displayed page. Counts distinguish successful, failed, unknown-status, billable, and non-billable calls. Rows sort by count descending, then key ascending.
+Returns `totals`, grouped `rows`, `period`, `as_of`, `next_cursor`, `complete`, `read_consistency`, `coverage`, and `warnings`. Totals cover the full matching period, not just the displayed page. Counts distinguish successful, failed, unknown-status, billable, and non-billable calls. Stored `error` and `failed` both count as failed; missing/unrecognized statuses remain unknown. `statistics` adds duration samples, average/min/max/p95 and error-category counts for the whole result and each group. Each row has a `logs_query` with the exact filters, and `next_steps` suggests a failure search when failures exist. Rows sort by count descending, then key ascending.
 
 ### shanone_search_tool_logs
 
-Returns `logs`, `total_count`, and the same period/pagination metadata. Logs sort by timestamp descending with log ID as the tie-breaker. Each row contains `log_id`, timestamp, tool/service, status, duration, billing flag, connection/session IDs, and an error type when available. No request/response bodies are returned.
+Returns `logs`, `total_count`, and the same period/pagination metadata. Logs sort by timestamp descending with log ID as the tie-breaker. Each row contains `log_id`, timestamp, tool/service, status, duration, billing flag, connection/session IDs, and an error type when available. Each row also includes `execution` (metadata summary and error guidance), `billing` (historical reason or explicit unknown), and a ready-to-use `detail_query`. No request/response bodies or free-text error messages are returned.
 
 Shared parameters for usage and search:
 
@@ -556,3 +556,67 @@ Payload values may be marked `not_stored`, `unstructured_or_truncated`, `size_li
 Permission denials include `reason`; user-policy denials also include `required_action` to identify the missing action.
 
 Errors use MCP `isError: true`: `PLAN_UPGRADE_REQUIRED`, `PERMISSION_DENIED`, `INVALID_ARGUMENTS`, `INVALID_SERVICE`, `TOOL_CALL_LIMIT_EXCEEDED`, `LOG_NOT_FOUND`, `INVALID_CURSOR`, `CURSOR_EXPIRED`, `READ_LIMIT_EXCEEDED`, or `ANALYTICS_UNAVAILABLE`. The local proxies use the same server policy through `POST /api/v1/analytics/usage`, `/logs/search`, and `/logs/detail`.
+
+#### Reading the response (version 2)
+
+Successful Analytics responses include `response_version: 2`, `query_status: "success"`, and a short `summary`. This means the Analytics query succeeded, not that every recorded execution succeeded. A failed Analytics operation uses MCP `isError: true` and a `query_status: "error"` error body when it reaches the shared execution policy. Protocol/input validation may reject earlier. Existing fields (`totals`, `rows`, `logs`, `status`, `duration_ms`, `billable`) remain available.
+
+Illustrative search row, abbreviated:
+
+```json
+{
+  "response_version": 2,
+  "query_status": "success",
+  "summary": "Showing 1 of 1 matching execution logs, newest first.",
+  "logs": [{
+    "log_id": "log_example",
+    "tool_name": "example_update",
+    "status": "failed",
+    "execution": {
+      "status": "failed",
+      "recorded_status": "error",
+      "duration_ms": 320,
+      "summary": "Execution was recorded as failed.",
+      "error": {
+        "state": "recorded_classification",
+        "category": "timeout",
+        "message": "The recorded execution timed out.",
+        "suggested_action": "Check whether the original operation completed before retrying; a timeout does not prove it had no effect.",
+        "automatic_retry": false
+      }
+    },
+    "billing": {
+      "billable": true,
+      "decision_source": "recorded",
+      "reason": "billable_failed_execution",
+      "reason_state": "recorded"
+    },
+    "detail_query": {
+      "tool": "shanone_get_tool_log",
+      "arguments": {"log_id": "log_example", "scope": "self"}
+    }
+  }]
+}
+```
+
+`execution.operation` identifies the tool and recorded argument count. `execution.result_metadata` exposes only recorded argument count, input/output byte sizes, output type, truncation flag, and a top-level collection item count when recorded. The summary does not inspect payload text, claim the intended business outcome happened, or infer affected-record counts. A collection count describes a returned top-level list, not how many records an operation changed. Missing metadata is `null`.
+
+Error guidance comes from the stored classification (`rate_limit`, `timeout`, `invalid_input`, `auth_error`, `internal_error`, or `unknown`). It is a troubleshooting suggestion, not a verified provider-specific root cause or authorization to retry. Success gives `error.state: not_applicable`; unrecognized execution status gives `unknown_execution_status`. Metadata alone cannot distinguish an expired credential from every other authorization failure. Free-text error details remain behind `include_payload` permission and redaction.
+
+Usage `statistics.duration_ms` contains `sample_count`, `missing_count`, `average`, `min`, `max`, `p95`, and `percentile_method: nearest_rank`. Only finite nonnegative durations are included; absent/invalid values are not treated as zero. With no samples, numeric statistics are `null`. `statistics.errors` counts failures by supported classification, including `unknown`. Statistics cover the full matching result/group, not just the displayed page. `rows[].logs_query` preserves scope, billing and tool/service filters; day grouping uses the requested timezone and clamps the day to the original period. Following any suggested query still requires permissions and incurs the normal successful-call charge.
+
+Detail responses add `timings`, `related_execution` (session, retry origin, previous tool and parallel group), `availability`, and optional `next_steps`. These reflect stored fields only; they do not fetch other logs automatically. Payload availability is `not_requested` / permission `not_checked` by default, and `requested` / `granted` after explicit authorized inclusion. A suggested payload query does not imply the caller has that permission. Missing detail fields do not prove deletion or retention expiry; those causes are not distinguishable from missing instrumentation. With payload inclusion, `request`/`response` states describe what was actually available. Empty stored strings are `not_stored`.
+
+New execution records persist their billing decision reason:
+
+| `billing.reason` | Meaning |
+|---|---|
+| `billable_execution` | Successful billable execution |
+| `billable_failed_execution` | Failed execution that was still billable under the decision at execution time |
+| `execution_non_billable_override` | Execution path explicitly forced non-billable accounting |
+| `internal_error` | Billing classified it as a non-billable internal error |
+| `tool_non_billable` | Tool was non-billable at execution time |
+
+For older records, `reason` is `null` and `reason_state` is `not_recorded`; current pricing is never used to invent a historical reason. `decision_source: legacy_default` indicates the billing flag itself was absent and the shared legacy fallback was applied. Reasons and top-level collection counts become available for newly written records after the relevant execution service is deployed. Older records are not backfilled.
+
+Response version 2 uses a separate snapshot binding. Cursors created before this output update must be replaced by a new query; existing authorization, read budgets, payload restrictions, and billing rules still apply.

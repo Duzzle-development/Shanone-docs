@@ -506,11 +506,11 @@ Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開�
 
 ### shanone_get_tool_usage
 
-`totals`、集計行 `rows`、`period`、`as_of`、`next_cursor`、`complete`、`read_consistency`、`coverage`、`warnings` を返します。総数は表示ページだけでなく、条件に一致する全期間が対象です。成功・失敗・結果不明、課金・非課金を区別します。行は件数降順、同数ならキー昇順です。
+`totals`、集計行 `rows`、`period`、`as_of`、`next_cursor`、`complete`、`read_consistency`、`coverage`、`warnings` を返します。総数は表示ページだけでなく、条件に一致する全期間が対象です。成功・失敗・結果不明、課金・非課金を区別します。保存値の `error` と `failed` は失敗として集計し、欠損・未知の値は結果不明のまま扱います。全体と各行の `statistics` に処理時間のサンプル数・平均・最小・最大・p95とエラー分類別件数を返します。各行の `logs_query` には同じ条件のログ検索引数、失敗がある場合は `next_steps` に失敗ログの検索案を含めます。行は件数降順、同数ならキー昇順です。
 
 ### shanone_search_tool_logs
 
-`logs`、`total_count` と、期間・ページ情報を返します。日時降順、同時刻はログID順で並べます。各行にはログID、日時、ツール・サービス、結果、処理時間、課金フラグ、接続・セッションID、保存されている場合はエラー種別を含みます。入出力本文は含みません。
+`logs`、`total_count` と、期間・ページ情報を返します。日時降順、同時刻はログID順で並べます。各行にはログID、日時、ツール・サービス、結果、処理時間、課金フラグ、接続・セッションID、保存されている場合はエラー種別を含みます。各行には `execution`（メタデータからの要約・エラー対応案）、`billing`（記録済みの課金理由または不明状態）、そのまま詳細取得に使える `detail_query` も含みます。入出力本文や自由文のエラーメッセージは含みません。
 
 集計・検索の共通引数:
 
@@ -556,3 +556,67 @@ Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開�
 権限拒否には `reason`、ユーザーポリシーによる拒否には不足したアクションを示す `required_action` も返します。
 
 エラーはMCPの `isError: true` です。主なコードは `PLAN_UPGRADE_REQUIRED`、`PERMISSION_DENIED`、`INVALID_ARGUMENTS`、`INVALID_SERVICE`、`TOOL_CALL_LIMIT_EXCEEDED`、`LOG_NOT_FOUND`、`INVALID_CURSOR`、`CURSOR_EXPIRED`、`READ_LIMIT_EXCEEDED`、`ANALYTICS_UNAVAILABLE`。ローカル版も `POST /api/v1/analytics/usage`、`/logs/search`、`/logs/detail` を通じて同じサーバー側の判定を使います。
+
+#### レスポンスの読み方（バージョン2）
+
+Analytics取得が成功すると `response_version: 2`、`query_status: "success"`、短い `summary` を返します。これはログ取得の成功であり、記録された各ツール実行の成功ではありません。Analytics取得自体の失敗はMCPの `isError: true` で、共通実行処理に到達した場合はエラー本文に `query_status: "error"` を含めます。プロトコル・入力検証でそれ以前に拒否される場合もあります。既存の `totals`、`rows`、`logs`、`status`、`duration_ms`、`billable` は維持します。
+
+検索結果の例（説明用・一部省略）:
+
+```json
+{
+  "response_version": 2,
+  "query_status": "success",
+  "summary": "Showing 1 of 1 matching execution logs, newest first.",
+  "logs": [{
+    "log_id": "log_example",
+    "tool_name": "example_update",
+    "status": "failed",
+    "execution": {
+      "status": "failed",
+      "recorded_status": "error",
+      "duration_ms": 320,
+      "summary": "Execution was recorded as failed.",
+      "error": {
+        "state": "recorded_classification",
+        "category": "timeout",
+        "message": "The recorded execution timed out.",
+        "suggested_action": "Check whether the original operation completed before retrying; a timeout does not prove it had no effect.",
+        "automatic_retry": false
+      }
+    },
+    "billing": {
+      "billable": true,
+      "decision_source": "recorded",
+      "reason": "billable_failed_execution",
+      "reason_state": "recorded"
+    },
+    "detail_query": {
+      "tool": "shanone_get_tool_log",
+      "arguments": {"log_id": "log_example", "scope": "self"}
+    }
+  }]
+}
+```
+
+`execution.operation` はツール名と記録された引数数です。`execution.result_metadata` は記録済みの引数数、入出力バイト数、出力型、切詰めフラグ、記録されている場合は最上位リストの要素数を返します。要約のために本文を読んだり、利用者が意図した処理の完了や変更件数を推測したりはしません。リストの要素数は返却されたリストのサイズで、更新・削除された件数ではありません。未記録のメタデータは `null` です。
+
+エラー対応案は保存済みの分類（`rate_limit`、`timeout`、`invalid_input`、`auth_error`、`internal_error`、`unknown`）に基づきます。原因が確定したことや再実行の許可を意味しません。成功時の `error.state` は `not_applicable`、実行状態不明なら `unknown_execution_status` です。例えばメタデータだけで認証期限切れと他の権限エラーを完全には区別できません。自由文のエラー詳細は引き続き `include_payload` の権限確認・マスキング対象です。
+
+集計の `statistics.duration_ms` は `sample_count`、`missing_count`、`average`、`min`、`max`、`p95`、`percentile_method: nearest_rank` を返します。有限・非負の処理時間だけを対象とし、欠損や不正値を0として集計しません。サンプル0件なら統計値は `null` です。`statistics.errors` は失敗の分類別件数で、不明は `unknown` に集約します。統計は表示ページだけでなく、条件に一致する全体・各グループ全体が対象です。`rows[].logs_query` は閲覧範囲、課金区分、ツール・サービス条件を維持します。日別の場合は指定タイムゾーンの日付境界を使い、元の検索期間に収めます。提案されたクエリを呼び出す際も権限確認と通常の成功時課金が適用されます。
+
+詳細には `timings`、`related_execution`（セッション、リトライ元、直前のツール、並列グループ）、`availability`、必要に応じて `next_steps` を追加します。保存された情報のみを返し、関連ログを自動取得することはありません。本文は既定で `not_requested`、本文権限は `not_checked`。明示的に指定して認可された場合のみ `requested` / `granted` です。本文取得を次の操作として提示しても、利用者がその権限を持つことは意味しません。詳細フィールドの欠損から削除・保持期限切れを断定せず、未計測と区別できないことを明示します。本文取得時の `request` / `response` の状態で実際の取得可否を示し、保存値が空文字の場合は `not_stored` とします。
+
+今後の実行ログには、その時点の課金判定理由を記録します。
+
+| `billing.reason` | 意味 |
+|---|---|
+| `billable_execution` | 成功した課金対象の実行 |
+| `billable_failed_execution` | 失敗したが、実行時の判定では課金対象だった実行 |
+| `execution_non_billable_override` | 実行処理が明示的に非課金を指定 |
+| `internal_error` | 課金処理が非課金の内部エラーと判定 |
+| `tool_non_billable` | 実行時点で非課金のツール |
+
+過去のログで理由がなければ `reason: null`、`reason_state: not_recorded` です。現在の課金設定から過去の理由を推測しません。`decision_source: legacy_default` は課金フラグ自体が欠損し、共通の旧形式フォールバックを適用したことを表します。課金理由と最上位リストの要素数は、対応する実行サービスへの配備後に新しく記録されるログで利用できます。過去ログの補完は行いません。
+
+レスポンスバージョン2ではスナップショットの識別条件を変更しています。更新前のカーソルは新しい検索で取り直してください。既存の認可、読取上限、本文の制限、課金ルールは引き続き適用されます。
