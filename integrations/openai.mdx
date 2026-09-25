@@ -1,67 +1,96 @@
 ---
 title: "OpenAI"
-description: "Generate and edit images, and run OpenAI's Deep Research agent from your agent"
+description: "Images, background research, audio and file analysis through 10 OpenAI tools"
 icon: /images/openai.svg
 ---
 
-# OpenAI
+Shanone provides **10 OpenAI tools**, independent of the model powering your agent. Register your OpenAI API key in **Integrations → OpenAI**. Your project must have access to the selected model and sufficient API balance. User calls never fall back to Shanone's server API key.
 
-Shanone's OpenAI integration gives your agent 4 tools for image generation/editing and asynchronous Deep Research — a focused set built on top of OpenAI's own API, separate from whichever model powers your agent itself.
+Use `shanone_get_tool_schema` for the complete argument schema, then call `shanone_execute_tool`. Existing role, service, tool and parameter policies apply. Newly registered cancellation tools are disabled by default and require permission; enabling a tool does not bypass job ownership checks. No new Plus-only restriction is introduced for these tools.
 
-## Getting Started
+## Tool reference
 
-<Steps>
-  <Step title="Create an OpenAI API key">
-    Generate a key from the [OpenAI API keys page](https://platform.openai.com/api-keys).
-  </Step>
-  <Step title="Add the key in Shanone">
-    Go to **Integrations** in the Shanone dashboard, select OpenAI, and paste in the key (`sk-proj-...`).
-  </Step>
-  <Step title="Retry your request">
-    Once saved, `shanone_execute_tool` calls for `openai_*` tools will succeed.
-  </Step>
-</Steps>
+| Tool | Required arguments | Options and behavior |
+| --- | --- | --- |
+| `openai_generate_image` | `prompt` | `model`, `size`, `quality`, `output_format`, `output_compression`, `n`, `moderation`, `background` |
+| `openai_edit_image` | `prompt`, `image_url` | `mask_url`, up to 15 `reference_image_urls`, `model`, `size`, `quality`, `output_format`, `output_compression`, `n`, `background` |
+| `openai_deep_research` | `query` | `model`, `reasoning_effort`, `max_tool_calls`, `wait_for_completion`, `max_wait_seconds`; starts a background job |
+| `openai_get_research_status` | `response_id` | Returns report text, citations, state and usage |
+| `openai_cancel_research` | `response_id` | Cancels a pending research job; terminal jobs return their current state |
+| `openai_transcribe_audio` | `audio_url` | `model`, `prompt`, `language`; returns text and model-specific segments |
+| `openai_generate_speech` | `text` | `voice`, `output_format`, `speed`, `instructions`; returns an audio artifact |
+| `openai_analyze_file` | `file_url`, `query` | `memory_limit`; starts a background Code Interpreter job |
+| `openai_get_analysis_status` | `response_id` | Returns analysis text, citations and generated artifact URLs |
+| `openai_cancel_analysis` | `response_id` | Cancels a pending analysis job |
 
-## Available Tools
+## Images
 
-Shanone provides **4 tools** for OpenAI, organized into these categories:
+The existing default is `gpt-image-2`. You can also select `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare`.
 
-<AccordionGroup>
-  <Accordion title="Images">
-    `openai_generate_image`, `openai_edit_image` — generate images from a text prompt or edit an existing image (e.g. inpainting, style changes) via DALL-E/GPT-Image models
-  </Accordion>
-  <Accordion title="Deep Research">
-    `openai_deep_research`, `openai_get_research_status` — kick off an asynchronous, multi-step research task and poll it for completion, useful for reports that take longer than a single request
-  </Accordion>
-</AccordionGroup>
+- All three support `quality`: `auto`, `low`, `medium`, `high`. GPT Image 2.5 also supports `xhigh` and `max`.
+- `background`: `auto` by default; transparent output requires GPT Image 2.5 and PNG/WebP. JPEG cannot preserve transparency.
+- `size`: `auto` or `WIDTHxHEIGHT`. Edges must be multiples of 16, at most 3840px, aspect ratio at most 3:1, and total pixels 655,360–8,294,400. Resolutions above 2560×1440 are experimental.
+- `n`: 1–10. `prompt`: 1–32,000 characters. `output_format`: `png` (default), `jpeg`, `webp`. Compression 0–100 applies only to JPEG/WebP.
+- Editing accepts public HTTPS PNG/JPEG/WebP files. Each must be below 50 MB and at most 20 megapixels; combined downloaded and normalized inputs are each limited to 100 MB. Input downloads have a shared 60-second budget.
+- A mask applies to the first image and must match its dimensions. **Transparent alpha pixels specify the editing region.** Black/white colors alone are insufficient.
 
-## Common Use Cases
+The response separates `requested` parameters from provider-reported `actual` values. Each stored image has `url`, `width`, `height`, `format`, `size_bytes` and `expires_at`. `status: partial` means only some artifacts were saved. Base64 data is never used as a fallback. A failed save does not mean OpenAI generation was free.
 
-<CardGroup cols={2}>
-  <Card title="Marketing visuals" icon="image">
-    Generate hero images or product mockups from a text description
-  </Card>
-  <Card title="Image edits" icon="wand-2">
-    Edit an existing image (background removal, style transfer, inpainting) without leaving the chat
-  </Card>
-  <Card title="Long-form research reports" icon="file-search">
-    Kick off Deep Research on a complex topic and check back once it's done instead of blocking on a single call
-  </Card>
-  <Card title="Async pipelines" icon="workflow">
-    Poll `openai_get_research_status` from a scheduled job to pick up completed research automatically
-  </Card>
-</CardGroup>
+## Background research
 
-## Troubleshooting
+`openai_deep_research` uses `o3-deep-research` by default; `o4-mini-deep-research` is also supported. It sends `background: true` and returns `response_id`, `status`, and `next_action`.
 
-<AccordionGroup>
-  <Accordion title="openai_generate_image or openai_edit_image returns an authentication error">
-    Confirm the API key saved in **Integrations** starts with `sk-proj-` (or `sk-`) and belongs to a project with image generation enabled — some organization-level keys restrict model access.
-  </Accordion>
-  <Accordion title="openai_deep_research never seems to finish">
-    Deep Research runs asynchronously and can take several minutes for complex topics. Call `openai_get_research_status` with the returned task ID periodically rather than expecting a single synchronous response.
-  </Accordion>
-  <Accordion title="Image edits don't match the requested region">
-    `openai_edit_image` relies on a mask to target specific regions — if no mask is supplied, the whole image may be regenerated. Check the exact payload shape with `shanone_get_tool_schema` for `openai_edit_image`.
-  </Accordion>
-</AccordionGroup>
+`max_tool_calls` defaults to 20 (Shanone range 1–100) to bound provider tool use. `reasoning_effort` remains accepted as a deprecated compatibility argument but is not sent: the current Deep Research guide does not establish a model-specific effort contract. Supplying it returns a warning; provider defaults apply. `wait_for_completion` now defaults to `false`. If enabled, waiting is capped at 30 seconds, even when a legacy caller supplies a larger `max_wait_seconds`.
+
+```json
+{
+  "tool_name": "openai_deep_research",
+  "arguments": {
+    "query": "Compare battery recycling technologies with cited sources",
+    "max_tool_calls": 15
+  }
+}
+```
+
+Poll `openai_get_research_status` using the returned ID, normally after 15 seconds. `queued`/`in_progress` means accepted, not completed. A completed result contains `output`, `text_blocks`, `citations`, and `usage`. Citation offsets refer to the `text_blocks` entry identified by `text_index`.
+
+`incomplete` preserves partial output and `incomplete_details`. Cancelling does not refund work already performed. Background mode has provider-side retention; use only where your organization's data-retention policy permits it.
+
+## Audio
+
+`openai_transcribe_audio` accepts files up to 25 MB. URL paths must end in `.mp3`, `.mp4`, `.mpeg`, `.mpga`, `.m4a`, `.wav`, or `.webm`.
+
+| Model | Response | Constraints |
+| --- | --- | --- |
+| `gpt-transcribe` (default) | Text, detected languages, usage when available | Optional prompt; the ISO-639-1 `language` hint is sent in the provider's `languages` array |
+| `gpt-4o-transcribe-diarize` | `diarized_json` with speaker/start/end segments | Automatic chunking; `prompt` is rejected |
+| `whisper-1` | `verbose_json` with segments | Optional prompt and language hint |
+
+`openai_generate_speech` uses `gpt-4o-mini-tts`. Text and optional instructions are each limited to 4096 characters. Speed is 0.25–4 (default 1); the default voice is `coral`. Supported formats: MP3, Opus, AAC, FLAC, WAV and PCM. PCM is raw 24kHz, 16-bit signed little-endian audio. Inform listeners that the voice is AI-generated. The binary speech endpoint does not return token usage; Shanone reports `usage: null`.
+
+## File analysis
+
+`openai_analyze_file` accepts public HTTPS CSV/TSV/JSON/TXT/XLSX/PDF files up to 20 MB (Shanone limit). It uploads the file with `purpose: user_data` and a 24-hour expiration, then starts a background `gpt-6-astra` response with Code Interpreter.
+
+`memory_limit` is `1g` by default; `4g`, `16g`, and `64g` are available at different provider costs. Poll `openai_get_analysis_status` for text, citations and generated files. Inactive Code Interpreter containers expire after 20 minutes: retrieve results promptly. Files successfully saved by Shanone receive URLs valid for 24 hours. Artifact retrieval warnings mean the report may be available even when a file could not be saved.
+
+## Errors, ownership and billing
+
+- Input URLs must use public HTTPS on port 443, without embedded credentials or redirects. Private addresses and private DNS results are rejected; connections are pinned to validated addresses.
+- Job retrieval/cancellation requires the same Shanone user and OpenAI API key used to create it. Legacy jobs without ownership metadata and jobs created before a key rotation cannot be retrieved through these tools; use the original OpenAI project separately.
+- Failures retain the string `error` and add `error_details` with `code`, `message`, `retryable` and provider request IDs when available. Incomplete responses retain usable partial data.
+- OpenAI tool failures propagate as failures through `shanone_execute_tool` and Analytics. Worker failures never automatically rerun OpenAI generation locally. A timeout can mean completion is unknown; do not blindly repeat a paid operation.
+- Shanone Tool Calls and OpenAI API usage are separate charges. Status checks follow Shanone's existing Tool Call billing rules; there is no new polling exemption. `max_tool_calls` is an OpenAI-side work limit, not a Shanone billing count.
+- Stored image/audio/generated-file links now expire after **24 hours**, replacing the previous image tool's seven-day token URLs. Download artifacts before expiry.
+
+## API mapping and sources
+
+Verified against official documentation on 2026-09-25:
+
+| Capability | API endpoint | Official documentation |
+| --- | --- | --- |
+| Generate/edit images | `POST /v1/images/generations`, `POST /v1/images/edits` | [Images](https://developers.openai.com/api/docs/guides/image-generation) |
+| Start/get/cancel background jobs | `POST /v1/responses`, `GET /v1/responses/{id}`, `POST /v1/responses/{id}/cancel` | [Background mode](https://developers.openai.com/api/docs/guides/background), [Deep Research](https://developers.openai.com/api/docs/guides/deep-research) |
+| Transcribe/synthesize audio | `POST /v1/audio/transcriptions`, `POST /v1/audio/speech` | [Transcription](https://developers.openai.com/api/docs/guides/speech-to-text), [Speech](https://developers.openai.com/api/docs/guides/text-to-speech) |
+| Upload analysis input | `POST /v1/files` | [Files](https://developers.openai.com/api/reference/resources/files/methods/create) |
+| Retrieve generated analysis file | `GET /v1/containers/{container_id}/files/{file_id}/content` | [Code Interpreter](https://developers.openai.com/api/docs/guides/tools-code-interpreter) |

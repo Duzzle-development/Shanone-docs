@@ -1,67 +1,96 @@
 ---
 title: "OpenAI"
-description: "画像の生成・編集、OpenAIのDeep Researchエージェントの実行"
+description: "画像・非同期リサーチ・音声・ファイル分析の10ツール"
 icon: /images/openai.svg
 ---
 
-# OpenAI
+Shanoneは **10個のOpenAIツール** を提供します。エージェント本体のモデルとは独立した連携です。**Integrations → OpenAI** にAPIキーを登録してください。使用するモデルへのアクセスとAPI残高が必要です。ユーザーのキーが取得できない場合、Shanoneのサーバー共通キーには切り替わりません。
 
-ShanoneのOpenAI連携は、画像生成・編集と非同期のDeep Researchに特化した4個のツールをエージェントに提供します。これらはOpenAI自身のAPI上に構築されており、エージェント自体を動かしているモデルとは別物です。
+`shanone_get_tool_schema`で引数を確認し、`shanone_execute_tool`で実行します。既存のロール・サービス・ツール権限とパラメーターポリシーが適用されます。新規登録するキャンセルツールは初期状態で無効です。有効化してもジョブの所有者確認は省略されません。この変更ではOpenAIツールにPlus限定条件を追加していません。
 
-## はじめに
+## ツールリファレンス
 
-<Steps>
-  <Step title="OpenAI APIキーを作成する">
-    [OpenAI APIキーページ](https://platform.openai.com/api-keys)からキーを発行します。
-  </Step>
-  <Step title="Shanoneにキーを追加する">
-    Shanoneダッシュボードの**連携**でOpenAIを選択し、キー(`sk-proj-...`)を貼り付けます。
-  </Step>
-  <Step title="リクエストを再実行する">
-    保存が完了すると、`openai_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
-  </Step>
-</Steps>
+| ツール | 必須引数 | オプション・動作 |
+| --- | --- | --- |
+| `openai_generate_image` | `prompt` | `model`, `size`, `quality`, `output_format`, `output_compression`, `n`, `moderation`, `background` |
+| `openai_edit_image` | `prompt`, `image_url` | `mask_url`, 最大15件の`reference_image_urls`, `model`, `size`, `quality`, `output_format`, `output_compression`, `n`, `background` |
+| `openai_deep_research` | `query` | `model`, `reasoning_effort`, `max_tool_calls`, `wait_for_completion`, `max_wait_seconds`。非同期で調査を開始 |
+| `openai_get_research_status` | `response_id` | 調査本文・引用・状態・使用量を取得 |
+| `openai_cancel_research` | `response_id` | 実行中の調査を停止。終了済みなら現在の状態を返す |
+| `openai_transcribe_audio` | `audio_url` | `model`, `prompt`, `language`。文字起こしとモデル別の区間情報 |
+| `openai_generate_speech` | `text` | `voice`, `output_format`, `speed`, `instructions`。音声ファイルを生成 |
+| `openai_analyze_file` | `file_url`, `query` | `memory_limit`。Code Interpreterで非同期分析を開始 |
+| `openai_get_analysis_status` | `response_id` | 分析本文・引用・生成ファイルのURLを取得 |
+| `openai_cancel_analysis` | `response_id` | 実行中の分析を停止 |
 
-## 利用可能なツール
+## 画像生成・編集
 
-ShanoneはOpenAI向けに**4個のツール**を、以下のカテゴリに整理して提供しています。
+既存の既定モデル`gpt-image-2`を維持しています。`gpt-image-2.5-sunburst`と`gpt-image-2.5-flare`も指定できます。
 
-<AccordionGroup>
-  <Accordion title="画像">
-    `openai_generate_image`, `openai_edit_image` — テキストプロンプトから画像を生成したり、DALL-E/GPT-Imageモデルで既存の画像を編集(インペインティング、スタイル変更など)したりします
-  </Accordion>
-  <Accordion title="Deep Research">
-    `openai_deep_research`, `openai_get_research_status` — 非同期の多段階リサーチタスクを開始し、完了をポーリングします。1回のリクエストで終わらないレポート作成に便利です
-  </Accordion>
-</AccordionGroup>
+- `quality`：`auto`, `low`, `medium`, `high`。GPT Image 2.5のみ`xhigh`, `max`も利用可能。
+- `background`：既定値`auto`。透過背景はGPT Image 2.5とPNG/WebPの組み合わせが必要です。JPEGでは透過できません。
+- `size`：`auto`または`WIDTHxHEIGHT`。各辺は16の倍数、最大3840px、縦横比最大3:1、総画素数655,360〜8,294,400。2560×1440を超える解像度は実験的対応です。
+- `n`：1〜10。`prompt`：1〜32,000文字。形式は`png`（既定）, `jpeg`, `webp`。圧縮率0〜100はJPEG/WebPのみ指定できます。
+- 編集元画像は公開HTTPSのPNG/JPEG/WebP。各50MB未満・2,000万画素以下、ダウンロード合計と正規化後の合計はそれぞれ100MB以下。画像取得には共通の60秒上限があります。
+- マスクは最初の画像に適用され、同じ寸法とアルファチャンネルが必要です。**透明な画素が編集対象**です。白黒の色だけでは編集領域を指定できません。
 
-## よくあるユースケース
+レスポンスは要求条件`requested`と、OpenAIが返した実際の設定`actual`を分けます。保存済み画像には`url`, `width`, `height`, `format`, `size_bytes`, `expires_at`を返します。一部だけ保存できた場合は`status: partial`です。保存失敗時に巨大なBase64を返すことはありません。保存失敗でもOpenAI側の生成費用が発生している場合があります。
 
-<CardGroup cols={2}>
-  <Card title="マーケティング用画像" icon="image">
-    テキストの説明からヒーロー画像や製品モックアップを生成する
-  </Card>
-  <Card title="画像編集" icon="wand-2">
-    チャットを離れずに既存画像を編集する(背景除去、スタイル変換、インペインティングなど)
-  </Card>
-  <Card title="長文のリサーチレポート" icon="file-search">
-    複雑なトピックでDeep Researchを開始し、1回の呼び出しでブロックせず完了後に確認する
-  </Card>
-  <Card title="非同期パイプライン" icon="workflow">
-    スケジュールジョブから`openai_get_research_status`をポーリングし、完成したリサーチを自動的に取得する
-  </Card>
-</CardGroup>
+## 非同期リサーチ
 
-## トラブルシューティング
+既定モデルは`o3-deep-research`で、`o4-mini-deep-research`も指定できます。`background: true`で開始し、`response_id`, `status`, `next_action`を返します。
 
-<AccordionGroup>
-  <Accordion title="openai_generate_imageやopenai_edit_imageが認証エラーを返す">
-    **連携**に保存したAPIキーが`sk-proj-`(または`sk-`)で始まっており、画像生成が有効なプロジェクトに紐づいているか確認してください。組織レベルのキーの中には、モデルへのアクセスを制限しているものもあります。
-  </Accordion>
-  <Accordion title="openai_deep_researchがなかなか終わらない">
-    Deep Researchは非同期に実行され、複雑なトピックでは完了まで数分かかることがあります。1回の同期レスポンスを期待するのではなく、返されたタスクIDで`openai_get_research_status`を定期的に呼び出してください。
-  </Accordion>
-  <Accordion title="画像編集が指定した領域と一致しない">
-    `openai_edit_image`は特定の領域を対象にするためにマスクを利用します。マスクを渡さない場合、画像全体が再生成されることがあります。`openai_edit_image`の`shanone_get_tool_schema`で正確なペイロード形式を確認してください。
-  </Accordion>
-</AccordionGroup>
+`max_tool_calls`は既定20、Shanoneでの指定範囲は1〜100です。OpenAI内でのツール利用を制限します。`reasoning_effort`は互換用の非推奨引数として受け付けますが、現在のDeep Researchガイドにモデル別の契約が明示されていないため送信しません。指定時は警告を返し、OpenAIの既定設定を使用します。`wait_for_completion`の既定値は`false`に変更しました。`true`でも待機は最大30秒で、従来の大きな`max_wait_seconds`値を渡しても30秒に制限します。
+
+```json
+{
+  "tool_name": "openai_deep_research",
+  "arguments": {
+    "query": "電池リサイクル技術を出典付きで比較してください",
+    "max_tool_calls": 15
+  }
+}
+```
+
+返されたIDで`openai_get_research_status`を通常15秒後に呼び出します。`queued`/`in_progress`は受付済み・実行中を意味し、完了ではありません。完了時は`output`, `text_blocks`, `citations`, `usage`を返します。引用の位置は`text_index`が指す`text_blocks`内の文字列に対応します。
+
+`incomplete`でも部分的な本文と`incomplete_details`を保持します。停止しても実行済みのOpenAI利用料は返金されません。Background modeにはプロバイダー側のデータ保持があるため、組織の保持ポリシーに適合する場合に利用してください。
+
+## 音声
+
+`openai_transcribe_audio`の入力上限は25MBです。URLのパスには`.mp3`, `.mp4`, `.mpeg`, `.mpga`, `.m4a`, `.wav`, `.webm`のいずれかの拡張子が必要です。
+
+| モデル | 出力 | 制約 |
+| --- | --- | --- |
+| `gpt-transcribe`（既定） | 本文・検出言語・取得可能な使用量 | `prompt`を指定可能。ISO-639-1の`language`はAPIの`languages`配列として送信 |
+| `gpt-4o-transcribe-diarize` | 話者・開始時刻・終了時刻付きの`diarized_json` | 自動分割を使用。`prompt`は指定不可 |
+| `whisper-1` | 区間情報付きの`verbose_json` | `prompt`と`language`を指定可能 |
+
+`openai_generate_speech`は`gpt-4o-mini-tts`を使用します。本文と任意の話し方の指示はそれぞれ最大4096文字。速度は0.25〜4（既定1）、音声は既定`coral`です。形式はMP3, Opus, AAC, FLAC, WAV, PCMに対応します。PCMは24kHz・16bit符号付きリトルエンディアンの生音声です。聴く人にAI生成音声であることを明示してください。音声生成APIはトークン使用量を返さないため、`usage: null`になります。
+
+## ファイル分析
+
+`openai_analyze_file`は公開HTTPSのCSV/TSV/JSON/TXT/XLSX/PDFを受け付けます。Shanoneでの上限は20MBです。`purpose: user_data`、有効期間24時間でOpenAIにアップロードし、`gpt-6-astra`とCode Interpreterで非同期分析します。
+
+`memory_limit`は既定`1g`で、`4g`, `16g`, `64g`も指定できます。メモリ設定によってOpenAI側の費用が変わります。`openai_get_analysis_status`で本文・引用・生成ファイルを取得します。Code Interpreterのコンテナは20分間利用されないと期限切れになるため、完了結果は速やかに取得してください。Shanoneが保存したファイルのURLは24時間有効です。成果物の取得に失敗した場合、本文を保持したまま警告を返します。
+
+## エラー・所有者・課金
+
+- 入力URLは443番ポートの公開HTTPSのみ。認証情報入りURL、リダイレクト、プライベートIPとそのDNS応答は拒否します。接続先は検証済みIPに固定します。
+- 状態取得・停止には、開始時と同じShanoneユーザー・OpenAI APIキーが必要です。所有者情報を持たない旧ジョブやキー更新前のジョブは、このツールでは取得できません。元のOpenAIプロジェクト側で確認してください。
+- 失敗時は文字列の`error`に加えて、`code`, `message`, `retryable`などを持つ`error_details`を返します。取得できる場合はOpenAIのリクエストIDも含みます。
+- ツール内の失敗は`shanone_execute_tool`とAnalyticsでも失敗になります。実行サービスとの通信失敗時にローカルで再生成しません。タイムアウトは結果不明を意味する場合があるため、課金処理を無条件に繰り返さないでください。
+- ShanoneのTool CallとOpenAIのAPI利用料は別です。状態確認にも既存のTool Call課金ルールが適用され、この変更ではポーリングを無料化していません。`max_tool_calls`はOpenAI内の処理上限で、Shanoneの課金回数ではありません。
+- 画像・音声・生成ファイルのURL有効期間は**24時間**です。画像ツールの従来の7日間トークンURLから変更されています。
+
+## APIエンドポイントと公式資料
+
+2026-09-25に公式資料で確認しました。
+
+| 機能 | エンドポイント | 公式資料 |
+| --- | --- | --- |
+| 画像生成・編集 | `POST /v1/images/generations`, `POST /v1/images/edits` | [画像](https://developers.openai.com/api/docs/guides/image-generation) |
+| 非同期処理の開始・取得・停止 | `POST /v1/responses`, `GET /v1/responses/{id}`, `POST /v1/responses/{id}/cancel` | [Background mode](https://developers.openai.com/api/docs/guides/background)、[Deep Research](https://developers.openai.com/api/docs/guides/deep-research) |
+| 文字起こし・音声生成 | `POST /v1/audio/transcriptions`, `POST /v1/audio/speech` | [文字起こし](https://developers.openai.com/api/docs/guides/speech-to-text)、[音声生成](https://developers.openai.com/api/docs/guides/text-to-speech) |
+| 分析元ファイルのアップロード | `POST /v1/files` | [Files](https://developers.openai.com/api/reference/resources/files/methods/create) |
+| 分析で生成したファイルの取得 | `GET /v1/containers/{container_id}/files/{file_id}/content` | [Code Interpreter](https://developers.openai.com/api/docs/guides/tools-code-interpreter) |

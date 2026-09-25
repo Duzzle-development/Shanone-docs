@@ -620,3 +620,7 @@ New execution records persist their billing decision reason:
 For older records, `reason` is `null` and `reason_state` is `not_recorded`; current pricing is never used to invent a historical reason. `decision_source: legacy_default` indicates the billing flag itself was absent and the shared legacy fallback was applied. Reasons and top-level collection counts become available for newly written records after the relevant execution service is deployed. Older records are not backfilled.
 
 Response version 2 uses a separate snapshot binding. Cursors created before this output update must be replaced by a new query; existing authorization, read budgets, payload restrictions, and billing rules still apply.
+
+## OpenAI integration tools
+
+OpenAI provides 10 integration tools through `shanone_execute_tool`: image generation/editing, background research with status/cancellation, transcription, speech generation, and background file analysis with status/cancellation. See the [OpenAI tool reference](/integrations/openai) for exact arguments, model constraints, API mappings, output fields and migration notes. These are integration tools, not additional MCP control tools.
