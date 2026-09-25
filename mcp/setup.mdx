@@ -3,14 +3,18 @@ title: "Setup"
 description: "Connect to Shanone through Remote MCP or a local stdio proxy."
 ---
 
-Connect directly to **Remote MCP (Streamable HTTP)** to use all 29 tools. A local stdio proxy is also available, but its tools and parameters depend on the package and version. Check MCP `tools/list` for the actual catalog.
+<Note>
+The three Analytics tools are added in the Node.js 0.7.0 / Python 0.4.0 source release. Remote deployment and npm/PyPI publication are separate steps. Check your endpoint’s `tools/list` for availability.
+</Note>
+
+Connect directly to **Remote MCP (Streamable HTTP)** to use all 32 tools. A local stdio proxy is also available, but its tools and parameters depend on the package and version. Check MCP `tools/list` for the actual catalog.
 
 | | Local stdio proxy | Direct remote HTTP |
 |---|---|---|
 | Package/URL | `@duzzle/shanone-mcp` (npm) | `https://mcp.shanone.ai/mcp` |
 | Requires Node.js locally | Yes (18+) | No |
 | Auth needed | API key only | API key **and** organization ID |
-| Best for | Clients requiring stdio | All 29 current tools |
+| Best for | Clients requiring stdio | All 32 current tools |
 
 ## Prerequisites
 
@@ -220,6 +224,6 @@ pip install shanone-mcp
     Available tools and use cases
   </Card>
   <Card title="Tools Reference" icon="book" href="/mcp/tools-reference">
-    Parameters, plans, and billing for all 29 Remote MCP tools
+    Parameters, plans, and billing for all 32 Remote MCP tools
   </Card>
 </CardGroup>

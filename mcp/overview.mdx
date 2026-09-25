@@ -3,7 +3,11 @@ title: "MCP Overview"
 description: "Shanone MCP tools, transports, plan availability, and usage accounting."
 ---
 
-Shanone uses the Model Context Protocol (MCP) to give AI clients access to external services, saved skills, and permission management. Remote MCP exposes **29 tools**.
+<Note>
+The three Analytics tools are added in the Node.js 0.7.0 / Python 0.4.0 source release. Remote deployment and npm/PyPI publication are separate steps. Check your endpoint’s `tools/list` for availability.
+</Note>
+
+Shanone uses the Model Context Protocol (MCP) to give AI clients access to external services, saved skills, and permission management. Remote MCP exposes **32 tools**.
 
 ## Discover and execute tools
 
@@ -20,13 +24,13 @@ When provider OAuth is required, follow the connection instructions in the execu
 
 | Transport | Behavior |
 |---|---|
-| Remote MCP (Streamable HTTP) | Connect to `https://mcp.shanone.ai/mcp`. The 29 tools and parameters in this documentation describe this transport. |
+| Remote MCP (Streamable HTTP) | Connect to `https://mcp.shanone.ai/mcp`. The 32 tools and parameters in this documentation describe this transport. |
 | Local stdio proxy | Run the npm package `@duzzle/shanone-mcp` or Python package `shanone-mcp` to forward calls to Shanone’s REST API. Available tools and argument formats depend on the package and version. |
 
 Updated implementations use object arguments across all transports. Check `tools/list` for the actual contract of your endpoint and installed package version.
 
 <Note>
-This update has been verified on the dev/akaso remote environment. Production rollout and npm/PyPI publication are separate release steps. The corresponding local source versions are Node.js 0.6.0 and Python 0.3.0. If an older server advertises string arguments, follow its schema or switch to an updated endpoint.
+This update has been verified on the dev/akaso remote environment. Production rollout and npm/PyPI publication are separate release steps. Discovery/execution support starts with Node.js 0.6.0 and Python 0.3.0. If an older server advertises string arguments, follow its schema or switch to an updated endpoint.
 </Note>
 
 ## Authentication and access control
@@ -44,6 +48,7 @@ Plan availability does not replace API-key scopes, user permissions, resource ac
 | Provider execution | 1 | Free and above | Underlying tool’s billing rules |
 | Connection listing and verification | 2 | Free and above | Non-billable |
 | Skills, files, and folders | 13 | Plus / Pro / Team / Enterprise | 1 on success |
+| Analytics aggregation, search, and detail | 3 | Plus / Pro / Team / Enterprise | 1 on success, per page |
 | Service listing, permissions, and argument policies | 9 | Free and above | Non-billable |
 
 Free users can still discover all 13 skill tools, including their names, descriptions, and input schemas. The server checks the plan at execution time and returns `PLAN_UPGRADE_REQUIRED` before accessing skill data on Free.
@@ -51,3 +56,9 @@ Free users can still discover all 13 skill tools, including their names, descrip
 Non-billable tools are also recorded in Analytics. Connection verification counts one parent call, not each internal API probe. Provider execution is recorded under the actual provider tool name without adding a separate `shanone_execute_tool` count. “Billable” means consuming your plan’s Tool Call allowance, not necessarily an additional monetary charge.
 
 [Tool catalog](/mcp/Shanone-mcp-server) · [All parameters and errors](/mcp/tools-reference) · [Setup](/mcp/setup)
+
+## Analytics MCP
+
+The three Analytics tools require Plus or above and consume one Tool Call on success, including empty searches and each page. Both `analytics:read` API-key scope and user Analytics permissions are required. Self is the default scope; organization reads also require `analytics:Users`, and payloads require `analytics:ReadLogPayload`.
+
+[Aggregation, search, details, and permissions](/mcp/tools-reference#analytics)

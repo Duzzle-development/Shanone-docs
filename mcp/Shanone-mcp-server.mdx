@@ -1,9 +1,13 @@
 ---
 title: "Shanone MCP Server"
-description: "29 tools, plan availability, billing, and explicit account selection."
+description: "32 tools, plan availability, billing, and explicit account selection."
 ---
 
-Remote MCP exposes **29 tools**: one health check, four discovery/schema/execution tools, two connection tools, 13 skill tools, and nine service/permission tools.
+<Note>
+The three Analytics tools are added in the Node.js 0.7.0 / Python 0.4.0 source release. Remote deployment and npm/PyPI publication are separate steps. Check your endpoint’s `tools/list` for availability.
+</Note>
+
+Remote MCP exposes **32 tools**: one health check, four discovery/schema/execution tools, two connection tools, 13 skill tools, nine service/permission tools, and three Analytics tools.
 
 ## Available tools
 
@@ -16,6 +20,9 @@ Remote MCP exposes **29 tools**: one health check, four discovery/schema/executi
 | [`shanone_list_connections`](/mcp/tools-reference#shanone_list_connections) | List saved connections visible to the caller. Stored configuration is not proof that authentication still works. | Free+; non-billable |
 | [`shanone_check_connection`](/mcp/tools-reference#shanone_check_connection) | Verify saved connections using read-only provider APIs. Omitting service checks all connected services, with pagination. | Free+; non-billable |
 | [`shanone_execute_tool`](/mcp/tools-reference#shanone_execute_tool) | Execute an integration tool. Inspect both the execution envelope and the provider result; completing a tool invocation does not by itself prove the provider operation succeeded. | Free+; per executed tool |
+| [`shanone_get_tool_usage`](/mcp/tools-reference#shanone_get_tool_usage) | Aggregate tool usage | Plus+; 1 on success |
+| [`shanone_search_tool_logs`](/mcp/tools-reference#shanone_search_tool_logs) | Search execution logs | Plus+; 1 on success |
+| [`shanone_get_tool_log`](/mcp/tools-reference#shanone_get_tool_log) | Inspect one execution | Plus+; 1 on success |
 | [`shanone_list_skills`](/mcp/tools-reference#shanone_list_skills) | List saved skills, newest first. The query is optional; an empty query lists your saved skills with pagination. | Plus+; billable on success |
 | [`shanone_get_skill`](/mcp/tools-reference#shanone_get_skill) | Read a skill’s name, summary, and full instructions. The agent follows the instructions itself; this call does not execute the workflow. | Plus+; billable on success |
 | [`shanone_create_skill`](/mcp/tools-reference#shanone_create_skill) | Create a reusable skill. All three fields must be non-empty. description and body are stored as summary and instructions. | Plus+; billable on success |

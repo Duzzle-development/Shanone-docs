@@ -3,14 +3,18 @@ title: "セットアップ"
 description: "Remote MCP またはローカル stdio プロキシで Shanone に接続する。"
 ---
 
-全 29 ツールを利用するには、**Remote MCP（Streamable HTTP）** に直接接続してください。ローカル stdio プロキシも利用できますが、公開ツールとパラメーターはパッケージ・バージョンによって異なります。実際の一覧は MCP の `tools/list` で確認できます。
+<Note>
+Analyticsの3ツールはNode.js 0.7.0／Python 0.4.0のソースに追加されています。Remote MCPの配備とnpm/PyPI公開は別工程です。接続先の `tools/list` で提供状況を確認してください。
+</Note>
+
+全 32 ツールを利用するには、**Remote MCP（Streamable HTTP）** に直接接続してください。ローカル stdio プロキシも利用できますが、公開ツールとパラメーターはパッケージ・バージョンによって異なります。実際の一覧は MCP の `tools/list` で確認できます。
 
 | | ローカルstdioプロキシ | リモートHTTP直接接続 |
 |---|---|---|
 | パッケージ/URL | `@duzzle/shanone-mcp`(npm) | `https://mcp.shanone.ai/mcp` |
 | ローカルにNode.jsが必要か | 必要(18以上) | 不要 |
 | 必要な認証 | APIキーのみ | APIキー**と**組織ID |
-| 向いている用途 | stdio が必要なクライアント | 現在の全 29 ツールを利用する場合 |
+| 向いている用途 | stdio が必要なクライアント | 現在の全 32 ツールを利用する場合 |
 
 ## 前提条件
 
@@ -220,6 +224,6 @@ pip install shanone-mcp
     利用可能なツールと利用例
   </Card>
   <Card title="ツールリファレンス" icon="book" href="/ja/mcp/tools-reference">
-    Remote MCP 全29ツールの詳細なドキュメント
+    Remote MCP 全32ツールの詳細なドキュメント
   </Card>
 </CardGroup>

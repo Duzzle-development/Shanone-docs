@@ -1,9 +1,13 @@
 ---
 title: "ツールリファレンス"
-description: "Remote MCP の29ツールについて、引数・プラン・課金・利用回数の扱いを説明します。"
+description: "Remote MCP の32ツールについて、引数・プラン・課金・利用回数の扱いを説明します。"
 ---
 
-Remote MCP の29ツールについて、引数・プラン・課金・利用回数の扱いを説明します。
+<Note>
+Analyticsの3ツールはNode.js 0.7.0／Python 0.4.0のソースに追加されています。Remote MCPの配備とnpm/PyPI公開は別工程です。接続先の `tools/list` で提供状況を確認してください。
+</Note>
+
+Remote MCP の32ツールについて、引数・プラン・課金・利用回数の扱いを説明します。
 
 このリファレンスは **Remote MCP（Streamable HTTP）** を対象とします。ローカルプロキシの公開ツールや引数形式はパッケージ・バージョンにより異なります。実際の一覧は接続先の `tools/list` で確認してください。
 
@@ -26,6 +30,9 @@ Remote MCP の29ツールについて、引数・プラン・課金・利用回�
 | [`shanone_list_connections`](#shanone_list_connections) | Free 以上 | 非課金 | 呼び出しを記録 |
 | [`shanone_check_connection`](#shanone_check_connection) | Free 以上 | 非課金 | 親１回、内部 API は加算しない |
 | [`shanone_execute_tool`](#shanone_execute_tool) | Free 以上 | 実行先に従う | 実行先ツール名で記録 |
+| [`shanone_get_tool_usage`](#shanone_get_tool_usage) | Plus以上 | 成功時1回（ページごと） | 閲覧操作を記録・取得本文は再保存しない |
+| [`shanone_search_tool_logs`](#shanone_search_tool_logs) | Plus以上 | 成功時1回（ページごと） | 閲覧操作を記録・取得本文は再保存しない |
+| [`shanone_get_tool_log`](#shanone_get_tool_log) | Plus以上 | 成功時1回（ページごと） | 閲覧操作を記録・取得本文は再保存しない |
 | [`shanone_list_skills`](#shanone_list_skills) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
 | [`shanone_get_skill`](#shanone_get_skill) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
 | [`shanone_create_skill`](#shanone_create_skill) | Plus 以上 | 成功時１回 | 呼び出しを記録 |
@@ -481,3 +488,69 @@ list_services を除く権限管理とパラメーターポリシー管理は、
 Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開済みツールには含まれません。
 
 [接続設定を見る](/ja/mcp/setup)。
+
+## Analytics
+
+3ツールともPlus / Pro / Team / Enterpriseで利用できます。APIキーには `analytics:read`（または `all`）が必要です。既存キーに含まれていなければ追加してください。プラン契約だけでユーザー権限は付与されません。既存のRoot/SA2ポリシー判定で、ユーザー・グループのポリシー、Permission Boundary、組織の制御を評価します。この更新でロールやポリシーを自動付与することはありません。
+
+| 操作 | 必要なユーザー権限 |
+|---|---|
+| 本人の利用量集計 | `analytics:Overview` |
+| 本人のログ検索・詳細 | `analytics:Logs` |
+| 組織全体の取得 | 上記に加えて `analytics:Users` |
+| 保存された入出力本文の取得 | 上記に加えて `analytics:ReadLogPayload` |
+
+組織ID・本人のIDはサーバーが確定します。任意のユーザーID・組織IDは指定できません。ページごとに権限を再確認し、ログIDを知っているだけでは閲覧できません。
+
+成功した呼び出しは1 Tool Callを消費します。検索0件と次ページの取得も対象です。入力不備、プラン・権限不足、ログ未発見、カーソル失効、利用上限、バックエンド障害・読取上限での失敗は課金しません。実行に失敗した場合は予約を取り消します。閲覧操作は監査記録に残しますが、取得したログ本文をその監査記録へ再保存しません。現在の閲覧操作は固定した `as_of` より後に記録され、次回以降の集計に現れます。
+
+### shanone_get_tool_usage
+
+`totals`、集計行 `rows`、`period`、`as_of`、`next_cursor`、`complete`、`read_consistency`、`coverage`、`warnings` を返します。総数は表示ページだけでなく、条件に一致する全期間が対象です。成功・失敗・結果不明、課金・非課金を区別します。行は件数降順、同数ならキー昇順です。
+
+### shanone_search_tool_logs
+
+`logs`、`total_count` と、期間・ページ情報を返します。日時降順、同時刻はログID順で並べます。各行にはログID、日時、ツール・サービス、結果、処理時間、課金フラグ、接続・セッションID、保存されている場合はエラー種別を含みます。入出力本文は含みません。
+
+集計・検索の共通引数:
+
+| 引数 | 既定値・上限 | 内容 |
+|---|---|---|
+| `days` | 省略時7、1〜90 | 操作開始から24時間単位で遡る期間 |
+| `start_time`, `end_time` | 両方指定または両方省略 | オフセット付きISO 8601。開始より終了が後、最大90日、未来不可。`days`と併用不可 |
+| `scope` | `self` | 本人の `self` または権限のある `organization` |
+| `service` | 省略 | 登録済みサービス識別子。履歴の所属不明は `unknown` |
+| `tool_names` | `[]`、最大20件 | 完全一致。廃止済みツール名も指定可 |
+| `billing` | `all` | `all` / `billable` / `non_billable` |
+| `limit` | 20、最大100 | 1ページの行数 |
+| `cursor` | 省略 | 次ページ用の不透明トークン。同じ引数を再送する |
+
+集計には `group_by`（`tool` / `service` / `day`、既定 `tool`）と日付境界用のIANA `timezone`（既定 `UTC`）も指定できます。検索には `status`（`all` / `success` / `failed` / `unknown`）、`connection_id`、`session_id` を指定できます。条件間はAND、`tool_names`内はORです。
+
+```json
+{"days":7,"group_by":"day","timezone":"Asia/Tokyo","scope":"self"}
+```
+
+```json
+{"days":7,"service":"gmail","status":"failed","limit":20}
+```
+
+開始時刻を含み、終了時刻を含まない範囲です。5分間のスナップショットでページ間の結果を固定します。各ページは再認可・別課金です。カーソルは継続収集の永続チェックポイントではありません。直近ログには反映遅延があります。過去の保持・計測範囲は `coverage: unknown` として返し、完全性を推測しません。旧ログの結果欠損は不明、課金フラグ欠損は既存Analytics共通の判定に従います。
+
+読取上限はDBの50ページ・評価対象50,000件・DB操作間で確認する10秒の予算です。全期間を読み切れない場合は `READ_LIMIT_EXCEEDED` を返し、途中集計を確定値として返さず課金もしません。期間を狭めて再実行してください。`complete: true` は対象Queryの読取完了であり、過去の全イベントや反映待ちの記録の存在を保証するものではありません。
+
+### shanone_get_tool_log
+
+| 引数 | 既定値 | 内容 |
+|---|---|---|
+| `log_id` | 必須 | 検索結果のログID |
+| `scope` | `self` | 本人または権限のある `organization` |
+| `include_payload` | `false` | 追加権限がある場合に、保存済み・マスキング済み・サイズ制限付きの入出力を取得 |
+
+```json
+{"log_id":"LOG_ID_FROM_SEARCH","include_payload":false}
+```
+
+本文は `not_stored`、`unstructured_or_truncated`、`size_limit`、`redacted` の状態を返します。未保存の内容は復元しません。認識できる認証情報キー・トークン形式・URLをマスキングし、構造化された本文はフィールドごと16 KBまでに制限します。各外部サービスの監査時マスキングも維持します。直接取得できない旧形式のIDは `LOG_NOT_FOUND` とし、テーブル全体を検索しません。
+
+エラーはMCPの `isError: true` です。主なコードは `PLAN_UPGRADE_REQUIRED`、`PERMISSION_DENIED`、`INVALID_ARGUMENTS`、`INVALID_SERVICE`、`TOOL_CALL_LIMIT_EXCEEDED`、`LOG_NOT_FOUND`、`INVALID_CURSOR`、`CURSOR_EXPIRED`、`READ_LIMIT_EXCEEDED`、`ANALYTICS_UNAVAILABLE`。ローカル版も `POST /api/v1/analytics/usage`、`/logs/search`、`/logs/detail` を通じて同じサーバー側の判定を使います。

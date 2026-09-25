@@ -1,9 +1,13 @@
 ---
 title: "Shanone MCP サーバー"
-description: "29ツールの構成、プラン、課金とアカウント選択。"
+description: "32ツールの構成、プラン、課金とアカウント選択。"
 ---
 
-Remote MCP は **29ツール**を公開します。内訳はヘルスチェック１、検索・スキーマ・実行４、接続管理２、スキル13、サービス・権限管理９です。
+<Note>
+Analyticsの3ツールはNode.js 0.7.0／Python 0.4.0のソースに追加されています。Remote MCPの配備とnpm/PyPI公開は別工程です。接続先の `tools/list` で提供状況を確認してください。
+</Note>
+
+Remote MCP は **32ツール**を公開します。内訳はヘルスチェック１、検索・スキーマ・実行４、接続管理２、スキル13、サービス・権限管理９、Analytics３です。
 
 ## ツール一覧
 
@@ -16,6 +20,9 @@ Remote MCP は **29ツール**を公開します。内訳はヘルスチェッ�
 | [`shanone_list_connections`](/ja/mcp/tools-reference#shanone_list_connections) | 呼出元が参照できる保存済み接続を一覧表示します。登録済みであることは、認証が現在も有効であることを意味しません。 | Free 以上・非課金 |
 | [`shanone_check_connection`](/ja/mcp/tools-reference#shanone_check_connection) | 読み取り専用の外部 API を使い、保存済み接続の有効性を確認します。service を省略すると、接続済みサービスをページ単位で確認します。 | Free 以上・非課金 |
 | [`shanone_execute_tool`](/ja/mcp/tools-reference#shanone_execute_tool) | 連携ツールを実行します。実行結果の外側のステータスと外部サービスの結果を確認してください。呼び出しの完了だけで業務処理の成功とは判断しません。 | Free 以上・実行先に従う |
+| [`shanone_get_tool_usage`](/ja/mcp/tools-reference#shanone_get_tool_usage) | 利用量を集計 | Plus以上・成功時1回 |
+| [`shanone_search_tool_logs`](/ja/mcp/tools-reference#shanone_search_tool_logs) | 実行ログを検索 | Plus以上・成功時1回 |
+| [`shanone_get_tool_log`](/ja/mcp/tools-reference#shanone_get_tool_log) | 実行ログ1件の詳細を取得 | Plus以上・成功時1回 |
 | [`shanone_list_skills`](/ja/mcp/tools-reference#shanone_list_skills) | 保存済みスキルを新しい順に一覧表示します。query は任意で、空の場合は対象の保存済みスキルをページ単位で取得します。 | Plus 以上・成功時課金 |
 | [`shanone_get_skill`](/ja/mcp/tools-reference#shanone_get_skill) | スキルの名前、説明、指示本文を取得します。指示の実行は呼出元のエージェントが行い、この呼び出し自体がワークフローを実行するわけではありません。 | Plus 以上・成功時課金 |
 | [`shanone_create_skill`](/ja/mcp/tools-reference#shanone_create_skill) | 再利用可能なスキルを作成します。３項目すべてに空でない値が必要です。description と body は summary と instructions として保存されます。 | Plus 以上・成功時課金 |

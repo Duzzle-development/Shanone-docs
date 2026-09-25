@@ -3,7 +3,11 @@ title: "MCP 概要"
 description: "Shanone の MCP ツール、接続方式、プランと利用回数の仕組み。"
 ---
 
-Shanone は Model Context Protocol（MCP）を通じて、AI クライアントから外部サービス、保存したスキル、権限管理を利用できるようにします。Remote MCP は **29 ツール**を公開しています。
+<Note>
+Analyticsの3ツールはNode.js 0.7.0／Python 0.4.0のソースに追加されています。Remote MCPの配備とnpm/PyPI公開は別工程です。接続先の `tools/list` で提供状況を確認してください。
+</Note>
+
+Shanone は Model Context Protocol（MCP）を通じて、AI クライアントから外部サービス、保存したスキル、権限管理を利用できるようにします。Remote MCP は **32 ツール**を公開しています。
 
 ## 必要なツールを探して実行する
 
@@ -20,13 +24,13 @@ Shanone は Model Context Protocol（MCP）を通じて、AI クライアント�
 
 | 方式 | 特徴 |
 |---|---|
-| Remote MCP（Streamable HTTP） | `https://mcp.shanone.ai/mcp` に接続します。このドキュメントの 29 ツールとパラメーターはこの方式を対象にしています。 |
+| Remote MCP（Streamable HTTP） | `https://mcp.shanone.ai/mcp` に接続します。このドキュメントの 32 ツールとパラメーターはこの方式を対象にしています。 |
 | ローカル stdio プロキシ | npm の `@duzzle/shanone-mcp` または Python の `shanone-mcp` を起動し、Shanone の REST API に転送します。公開ツールと引数形式はパッケージ・バージョンによって異なります。 |
 
 更新後の実装では `shanone_execute_tool.arguments` は全方式でオブジェクトです。接続先・インストール済みバージョンの実際の仕様は `tools/list` で確認してください。
 
 <Note>
-この更新はdev/akasoのリモート環境で検証済みです。本番への反映とnpm/PyPIへの公開は別工程です。ローカル版の対応ソースはNode.js 0.6.0／Python 0.3.0です。古いサーバーが文字列型を公開している場合は、そのスキーマに従うか、更新済みの接続先へ切り替えてください。
+この更新はdev/akasoのリモート環境で検証済みです。本番への反映とnpm/PyPIへの公開は別工程です。検索・実行機能の対応ソースはNode.js 0.6.0／Python 0.3.0以降です。古いサーバーが文字列型を公開している場合は、そのスキーマに従うか、更新済みの接続先へ切り替えてください。
 </Note>
 
 ## 認証とアクセス制御
@@ -44,6 +48,7 @@ Remote MCP には API キー（`Authorization: Bearer sh_...`、または `X-API
 | 外部ツールの実行 | 1 | Free 以上 | 実行した外部ツールの課金ルールに従う |
 | 接続一覧・接続確認 | 2 | Free 以上 | 非課金 |
 | スキル・ファイル・フォルダー操作 | 13 | Plus / Pro / Team / Enterprise | 成功時に 1 回 |
+| Analytics集計・ログ検索・詳細 | 3 | Plus / Pro / Team / Enterprise | 成功時に1回（ページごと） |
 | サービス一覧・権限管理・引数ポリシー | 9 | Free 以上 | 非課金 |
 
 Free でもスキル 13 ツールの名前・説明・入力スキーマは表示されます。実行時にはサーバーがプランを確認し、Free の場合はスキルデータにアクセスする前に `PLAN_UPGRADE_REQUIRED` を返します。
@@ -51,3 +56,9 @@ Free でもスキル 13 ツールの名前・説明・入力スキーマは表�
 非課金ツールも Analytics の利用回数に集計されます。接続確認は内部の API 確認回数ではなく、親の呼び出し 1 回として集計します。外部ツール実行は実際のツール名で集計し、`shanone_execute_tool` を別途加算しません。「課金対象」はプランの Tool Call 枠を消費する意味で、必ず追加料金が発生するという意味ではありません。
 
 [ツール一覧](/ja/mcp/Shanone-mcp-server) · [全パラメーターとエラー](/ja/mcp/tools-reference) · [接続設定](/ja/mcp/setup)
+
+## Analytics MCP
+
+Analyticsの3ツールはPlus以上限定・成功時に1 Tool Callを消費します。空の検索結果と次ページも課金対象です。APIキーの `analytics:read` とユーザーのAnalytics閲覧権限が必要です。本人のデータが既定で、組織全体には `analytics:Users`、本文には `analytics:ReadLogPayload` も必要です。
+
+[集計・検索・詳細と権限の仕様](/ja/mcp/tools-reference#analytics)

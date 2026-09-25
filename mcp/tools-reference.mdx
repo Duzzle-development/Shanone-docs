@@ -1,9 +1,13 @@
 ---
 title: "Tools Reference"
-description: "Parameters, plan availability, billing, and usage accounting for the 29 Remote MCP tools."
+description: "Parameters, plan availability, billing, and usage accounting for the 32 Remote MCP tools."
 ---
 
-Parameters, plan availability, billing, and usage accounting for the 29 Remote MCP tools.
+<Note>
+The three Analytics tools are added in the Node.js 0.7.0 / Python 0.4.0 source release. Remote deployment and npm/PyPI publication are separate steps. Check your endpoint’s `tools/list` for availability.
+</Note>
+
+Parameters, plan availability, billing, and usage accounting for the 32 Remote MCP tools.
 
 This reference describes **Remote MCP over Streamable HTTP**. Local proxies differ by package and version; check your server’s `tools/list` for the actual tools and schemas.
 
@@ -26,6 +30,9 @@ Results vary by tool: Markdown text, text containing JSON, or structured errors.
 | [`shanone_list_connections`](#shanone_list_connections) | Free and above | Non-billable | Call recorded |
 | [`shanone_check_connection`](#shanone_check_connection) | Free and above | Non-billable | 1 parent call; no probe counts |
 | [`shanone_execute_tool`](#shanone_execute_tool) | Free and above | Per executed tool | Executed tool name |
+| [`shanone_get_tool_usage`](#shanone_get_tool_usage) | Plus and above | 1 on success, per page | Read operation recorded; fetched payloads not copied |
+| [`shanone_search_tool_logs`](#shanone_search_tool_logs) | Plus and above | 1 on success, per page | Read operation recorded; fetched payloads not copied |
+| [`shanone_get_tool_log`](#shanone_get_tool_log) | Plus and above | 1 on success, per page | Read operation recorded; fetched payloads not copied |
 | [`shanone_list_skills`](#shanone_list_skills) | Plus and above | 1 on success | Call recorded |
 | [`shanone_get_skill`](#shanone_get_skill) | Plus and above | 1 on success | Call recorded |
 | [`shanone_create_skill`](#shanone_create_skill) | Plus and above | 1 on success | Call recorded |
@@ -481,3 +488,69 @@ Remove the policy on one field. This does not change the tool’s allow/deny per
 `shanone_get_tool_usage` is a design proposal, not an available tool.
 
 [Configure your connection](/mcp/setup).
+
+## Analytics
+
+All three tools require Plus, Pro, Team, or Enterprise. API keys need `analytics:read` (or `all`); add this scope to existing keys that do not have it. Plan access does not grant user permissions. The existing Root/SA2 policy engine evaluates user/group policies, permission boundaries, and organization controls. No roles or policies are automatically granted by this release.
+
+| Operation | Required user actions |
+|---|---|
+| Usage, self | `analytics:Overview` |
+| Search/detail, self | `analytics:Logs` |
+| Any organization-wide read | Above action plus `analytics:Users` |
+| Include saved request/response | Above actions plus `analytics:ReadLogPayload` |
+
+Organization and caller IDs are resolved server-side; arbitrary user/organization IDs are not accepted. Scope and permissions are checked again for each page. Knowing a log ID does not grant access.
+
+Each successful call consumes one Tool Call, including zero matching records and subsequent pages. Invalid inputs, plan/permission rejection, missing logs, expired cursors, quota rejection, and backend/read-budget failures are not charged. Reservations are canceled on execution failure. Each read is audited without copying the fetched log payloads into its own audit record. The current read is outside its own fixed `as_of` window and appears in later usage queries.
+
+### shanone_get_tool_usage
+
+Returns `totals`, grouped `rows`, `period`, `as_of`, `next_cursor`, `complete`, `read_consistency`, `coverage`, and `warnings`. Totals cover the full matching period, not just the displayed page. Counts distinguish successful, failed, unknown-status, billable, and non-billable calls. Rows sort by count descending, then key ascending.
+
+### shanone_search_tool_logs
+
+Returns `logs`, `total_count`, and the same period/pagination metadata. Logs sort by timestamp descending with log ID as the tie-breaker. Each row contains `log_id`, timestamp, tool/service, status, duration, billing flag, connection/session IDs, and an error type when available. No request/response bodies are returned.
+
+Shared parameters for usage and search:
+
+| Parameter | Default / limits | Meaning |
+|---|---|---|
+| `days` | Omitted means 7; 1–90 | Rolling 24-hour days ending at operation start |
+| `start_time`, `end_time` | Both or neither | ISO 8601 with offsets; positive range ≤90 days, no future end; cannot combine with `days` |
+| `scope` | `self` | `self` or `organization` |
+| `service` | None | Registered service identifier; unknown historical ownership uses `unknown` |
+| `tool_names` | `[]`, max 20 | Exact names, including retired tools |
+| `billing` | `all` | `all`, `billable`, `non_billable` |
+| `limit` | 20, max 100 | Rows per page |
+| `cursor` | None | Opaque continuation token; resend the same parameters |
+
+Usage additionally accepts `group_by` (`tool`, `service`, `day`; default `tool`) and IANA `timezone` (default `UTC`) for day boundaries. Search additionally accepts `status` (`all`, `success`, `failed`, `unknown`), `connection_id`, and `session_id`. Different filters are AND-combined; `tool_names` matches any listed name.
+
+```json
+{"days":7,"group_by":"day","timezone":"Asia/Tokyo","scope":"self"}
+```
+
+```json
+{"days":7,"service":"gmail","status":"failed","limit":20}
+```
+
+Time ranges are start-inclusive/end-exclusive. A five-minute snapshot keeps subsequent pages consistent; every page is reauthorized and separately charged. A cursor is not a durable collection checkpoint. Recent logs may arrive late. Historical retention/instrumentation coverage is reported as `unknown`, not assumed complete. Missing legacy statuses remain unknown; missing legacy billing flags use the shared Analytics billing fallback.
+
+Reads are bounded to 50 database pages, 50,000 evaluated records, and a 10-second budget checked between database operations. If the full period cannot be read, `READ_LIMIT_EXCEEDED` is returned without partial totals or a charge. Narrow the period. `complete: true` means the bounded query was exhausted, not that all historical or recently ingested events are present.
+
+### shanone_get_tool_log
+
+| Parameter | Default | Meaning |
+|---|---|---|
+| `log_id` | Required | ID from search results |
+| `scope` | `self` | `self` or authorized `organization` |
+| `include_payload` | `false` | Include stored, redacted, bounded request/response with additional permission |
+
+```json
+{"log_id":"LOG_ID_FROM_SEARCH","include_payload":false}
+```
+
+Payload values may be marked `not_stored`, `unstructured_or_truncated`, `size_limit`, or `redacted`; unavailable content is not reconstructed. Recognized credential keys, token patterns, and URLs are redacted. Structured payload output is limited to 16 KB per field. Existing provider-specific audit redaction still applies. Legacy IDs that are not directly addressable are returned as `LOG_NOT_FOUND`; this endpoint does not scan the entire table.
+
+Errors use MCP `isError: true`: `PLAN_UPGRADE_REQUIRED`, `PERMISSION_DENIED`, `INVALID_ARGUMENTS`, `INVALID_SERVICE`, `TOOL_CALL_LIMIT_EXCEEDED`, `LOG_NOT_FOUND`, `INVALID_CURSOR`, `CURSOR_EXPIRED`, `READ_LIMIT_EXCEEDED`, or `ANALYTICS_UNAVAILABLE`. The local proxies use the same server policy through `POST /api/v1/analytics/usage`, `/logs/search`, and `/logs/detail`.
