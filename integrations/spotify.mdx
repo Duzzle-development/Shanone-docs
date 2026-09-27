@@ -10,17 +10,31 @@ Shanone's Spotify integration gives your agent 57 tools covering playback contro
 
 ## Getting Started
 
+Connect using the **Client ID from your own Spotify developer app**. The app owner needs an active **Spotify Premium subscription**. **No Client Secret is required.**
+
 <Steps>
-  <Step title="Connect via OAuth">
-    Ask your agent to do something with Spotify (e.g. "skip to the next track" or "add this song to my Discover playlist"), or connect proactively from **Integrations** in the Shanone dashboard.
+  <Step title="Copy the redirect URL from Shanone">
+    Open **Integrations → Spotify** in the [Shanone dashboard](https://app.shanone.ai). Copy the redirect URL shown in the connection panel for the Shanone environment you are connecting to.
   </Step>
-  <Step title="Authorize your Spotify account">
-    Approve Spotify's OAuth consent screen for the account you want Shanone to control.
+  <Step title="Set up your Spotify app">
+    Open the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) and create your own app, or open an existing app. In **Settings**, add the URL copied from Shanone to **Redirect URIs** and save. The URL must match exactly, including the path and any trailing slash.
   </Step>
-  <Step title="Retry your request">
-    Once connected, `shanone_execute_tool` calls for `spotify_*` tools will succeed. Playback control tools require an active Spotify device (app open somewhere) to act on.
+  <Step title="Add your Spotify account">
+    In the app's **Users Management**, add the Spotify account you want to connect. Use that account when authorizing Shanone.
+  </Step>
+  <Step title="Enter your Client ID and connect">
+    Copy the **Client ID** from your Spotify app's **Settings**. Return to Shanone's Spotify panel, paste it into the **Client ID** field, and select **Connect**. You do not need to copy or enter the Client Secret.
+  </Step>
+  <Step title="Authorize and try the connection">
+    Approve the requested permissions on Spotify's consent screen. When you return to Shanone, confirm that Spotify is connected.
+
+    Ask your agent “What am I listening to?” or retry the request that prompted you to connect. Playback control requires an active Spotify device, such as the Spotify app open on your phone or computer.
   </Step>
 </Steps>
+
+<Note>
+  If you used the previous connection method, reconnect using your own Client ID. Your previous authorization cannot be transferred to a different app.
+</Note>
 
 ## Available Tools
 
@@ -73,11 +87,20 @@ Shanone provides **57 tools** for Spotify, organized into these categories:
 ## Troubleshooting
 
 <AccordionGroup>
+  <Accordion title="Client ID is rejected">
+    Copy the Client ID from your Spotify app's Settings. It is a 32-character hexadecimal value. Check that you have not entered the Client Secret or included spaces.
+  </Accordion>
+  <Accordion title="Spotify reports an invalid redirect URI">
+    Save the exact redirect URL currently shown in Shanone's Spotify panel in your app's Redirect URIs. A URL from another Shanone environment will not match.
+  </Accordion>
+  <Accordion title="Spotify authorization or API access is denied">
+    Confirm that the app owner has an active Premium subscription and that the account you authorize is listed in the app's Users Management. After correcting the settings, reconnect from Shanone's Spotify panel.
+  </Accordion>
   <Accordion title="spotify_start_playback or spotify_skip_to_next fails with no active device">
     Playback control tools need at least one Spotify Connect device already active (app open on phone/desktop/web). Use `spotify_get_available_devices` and `spotify_transfer_playback` to pick a target first.
   </Accordion>
   <Accordion title="Playback tools work but nothing actually changes">
-    Spotify Free accounts have restricted playback control (no seeking, limited skips) on some devices — check the account type if playback commands are silently ignored.
+    Confirm that the connected account has an active Spotify Premium subscription and that you are targeting the intended active device.
   </Accordion>
   <Accordion title="spotify_add_tracks_to_playlist fails on a playlist I own">
     Confirm the playlist ID belongs to the authenticated user or that they have collaborative edit rights — Spotify rejects writes to playlists the connected account can't modify.

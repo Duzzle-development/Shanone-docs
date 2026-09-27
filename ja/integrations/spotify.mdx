@@ -10,17 +10,31 @@ ShanoneのSpotify連携は、再生操作、プレイリスト管理、保存済
 
 ## はじめに
 
+Spotifyは、**自分で作成したSpotifyアプリのClient ID**を使って接続します。アプリ所有者のSpotifyアカウントには、有効な**Premium契約**が必要です。**Client Secretは不要です。**
+
 <Steps>
-  <Step title="OAuthで接続する">
-    エージェントにSpotify関連の作業を依頼(例: 「次のトラックにスキップして」「この曲をDiscoverプレイリストに追加して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
+  <Step title="ShanoneでリダイレクトURLをコピーする">
+    [Shanoneダッシュボード](https://app.shanone.ai)の**連携 → Spotify**を開き、接続パネルに表示されるリダイレクトURLをコピーします。接続するShanone環境に表示されているURLを使ってください。
   </Step>
-  <Step title="Spotifyアカウントを許可する">
-    Shanoneに操作させたいアカウントで、SpotifyのOAuth同意画面を承認します。
+  <Step title="自分のSpotifyアプリを設定する">
+    [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)を開き、自分のアプリを作成するか、既存のアプリを開きます。**Settings**で、ShanoneからコピーしたURLを**Redirect URIs**に追加し、保存してください。パスや末尾のスラッシュを含め、URLを完全に一致させる必要があります。
   </Step>
-  <Step title="リクエストを再実行する">
-    接続が完了すると、`spotify_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。再生操作系のツールは、操作対象となるアクティブなSpotifyデバイスが必要です。
+  <Step title="接続するSpotifyアカウントを追加する">
+    アプリの**Users Management**に、Shanoneと接続するSpotifyアカウントを追加します。接続を承認する際も、このアカウントを使用してください。
+  </Step>
+  <Step title="Client IDを入力して接続する">
+    Spotifyアプリの**Settings**から**Client ID**をコピーします。ShanoneのSpotifyパネルに戻り、**Client ID**欄に貼り付けて**接続**を押してください。Client Secretをコピー・入力する必要はありません。
+  </Step>
+  <Step title="接続を承認して動作を確認する">
+    Spotifyの同意画面で、要求された権限を承認します。Shanoneに戻ったら、Spotifyが接続済みになっていることを確認してください。
+
+    エージェントに「今、何を聴いている？」などと依頼するか、接続前のリクエストを再実行してください。再生操作には、スマートフォンやPCでSpotifyアプリを開くなど、操作対象のアクティブなSpotifyデバイスが必要です。
   </Step>
 </Steps>
+
+<Note>
+  以前の接続方式でSpotifyを連携していた場合は、自分のClient IDを使って再接続してください。以前のアプリへの認可を、別のアプリに引き継ぐことはできません。
+</Note>
 
 ## 利用可能なツール
 
@@ -73,11 +87,20 @@ ShanoneはSpotify向けに**57個のツール**を、以下のカテゴリに整
 ## トラブルシューティング
 
 <AccordionGroup>
+  <Accordion title="Client IDが受け付けられない">
+    SpotifyアプリのSettingsからClient IDをコピーしてください。Client IDは32桁の16進数です。Client Secretと取り違えていないか、空白が含まれていないか確認してください。
+  </Accordion>
+  <Accordion title="リダイレクトURIが無効と表示される">
+    ShanoneのSpotifyパネルに現在表示されているリダイレクトURLを、アプリのRedirect URIsにそのまま保存してください。別のShanone環境のURLでは一致しません。
+  </Accordion>
+  <Accordion title="Spotifyの認証やAPIアクセスが拒否される">
+    アプリ所有者のPremium契約が有効であることと、認証するSpotifyアカウントがアプリのUsers Managementに登録されていることを確認してください。設定を修正したら、ShanoneのSpotifyパネルから再接続します。
+  </Accordion>
   <Accordion title="spotify_start_playbackやspotify_skip_to_nextがアクティブデバイスなしで失敗する">
     再生操作系のツールには、少なくとも1つのアクティブなSpotify Connectデバイス(スマホ/PC/Webでアプリが開いている状態)が必要です。まず`spotify_get_available_devices`と`spotify_transfer_playback`で対象デバイスを選択してください。
   </Accordion>
   <Accordion title="再生系ツールは動作するが実際には何も変わらない">
-    Spotify Freeアカウントは一部のデバイスで再生操作が制限されています(シークができない、スキップ回数に制限がある等)——再生コマンドが黙って無視される場合はアカウントの種類を確認してください。
+    接続したアカウントのSpotify Premium契約が有効であることと、意図したアクティブなデバイスを操作対象にしていることを確認してください。
   </Accordion>
   <Accordion title="自分が所有しているはずのプレイリストでspotify_add_tracks_to_playlistが失敗する">
     プレイリストIDが認証済みユーザーのものであるか、共同編集権限を持っているか確認してください——Spotifyは接続中のアカウントが変更できないプレイリストへの書き込みを拒否します。
