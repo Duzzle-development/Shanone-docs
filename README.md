@@ -19,7 +19,6 @@ Shanone is a hosted MCP server, tool vendor, skill vendor, and permission-manage
 - **Product Guide** — Skills, Permissions & Access Control, and Webhooks
 - **Release Notes** — Changelog
 - **Integrations** — Slack, GitHub, Notion, Stripe, Linear, Gmail, HubSpot, Ethereum, and more
-- **API** — REST API overview and authentication
 - **MCP** — MCP server overview, setup, and full tools reference
 
 ## Links

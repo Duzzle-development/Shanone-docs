@@ -19,7 +19,6 @@ Shanoneは、Cursor・Claude Code・その他の[MCP](https://modelcontextprotoc
 - **製品ガイド** — Skills、権限管理(Permissions & Access Control)、Webhooks
 - **リリースノート** — 更新履歴
 - **インテグレーション** — Slack、GitHub、Notion、Stripe、Linear、Gmail、HubSpot、Ethereumなど
-- **API** — REST APIの概要と認証方法
 - **MCP** — MCPサーバーの概要、セットアップ、ツール完全リファレンス
 
 ## リンク

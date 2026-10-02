@@ -230,18 +230,6 @@
             ]
           },
           {
-            "tab": "API",
-            "groups": [
-              {
-                "group": "API",
-                "pages": [
-                  "api-reference/overview",
-                  "api-reference/authentication"
-                ]
-              }
-            ]
-          },
-          {
             "tab": "MCP",
             "groups": [
               {
@@ -450,18 +438,6 @@
                   "ja/integrations/zapier",
                   "ja/integrations/zendesk",
                   "ja/integrations/zoom"
-                ]
-              }
-            ]
-          },
-          {
-            "tab": "API",
-            "groups": [
-              {
-                "group": "API",
-                "pages": [
-                  "ja/api-reference/overview",
-                  "ja/api-reference/authentication"
                 ]
               }
             ]
