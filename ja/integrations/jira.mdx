@@ -1,12 +1,12 @@
 ---
 title: "Jira"
-description: "課題、プロジェクト、ボード、スプリント、作業ログなど — Jira Cloudのプロジェクト管理機能全般"
+description: "課題、プロジェクト、ボード、スプリント、作業ログなど：Jira Cloudのプロジェクト管理機能全般"
 icon: /images/jira.svg
 ---
 
 # Jira
 
-ShanoneのJira連携では、Jira Cloudのプロジェクト管理機能——課題、プロジェクト、ボード、スプリント、作業ログ、ダッシュボード、フィルタなどを扱う47のツールをエージェントが利用できるようになります。複数サイトを持つAtlassianアカウントにも対応しています。
+ShanoneのJira連携では、Jira Cloudのプロジェクト管理機能、課題、プロジェクト、ボード、スプリント、作業ログ、ダッシュボード、フィルタなどを扱う47のツールをエージェントが利用できるようになります。複数サイトを持つAtlassianアカウントにも対応しています。
 
 ## はじめに
 
@@ -80,12 +80,12 @@ ShanoneはJira用に**47のツール**を提供しており、以下のカテゴ
 
 <AccordionGroup>
   <Accordion title="jira_create_issueが必須フィールドエラーで失敗する">
-    Jiraのプロジェクトごとに必須フィールド(カスタムフィールドやコンポーネントなど)は異なります——デフォルトのTask/Bug/Story以外の課題タイプでは特に、作成前に`jira_get_project`と`jira_get_issue_types`で何が必須かを確認してください。
+    Jiraのプロジェクトごとに必須フィールド(カスタムフィールドやコンポーネントなど)は異なります。デフォルトのTask/Bug/Story以外の課題タイプでは特に、作成前に`jira_get_project`と`jira_get_issue_types`で何が必須かを確認してください。
   </Accordion>
   <Accordion title="jira_transition_issueで遷移が無効というエラーが出る">
-    利用可能な遷移は課題の現在のステータスとプロジェクトのワークフローに依存します——ステータス名が直接遷移に対応すると仮定せず、まず`jira_get_transitions`で課題の現在の状態から利用可能な正確な遷移IDを取得してください。
+    利用可能な遷移は課題の現在のステータスとプロジェクトのワークフローに依存します。ステータス名が直接遷移に対応すると仮定せず、まず`jira_get_transitions`で課題の現在の状態から利用可能な正確な遷移IDを取得してください。
   </Accordion>
   <Accordion title="正常に接続したはずなのに401/403エラーが返る">
-    Jira Cloudのアカウントは複数のサイト(cloud_id)を持つことがあります——複数のJiraサイトにアクセス権がある場合、OAuth接続が目的のプロジェクトを含むサイトにスコープされているか確認してください。必要であればIntegrationsから再接続して別のサイトを選択してください。
+    Jira Cloudのアカウントは複数のサイト(cloud_id)を持つことがあります。複数のJiraサイトにアクセス権がある場合、OAuth接続が目的のプロジェクトを含むサイトにスコープされているか確認してください。必要であればIntegrationsから再接続して別のサイトを選択してください。
   </Accordion>
 </AccordionGroup>

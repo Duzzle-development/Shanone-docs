@@ -1,6 +1,6 @@
 ---
 title: "HubSpot"
-description: "CRMオブジェクト、マーケティング、商談、コマース、サポート — HubSpotの広範な機能を1つの連携に"
+description: "CRMオブジェクト、マーケティング、商談、コマース、サポート：HubSpotの広範な機能を1つの連携に"
 icon: /images/hubspot.svg
 ---
 
@@ -15,7 +15,7 @@ ShanoneのHubSpot連携は、CRM(コンタクト、会社、商談)、マーケ�
     エージェントにHubSpot関連の作業を依頼(例: 「このリードのコンタクトを作成して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
   </Step>
   <Step title="要求されたスコープを許可する">
-    HubSpotのOAuth同意画面には、Shanoneが要求するスコープが一覧表示されます——自分が使う予定の内容に関連するものを承認してください(CRM、マーケティング、コマースはそれぞれ別のスコープグループです)。
+    HubSpotのOAuth同意画面には、Shanoneが要求するスコープが一覧表示されます。自分が使う予定の内容に関連するものを承認してください(CRM、マーケティング、コマースはそれぞれ別のスコープグループです)。
   </Step>
   <Step title="リクエストを再実行する">
     接続が完了すると、`hubspot_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
@@ -24,7 +24,7 @@ ShanoneのHubSpot連携は、CRM(コンタクト、会社、商談)、マーケ�
 
 ## 利用可能なツール
 
-ShanoneはHubSpot向けに**214個のツール**を提供しています——カタログの中でStripeに次ぐ2番目に大きな連携です。
+ShanoneはHubSpot向けに**214個のツール**を提供しています。カタログの中でStripeに次ぐ2番目に大きな連携です。
 
 <AccordionGroup>
   <Accordion title="コンタクト、会社 & リード">
@@ -80,9 +80,9 @@ ShanoneはHubSpot向けに**214個のツール**を提供しています——�
     カスタムオブジェクトは、それに対するレコードを作成(`hubspot_create_custom_object`)する前に定義(`hubspot_create_custom_object_schema`)しておく必要があります。正確なオブジェクトタイプ名は`hubspot_get_custom_object_schema`で確認してください。
   </Accordion>
   <Accordion title="バッチツールが一部のレコードを黙ってスキップする">
-    バッチ作成/更新ツール(`hubspot_batch_create_contacts`など)はレコードごとにベストエフォートで処理されます——200系のレスポンスだからといって全レコードが成功したとは限らないため、レスポンス内の項目ごとのエラーを確認してください。
+    バッチ作成/更新ツール(`hubspot_batch_create_contacts`など)はレコードごとにベストエフォートで処理されます。200系のレスポンスだからといって全レコードが成功したとは限らないため、レスポンス内の項目ごとのエラーを確認してください。
   </Accordion>
   <Accordion title="アソシエーションツールがinvalid association typeエラーで失敗する">
-    まず、対象となる2つのオブジェクトタイプについて`hubspot_list_association_types`を呼び出してください——HubSpotの標準およびカスタムのアソシエーションタイプIDはポータルごとに異なります。
+    まず、対象となる2つのオブジェクトタイプについて`hubspot_list_association_types`を呼び出してください。HubSpotの標準およびカスタムのアソシエーションタイプIDはポータルごとに異なります。
   </Accordion>
 </AccordionGroup>

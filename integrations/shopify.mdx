@@ -6,7 +6,7 @@ icon: /images/shopify.svg
 
 # Shopify
 
-Shanone's Shopify integration gives your agent 149 tools covering nearly the full Admin REST surface — products, orders, fulfillment, customers, discounts, marketing, and storefront content — making it one of the most complete integrations for running commerce operations end-to-end.
+Shanone's Shopify integration gives your agent 149 tools covering nearly the full Admin REST surface (products, orders, fulfillment, customers, discounts, marketing, and storefront content), making it one of the most complete integrations for running commerce operations end-to-end.
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ Shanone's Shopify integration gives your agent 149 tools covering nearly the ful
     Ask your agent to do something with Shopify (e.g. "list my top 10 best-selling products this month"), or connect proactively from **Integrations** in the Shanone dashboard.
   </Step>
   <Step title="Enter your shop name">
-    Shopify's OAuth flow needs to know which store to authorize — enter your shop name (the part before `.myshopify.com`) when prompted.
+    Shopify's OAuth flow needs to know which store to authorize. Enter your shop name (the part before `.myshopify.com`) when prompted.
   </Step>
   <Step title="Retry your request">
     Once connected, `shanone_execute_tool` calls for `shopify_*` tools will succeed.
@@ -83,15 +83,15 @@ Shanone provides **149 tools** for Shopify, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="shopify_create_product or shopify_update_product returns a 422 error">
-    Shopify validates required fields (title, variant pricing) strictly — check `shanone_get_tool_schema` for `shopify_create_product` and ensure at least one variant with a price is included.
+    Shopify validates required fields (title, variant pricing) strictly. Check `shanone_get_tool_schema` for `shopify_create_product` and ensure at least one variant with a price is included.
   </Accordion>
   <Accordion title="Getting rate-limited (429) on bulk operations">
     Shopify's Admin API enforces a leaky-bucket rate limit per store. Space out calls like `shopify_update_inventory_item` or `shopify_create_fulfillment` when processing large batches rather than firing them all at once.
   </Accordion>
   <Accordion title="shopify_cancel_order or shopify_delete_order fails on an already-fulfilled order">
-    Orders with completed fulfillments or payments often can't be cancelled/deleted directly — use `shopify_create_refund` and `shopify_cancel_fulfillment` first to unwind the order.
+    Orders with completed fulfillments or payments often can't be cancelled/deleted directly. Use `shopify_create_refund` and `shopify_cancel_fulfillment` first to unwind the order.
   </Accordion>
   <Accordion title="Inventory adjustments don't seem to apply">
-    `shopify_adjust_inventory_level` changes inventory relative to the current level, while `shopify_set_inventory_level` sets an absolute value — using the wrong one is the most common cause of unexpected stock counts.
+    `shopify_adjust_inventory_level` changes inventory relative to the current level, while `shopify_set_inventory_level` sets an absolute value, using the wrong one is the most common cause of unexpected stock counts.
   </Accordion>
 </AccordionGroup>

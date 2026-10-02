@@ -6,7 +6,7 @@ icon: /images/qoder.svg
 
 # Qoder
 
-Shanone's Qoder integration gives your agent 11 tools for driving [Qoder](https://qoder.ai) AI development agent sessions — creating agents, running sessions, uploading files, and tracking events from an autonomous coding workflow.
+Shanone's Qoder integration gives your agent 11 tools for driving [Qoder](https://qoder.ai) AI development agent sessions: creating agents, running sessions, uploading files, and tracking events from an autonomous coding workflow.
 
 ## Getting Started
 
@@ -62,10 +62,10 @@ Shanone provides **11 tools** for Qoder, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="qoder_send_message fails right after qoder_create_session">
-    Some session types need a moment to initialize — check the session's status with `qoder_get_session` before sending the first message if it fails immediately.
+    Some session types need a moment to initialize. Check the session's status with `qoder_get_session` before sending the first message if it fails immediately.
   </Accordion>
   <Accordion title="qoder_upload_file succeeds but the agent doesn't seem to use the file">
-    Confirm the file was attached to the correct session/agent ID with `qoder_list_files` — uploads are scoped, not globally visible to every session.
+    Confirm the file was attached to the correct session/agent ID with `qoder_list_files`: uploads are scoped, not globally visible to every session.
   </Accordion>
   <Accordion title="qoder_get_session_events returns nothing for an active session">
     Events may take a moment to appear after a message is sent; poll again after a short delay rather than assuming the session is stuck.

@@ -1,6 +1,6 @@
 ---
 title: "ngrok"
-description: "Manage ngrok's ingress platform — endpoints, tunnels, reserved domains, TLS certs, backends, AI Gateway, and vaults"
+description: "Manage ngrok's ingress platform: endpoints, tunnels, reserved domains, TLS certs, backends, AI Gateway, and vaults"
 icon: /images/ngrok.svg
 ---
 
@@ -77,15 +77,15 @@ Shanone provides **171 tools** for ngrok, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="ngrok_create_endpoint succeeds but traffic doesn't route">
-    An endpoint needs an active tunnel session behind it — check `ngrok_list_tunnel_sessions` to confirm an ngrok agent is actually connected for that endpoint's URL.
+    An endpoint needs an active tunnel session behind it. Check `ngrok_list_tunnel_sessions` to confirm an ngrok agent is actually connected for that endpoint's URL.
   </Accordion>
   <Accordion title="ngrok_create_reserved_domain fails DNS/certificate validation">
-    Reserved custom domains require a CNAME record pointing to ngrok before the certificate can be issued — check `ngrok_get_reserved_domain` for the exact validation status and required DNS record.
+    Reserved custom domains require a CNAME record pointing to ngrok before the certificate can be issued. Check `ngrok_get_reserved_domain` for the exact validation status and required DNS record.
   </Accordion>
   <Accordion title="Deleting an IP policy fails while still attached">
-    Detach the policy from any endpoint or edge referencing it first — `ngrok_delete_ip_policy` fails if the policy is still in active use.
+    Detach the policy from any endpoint or edge referencing it first: `ngrok_delete_ip_policy` fails if the policy is still in active use.
   </Accordion>
   <Accordion title="AI Gateway usage tools show no data">
-    Usage/credit tools require the AI Gateway to be configured with at least one provider key first — set one up via `ngrok_create_ai_gateway_provider_key` before expecting usage events.
+    Usage/credit tools require the AI Gateway to be configured with at least one provider key first. Set one up via `ngrok_create_ai_gateway_provider_key` before expecting usage events.
   </Accordion>
 </AccordionGroup>

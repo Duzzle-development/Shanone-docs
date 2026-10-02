@@ -1,12 +1,12 @@
 ---
 title: "Fireflies"
-description: "Meeting transcription and analysis — transcripts, bites, live meetings, and channel management"
+description: "Meeting transcription and analysis: transcripts, bites, live meetings, and channel management"
 icon: /images/fireflies.svg
 ---
 
 # Fireflies
 
-Shanone's Fireflies integration gives your agent 21 tools for working with meeting transcripts and summaries via Fireflies.ai's GraphQL API — searching transcripts, clipping highlights ("Bites"), and managing live meetings and channels.
+Shanone's Fireflies integration gives your agent 21 tools for working with meeting transcripts and summaries via Fireflies.ai's GraphQL API: searching transcripts, clipping highlights ("Bites"), and managing live meetings and channels.
 
 ## Getting Started
 
@@ -56,10 +56,10 @@ Shanone provides **21 tools** for Fireflies, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="fireflies_upload_audio doesn't return a transcript immediately">
-    Transcription is asynchronous — poll `fireflies_get_transcript` or `fireflies_list_transcripts` with the returned meeting ID until processing completes.
+    Transcription is asynchronous. Poll `fireflies_get_transcript` or `fireflies_list_transcripts` with the returned meeting ID until processing completes.
   </Accordion>
   <Accordion title="Hitting rate limits on queries">
-    Fireflies enforces per-plan rate limits (Free: 50/day, Pro: 500/day, Business/Enterprise: 60/min) — batch `fireflies_list_transcripts` calls rather than polling individual transcripts in a tight loop.
+    Fireflies enforces per-plan rate limits (Free: 50/day, Pro: 500/day, Business/Enterprise: 60/min): batch `fireflies_list_transcripts` calls rather than polling individual transcripts in a tight loop.
   </Accordion>
   <Accordion title="fireflies_set_user_role or admin tools return a permissions error">
     Role management and some org-level queries require the connected API key to belong to a Fireflies admin account, not a regular member.

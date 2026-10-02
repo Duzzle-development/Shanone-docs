@@ -1,6 +1,6 @@
 ---
 title: "Manus"
-description: "Manus AIエージェントとそのタスクを制御 — メッセージ送信、プロジェクト・ファイル・Webサイト・Webhookの管理"
+description: "Manus AIエージェントとそのタスクを制御：メッセージ送信、プロジェクト・ファイル・Webサイト・Webhookの管理"
 icon: /images/manus.svg
 ---
 
@@ -71,12 +71,12 @@ ShanoneはManus向けに**32個のツール**を、以下のカテゴリに整�
 
 <AccordionGroup>
   <Accordion title="Manusタスクが確認待ちで止まっている">
-    一部のManusアクションは明示的な承認が必要です——`manus_list_messages`で承認待ちのプロンプトを確認し、`manus_confirm_action`で応答してください。
+    一部のManusアクションは明示的な承認が必要です。`manus_list_messages`で承認待ちのプロンプトを確認し、`manus_confirm_action`で応答してください。
   </Accordion>
   <Accordion title="manus_stop_taskを呼んでもタスクが即座に止まらない">
     停止処理はベストエフォートで、エージェントが処理の途中だと少し時間がかかることがあります。`manus_get_task`をポーリングして、実際に停止状態になったか確認してください。
   </Accordion>
   <Accordion title="manus_publish_websiteが失敗する、または古いバージョンが表示される">
-    まず`manus_list_checkpoints`を確認してください——最新のチェックポイントのビルドが完了していない場合、特定のチェックポイントを明示的に指定する必要があります。
+    まず`manus_list_checkpoints`を確認してください。最新のチェックポイントのビルドが完了していない場合、特定のチェックポイントを明示的に指定する必要があります。
   </Accordion>
 </AccordionGroup>

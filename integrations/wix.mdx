@@ -1,12 +1,12 @@
 ---
 title: "Wix"
-description: "Manage your Wix store, bookings, blog, contacts, and site data — products, orders, CMS collections, and marketing"
+description: "Manage your Wix store, bookings, blog, contacts, and site data: products, orders, CMS collections, and marketing"
 icon: /images/wix.svg
 ---
 
 # Wix
 
-Shanone's Wix integration gives your agent 144 tools — the largest surface in Shanone's e-commerce/CMS integrations — spanning the online store, bookings, blog, CRM/contacts, custom data collections, and marketing/loyalty tools.
+Shanone's Wix integration gives your agent 144 tools (the largest surface in Shanone's e-commerce/CMS integrations) spanning the online store, bookings, blog, CRM/contacts, custom data collections, and marketing/loyalty tools.
 
 ## Getting Started
 
@@ -92,15 +92,15 @@ Shanone provides **144 tools** for Wix, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Every call fails with an authentication error even with a valid API key">
-    Wix API calls require both the API Key **and** the Site ID — a key alone isn't enough to scope the request to your site. Confirm both are set in **Integrations**.
+    Wix API calls require both the API Key **and** the Site ID: a key alone isn't enough to scope the request to your site. Confirm both are set in **Integrations**.
   </Accordion>
   <Accordion title="wix_commit_draft_order doesn't create a real order">
-    Draft orders are a staging step — build up line items and shipping info with `wix_update_draft_order_line_items`/`wix_set_draft_order_shipping_info` first, then call `wix_commit_draft_order` to convert it into a real order.
+    Draft orders are a staging step: build up line items and shipping info with `wix_update_draft_order_line_items`/`wix_set_draft_order_shipping_info` first, then call `wix_commit_draft_order` to convert it into a real order.
   </Accordion>
   <Accordion title="wix_query_data_items returns nothing for a collection I know has data">
-    Custom collections need their permission model checked with `wix_get_data_permissions` — some collections restrict read access by role, which can cause an API-key-based query to return an empty result set.
+    Custom collections need their permission model checked with `wix_get_data_permissions`. Some collections restrict read access by role, which can cause an API-key-based query to return an empty result set.
   </Accordion>
   <Accordion title="wix_create_booking succeeds but the slot doesn't reflect availability elsewhere">
-    Call `wix_get_service_availability` immediately before booking — availability can change between when your agent checked and when it books, especially for popular time slots.
+    Call `wix_get_service_availability` immediately before booking: availability can change between when your agent checked and when it books, especially for popular time slots.
   </Accordion>
 </AccordionGroup>

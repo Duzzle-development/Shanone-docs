@@ -1,6 +1,6 @@
 ---
 title: "Monday.com"
-description: "monday.comのボード、アイテム、ドキュメント、チームを管理 — アイテム、カラム、グループ、アップデート、ワークスペース管理"
+description: "monday.comのボード、アイテム、ドキュメント、チームを管理：アイテム、カラム、グループ、アップデート、ワークスペース管理"
 icon: /images/monday.svg
 ---
 
@@ -81,12 +81,12 @@ Shanoneはmonday.com向けに**68個のツール**を、以下のカテゴリに
 
 <AccordionGroup>
   <Accordion title="ツール呼び出しがcomplexity budgetエラーで失敗する">
-    monday.comのGraphQL APIは1分あたりのクエリ複雑度に上限を設けています——`monday_get_query_complexity`を確認し、バッチサイズを減らすか、`monday_get_items_page`のような重い呼び出しの間隔を空けてください。
+    monday.comのGraphQL APIは1分あたりのクエリ複雑度に上限を設けています。`monday_get_query_complexity`を確認し、バッチサイズを減らすか、`monday_get_items_page`のような重い呼び出しの間隔を空けてください。
   </Accordion>
   <Accordion title="monday_change_multiple_column_valuesがフォーマットエラーで失敗する">
-    カラム値は、monday.comが期待する形式に厳密にJSONエンコードする必要があります——ペイロードを組み立てる前に、`monday_list_columns`で各カラムの型を確認してください。
+    カラム値は、monday.comが期待する形式に厳密にJSONエンコードする必要があります。ペイロードを組み立てる前に、`monday_list_columns`で各カラムの型を確認してください。
   </Accordion>
   <Accordion title="直前に作成したアイテムが見つからない">
-    monday.comの検索インデックスは書き込みに対してわずかに遅延することがあります——少し待ってから`monday_search_items_by_column_values`を再試行するか、作成時に返されたIDを使って`monday_get_item`で直接取得してください。
+    monday.comの検索インデックスは書き込みに対してわずかに遅延することがあります。少し待ってから`monday_search_items_by_column_values`を再試行するか、作成時に返されたIDを使って`monday_get_item`で直接取得してください。
   </Accordion>
 </AccordionGroup>

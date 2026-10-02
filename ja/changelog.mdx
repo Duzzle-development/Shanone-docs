@@ -1,32 +1,32 @@
 ---
 title: "更新履歴"
-description: "直近のプラットフォームの主なマイルストーン — リブランド、権限管理、マイクロサービス化など。"
+description: "直近のプラットフォームの主なマイルストーン：リブランド、権限管理、マイクロサービス化など。"
 ---
 
 <Note>
-Shanoneは急速に進化しています。このページでは、内部的な変更すべてではなく、ユーザーの目に見える主要なプラットフォームのマイルストーンのみを取り上げています——ツールカタログへの最新の追加については[インテグレーション](/ja/integrations/overview)を参照してください。
+Shanoneは急速に進化しています。このページでは、内部的な変更すべてではなく、ユーザーの目に見える主要なプラットフォームのマイルストーンのみを取り上げています。ツールカタログへの最新の追加については[インテグレーション](/ja/integrations/overview)を参照してください。
 </Note>
 
 ## 2026年8月
 
 **リブランド: emma → Shanone**
 
-以前emmaという名前だったプロダクトは、現在**Shanone**——「Command Center for Agent Harnesses」——になりました。このリブランドは意図的な方向転換を反映しています。Shanoneはもはや自前の自律的なプランニング/実行エンジンを持ちません(以前のLangGraphベースのオーケストレーターは、それを呼び出すものがなくなった時点で、デッドコードとして完全に削除されました)。今日のShanoneの役割は、Cursor、Claude Code、その他あらゆるMCPクライアントといった*他の*エージェントが呼び出す**Toolベンダー・Skillベンダー・権限レイヤー**であることです。
+以前emmaという名前だったプロダクトは、現在**Shanone**（「Command Center for Agent Harnesses」）になりました。このリブランドは意図的な方向転換を反映しています。Shanoneはもはや自前の自律的なプランニング/実行エンジンを持ちません(以前のLangGraphベースのオーケストレーターは、それを呼び出すものがなくなった時点で、デッドコードとして完全に削除されました)。今日のShanoneの役割は、Cursor、Claude Code、その他あらゆるMCPクライアントといった*他の*エージェントが呼び出す**Toolベンダー・Skillベンダー・権限レイヤー**であることです。
 
 **追加:**
 - 権限ベンダー: IAM的なツール・サービス権限管理(`shanone_list_services`、`shanone_set_user_tool_permission`、`shanone_set_user_service_permission`、`shanone_get_permission_summary`、`shanone_batch_set_user_permissions`、`shanone_list_user_tool_permissions`)。Rootユーザーおよび委任されたSA2管理者に限定
-- Skillベンダーを、シンプルなDynamoDBベースのストレージモデル(`name` / `summary` / `instructions`)を中心に段階的開示(progressive disclosure)の形で再実装——一覧取得ではメタデータのみを返し、完全な指示内容は必要に応じて取得
+- Skillベンダーを、シンプルなDynamoDBベースのストレージモデル(`name` / `summary` / `instructions`)を中心に段階的開示(progressive disclosure)の形で再実装。一覧取得ではメタデータのみを返し、完全な指示内容は必要に応じて取得
 - `shanone_list_service_tools`メタツールを追加。関連度でランキングされた検索に頼らず、大規模なインテグレーションのツールをすべて網羅的に列挙できるように
 - Webhooks: 受信イベントソース(まずはTypeformから開始)が、連携先のエージェントプラットフォーム(Devin、Cursor Cloud Agents、Manus)を自動的に起動できるように
 
 **変更:**
-- 旧オーケストレーターに紐づいていたレガシーな階層型「Skill」システム(エージェントごとのプロンプトファイル、`excel_operator`など)を削除——「Skill」という用語は、現在はSkillベンダーのユーザー保存ワークフローのみを指します
+- 旧オーケストレーターに紐づいていたレガシーな階層型「Skill」システム(エージェントごとのプロンプトファイル、`excel_operator`など)を削除。「Skill」という用語は、現在はSkillベンダーのユーザー保存ワークフローのみを指します
 - バックエンドを、より細かい単位でスケールできるように、独立してデプロイ可能な複数のサービス(ツール実行、分析、課金、クローリング)に分割
 
 ## 2026年6月〜7月
 
 **追加:**
-- `@duzzle/shanone-mcp`をnpmに公開——カスタムヘッダー付きのリモートStreamable HTTP MCPにまだ対応していないクライアント向けのローカルstdio MCPプロキシ
+- `@duzzle/shanone-mcp`をnpmに公開：カスタムヘッダー付きのリモートStreamable HTTP MCPにまだ対応していないクライアント向けのローカルstdio MCPプロキシ
 - インテグレーションカタログの拡大を継続し、269以上の実運用サービス統合に到達
 
 ---

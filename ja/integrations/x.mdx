@@ -1,6 +1,6 @@
 ---
 title: "X"
-description: "X(旧Twitter)への投稿・検索・エンゲージメント — 投稿、タイムライン、リスト、DM、スペース、フォロー関係"
+description: "X(旧Twitter)への投稿・検索・エンゲージメント：投稿、タイムライン、リスト、DM、スペース、フォロー関係"
 icon: /images/x.svg
 ---
 
@@ -74,10 +74,10 @@ Shanoneはx向けに**67個のツール**を、以下のカテゴリに整理し
 
 <AccordionGroup>
   <Accordion title="x_upload_mediaで大きな動画ファイルが失敗する">
-    大きなメディアはチャンクアップロードフローが必要です — `x_upload_media_init`を呼び、続けて1回以上`x_upload_media_append`を呼び、`x_upload_media_finalize`を呼んでから、投稿にメディアIDを添付する前に`x_get_media_upload_status`でポーリングしてください。
+    大きなメディアはチャンクアップロードフローが必要です。`x_upload_media_init`を呼び、続けて1回以上`x_upload_media_append`を呼び、`x_upload_media_finalize`を呼んでから、投稿にメディアIDを添付する前に`x_get_media_upload_status`でポーリングしてください。
   </Accordion>
   <Accordion title="メディアを添付したx_create_postが拒否される">
-    メディアの処理が完了(`x_get_media_upload_status`で確認)してから、そのメディアIDを`x_create_post`で参照できます — 処理中のアップロードを添付すると失敗します。
+    メディアの処理が完了(`x_get_media_upload_status`で確認)してから、そのメディアIDを`x_create_post`で参照できます。処理中のアップロードを添付すると失敗します。
   </Accordion>
   <Accordion title="x_search_postsの結果が期待より少ない">
     Xの検索APIは標準ティアで保存期間・レート制限があります。非常に古い投稿や大量のクエリでは結果が部分的になることがあります。クエリを絞るか、`x_get_post_counts`で想定される件数を事前に確認してください。

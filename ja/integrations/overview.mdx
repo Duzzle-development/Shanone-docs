@@ -1,13 +1,13 @@
 ---
 title: "インテグレーション概要"
-description: "Shanoneの連携カタログを見る — 140以上のサービス、10,000以上のツールを、アクションごとの専用ツールではなく少数のMCPメタツールを通じて公開しています。"
+description: "Shanoneの連携カタログを見る：140以上のサービス、10,000以上のツールを、アクションごとの専用ツールではなく少数のMCPメタツールを通じて公開しています。"
 ---
 
-Shanoneは、エージェントを**140以上のサービス・10,000以上のツール**に接続します——Slack、Notion、HubSpotのような日常的なSaaSから、Cloudflare、Snowflake、Vercelのようなインフラ、OpenAI、Together AI、ElevenLabsのようなAIモデル、Ethereum、Hyperliquid、OpenSeaのような暗号資産まで。以下の各ページは、実際に稼働している連携について、完全なツール一覧・よくあるユースケース・トラブルシューティングまで含めてドキュメント化しています。
+Shanoneは、エージェントを**140以上のサービス・10,000以上のツール**に接続します。Slack、Notion、HubSpotのような日常的なSaaSから、Cloudflare、Snowflake、Vercelのようなインフラ、OpenAI、Together AI、ElevenLabsのようなAIモデル、Ethereum、Hyperliquid、OpenSeaのような暗号資産まで。以下の各ページは、実際に稼働している連携について、完全なツール一覧・よくあるユースケース・トラブルシューティングまで含めてドキュメント化しています。
 
 ## カタログの仕組み
 
-Shanoneはサービスのアクション1つごとに個別のMCPツールを登録するわけではありません——それをやると数千個のツールがエージェントのコンテキストウィンドウを埋め尽くしてしまいます。代わりに、すべての連携のツールは1つの検索可能なカタログにまとめられており、エージェントは3つのメタツールを通じてそこにアクセスします。
+Shanoneはサービスのアクション1つごとに個別のMCPツールを登録するわけではありません。それをやると数千個のツールがエージェントのコンテキストウィンドウを埋め尽くしてしまいます。代わりに、すべての連携のツールは1つの検索可能なカタログにまとめられており、エージェントは3つのメタツールを通じてそこにアクセスします。
 
 <Steps>
   <Step title="検索する">
@@ -17,7 +17,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     正確なツール名を指定して`shanone_get_tool_schema`を呼び出し、必須/任意の引数を確認します。
   </Step>
   <Step title="実行する">
-    ツール名と引数のJSON文字列を指定して`shanone_execute_tool`を呼び出します——OAuthが必要な場合は`connect_link`によって自動的に処理されます。
+    ツール名と引数のJSON文字列を指定して`shanone_execute_tool`を呼び出します。OAuthが必要な場合は`connect_link`によって自動的に処理されます。
   </Step>
 </Steps>
 
@@ -29,7 +29,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
 
 <CardGroup cols={3}>
   <Card title="Airtable" icon="/images/airtable.svg" href="/ja/integrations/airtable">
-    Airtableのベースを読み書き・管理 — レコード、テーブル、ビュー、フィールド、コメント、Webhook(ツール数: 55)
+    Airtableのベースを読み書き・管理：レコード、テーブル、ビュー、フィールド、コメント、Webhook(ツール数: 55)
   </Card>
   <Card title="Box" icon="/images/box.svg" href="/ja/integrations/box">
     Boxでファイル・フォルダ、コラボレーション、メタデータ、電子署名、AIによるコンテンツQ&Aを管理(ツール数: 100)
@@ -38,16 +38,16 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     Bubble.ioアプリのデータをData/Workflow APIで読み書きし、バックエンドワークフローをトリガー(ツール数: 7)
   </Card>
   <Card title="Confluence" icon="/images/confluence.svg" href="/ja/integrations/confluence">
-    Confluenceを読み取り・書き込み・検索する — ページ、ブログ記事、コメント、ラベル、添付ファイル(ツール数: 46)
+    Confluenceを読み取り・書き込み・検索する：ページ、ブログ記事、コメント、ラベル、添付ファイル(ツール数: 46)
   </Card>
   <Card title="Dropbox" icon="/images/dropbox.svg" href="/ja/integrations/dropbox">
-    ファイル・フォルダの保存・共有・管理 — アップロード、共有、チーム管理、Paperドキュメント(ツール数: 166)
+    ファイル・フォルダの保存・共有・管理：アップロード、共有、チーム管理、Paperドキュメント(ツール数: 166)
   </Card>
   <Card title="Figma" icon="/images/figma.svg" href="/ja/integrations/figma">
-    デザインファイル、コメント、コンポーネント、スタイル、変数の読み取り — Webhook管理も対応(ツール数: 39)
+    デザインファイル、コメント、コンポーネント、スタイル、変数の読み取り：Webhook管理も対応(ツール数: 39)
   </Card>
   <Card title="Google Docs" icon="/images/google-docs.svg" href="/ja/integrations/google-docs">
-    ドキュメントの作成・編集 — テキスト、テーブル、書式設定、コメント、Markdownとの相互変換(ツール数: 58)
+    ドキュメントの作成・編集：テキスト、テーブル、書式設定、コメント、Markdownとの相互変換(ツール数: 58)
   </Card>
   <Card title="Google Drive" icon="/images/google-drive.svg" href="/ja/integrations/google-drive">
     Google Driveのファイル、フォルダ、共有ドライブ、権限、コメント、リビジョンを管理する(ツール数: 50)
@@ -56,25 +56,25 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     フォームの作成、質問管理、回答の読み取り、公開設定とウォッチの設定を行う(ツール数: 16)
   </Card>
   <Card title="Google Sheets" icon="/images/google-sheets.svg" href="/ja/integrations/google-sheets">
-    Sheets APIのほぼ全機能 — スプレッドシート、セル、書式、グラフ、フィルタ、テーブルなど(ツール数: 88)
+    Sheets APIのほぼ全機能：スプレッドシート、セル、書式、グラフ、フィルタ、テーブルなど(ツール数: 88)
   </Card>
   <Card title="Mintlify" icon="/images/mintlify.svg" href="/ja/integrations/mintlify">
-    Mintlifyドキュメントサイトを管理 — デプロイのトリガー、ドキュメントAIエージェントの実行、コンテンツ検索、分析の取得(ツール数: 16)
+    Mintlifyドキュメントサイトを管理：デプロイのトリガー、ドキュメントAIエージェントの実行、コンテンツ検索、分析の取得(ツール数: 16)
   </Card>
   <Card title="Miro" icon="/images/miro.svg" href="/ja/integrations/miro">
-    Miroボードを作成・編集 — 付箋、図形、カード、コネクタ、フレーム、ボードメンバーシップ(ツール数: 47)
+    Miroボードを作成・編集：付箋、図形、カード、コネクタ、フレーム、ボードメンバーシップ(ツール数: 47)
   </Card>
   <Card title="Notion" icon="/images/notion.svg" href="/ja/integrations/notion">
-    Notionのページやデータベースを読み取り・書き込み・検索する — Markdownをネイティブサポート(ツール数: 45)
+    Notionのページやデータベースを読み取り・書き込み・検索する：Markdownをネイティブサポート(ツール数: 45)
   </Card>
   <Card title="OneDrive" icon="/images/onedrive.svg" href="/ja/integrations/onedrive">
-    OneDriveとSharePointのファイル管理 — ドライブ、フォルダ、共有、バージョン、同期、Microsoft 365ガバナンス(ツール数: 87)
+    OneDriveとSharePointのファイル管理：ドライブ、フォルダ、共有、バージョン、同期、Microsoft 365ガバナンス(ツール数: 87)
   </Card>
   <Card title="SharePoint" icon="/images/sharepoint.svg" href="/ja/integrations/sharepoint">
     SharePointのドキュメントライブラリ内のファイルやサイトを閲覧・アップロード・共有する(ツール数: 13)
   </Card>
   <Card title="Typeform" icon="/images/typeform.svg" href="/ja/integrations/typeform">
-    フォーム、回答、テーマ、ワークスペースを管理する — 画像やWebhookも(ツール数: 31)
+    フォーム、回答、テーマ、ワークスペースを管理する：画像やWebhookも(ツール数: 31)
   </Card>
   <Card title="WordPress" icon="/images/wordpress.svg" href="/ja/integrations/wordpress">
     セルフホストのWordPressサイトで投稿、ページ、メディア、コメント、ユーザーをREST API経由で管理(ツール数: 42)
@@ -85,25 +85,25 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
 
 <CardGroup cols={3}>
   <Card title="Calendly" icon="/images/calendly.svg" href="/ja/integrations/calendly">
-    スケジューリングを管理する — イベントタイプ、予定済みイベント、参加者、空き時間、チーム、ルーティングフォーム(ツール数: 51)
+    スケジューリングを管理する：イベントタイプ、予定済みイベント、参加者、空き時間、チーム、ルーティングフォーム(ツール数: 51)
   </Card>
   <Card title="Chatwork" icon="/images/chatwork.svg" href="/ja/integrations/chatwork">
-    日本企業向けチームチャット — チャットルーム、メッセージ、タスク、ファイル、コンタクト、招待リンク(ツール数: 32)
+    日本企業向けチームチャット：チャットルーム、メッセージ、タスク、ファイル、コンタクト、招待リンク(ツール数: 32)
   </Card>
   <Card title="Discord" icon="/images/discord.svg" href="/ja/integrations/discord">
-    サーバーをエンドツーエンドで管理する — メッセージ、チャンネル、ロール、モデレーション、ボイス、イベント、Webhook(ツール数: 182)
+    サーバーをエンドツーエンドで管理する：メッセージ、チャンネル、ロール、モデレーション、ボイス、イベント、Webhook(ツール数: 182)
   </Card>
   <Card title="Fireflies" icon="/images/fireflies.svg" href="/ja/integrations/fireflies">
-    会議の文字起こしと分析 — トランスクリプト、Bite、ライブ会議、チャンネル管理(ツール数: 21)
+    会議の文字起こしと分析：トランスクリプト、Bite、ライブ会議、チャンネル管理(ツール数: 21)
   </Card>
   <Card title="Gmail" icon="/images/gmail.svg" href="/ja/integrations/gmail">
-    メールの検索・送信・整理 — メッセージ、スレッド、ドラフト、ラベル、フィルタ、メールボックス設定(ツール数: 52)
+    メールの検索・送信・整理：メッセージ、スレッド、ドラフト、ラベル、フィルタ、メールボックス設定(ツール数: 52)
   </Card>
   <Card title="Google Calendar" icon="/images/google-calendar.svg" href="/ja/integrations/google-calendar">
-    カレンダーとイベントの管理 — スケジューリング、空き時間検索、共有、スマートスケジューリング補助機能(ツール数: 49)
+    カレンダーとイベントの管理：スケジューリング、空き時間検索、共有、スマートスケジューリング補助機能(ツール数: 49)
   </Card>
   <Card title="Google Chat" icon="/images/google-chat.svg" href="/ja/integrations/google-chat">
-    スペース、メッセージ、メンバー、リアクションの管理 — 在席状況やカスタム絵文字にも対応(ツール数: 49)
+    スペース、メッセージ、メンバー、リアクションの管理：在席状況やカスタム絵文字にも対応(ツール数: 49)
   </Card>
   <Card title="Google Meet" icon="/images/google-meet.svg" href="/ja/integrations/google-meet">
     会議スペースの作成と、会議記録・参加者・録画・トランスクリプト・スマートノートの読み取り(ツール数: 14)
@@ -112,16 +112,16 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     LINE Messaging APIのメッセージ配信、リッチメニュー、オーディエンス、インサイト、アカウント管理(ツール数: 101)
   </Card>
   <Card title="LINE WORKS" icon="/images/lineworks.svg" href="/ja/integrations/lineworks">
-    LINE WORKSを管理 — メール、カレンダー、連絡先、ドライブ、掲示板、タスク、Bot、そして本格的なディレクトリ/管理機能(ツール数: 350)
+    LINE WORKSを管理：メール、カレンダー、連絡先、ドライブ、掲示板、タスク、Bot、そして本格的なディレクトリ/管理機能(ツール数: 350)
   </Card>
   <Card title="Luma" icon="/images/luma.svg" href="/ja/integrations/luma">
-    Lumaのイベントを管理 — ゲスト、ホスト、チケット、クーポン、メンバーシップ階層、Webhook(ツール数: 36)
+    Lumaのイベントを管理：ゲスト、ホスト、チケット、クーポン、メンバーシップ階層、Webhook(ツール数: 36)
   </Card>
   <Card title="Microsoft Teams" icon="/images/teams.svg" href="/ja/integrations/teams">
-    チーム、チャネル、チャット、会議、ファイルを管理する — メッセージング、リアクション、カレンダー連携(ツール数: 97)
+    チーム、チャネル、チャット、会議、ファイルを管理する：メッセージング、リアクション、カレンダー連携(ツール数: 97)
   </Card>
   <Card title="Outlook" icon="/images/outlook.svg" href="/ja/integrations/outlook">
-    メール、カレンダー、連絡先、タスクの管理 — Microsoft 365のメッセージング & スケジューリング機能全体(ツール数: 134)
+    メール、カレンダー、連絡先、タスクの管理：Microsoft 365のメッセージング & スケジューリング機能全体(ツール数: 134)
   </Card>
   <Card title="Resend" icon="/images/resend.svg" href="/ja/integrations/resend">
     トランザクションメールの送信、オーディエンス、ドメイン、テンプレート、Webhookの管理(ツール数: 69)
@@ -130,10 +130,10 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     ShanoneをSlackワークスペースに接続し、メッセージング・チャンネル管理・管理操作を行う(ツール数: 125)
   </Card>
   <Card title="Telegram" icon="/images/telegram.svg" href="/ja/integrations/telegram">
-    Telegramボットを運用する — メッセージ送信、チャット管理、メンバーのモデレーション、Webhook設定(ツール数: 38)
+    Telegramボットを運用する：メッセージ送信、チャット管理、メンバーのモデレーション、Webhook設定(ツール数: 38)
   </Card>
   <Card title="Twilio" icon="/images/twilio.svg" href="/ja/integrations/twilio">
-    SMS・WhatsAppメッセージの送信、電話番号・カンファレンス・録音の管理 — エージェントのためのプログラマブルな通信(ツール数: 45)
+    SMS・WhatsAppメッセージの送信、電話番号・カンファレンス・録音の管理：エージェントのためのプログラマブルな通信(ツール数: 45)
   </Card>
   <Card title="Webex" icon="/images/webex.svg" href="/ja/integrations/webex">
     Cisco Webexでミーティングをスケジュールし、ルーム・チーム・メッセージを管理(ツール数: 27)
@@ -147,34 +147,34 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
 
 <CardGroup cols={3}>
   <Card title="Asana" icon="/images/asana.svg" href="/ja/integrations/asana">
-    タスク・プロジェクト・ポートフォリオ・ゴールを管理 — カスタムフィールド、依存関係、時間管理にも完全対応(ツール数: 115)
+    タスク・プロジェクト・ポートフォリオ・ゴールを管理：カスタムフィールド、依存関係、時間管理にも完全対応(ツール数: 115)
   </Card>
   <Card title="Backlog" icon="/images/backlog.svg" href="/ja/integrations/backlog">
     Nulabのプロジェクト管理ツールBacklogで、課題・プロジェクト・Wiki・プルリクエスト・Gitリポジトリを管理(ツール数: 96)
   </Card>
   <Card title="ClickUp" icon="/images/clickup.svg" href="/ja/integrations/clickup">
-    本格的なプロジェクト管理 — タスク、リスト、ドキュメント、ゴール、時間管理、チャット、ワークスペース管理(ツール数: 166)
+    本格的なプロジェクト管理：タスク、リスト、ドキュメント、ゴール、時間管理、チャット、ワークスペース管理(ツール数: 166)
   </Card>
   <Card title="Google Tasks" icon="/images/google-tasks.svg" href="/ja/integrations/google-tasks">
-    タスクリストとタスクを管理する — 作成、完了、再開、移動、完了済みアイテムのクリア(ツール数: 14)
+    タスクリストとタスクを管理する：作成、完了、再開、移動、完了済みアイテムのクリア(ツール数: 14)
   </Card>
   <Card title="incident.io" icon="/images/incident-io.svg" href="/ja/integrations/incident-io">
-    インシデント対応のライフサイクル全体を管理 — インシデント、アラート、オンコールスケジュール、ワークフロー、ステータスページ(ツール数: 178)
+    インシデント対応のライフサイクル全体を管理：インシデント、アラート、オンコールスケジュール、ワークフロー、ステータスページ(ツール数: 178)
   </Card>
   <Card title="Jira" icon="/images/jira.svg" href="/ja/integrations/jira">
-    課題、プロジェクト、ボード、スプリント、作業ログなど — Jira Cloudのプロジェクト管理機能全般(ツール数: 47)
+    課題、プロジェクト、ボード、スプリント、作業ログなど：Jira Cloudのプロジェクト管理機能全般(ツール数: 47)
   </Card>
   <Card title="Linear" icon="/images/linear.svg" href="/ja/integrations/linear">
     エージェントからLinearのイシュー、プロジェクト、サイクル、イニシアチブを管理する(ツール数: 45)
   </Card>
   <Card title="Monday.com" icon="/images/monday.svg" href="/ja/integrations/monday">
-    monday.comのボード、アイテム、ドキュメント、チームを管理 — アイテム、カラム、グループ、アップデート、ワークスペース管理(ツール数: 68)
+    monday.comのボード、アイテム、ドキュメント、チームを管理：アイテム、カラム、グループ、アップデート、ワークスペース管理(ツール数: 68)
   </Card>
   <Card title="Todoist" icon="/images/todoist.svg" href="/ja/integrations/todoist">
-    タスク、プロジェクト、ラベルを管理する — コメント、リマインダー、アクティビティ履歴も(ツール数: 48)
+    タスク、プロジェクト、ラベルを管理する：コメント、リマインダー、アクティビティ履歴も(ツール数: 48)
   </Card>
   <Card title="Trello" icon="/images/trello.svg" href="/ja/integrations/trello">
-    ボード、リスト、カードを管理する — チェックリスト、ラベル、カスタムフィールド、Webhook(ツール数: 113)
+    ボード、リスト、カードを管理する：チェックリスト、ラベル、カスタムフィールド、Webhook(ツール数: 113)
   </Card>
 </CardGroup>
 
@@ -185,40 +185,40 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     Bitbucketワークスペース全体で、リポジトリ・プルリクエスト・課題を管理し、コードを検索(ツール数: 15)
   </Card>
   <Card title="CircleCI" icon="/images/circleci.svg" href="/ja/integrations/circleci">
-    CI/CDパイプラインを管理する — パイプライン、ワークフロー、ジョブ、コンテキスト、ポリシー、インサイト(ツール数: 111)
+    CI/CDパイプラインを管理する：パイプライン、ワークフロー、ジョブ、コンテキスト、ポリシー、インサイト(ツール数: 111)
   </Card>
   <Card title="Cloudflare" icon="/images/cloudflare.svg" href="/ja/integrations/cloudflare">
-    エッジプラットフォームを管理する — DNS、Workers、Pages、R2、D1、Zero Trust Access、AI Gateway、セキュリティ(ツール数: 247)
+    エッジプラットフォームを管理する：DNS、Workers、Pages、R2、D1、Zero Trust Access、AI Gateway、セキュリティ(ツール数: 247)
   </Card>
   <Card title="Cursor" icon="/images/cursor.svg" href="/ja/integrations/cursor">
-    Cursor Cloud Agentを起動・監視する — エージェントのライフサイクル、バックグラウンド実行、アーティファクト(ツール数: 17)
+    Cursor Cloud Agentを起動・監視する：エージェントのライフサイクル、バックグラウンド実行、アーティファクト(ツール数: 17)
   </Card>
   <Card title="Datadog" icon="/images/datadog.svg" href="/ja/integrations/datadog">
-    インフラとアプリケーションを監視する — メトリクス、モニター、ダッシュボード、ログ、トレース、SLO(ツール数: 39)
+    インフラとアプリケーションを監視する：メトリクス、モニター、ダッシュボード、ログ、トレース、SLO(ツール数: 39)
   </Card>
   <Card title="GitHub" icon="/images/github.svg" href="/ja/integrations/github">
     エージェントからIssue、プルリクエスト、Actionsワークフロー、セキュリティアラート、組織管理を操作する(ツール数: 176)
   </Card>
   <Card title="GitHub Copilot" icon="/images/copilot.svg" href="/ja/integrations/copilot">
-    組織のGitHub Copilotを管理する — シート、請求、メトリクス、クラウドエージェント、ポリシー(ツール数: 37)
+    組織のGitHub Copilotを管理する：シート、請求、メトリクス、クラウドエージェント、ポリシー(ツール数: 37)
   </Card>
   <Card title="GitLab" icon="/images/gitlab.svg" href="/ja/integrations/gitlab">
     プロジェクト、Issue、マージリクエスト、パイプライン、リポジトリファイルの管理(ツール数: 60)
   </Card>
   <Card title="LaunchDarkly" icon="/images/launchdarkly.svg" href="/ja/integrations/launchdarkly">
-    フィーチャーフラグ、実験、AI Config、セグメント、監査ログなど — 機能管理全般(ツール数: 76)
+    フィーチャーフラグ、実験、AI Config、セグメント、監査ログなど：機能管理全般(ツール数: 76)
   </Card>
   <Card title="ngrok" icon="/images/ngrok.svg" href="/ja/integrations/ngrok">
-    ngrokのイングレスプラットフォームを管理 — エンドポイント、トンネル、予約ドメイン、TLS証明書、バックエンド、AI Gateway、Vault(ツール数: 171)
+    ngrokのイングレスプラットフォームを管理：エンドポイント、トンネル、予約ドメイン、TLS証明書、バックエンド、AI Gateway、Vault(ツール数: 171)
   </Card>
   <Card title="npm" icon="/images/npm.svg" href="/ja/integrations/npm">
-    npmのパッケージ、組織、チーム、トークンを管理 — アクセス制御、ダウンロード統計、セキュリティ監査(ツール数: 52)
+    npmのパッケージ、組織、チーム、トークンを管理：アクセス制御、ダウンロード統計、セキュリティ監査(ツール数: 52)
   </Card>
   <Card title="Render" icon="/images/render.svg" href="/ja/integrations/render">
-    クラウドインフラの管理 — サービス、デプロイ、データベース、環境、ワークフロー(ツール数: 171)
+    クラウドインフラの管理：サービス、デプロイ、データベース、環境、ワークフロー(ツール数: 171)
   </Card>
   <Card title="Sentry" icon="/images/sentry.svg" href="/ja/integrations/sentry">
-    エラー、パフォーマンス、リリースを追跡 — issue、トレース、プロファイリング、セッションリプレイ、ダッシュボード(ツール数: 115)
+    エラー、パフォーマンス、リリースを追跡：issue、トレース、プロファイリング、セッションリプレイ、ダッシュボード(ツール数: 115)
   </Card>
   <Card title="Vercel" icon="/images/vercel.svg" href="/ja/integrations/vercel">
     デプロイ、ドメイン、環境変数、Edge Config、チーム設定をVercelプロジェクト横断で管理(ツール数: 107)
@@ -232,25 +232,25 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     サービスアカウントキーを使って、Google BigQueryのデータセット・テーブル・ジョブ・IAMを操作(ツール数: 40)
   </Card>
   <Card title="Databricks" icon="/images/databricks.svg" href="/ja/integrations/databricks">
-    SQL実行、クラスター・ジョブ管理、Unity Catalog管理 — Databricks REST APIの全体をカバー(ツール数: 155)
+    SQL実行、クラスター・ジョブ管理、Unity Catalog管理：Databricks REST APIの全体をカバー(ツール数: 155)
   </Card>
   <Card title="Firebase" icon="/images/firebase.svg" href="/ja/integrations/firebase">
-    Firebaseプロジェクトの管理 — Firestore、認証、Cloud Messaging、Remote Config、Storage、Hosting(ツール数: 45)
+    Firebaseプロジェクトの管理：Firestore、認証、Cloud Messaging、Remote Config、Storage、Hosting(ツール数: 45)
   </Card>
   <Card title="Google Cloud" icon="/images/google-cloud.svg" href="/ja/integrations/google-cloud">
     Workload Identity Federationを介したAPI有効化管理、IAMポリシー、組織レベル設定の管理(ツール数: 24)
   </Card>
   <Card title="Modal" icon="/images/modal.svg" href="/ja/integrations/modal">
-    Modalのサーバーレスクラウドでコードを実行 — サンドボックス、関数、ボリューム、Dict、キュー、シークレット(ツール数: 49)
+    Modalのサーバーレスクラウドでコードを実行：サンドボックス、関数、ボリューム、Dict、キュー、シークレット(ツール数: 49)
   </Card>
   <Card title="Neon" icon="/images/neon.svg" href="/ja/integrations/neon">
-    Neonのサーバーレスpostgresを管理 — プロジェクト、ブランチ、データベース、ロール、Neon Auth、Data API、組織(ツール数: 162)
+    Neonのサーバーレスpostgresを管理：プロジェクト、ブランチ、データベース、ロール、Neon Auth、Data API、組織(ツール数: 162)
   </Card>
   <Card title="Pinecone" icon="/images/pinecone.svg" href="/ja/integrations/pinecone">
-    ベクトルデータベース操作 — インデックス、ネームスペース、ベクトル、アシスタント、バックアップ、組織レベルの管理(ツール数: 85)
+    ベクトルデータベース操作：インデックス、ネームスペース、ベクトル、アシスタント、バックアップ、組織レベルの管理(ツール数: 85)
   </Card>
   <Card title="Snowflake" icon="/images/snowflake.svg" href="/ja/integrations/snowflake">
-    Snowflakeデータウェアハウスを操作する — データベース、テーブル、ウェアハウス、タスク、Cortex AI(ツール数: 142)
+    Snowflakeデータウェアハウスを操作する：データベース、テーブル、ウェアハウス、タスク、Cortex AI(ツール数: 142)
   </Card>
   <Card title="Supabase" icon="/images/supabase.svg" href="/ja/integrations/supabase">
     Supabaseのプロジェクト、データベース、ストレージ、認証、エッジ関数を管理し、SQLやPostgRESTクエリを実行する(ツール数: 120)
@@ -267,46 +267,46 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     自然言語からフルスタックアプリを生成・編集し、Base44が構築したデータモデルを問い合わせる(ツール数: 5)
   </Card>
   <Card title="Browserbase" icon="/images/browserbase.svg" href="/ja/integrations/browserbase">
-    クラウドブラウザのセッション・エージェントを実行 — ページ操作、スクリーンショット、Function、セッション録画(ツール数: 63)
+    クラウドブラウザのセッション・エージェントを実行：ページ操作、スクリーンショット、Function、セッション録画(ツール数: 63)
   </Card>
   <Card title="BrowserUse" icon="/images/browseruse.svg" href="/ja/integrations/browseruse">
-    クラウドでAIブラウザ自動化セッションを実行 — プロファイル、ブラウザ、ワークスペース、請求管理(ツール数: 27)
+    クラウドでAIブラウザ自動化セッションを実行：プロファイル、ブラウザ、ワークスペース、請求管理(ツール数: 27)
   </Card>
   <Card title="Composio" icon="/images/composio.svg" href="/ja/integrations/composio">
-    1000以上の外部サービスへの統合アクセス — ツールキット、ツール実行、接続済みアカウント、トリガー(ツール数: 60)
+    1000以上の外部サービスへの統合アクセス：ツールキット、ツール実行、接続済みアカウント、トリガー(ツール数: 60)
   </Card>
   <Card title="Context7" icon="/images/context7.svg" href="/ja/integrations/context7">
     50,000以上のライブラリに対応した最新のドキュメントとコード例(ツール数: 3)
   </Card>
   <Card title="Devin" icon="/images/devin.svg" href="/ja/integrations/devin">
-    Devin AIソフトウェアエンジニアのセッションを管理する — セッション、プレイブック、ナレッジ、スケジュール、PRレビュー(ツール数: 38)
+    Devin AIソフトウェアエンジニアのセッションを管理する：セッション、プレイブック、ナレッジ、スケジュール、PRレビュー(ツール数: 38)
   </Card>
   <Card title="Dify" icon="/images/dify.svg" href="/ja/integrations/dify">
-    Dify AIアプリを実行・管理する — チャット/コンプリーション、ワークフロー、ナレッジベース、ドキュメント、アノテーション(ツール数: 65)
+    Dify AIアプリを実行・管理する：チャット/コンプリーション、ワークフロー、ナレッジベース、ドキュメント、アノテーション(ツール数: 65)
   </Card>
   <Card title="E2B" icon="/images/e2b.svg" href="/ja/integrations/e2b">
-    隔離されたクラウドサンドボックスでコードを実行 — コマンド、ファイルシステム、コードインタープリタ、スナップショット(ツール数: 27)
+    隔離されたクラウドサンドボックスでコードを実行：コマンド、ファイルシステム、コードインタープリタ、スナップショット(ツール数: 27)
   </Card>
   <Card title="Gumloop" icon="/images/gumloop.svg" href="/ja/integrations/gumloop">
-    GumloopのAI自動化フローを実行・監視する — フロー一覧、実行開始、状態確認、履歴表示(ツール数: 6)
+    GumloopのAI自動化フローを実行・監視する：フロー一覧、実行開始、状態確認、履歴表示(ツール数: 6)
   </Card>
   <Card title="Hermes Agent" icon="/images/hermes.svg" href="/ja/integrations/hermes">
-    Hermes Agentのセッション、ジョブ、実行を管理する — メッセージ送信、ジョブトリガー、実行状況の監視(ツール数: 23)
+    Hermes Agentのセッション、ジョブ、実行を管理する：メッセージ送信、ジョブトリガー、実行状況の監視(ツール数: 23)
   </Card>
   <Card title="Jinba" icon="/images/jinba.svg" href="/ja/integrations/jinba">
-    公開済みのJinba Flowワークフローを実行する — 自然言語とビジュアルによるノーコード自動化(ツール数: 1)
+    公開済みのJinba Flowワークフローを実行する：自然言語とビジュアルによるノーコード自動化(ツール数: 1)
   </Card>
   <Card title="Make" icon="/images/make.svg" href="/ja/integrations/make">
-    Make(Integromat)のシナリオを管理 — 自動化ワークフローとその接続を有効化・実行・監視する(ツール数: 11)
+    Make(Integromat)のシナリオを管理：自動化ワークフローとその接続を有効化・実行・監視する(ツール数: 11)
   </Card>
   <Card title="Manus" icon="/images/manus.svg" href="/ja/integrations/manus">
-    Manus AIエージェントとそのタスクを制御 — メッセージ送信、プロジェクト・ファイル・Webサイト・Webhookの管理(ツール数: 32)
+    Manus AIエージェントとそのタスクを制御：メッセージ送信、プロジェクト・ファイル・Webサイト・Webhookの管理(ツール数: 32)
   </Card>
   <Card title="Mem0" icon="/images/mem0.svg" href="/ja/integrations/mem0">
-    エージェントに永続的で検索可能な長期記憶を持たせる — メモリとそれが参照するエンティティを追加・検索・管理する(ツール数: 14)
+    エージェントに永続的で検索可能な長期記憶を持たせる：メモリとそれが参照するエンティティを追加・検索・管理する(ツール数: 14)
   </Card>
   <Card title="n8n" icon="/images/n8n.svg" href="/ja/integrations/n8n">
-    n8nのワークフローと実行を確認・操作 — 有効化・無効化・リトライ、タグ/変数の管理(ツール数: 15)
+    n8nのワークフローと実行を確認・操作：有効化・無効化・リトライ、タグ/変数の管理(ツール数: 15)
   </Card>
   <Card title="OpenHands" icon="/images/openhands.svg" href="/ja/integrations/openhands">
     OpenHands AIコーディングエージェントの会話を実行・管理(ツール数: 8)
@@ -315,7 +315,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     Qoder AI開発エージェントのセッション、ファイル、イベントの実行・管理(ツール数: 11)
   </Card>
   <Card title="V0" icon="/images/v0.svg" href="/ja/integrations/v0">
-    VercelのUI生成AI「v0」でUIコードを生成・反復 — チャット、プロジェクト、デプロイ、MCPサーバー管理(ツール数: 42)
+    VercelのUI生成AI「v0」でUIコードを生成・反復：チャット、プロジェクト、デプロイ、MCPサーバー管理(ツール数: 42)
   </Card>
   <Card title="Zapier" icon="/images/zapier.svg" href="/ja/integrations/zapier">
     エージェントからZapierのアクションを実行し、Zap・連携済みアプリ・テンプレートを確認(ツール数: 9)
@@ -329,16 +329,16 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     音声の文字起こし、話者識別・翻訳・整形などのスピーチ理解、LLMによる文字起こし内容へのクエリ(ツール数: 17)
   </Card>
   <Card title="Baseten" icon="/images/baseten.svg" href="/ja/integrations/baseten">
-    MLモデルのデプロイと実行 — 推論、トレーニング、チェーン、ゲートウェイルーティング、ワークスペース管理(ツール数: 129)
+    MLモデルのデプロイと実行：推論、トレーニング、チェーン、ゲートウェイルーティング、ワークスペース管理(ツール数: 129)
   </Card>
   <Card title="Deepgram" icon="/images/deepgram.svg" href="/ja/integrations/deepgram">
-    音声認識・音声合成・音声インテリジェンス — 文字起こし、TTS、テキスト解析(ツール数: 12)
+    音声認識・音声合成・音声インテリジェンス：文字起こし、TTS、テキスト解析(ツール数: 12)
   </Card>
   <Card title="ElevenLabs" icon="/images/elevenlabs.svg" href="/ja/integrations/elevenlabs">
-    AI音声生成 — テキスト読み上げ、音声クローン、ダビング、音楽生成、文字起こし(ツール数: 83)
+    AI音声生成：テキスト読み上げ、音声クローン、ダビング、音楽生成、文字起こし(ツール数: 83)
   </Card>
   <Card title="Fireworks AI" icon="/images/fireworks.svg" href="/ja/integrations/fireworks">
-    オープンモデル向けの高速推論、ファインチューニング、デプロイ管理 — チャット、埋め込み、LoRA、評価(ツール数: 96)
+    オープンモデル向けの高速推論、ファインチューニング、デプロイ管理：チャット、埋め込み、LoRA、評価(ツール数: 96)
   </Card>
   <Card title="Google Gemini" icon="/images/gemini.svg" href="/ja/integrations/gemini">
     Gemini APIによるディープリサーチと画像生成(ツール数: 6)
@@ -350,13 +350,13 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     モデル、データセット、Spaces、推論、コレクション、議論、論文、リポジトリ管理(ツール数: 87)
   </Card>
   <Card title="Kling AI" icon="/images/kling.svg" href="/ja/integrations/kling">
-    リップシンク付きAI動画の生成・延長 — テキストから動画、画像から動画、動画エフェクト(ツール数: 6)
+    リップシンク付きAI動画の生成・延長：テキストから動画、画像から動画、動画エフェクト(ツール数: 6)
   </Card>
   <Card title="OpenAI" icon="/images/openai.svg" href="/ja/integrations/openai">
     画像の生成・編集、OpenAIのDeep Researchエージェントの実行(ツール数: 4)
   </Card>
   <Card title="Replicate" icon="/images/replicate.svg" href="/ja/integrations/replicate">
-    AIモデルの実行・管理 — 推論、トレーニング、デプロイメント、モデルバージョン(ツール数: 31)
+    AIモデルの実行・管理：推論、トレーニング、デプロイメント、モデルバージョン(ツール数: 31)
   </Card>
   <Card title="Runway" icon="/images/runway.svg" href="/ja/integrations/runway">
     Runwayの生成AIモデルによる動画・画像・音声・アバターの生成(ツール数: 43)
@@ -365,7 +365,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     Stable DiffusionとStable Audioで画像・音声を生成・編集・アップスケールする(ツール数: 28)
   </Card>
   <Card title="Together AI" icon="/images/together.svg" href="/ja/integrations/together">
-    推論、ファインチューニング、専用デプロイメントを実行する — チャット、埋め込み、GPUクラスタ、DMI(ツール数: 127)
+    推論、ファインチューニング、専用デプロイメントを実行する：チャット、埋め込み、GPUクラスタ、DMI(ツール数: 127)
   </Card>
   <Card title="Wan (Alibaba)" icon="/images/wan.svg" href="/ja/integrations/wan">
     DashScope経由でAlibabaのWanモデルを使い、テキストや画像から動画を生成する(ツール数: 4)
@@ -382,7 +382,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     ニューラルWeb検索、類似検索、コンテンツ取得、長時間実行のリサーチエージェント(ツール数: 12)
   </Card>
   <Card title="Firecrawl" icon="/images/firecrawl.svg" href="/ja/integrations/firecrawl">
-    Webのスクレイピング、クロール、検索、構造化データの抽出 — サンドボックス化されたブラウザ操作も対応(ツール数: 22)
+    Webのスクレイピング、クロール、検索、構造化データの抽出：サンドボックス化されたブラウザ操作も対応(ツール数: 22)
   </Card>
   <Card title="Hacker News" icon="/images/hackernews.svg" href="/ja/integrations/hackernews">
     トップ・新着・ベスト・Ask HN・Show HN・求人ストーリーの閲覧と、コメント付きの個別ストーリー取得(ツール数: 7)
@@ -391,7 +391,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     LLMフレンドリーなWeb検索、URL読み取り、詳細リサーチ、ドキュメントの再ランキング(ツール数: 4)
   </Card>
   <Card title="Linkup" icon="/images/linkup.svg" href="/ja/integrations/linkup">
-    AI最適化されたWeb検索・ページ取得・ディープリサーチ — 長時間実行される非同期リサーチタスクにも対応(ツール数: 4)
+    AI最適化されたWeb検索・ページ取得・ディープリサーチ：長時間実行される非同期リサーチタスクにも対応(ツール数: 4)
   </Card>
   <Card title="OpenAlex" icon="/images/openalex.svg" href="/ja/integrations/openalex">
     OpenAlexのオープンな学術データベースで論文・著者・引用を検索(ツール数: 2)
@@ -403,7 +403,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     PerplexityのSonarモデルによる、引用付きのAI Web検索(ツール数: 1)
   </Card>
   <Card title="Perplexity Operator" icon="/images/perplexity-operator.svg" href="/ja/integrations/perplexity-operator">
-    Perplexity Sonarの高度な機能 — 推論、ディープリサーチ、引用付きの複数ターン対話(ツール数: 4)
+    Perplexity Sonarの高度な機能：推論、ディープリサーチ、引用付きの複数ターン対話(ツール数: 4)
   </Card>
   <Card title="Stack Exchange" icon="/images/stackexchange.svg" href="/ja/integrations/stackexchange">
     Stack Overflowをはじめとするスタックエクスチェンジネットワーク全体のQ&Aを検索・閲覧し、投稿・投票を行う(ツール数: 82)
@@ -426,28 +426,28 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     AttioのCRMで企業・人物・取引・カスタムオブジェクトを管理し、リスト・ノート・タスクも扱う(ツール数: 76)
   </Card>
   <Card title="Canva" icon="/images/canva.svg" href="/ja/integrations/canva">
-    Canvaのデザインを作成・管理・書き出す — アセット、フォルダ、ブランドテンプレート、オートフィル、コメント(ツール数: 36)
+    Canvaのデザインを作成・管理・書き出す：アセット、フォルダ、ブランドテンプレート、オートフィル、コメント(ツール数: 36)
   </Card>
   <Card title="Google Analytics 4" icon="/images/ga4.svg" href="/ja/integrations/ga4">
-    レポートのクエリ、プロパティ管理、イベント送信 — Admin API、Data API、Measurement Protocol(ツール数: 33)
+    レポートのクエリ、プロパティ管理、イベント送信：Admin API、Data API、Measurement Protocol(ツール数: 33)
   </Card>
   <Card title="HubSpot" icon="/images/hubspot.svg" href="/ja/integrations/hubspot">
-    CRMオブジェクト、マーケティング、商談、コマース、サポート — HubSpotの広範な機能を1つの連携に(ツール数: 214)
+    CRMオブジェクト、マーケティング、商談、コマース、サポート：HubSpotの広範な機能を1つの連携に(ツール数: 214)
   </Card>
   <Card title="Looker" icon="/images/looker.svg" href="/ja/integrations/looker">
-    Lookerを照会・管理 — Look、ダッシュボード、Explore/モデル、スケジュールプラン、埋め込みURL、管理(ユーザー、ロール、グループ)(ツール数: 71)
+    Lookerを照会・管理：Look、ダッシュボード、Explore/モデル、スケジュールプラン、埋め込みURL、管理(ユーザー、ロール、グループ)(ツール数: 71)
   </Card>
   <Card title="Mailchimp" icon="/images/mailchimp.svg" href="/ja/integrations/mailchimp">
-    Mailchimpのメール/SMSマーケティングとEコマース連携を運用 — オーディエンス、キャンペーン、オートメーション、テンプレート、レポート(ツール数: 279)
+    Mailchimpのメール/SMSマーケティングとEコマース連携を運用：オーディエンス、キャンペーン、オートメーション、テンプレート、レポート(ツール数: 279)
   </Card>
   <Card title="Mixpanel" icon="/images/mixpanel.svg" href="/ja/integrations/mixpanel">
-    イベントの記録、ユーザー/グループプロフィールの管理、分析クエリの実行 — セグメンテーション、リテンション、ファネル、アノテーション(ツール数: 46)
+    イベントの記録、ユーザー/グループプロフィールの管理、分析クエリの実行：セグメンテーション、リテンション、ファネル、アノテーション(ツール数: 46)
   </Card>
   <Card title="Reddit Ads" icon="/images/reddit-ads.svg" href="/ja/integrations/reddit-ads">
-    Reddit広告の管理 — ビジネス、キャンペーン、ターゲティング、クリエイティブ、カタログ、レポーティング(ツール数: 90)
+    Reddit広告の管理：ビジネス、キャンペーン、ターゲティング、クリエイティブ、カタログ、レポーティング(ツール数: 90)
   </Card>
   <Card title="TikTok Ads" icon="/images/tiktok-ads.svg" href="/ja/integrations/tiktok-ads">
-    TikTok広告キャンペーンを管理する — キャンペーン、広告グループ、広告、オーディエンス、ターゲティング、レポート(ツール数: 119)
+    TikTok広告キャンペーンを管理する：キャンペーン、広告グループ、広告、オーディエンス、ターゲティング、レポート(ツール数: 119)
   </Card>
 </CardGroup>
 
@@ -458,28 +458,28 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     Alpacaのブローカレッジ API経由で株式・暗号資産の取引、ポジション・ウォッチリストの管理、マーケットデータの取得(ツール数: 44)
   </Card>
   <Card title="freee" icon="/images/freee.svg" href="/ja/integrations/freee">
-    日本の会計・人事労務プラットフォーム — 取引、請求書、給与、経費申請ワークフロー、口座照合(ツール数: 125)
+    日本の会計・人事労務プラットフォーム：取引、請求書、給与、経費申請ワークフロー、口座照合(ツール数: 125)
   </Card>
   <Card title="MoneyForward" icon="/images/moneyforward.svg" href="/ja/integrations/moneyforward">
-    MoneyForwardの会計・経費・請求書・支払を管理 — 仕訳、取引、レポート、承認(ツール数: 59)
+    MoneyForwardの会計・経費・請求書・支払を管理：仕訳、取引、レポート、承認(ツール数: 59)
   </Card>
   <Card title="PayPal" icon="/images/paypal.svg" href="/ja/integrations/paypal">
-    注文、請求書、サブスクリプション、紛争、ペイアウト、Webhook — PayPalの決済API全体(ツール数: 105)
+    注文、請求書、サブスクリプション、紛争、ペイアウト、Webhook：PayPalの決済API全体(ツール数: 105)
   </Card>
   <Card title="RevenueCat" icon="/images/revenuecat.svg" href="/ja/integrations/revenuecat">
-    アプリ内サブスクリプションの管理 — 顧客、権利(エンタイトルメント)、オファリング、ペイウォール、分析(ツール数: 107)
+    アプリ内サブスクリプションの管理：顧客、権利(エンタイトルメント)、オファリング、ペイウォール、分析(ツール数: 107)
   </Card>
   <Card title="Square" icon="/images/square.svg" href="/ja/integrations/square">
-    POSコマースを運用する — 注文、決済、請求書、カタログ、ロイヤルティ、予約(ツール数: 140)
+    POSコマースを運用する：注文、決済、請求書、カタログ、ロイヤルティ、予約(ツール数: 140)
   </Card>
   <Card title="Stripe" icon="/images/stripe.svg" href="/ja/integrations/stripe">
-    決済、サブスクリプション、請求、Treasury、Issuing — Shanoneカタログ最大の連携(ツール数: 328)
+    決済、サブスクリプション、請求、Treasury、Issuing：Shanoneカタログ最大の連携(ツール数: 328)
   </Card>
   <Card title="Wise" icon="/images/wise.svg" href="/ja/integrations/wise">
     Wise(旧TransferWise)で海外送金、多通貨残高管理、為替レートの確認(ツール数: 57)
   </Card>
   <Card title="Yahoo Finance" icon="/images/yahoo-finance.svg" href="/ja/integrations/yahoo-finance">
-    株価、過去の価格データ、財務諸表、ニュースを取得 — APIキー不要(ツール数: 4)
+    株価、過去の価格データ、財務諸表、ニュースを取得：APIキー不要(ツール数: 4)
   </Card>
 </CardGroup>
 
@@ -487,16 +487,16 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
 
 <CardGroup cols={3}>
   <Card title="Coincheck" icon="/images/coincheck.svg" href="/ja/integrations/coincheck">
-    Coincheckで資産を取引・管理する — 注文、マーケットデータ、送金、引き出し(ツール数: 24)
+    Coincheckで資産を取引・管理する：注文、マーケットデータ、送金、引き出し(ツール数: 24)
   </Card>
   <Card title="Ethereum" icon="/images/ethereum.svg" href="/ja/integrations/ethereum">
     設定したJSON-RPCエンドポイントを通じてEthereumブロックチェーンのデータを取得し、スマートコントラクトと連携する(ツール数: 76)
   </Card>
   <Card title="Hyperliquid" icon="/images/hyperliquid.svg" href="/ja/integrations/hyperliquid">
-    パーペチュアルDEXのアカウント・マーケット・注文データ — 残高、オーダーブック、ファンディング、ポジション、取引(ツール数: 34)
+    パーペチュアルDEXのアカウント・マーケット・注文データ：残高、オーダーブック、ファンディング、ポジション、取引(ツール数: 34)
   </Card>
   <Card title="OpenSea" icon="/images/opensea.svg" href="/ja/integrations/opensea">
-    NFTの閲覧・取引・分析 — コレクション、リスティング、オファー、注文、統計、トークンスワップ(ツール数: 63)
+    NFTの閲覧・取引・分析：コレクション、リスティング、オファー、注文、統計、トークンスワップ(ツール数: 63)
   </Card>
 </CardGroup>
 
@@ -504,19 +504,19 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
 
 <CardGroup cols={3}>
   <Card title="DocuSign" icon="/images/docusign.svg" href="/ja/integrations/docusign">
-    電子署名エンベロープの送信・署名・管理 — テンプレート、受信者、ドキュメント、アカウント管理(ツール数: 144)
+    電子署名エンベロープの送信・署名・管理：テンプレート、受信者、ドキュメント、アカウント管理(ツール数: 144)
   </Card>
   <Card title="Shopify" icon="/images/shopify.svg" href="/ja/integrations/shopify">
     Shopifyストアの商品、注文、顧客、ストアフロントコンテンツを管理する(ツール数: 149)
   </Card>
   <Card title="SmartHR" icon="/images/smarthr.svg" href="/ja/integrations/smarthr">
-    従業員情報、組織構造、給与を管理する — 従業員、部署、等級、給与明細(ツール数: 111)
+    従業員情報、組織構造、給与を管理する：従業員、部署、等級、給与明細(ツール数: 111)
   </Card>
   <Card title="Wix" icon="/images/wix.svg" href="/ja/integrations/wix">
-    Wixストア、予約、ブログ、コンタクト、サイトデータを管理 — 商品、注文、CMSコレクション、マーケティング(ツール数: 144)
+    Wixストア、予約、ブログ、コンタクト、サイトデータを管理：商品、注文、CMSコレクション、マーケティング(ツール数: 144)
   </Card>
   <Card title="Zendesk" icon="/images/zendesk.svg" href="/ja/integrations/zendesk">
-    Zendeskでサポートチケット、ユーザー、組織、マクロを管理 — カスタマーサポートの一連のワークフロー(ツール数: 64)
+    Zendeskでサポートチケット、ユーザー、組織、マクロを管理：カスタマーサポートの一連のワークフロー(ツール数: 64)
   </Card>
 </CardGroup>
 
@@ -527,7 +527,7 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
     再生を操作し、プレイリストとライブラリを管理し、アーティスト・アルバム・番組・オーディオブックを閲覧する(ツール数: 57)
   </Card>
   <Card title="X" icon="/images/x.svg" href="/ja/integrations/x">
-    X(旧Twitter)への投稿・検索・エンゲージメント — 投稿、タイムライン、リスト、DM、スペース、フォロー関係(ツール数: 67)
+    X(旧Twitter)への投稿・検索・エンゲージメント：投稿、タイムライン、リスト、DM、スペース、フォロー関係(ツール数: 67)
   </Card>
   <Card title="YouTube" icon="/images/youtube.svg" href="/ja/integrations/youtube">
     YouTubeの動画、ライブ配信、再生リスト、コメント、チャンネル分析を管理(ツール数: 82)
@@ -536,16 +536,16 @@ Shanoneはサービスのアクション1つごとに個別のMCPツールを登
 
 ## 連携を接続する
 
-ほとんどの連携はOAuthを使用し、事前設定は不要です——未接続のサービスに対してエージェントが初めてツールを呼び出すと、`shanone_execute_tool`は失敗する代わりに`connect_link`を返します。それを開いて認可し、再試行してください。手順は[クイックスタート](/ja/quickstart)を参照するか、Shanoneダッシュボードの**Integrations**から事前に接続しておくこともできます。
+ほとんどの連携はOAuthを使用し、事前設定は不要です。未接続のサービスに対してエージェントが初めてツールを呼び出すと、`shanone_execute_tool`は失敗する代わりに`connect_link`を返します。それを開いて認可し、再試行してください。手順は[クイックスタート](/ja/quickstart)を参照するか、Shanoneダッシュボードの**Integrations**から事前に接続しておくこともできます。
 
 <Note>
-一部の連携(Ethereum、Google Cloud、Coincheckなど)はOAuthではなく、設定済みのAPIキー/RPCエンドポイントで認証します——詳細はそれぞれの連携ページを参照してください。
+一部の連携(Ethereum、Google Cloud、Coincheckなど)はOAuthではなく、設定済みのAPIキー/RPCエンドポイントで認証します。詳細はそれぞれの連携ページを参照してください。
 </Note>
 
 ## それでも見つからないものがある場合
 
 <Note>
-これらのページに載っている内容で、必要なツールが見つからない場合は、まずエージェントに聞いてみてください——`shanone_search_tools`は実際に稼働中の全カタログをカバーしており、ここに書かれているものより粒度の細かいツールが用意されている場合もあります。本当に存在しない場合は、ぜひご連絡ください。
+これらのページに載っている内容で、必要なツールが見つからない場合は、まずエージェントに聞いてみてください。`shanone_search_tools`は実際に稼働中の全カタログをカバーしており、ここに書かれているものより粒度の細かいツールが用意されている場合もあります。本当に存在しない場合は、ぜひご連絡ください。
 </Note>
 
 連携のリクエストは[hey@duzzle.dev](mailto:hey@duzzle.dev)までお問い合わせください。

@@ -1,6 +1,6 @@
 ---
 title: "Neon"
-description: "Manage Neon serverless Postgres — projects, branches, databases, roles, Neon Auth, Data API, and organizations"
+description: "Manage Neon serverless Postgres: projects, branches, databases, roles, Neon Auth, Data API, and organizations"
 icon: /images/neon.svg
 ---
 
@@ -98,7 +98,7 @@ Shanone provides **162 tools** for Neon, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="neon_create_branch succeeds but queries against it fail">
-    A new branch needs a running compute endpoint — call `neon_create_endpoint` (or check if one was auto-created) and `neon_start_endpoint` before connecting.
+    A new branch needs a running compute endpoint. Call `neon_create_endpoint` (or check if one was auto-created) and `neon_start_endpoint` before connecting.
   </Accordion>
   <Accordion title="neon_reveal_role_password returns an error">
     Passwords can only be revealed for roles created through Neon (not externally managed ones); use `neon_reset_role_password` to generate a new one if reveal isn't available.
@@ -107,6 +107,6 @@ Shanone provides **162 tools** for Neon, organized into these categories:
     Neon Auth must be explicitly turned on per project with `neon_enable_auth` before any `neon_auth_*`-adjacent config (domains, OAuth providers, plugins) can be managed.
   </Accordion>
   <Accordion title="Org-level tools return a permission error">
-    Org member, billing, and VPC endpoint tools require an admin role in the Neon organization — check your role via `neon_get_org_member` for your own user ID.
+    Org member, billing, and VPC endpoint tools require an admin role in the Neon organization. Check your role via `neon_get_org_member` for your own user ID.
   </Accordion>
 </AccordionGroup>

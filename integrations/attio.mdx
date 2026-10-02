@@ -6,7 +6,7 @@ icon: /images/attio.svg
 
 # Attio
 
-Shanone's Attio integration gives your agent 76 tools covering Attio's flexible object model — standard CRM records (companies, people, deals) alongside custom objects, lists, attributes, notes, comments, and tasks.
+Shanone's Attio integration gives your agent 76 tools covering Attio's flexible object model: standard CRM records (companies, people, deals) alongside custom objects, lists, attributes, notes, comments, and tasks.
 
 ## Getting Started
 
@@ -80,9 +80,9 @@ Shanone provides **76 tools** for Attio, organized into these categories:
     Attio's object schemas are workspace-specific and can include custom attributes. Call `attio_get_object_attributes` or `attio_list_attributes` first to confirm exact attribute slugs and types.
   </Accordion>
   <Accordion title="attio_assert_record / attio_assert_entry behaves unexpectedly">
-    These are upsert-style operations that match on a matching attribute (e.g. domain for companies) — if the match value is ambiguous or missing, Attio may create a duplicate instead of updating the intended record.
+    These are upsert-style operations that match on a matching attribute (e.g. domain for companies). If the match value is ambiguous or missing, Attio may create a duplicate instead of updating the intended record.
   </Accordion>
   <Accordion title="Select/status field updates are rejected">
-    Enum-style attributes (select, status) require an exact option ID or title from `attio_get_select_options` — free-text values that don't match an existing option will fail unless you first create the option with `attio_create_select_option`.
+    Enum-style attributes (select, status) require an exact option ID or title from `attio_get_select_options`: free-text values that don't match an existing option will fail unless you first create the option with `attio_create_select_option`.
   </Accordion>
 </AccordionGroup>

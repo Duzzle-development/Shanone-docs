@@ -1,12 +1,12 @@
 ---
 title: "Telegram"
-description: "Telegramボットを運用する — メッセージ送信、チャット管理、メンバーのモデレーション、Webhook設定"
+description: "Telegramボットを運用する：メッセージ送信、チャット管理、メンバーのモデレーション、Webhook設定"
 icon: /images/telegram.svg
 ---
 
 # Telegram
 
-ShanoneのTelegram連携は、メッセージの送信・管理、チャット/グループの管理、メンバーのモデレーション、ボット自体の設定を行う38個のツールをエージェントに提供します——独自のボットコードを書く代わりに、エージェント経由でTelegramボットの日常的な動作を運用できます。
+ShanoneのTelegram連携は、メッセージの送信・管理、チャット/グループの管理、メンバーのモデレーション、ボット自体の設定を行う38個のツールをエージェントに提供します。独自のボットコードを書く代わりに、エージェント経由でTelegramボットの日常的な動作を運用できます。
 
 ## はじめに
 
@@ -65,12 +65,12 @@ ShanoneはTelegram向けに**38個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="Bot Tokenが有効なのにチャット対象のツールが失敗する">
-    ボットは対象のチャット/グループ/チャネルにメンバーとして(モデレーション操作の場合は多くの場合管理者として)追加されている必要があります——有効なトークンだけでは任意のチャットへのアクセス権は得られません。
+    ボットは対象のチャット/グループ/チャネルにメンバーとして(モデレーション操作の場合は多くの場合管理者として)追加されている必要があります。有効なトークンだけでは任意のチャットへのアクセス権は得られません。
   </Accordion>
   <Accordion title="telegram_ban_chat_member、telegram_restrict_chat_member、telegram_promote_chat_memberが失敗する">
-    これらの操作には、そのチャットでボットが該当する管理者権限(例: 「ユーザーのBan」や「新しい管理者の追加」)を持っている必要があります——チャットの設定でボットの管理者権限を確認してください。
+    これらの操作には、そのチャットでボットが該当する管理者権限(例: 「ユーザーのBan」や「新しい管理者の追加」)を持っている必要があります。チャットの設定でボットの管理者権限を確認してください。
   </Accordion>
   <Accordion title="telegram_get_updatesが何も返さない">
-    `telegram_set_webhook`でWebhookが既に設定されている場合、Telegramはポーリング方式の`telegram_get_updates`による更新配信を停止します——ポーリングに戻したい場合は、まず`telegram_delete_webhook`を呼び出してください。
+    `telegram_set_webhook`でWebhookが既に設定されている場合、Telegramはポーリング方式の`telegram_get_updates`による更新配信を停止します。ポーリングに戻したい場合は、まず`telegram_delete_webhook`を呼び出してください。
   </Accordion>
 </AccordionGroup>

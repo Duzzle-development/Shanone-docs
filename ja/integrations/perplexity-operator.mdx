@@ -1,12 +1,12 @@
 ---
 title: "Perplexity Operator"
-description: "Perplexity Sonarの高度な機能 — 推論、ディープリサーチ、引用付きの複数ターン対話"
+description: "Perplexity Sonarの高度な機能：推論、ディープリサーチ、引用付きの複数ターン対話"
 icon: /images/perplexity-operator.svg
 ---
 
 # Perplexity Operator
 
-ShanoneのPerplexity Operator連携は、Perplexity Sonarのより高度な機能——段階的な推論、複数ソースにわたるディープリサーチ、複数ターンの会話——を通常の検索に加えて利用するための4個のツールをエージェントに提供します。基本のPerplexity連携と同じAPIキーを使いますが、モデル特化のより豊富なツールセットを提供します。
+ShanoneのPerplexity Operator連携は、Perplexity Sonarのより高度な機能（段階的な推論、複数ソースにわたるディープリサーチ、複数ターンの会話）を通常の検索に加えて利用するための4個のツールをエージェントに提供します。基本のPerplexity連携と同じAPIキーを使いますが、モデル特化のより豊富なツールセットを提供します。
 
 ## はじめに
 
@@ -28,16 +28,16 @@ ShanoneはPerplexity Operator向けに**4個のツール**を、以下のカテ�
 
 <AccordionGroup>
   <Accordion title="検索">
-    `perplexity_sonar_search` — `sonar`/`sonar-pro`モデルを使い、ドメイン指定や新しさのフィルタに対応したWeb情報に基づくAI検索
+    `perplexity_sonar_search`：`sonar`/`sonar-pro`モデルを使い、ドメイン指定や新しさのフィルタに対応したWeb情報に基づくAI検索
   </Accordion>
   <Accordion title="推論">
-    `perplexity_reasoning` — `sonar-reasoning-pro`を使った、複雑で多段の質問に対するChain of Thought分析
+    `perplexity_reasoning`：`sonar-reasoning-pro`を使った、複雑で多段の質問に対するChain of Thought分析
   </Accordion>
   <Accordion title="ディープリサーチ">
-    `perplexity_deep_research` — `sonar-deep-research`を使った、包括的な統合が必要なトピック向けの複数ソースを網羅するリサーチレポート
+    `perplexity_deep_research`：`sonar-deep-research`を使った、包括的な統合が必要なトピック向けの複数ソースを網羅するリサーチレポート
   </Accordion>
   <Accordion title="チャット">
-    `perplexity_chat` — `sonar`、`sonar-pro`、`sonar-reasoning-pro`にわたる、引用付きの文脈を保った複数ターン会話
+    `perplexity_chat`：`sonar`、`sonar-pro`、`sonar-reasoning-pro`にわたる、引用付きの文脈を保った複数ターン会話
   </Accordion>
 </AccordionGroup>
 
@@ -68,6 +68,6 @@ ShanoneはPerplexity Operator向けに**4個のツール**を、以下のカテ�
     このフィルタは最大3つのドメインまでを受け付け、`perplexity_sonar_search`と`perplexity_reasoning`にのみ適用されます。`shanone_get_tool_schema`で期待される配列形式を確認してください。
   </Accordion>
   <Accordion title="perplexity_chatが以前のターンの文脈を失う">
-    毎回の呼び出しで(以前のアシスタントのターンを含む)完全な`messages`配列を渡してください——このツールは個別の`shanone_execute_tool`呼び出し間で会話状態を保持しません。
+    毎回の呼び出しで(以前のアシスタントのターンを含む)完全な`messages`配列を渡してください。このツールは個別の`shanone_execute_tool`呼び出し間で会話状態を保持しません。
   </Accordion>
 </AccordionGroup>

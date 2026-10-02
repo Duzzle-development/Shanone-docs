@@ -1,12 +1,12 @@
 ---
 title: "SmartHR"
-description: "従業員情報、組織構造、給与を管理する — 従業員、部署、等級、給与明細"
+description: "従業員情報、組織構造、給与を管理する：従業員、部署、等級、給与明細"
 icon: /images/smarthr.svg
 ---
 
 # SmartHR
 
-ShanoneのSmartHR連携は、従業員(crew)情報、家族情報、組織構造、給与/税務関連ドキュメントなど、SmartHRにおける従業員ライフサイクル全体をカバーする111個のツールをエージェントに提供します——SmartHRを利用している日本企業の人事業務に適しています。
+ShanoneのSmartHR連携は、従業員(crew)情報、家族情報、組織構造、給与/税務関連ドキュメントなど、SmartHRにおける従業員ライフサイクル全体をカバーする111個のツールをエージェントに提供します。SmartHRを利用している日本企業の人事業務に適しています。
 
 ## はじめに
 
@@ -74,12 +74,12 @@ ShanoneはSmartHR向けに**111個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="すべての呼び出しが認証エラーになる">
-    SmartHRはアクセストークンとテナントのサブドメインの両方を必要とします——サブドメインによって、APIがどの会社のデータを操作するかが決まります。**連携**画面で両方が設定されているか確認してください。
+    SmartHRはアクセストークンとテナントのサブドメインの両方を必要とします。サブドメインによって、APIがどの会社のデータを操作するかが決まります。**連携**画面で両方が設定されているか確認してください。
   </Accordion>
   <Accordion title="smarthr_delete_departmentやsmarthr_delete_crewが予期せず失敗する">
     SmartHRは他の場所から参照されている部署/従業員(例: 在籍中の従業員がいる部署)の削除をブロックすることが多いです。まず`smarthr_discontinue_department`を使うか、従業員を別の部署に移してください。
   </Accordion>
   <Accordion title="バッチジョブ(エクスポート/インポート)がいつまでも完了しない">
-    `smarthr_create_crew_export_job`や`smarthr_create_crew_import_job`で作成したバッチジョブは非同期で実行されます——返されたジョブIDで`smarthr_get_batch_job`をステータスが変わるまでポーリングし、その後`smarthr_get_batch_job_attachment_file`で結果を取得してください。
+    `smarthr_create_crew_export_job`や`smarthr_create_crew_import_job`で作成したバッチジョブは非同期で実行されます。返されたジョブIDで`smarthr_get_batch_job`をステータスが変わるまでポーリングし、その後`smarthr_get_batch_job_attachment_file`で結果を取得してください。
   </Accordion>
 </AccordionGroup>

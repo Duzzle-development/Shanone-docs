@@ -1,6 +1,6 @@
 ---
 title: "Quickstart"
-description: "Get an API key, connect Cursor or Claude Code to Shanone, authorize your first integration, and run your first tool call — in about five minutes."
+description: "Get an API key, connect Cursor or Claude Code to Shanone, authorize your first integration, and run your first tool call, in about five minutes."
 ---
 
 This guide gets an MCP client talking to Shanone end to end: API key → client config → first OAuth connection → first tool call.
@@ -18,7 +18,7 @@ This guide gets an MCP client talking to Shanone end to end: API key → client 
     Sign in to Shanone and open the [API Keys page](https://app.shanone.ai/api-keys).
   </Step>
   <Step title="Create a key">
-    Click **Create API Key**, give it a descriptive name (e.g. "Cursor — laptop"), and choose an expiration before confirming. The default is **30 days**; you can also choose 7, 60, or 90 days, Custom (1–366 days), or Never.
+    Click **Create API Key**, give it a descriptive name (e.g. "Cursor: laptop"), and choose an expiration before confirming. The default is **30 days**; you can also choose 7, 60, or 90 days, Custom (1–366 days), or Never.
   </Step>
   <Step title="Copy it now">
     The plaintext key is shown **once**, in the form `sh_xxxxxxxxxxxxxxxx`. Copy it somewhere safe. Shanone only stores a hash of it afterward.
@@ -93,13 +93,13 @@ The simplest way to connect is the local stdio proxy, `@duzzle/shanone-mcp`, whi
     }
     ```
 
-    The direct endpoint requires **both** your API key and your organization ID (also visible on the **API Keys** page) — this composite check means a leaked API key alone isn't enough to call your tools. See [MCP Setup](/mcp/setup) for the full comparison between this and the local proxy.
+    The direct endpoint requires **both** your API key and your organization ID (also visible on the **API Keys** page). This composite check means a leaked API key alone isn't enough to call your tools. See [MCP Setup](/mcp/setup) for the full comparison between this and the local proxy.
   </Tab>
 </Tabs>
 
 ## Step 3: Connect your first integration
 
-Shanone doesn't ask you to pre-authorize every service up front — tools that need OAuth simply return a `connect_link` the first time your agent tries to use them.
+Shanone doesn't ask you to pre-authorize every service up front: tools that need OAuth simply return a `connect_link` the first time your agent tries to use them.
 
 <Steps>
   <Step title="Ask your agent to do something that needs a service">
@@ -127,7 +127,7 @@ Try a few natural prompts and watch your agent work through the meta-tool workfl
 "Create a GitHub issue titled 'Fix login redirect bug' in my-org/my-repo"
 ```
 
-Under the hood, your agent is calling `shanone_search_tools` (or `shanone_list_service_tools` for a full listing), then `shanone_execute_tool` with the arguments it worked out — no manual JSON required from you.
+Under the hood, your agent is calling `shanone_search_tools` (or `shanone_list_service_tools` for a full listing), then `shanone_execute_tool` with the arguments it worked out: no manual JSON required from you.
 
 ## What's next
 

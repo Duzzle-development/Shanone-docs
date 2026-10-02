@@ -1,12 +1,12 @@
 ---
 title: "Mailchimp"
-description: "Mailchimpのメール/SMSマーケティングとEコマース連携を運用 — オーディエンス、キャンペーン、オートメーション、テンプレート、レポート"
+description: "Mailchimpのメール/SMSマーケティングとEコマース連携を運用：オーディエンス、キャンペーン、オートメーション、テンプレート、レポート"
 icon: /images/mailchimp.svg
 ---
 
 # Mailchimp
 
-ShanoneのMailchimp連携は、Marketing APIのほぼ全体をカバーする279個のツールをエージェントに提供します——オーディエンス、キャンペーン、オートメーション、SMS、Eコマース、テンプレート、ランディングページ、レポートまで扱えます。
+ShanoneのMailchimp連携は、Marketing APIのほぼ全体をカバーする279個のツールをエージェントに提供します。オーディエンス、キャンペーン、オートメーション、SMS、Eコマース、テンプレート、ランディングページ、レポートまで扱えます。
 
 ## はじめに
 
@@ -89,12 +89,12 @@ ShanoneはMailchimp向けに**279個のツール**を、以下のカテゴリに
 
 <AccordionGroup>
   <Accordion title="mailchimp_send_campaignがチェックリストエラーで失敗する">
-    まず`mailchimp_get_send_checklist`を呼び出してください——Mailchimpは、送信元アドレス、件名、コンテンツなどの必須項目が送信前チェックリストを通過するまで送信をブロックします。
+    まず`mailchimp_get_send_checklist`を呼び出してください。Mailchimpは、送信元アドレス、件名、コンテンツなどの必須項目が送信前チェックリストを通過するまで送信をブロックします。
   </Accordion>
   <Accordion title="バッチ操作は即座に返るがデータがまだ変わっていない">
-    バッチ操作はMailchimp側で非同期に実行されます——初回のレスポンスで完了したと決めつけず、`mailchimp_wait_for_batch_completion`を使うか、`mailchimp_get_batch_operation`をポーリングしてください。
+    バッチ操作はMailchimp側で非同期に実行されます。初回のレスポンスで完了したと決めつけず、`mailchimp_wait_for_batch_completion`を使うか、`mailchimp_get_batch_operation`をポーリングしてください。
   </Accordion>
   <Accordion title="それまで正常に動いていたツール呼び出しが突然401を返す">
-    MailchimpのOAuthトークンにはリフレッシュの仕組みがありません——アプリの認可が取り消されたり期限切れになった場合、暗黙的なリフレッシュは期待できず、**連携**画面からMailchimpを完全に再接続する必要があります。
+    MailchimpのOAuthトークンにはリフレッシュの仕組みがありません。アプリの認可が取り消されたり期限切れになった場合、暗黙的なリフレッシュは期待できず、**連携**画面からMailchimpを完全に再接続する必要があります。
   </Accordion>
 </AccordionGroup>

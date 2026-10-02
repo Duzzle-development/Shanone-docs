@@ -1,12 +1,12 @@
 ---
 title: "SmartHR"
-description: "Manage employee records, org structure, and payroll — crews, departments, grades, and payslips"
+description: "Manage employee records, org structure, and payroll: crews, departments, grades, and payslips"
 icon: /images/smarthr.svg
 ---
 
 # SmartHR
 
-Shanone's SmartHR integration gives your agent 111 tools covering the full employee lifecycle in SmartHR — crew (employee) records, dependents, organizational structure, and payroll/tax documents — making it well suited for HR operations in Japanese companies using SmartHR.
+Shanone's SmartHR integration gives your agent 111 tools covering the full employee lifecycle in SmartHR (crew (employee) records, dependents, organizational structure, and payroll/tax documents), making it well suited for HR operations in Japanese companies using SmartHR.
 
 ## Getting Started
 
@@ -74,12 +74,12 @@ Shanone provides **111 tools** for SmartHR, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Every call fails with an authentication error">
-    SmartHR requires both the Access Token and your tenant's Subdomain — the subdomain determines which company's data the API operates on. Check both are set in **Integrations**.
+    SmartHR requires both the Access Token and your tenant's Subdomain. The subdomain determines which company's data the API operates on. Check both are set in **Integrations**.
   </Accordion>
   <Accordion title="smarthr_delete_department or smarthr_delete_crew fails unexpectedly">
     SmartHR often blocks deletion of departments/crews that are still referenced elsewhere (e.g. a department with active crews). Use `smarthr_discontinue_department` or reassign crews first.
   </Accordion>
   <Accordion title="A batch job (export/import) never seems to finish">
-    Batch jobs created with `smarthr_create_crew_export_job` or `smarthr_create_crew_import_job` run asynchronously — poll `smarthr_get_batch_job` with the returned job ID until its status changes, then fetch the result with `smarthr_get_batch_job_attachment_file`.
+    Batch jobs created with `smarthr_create_crew_export_job` or `smarthr_create_crew_import_job` run asynchronously. Poll `smarthr_get_batch_job` with the returned job ID until its status changes, then fetch the result with `smarthr_get_batch_job_attachment_file`.
   </Accordion>
 </AccordionGroup>

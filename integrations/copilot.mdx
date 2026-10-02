@@ -1,6 +1,6 @@
 ---
 title: "GitHub Copilot"
-description: "Manage GitHub Copilot for your organization — seats, billing, metrics, cloud agents, and policies"
+description: "Manage GitHub Copilot for your organization: seats, billing, metrics, cloud agents, and policies"
 icon: /images/copilot.svg
 ---
 
@@ -30,16 +30,16 @@ Shanone provides **37 tools** for GitHub Copilot, organized into these categorie
   <Accordion title="Seats & Billing">
     `copilot_get_org_billing`, `copilot_list_org_seats`, `copilot_add_teams`, `copilot_remove_teams`, `copilot_add_users`, `copilot_remove_users`, `copilot_get_user_seat`
   </Accordion>
-  <Accordion title="Usage Metrics — Organization">
+  <Accordion title="Usage Metrics: Organization">
     `copilot_get_org_metrics_daily`, `copilot_get_org_metrics_28day`, `copilot_get_org_users_metrics_daily`, `copilot_get_org_users_metrics_28day`, `copilot_get_org_user_teams_daily`
   </Accordion>
-  <Accordion title="Usage Metrics — Enterprise">
+  <Accordion title="Usage Metrics: Enterprise">
     `copilot_get_enterprise_metrics_daily`, `copilot_get_enterprise_metrics_28day`, `copilot_get_enterprise_users_metrics_daily`, `copilot_get_enterprise_users_metrics_28day`, `copilot_get_enterprise_user_teams_daily`
   </Accordion>
-  <Accordion title="Cloud Agent — Organization">
+  <Accordion title="Cloud Agent: Organization">
     `copilot_get_org_agent_permissions`, `copilot_set_org_agent_permissions`, `copilot_list_org_agent_repositories`, `copilot_set_org_agent_repositories`, `copilot_enable_org_agent_repository`, `copilot_disable_org_agent_repository`
   </Accordion>
-  <Accordion title="Cloud Agent — Enterprise">
+  <Accordion title="Cloud Agent: Enterprise">
     `copilot_set_enterprise_agent_policy`, `copilot_add_enterprise_agent_orgs`, `copilot_remove_enterprise_agent_orgs`
   </Accordion>
   <Accordion title="Custom Agents & Content Exclusion">
@@ -71,7 +71,7 @@ Shanone provides **37 tools** for GitHub Copilot, organized into these categorie
 
 <AccordionGroup>
   <Accordion title="Enterprise-scoped tools return a 404">
-    `copilot_get_enterprise_*` and `copilot_*_enterprise_agent_*` tools only work for organizations that are part of a GitHub Enterprise account — for a plain organization, use the `_org_` equivalents instead.
+    `copilot_get_enterprise_*` and `copilot_*_enterprise_agent_*` tools only work for organizations that are part of a GitHub Enterprise account: for a plain organization, use the `_org_` equivalents instead.
   </Accordion>
   <Accordion title="copilot_add_users or copilot_add_teams fails with a permissions error">
     Managing Copilot seats requires organization owner or Copilot admin permissions on the token's account; a token from a regular member can read usage but not modify seat assignments.

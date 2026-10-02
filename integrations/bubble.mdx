@@ -31,10 +31,10 @@ Shanone provides **7 tools** for Bubble:
     `bubble_list_records`, `bubble_get_record`, `bubble_create_record`, `bubble_update_record`, `bubble_delete_record`
   </Accordion>
   <Accordion title="Workflows">
-    `bubble_trigger_workflow` — trigger a public API workflow exposed in Bubble's workflow editor
+    `bubble_trigger_workflow`: trigger a public API workflow exposed in Bubble's workflow editor
   </Accordion>
   <Accordion title="API discovery">
-    `bubble_get_api_spec` — fetch the app's Swagger/OpenAPI spec to discover exposed data types and workflows
+    `bubble_get_api_spec`: fetch the app's Swagger/OpenAPI spec to discover exposed data types and workflows
   </Accordion>
 </AccordionGroup>
 
@@ -62,7 +62,7 @@ Shanone provides **7 tools** for Bubble:
     The data type may not be exposed in the Data API. In Bubble, go to **Settings > API** and confirm the type's "Data API" toggle is enabled and its name matches (case-insensitive, spaces stripped).
   </Accordion>
   <Accordion title="bubble_trigger_workflow returns a 404 for a workflow you know exists">
-    The workflow must be marked as an exposed API workflow in Bubble's Backend Workflows editor — internal-only workflows aren't reachable via the Workflow API.
+    The workflow must be marked as an exposed API workflow in Bubble's Backend Workflows editor: internal-only workflows aren't reachable via the Workflow API.
   </Accordion>
   <Accordion title="Field values written via bubble_create_record or bubble_update_record don't appear as expected">
     Bubble field names in the API often differ slightly from the display names shown in the editor. Call `bubble_get_api_spec` to confirm the exact field keys before writing.

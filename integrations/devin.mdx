@@ -1,6 +1,6 @@
 ---
 title: "Devin"
-description: "Manage Devin AI software engineer sessions — sessions, playbooks, knowledge, schedules, and PR reviews"
+description: "Manage Devin AI software engineer sessions: sessions, playbooks, knowledge, schedules, and PR reviews"
 icon: /images/devin.svg
 ---
 
@@ -15,7 +15,7 @@ Shanone's Devin integration gives your agent 38 tools for Cognition's Devin AI s
     In Devin, go to **Settings → Service Users** to create a service user and get its API Key along with your Organization ID.
   </Step>
   <Step title="Add credentials to Shanone">
-    Open **Integrations** in the Shanone dashboard, select Devin, and enter both the API Key and Organization ID — both are required.
+    Open **Integrations** in the Shanone dashboard, select Devin, and enter both the API Key and Organization ID. Both are required.
   </Step>
   <Step title="Retry your request">
     Once saved, `shanone_execute_tool` calls for `devin_*` tools will succeed.
@@ -74,12 +74,12 @@ Shanone provides **38 tools** for Devin, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="All tools fail with an authentication error despite a valid API Key">
-    Devin's v3 API requires **both** the API Key and Organization ID together — check that both fields were saved correctly in the Integrations page, since the API Key alone can't resolve which organization's sessions to operate on.
+    Devin's v3 API requires **both** the API Key and Organization ID together. Check that both fields were saved correctly in the Integrations page, since the API Key alone can't resolve which organization's sessions to operate on.
   </Accordion>
   <Accordion title="devin_send_message has no visible effect">
-    Messages can only be sent to sessions with `status_detail` of `waiting_for_user` — check `devin_get_session` first; if Devin is still `working`, the message queues but won't be processed until it's ready for input.
+    Messages can only be sent to sessions with `status_detail` of `waiting_for_user`. Check `devin_get_session` first; if Devin is still `working`, the message queues but won't be processed until it's ready for input.
   </Accordion>
   <Accordion title="devin_create_session succeeds but the session immediately errors out">
-    Check `devin_get_session` for `status: error` and inspect `devin_get_session_messages` — this usually indicates the task description referenced inaccessible resources (e.g. a repo the org's Devin instance isn't connected to).
+    Check `devin_get_session` for `status: error` and inspect `devin_get_session_messages`. This usually indicates the task description referenced inaccessible resources (e.g. a repo the org's Devin instance isn't connected to).
   </Accordion>
 </AccordionGroup>

@@ -6,7 +6,7 @@ icon: /images/runway.svg
 
 # Runway
 
-Shanone's Runway integration gives your agent 43 tools for [Runway](https://runwayml.com)'s generative media stack — video generation/editing, image generation and upscaling, voice/speech tools, AI avatars, and pre-built creative "recipes" for common marketing tasks.
+Shanone's Runway integration gives your agent 43 tools for [Runway](https://runwayml.com)'s generative media stack: video generation/editing, image generation and upscaling, voice/speech tools, AI avatars, and pre-built creative "recipes" for common marketing tasks.
 
 ## Getting Started
 
@@ -71,13 +71,13 @@ Shanone provides **43 tools** for Runway, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="runway_text_to_video or runway_image_to_video doesn't return output immediately">
-    Generation tasks run asynchronously — use `runway_wait_for_task` or poll `runway_get_task` with the returned task ID rather than expecting synchronous output.
+    Generation tasks run asynchronously. Use `runway_wait_for_task` or poll `runway_get_task` with the returned task ID rather than expecting synchronous output.
   </Accordion>
   <Accordion title="A recipe tool (runway_recipe_*) fails with a missing asset error">
     Recipes chain multiple generation steps and expect specific input assets (e.g. a product image URL); check `shanone_get_tool_schema` for the exact required fields before calling.
   </Accordion>
   <Accordion title="runway_create_avatar_video doesn't match the avatar's configured voice">
-    Confirm the avatar was fully created and its voice binding saved via `runway_get_avatar` before generating video — avatars created moments earlier may not have propagated yet.
+    Confirm the avatar was fully created and its voice binding saved via `runway_get_avatar` before generating video: avatars created moments earlier may not have propagated yet.
   </Accordion>
   <Accordion title="Tasks are taking a long time or usage looks higher than expected">
     Check `runway_get_organization_usage` to see current consumption, and `runway_cancel_task` for any stuck or no-longer-needed generation jobs.

@@ -1,6 +1,6 @@
 ---
 title: "HubSpot"
-description: "CRM objects, marketing, deals, commerce, and support — HubSpot's full breadth in one integration"
+description: "CRM objects, marketing, deals, commerce, and support: HubSpot's full breadth in one integration"
 icon: /images/hubspot.svg
 ---
 
@@ -15,7 +15,7 @@ Shanone's HubSpot integration gives your agent 214 tools spanning CRM (contacts,
     Ask your agent to do something with HubSpot (e.g. "create a contact for this lead"), or connect proactively from **Integrations** in the Shanone dashboard.
   </Step>
   <Step title="Authorize the requested scopes">
-    HubSpot's OAuth consent screen lists the scopes Shanone requests — approve the ones relevant to what you plan to use (CRM, marketing, commerce are separate scope groups).
+    HubSpot's OAuth consent screen lists the scopes Shanone requests. Approve the ones relevant to what you plan to use (CRM, marketing, commerce are separate scope groups).
   </Step>
   <Step title="Retry your request">
     Once connected, `shanone_execute_tool` calls for `hubspot_*` tools will succeed.
@@ -24,7 +24,7 @@ Shanone's HubSpot integration gives your agent 214 tools spanning CRM (contacts,
 
 ## Available Tools
 
-Shanone provides **214 tools** for HubSpot — the second-largest integration in the catalog after Stripe.
+Shanone provides **214 tools** for HubSpot, the second-largest integration in the catalog after Stripe.
 
 <AccordionGroup>
   <Accordion title="Contacts, companies & leads">
@@ -80,9 +80,9 @@ Shanone provides **214 tools** for HubSpot — the second-largest integration in
     Custom objects must be defined (`hubspot_create_custom_object_schema`) before you can create records against them (`hubspot_create_custom_object`). Check `hubspot_get_custom_object_schema` for the exact object type name.
   </Accordion>
   <Accordion title="Batch tools silently skip some records">
-    Batch create/update tools (`hubspot_batch_create_contacts`, etc.) are best-effort per record — check the response for per-item errors rather than assuming a 200-level response means every record succeeded.
+    Batch create/update tools (`hubspot_batch_create_contacts`, etc.) are best-effort per record. Check the response for per-item errors rather than assuming a 200-level response means every record succeeded.
   </Accordion>
   <Accordion title="Association tools fail with an invalid association type">
-    Call `hubspot_list_association_types` for the two object types involved first — HubSpot's default and custom association type IDs differ per portal.
+    Call `hubspot_list_association_types` for the two object types involved first: HubSpot's default and custom association type IDs differ per portal.
   </Accordion>
 </AccordionGroup>

@@ -1,6 +1,6 @@
 ---
 title: "Gmail"
-description: "Search, send, and organize email — messages, threads, drafts, labels, filters, and mailbox settings"
+description: "Search, send, and organize email: messages, threads, drafts, labels, filters, and mailbox settings"
 icon: /images/gmail.svg
 ---
 
@@ -74,7 +74,7 @@ Shanone provides **52 tools** for Gmail, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="gmail_send_message fails with an invalid recipient error">
-    Check the exact payload shape with `shanone_get_tool_schema` for `gmail_send_message` — recipients, subject, and body are typically nested under a MIME-style structure rather than flat fields.
+    Check the exact payload shape with `shanone_get_tool_schema` for `gmail_send_message`: recipients, subject, and body are typically nested under a MIME-style structure rather than flat fields.
   </Accordion>
   <Accordion title="gmail_watch push notifications aren't arriving">
     `gmail_watch` requires a Google Cloud Pub/Sub topic configured on the connected Google Cloud project; this is a project-level setup step outside Shanone. Call `gmail_stop` and re-run `gmail_watch` after fixing the topic configuration.

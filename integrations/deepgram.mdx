@@ -1,6 +1,6 @@
 ---
 title: "Deepgram"
-description: "Speech-to-text, text-to-speech, and audio intelligence — transcription, TTS, and text analysis"
+description: "Speech-to-text, text-to-speech, and audio intelligence: transcription, TTS, and text analysis"
 icon: /images/deepgram.svg
 ---
 
@@ -62,12 +62,12 @@ Shanone provides **12 tools** for Deepgram, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="deepgram_transcribe fails with a fetch error">
-    `audio_url` must be a publicly accessible URL — Deepgram fetches the file server-side and can't reach URLs behind authentication or on a local network.
+    `audio_url` must be a publicly accessible URL: Deepgram fetches the file server-side and can't reach URLs behind authentication or on a local network.
   </Accordion>
   <Accordion title="deepgram_analyze_audio / deepgram_summarize_audio return unexpectedly generic results">
-    These intelligence features rely on `smart_format` and clean transcription first — for noisy audio, try `nova-3` (the most accurate model) before running summarization or entity detection on top.
+    These intelligence features rely on `smart_format` and clean transcription first: for noisy audio, try `nova-3` (the most accurate model) before running summarization or entity detection on top.
   </Accordion>
   <Accordion title="deepgram_get_usage or deepgram_get_balance shows unexpected numbers">
-    Usage and balance are tracked at the Deepgram project level tied to the API Key, not per-user within Shanone — if multiple integrations share the same Deepgram project, usage will reflect all of them combined.
+    Usage and balance are tracked at the Deepgram project level tied to the API Key, not per-user within Shanone. If multiple integrations share the same Deepgram project, usage will reflect all of them combined.
   </Accordion>
 </AccordionGroup>

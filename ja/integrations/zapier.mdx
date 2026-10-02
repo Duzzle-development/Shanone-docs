@@ -62,12 +62,12 @@ Shanoneはzapier向けに**9個のツール**を、以下のカテゴリに整�
 
 <AccordionGroup>
   <Accordion title="zapier_run_actionがフィールド不足エラーで失敗する">
-    まず`zapier_get_action_input_fields`をそのアクションに対して呼び出してください — 必須フィールドはアクションや連携先アプリによって異なるため、全アクションで固定スキーマだと仮定しないでください。
+    まず`zapier_get_action_input_fields`をそのアクションに対して呼び出してください。必須フィールドはアクションや連携先アプリによって異なるため、全アクションで固定スキーマだと仮定しないでください。
   </Accordion>
   <Accordion title="zapier_run_actionは即座に返るが何も起きていないように見える">
     一部のアクションは非同期で実行されます。`zapier_run_action`が返した実行IDを使って`zapier_get_action_run`を呼び、実際に完了したか確認してください。
   </Accordion>
   <Accordion title="期待しているアクションがzapier_list_actionsに表示されない">
-    ここに表示されるのは、Zapierアカウントで明示的に有効化されたAI Actions(ZapierのAI Actions設定経由)のみです — まず`zapier_list_apps`/`zapier_list_authentications`で、Zapier側の該当アプリ連携が存在するか確認してください。
+    ここに表示されるのは、Zapierアカウントで明示的に有効化されたAI Actions(ZapierのAI Actions設定経由)のみです。まず`zapier_list_apps`/`zapier_list_authentications`で、Zapier側の該当アプリ連携が存在するか確認してください。
   </Accordion>
 </AccordionGroup>

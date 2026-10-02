@@ -6,7 +6,7 @@ icon: /images/vercel.svg
 
 # Vercel
 
-Shanone's Vercel integration gives your agent 107 tools covering the full deployment lifecycle — projects, deployments, domains/DNS, environment variables, Edge Config, caching, and team/security administration.
+Shanone's Vercel integration gives your agent 107 tools covering the full deployment lifecycle: projects, deployments, domains/DNS, environment variables, Edge Config, caching, and team/security administration.
 
 ## Getting Started
 
@@ -104,7 +104,7 @@ Shanone provides **107 tools** for Vercel, organized into these categories:
     Many project/domain/team tools operate on whichever team the connected Vercel account belongs to. Confirm the right team context with `vercel_list_teams` and `vercel_get_team` before assuming a permissions bug.
   </Accordion>
   <Accordion title="vercel_redeploy or vercel_promote_deployment doesn't seem to take effect">
-    Both operate on a specific deployment ID, not "the latest" deployment implicitly — call `vercel_list_deployments` first to confirm you're targeting the deployment you expect.
+    Both operate on a specific deployment ID, not "the latest" deployment implicitly. Call `vercel_list_deployments` first to confirm you're targeting the deployment you expect.
   </Accordion>
   <Accordion title="Edge Config or cache changes aren't visible right away">
     Edge Config reads are served from a fast, eventually-consistent edge cache; `vercel_update_edge_config_items` can take a short time to propagate globally before `vercel_get_edge_config_items` reflects it everywhere.

@@ -71,10 +71,10 @@ Shanoneはwordpress向けに**42個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="正しそうなパスワードでも401で接続に失敗する">
-    WordPressのApplication Passwordはスペース入り(例: `xxxx xxxx xxxx xxxx`)で表示されます — 環境によっては表示されたとおりスペースを含めて入力する必要があるため、**連携**画面に入力する際にスペースを削除しないでください。
+    WordPressのApplication Passwordはスペース入り(例: `xxxx xxxx xxxx xxxx`)で表示されます。環境によっては表示されたとおりスペースを含めて入力する必要があるため、**連携**画面に入力する際にスペースを削除しないでください。
   </Accordion>
   <Accordion title="ドラフトのつもりがwordpress_create_postが即座に公開してしまう">
-    `wordpress_create_post`の`shanone_get_tool_schema`でペイロード内の`status`フィールドを確認してください — 省略するとWordPressの設定によって`publish`がデフォルトになる場合があるため、`draft`を明示的に指定してください。
+    `wordpress_create_post`の`shanone_get_tool_schema`でペイロード内の`status`フィールドを確認してください。省略するとWordPressの設定によって`publish`がデフォルトになる場合があるため、`draft`を明示的に指定してください。
   </Accordion>
   <Accordion title="wordpress_delete_postやwordpress_delete_pageが完全削除ではなくゴミ箱に移動するだけ">
     WordPressはデフォルトで投稿/ページを即時削除せずゴミ箱に移動します。完全削除が必要な場合はツールの`force`パラメータを確認してください。

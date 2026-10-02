@@ -1,12 +1,12 @@
 ---
 title: "PayPal"
-description: "Orders, invoices, subscriptions, disputes, payouts, and webhooks — PayPal's full commerce API"
+description: "Orders, invoices, subscriptions, disputes, payouts, and webhooks: PayPal's full commerce API"
 icon: /images/paypal.svg
 ---
 
 # PayPal
 
-Shanone's PayPal integration gives your agent 105 tools covering the full commerce lifecycle — orders and payments, invoicing, subscriptions/billing plans, dispute resolution, payouts, and webhook management.
+Shanone's PayPal integration gives your agent 105 tools covering the full commerce lifecycle: orders and payments, invoicing, subscriptions/billing plans, dispute resolution, payouts, and webhook management.
 
 ## Getting Started
 
@@ -74,12 +74,12 @@ Shanone provides **105 tools** for PayPal, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="paypal_capture_order fails with an order not approved error">
-    The buyer must complete PayPal's approval flow before `paypal_capture_order` can succeed — check `paypal_get_order` for the order's current status first.
+    The buyer must complete PayPal's approval flow before `paypal_capture_order` can succeed. Check `paypal_get_order` for the order's current status first.
   </Accordion>
   <Accordion title="paypal_create_webhook events never seem to arrive">
     Confirm the webhook URL is publicly reachable and that `paypal_list_available_events` includes the event types you subscribed to; use `paypal_simulate_webhook_event` to test the endpoint directly.
   </Accordion>
   <Accordion title="paypal_provide_dispute_evidence rejects the submission">
-    Check `shanone_get_tool_schema` for the exact evidence payload shape — PayPal requires specific evidence types (e.g. `PROOF_OF_FULFILLMENT`) rather than free-form text or arbitrary attachments.
+    Check `shanone_get_tool_schema` for the exact evidence payload shape: PayPal requires specific evidence types (e.g. `PROOF_OF_FULFILLMENT`) rather than free-form text or arbitrary attachments.
   </Accordion>
 </AccordionGroup>

@@ -1,12 +1,12 @@
 ---
 title: "incident.io"
-description: "インシデント対応のライフサイクル全体を管理 — インシデント、アラート、オンコールスケジュール、ワークフロー、ステータスページ"
+description: "インシデント対応のライフサイクル全体を管理：インシデント、アラート、オンコールスケジュール、ワークフロー、ステータスページ"
 icon: /images/incident-io.svg
 ---
 
 # incident.io
 
-Shanoneのincident.io連携では、incident.ioプラットフォームのほぼ全機能——インシデント管理、アラート、オンコールスケジュール、ワークフロー、カタログ、ステータスページ、管理/API操作を扱う178のツールをエージェントが利用できるようになります。
+Shanoneのincident.io連携では、incident.ioプラットフォームのほぼ全機能、インシデント管理、アラート、オンコールスケジュール、ワークフロー、カタログ、ステータスページ、管理/API操作を扱う178のツールをエージェントが利用できるようになります。
 
 ## はじめに
 
@@ -86,15 +86,15 @@ Shanoneはincident.io用に**178のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="incidentio_create_incidentがカスタムフィールドやロールに関する検証エラーで失敗する">
-    incident.ioのアカウントでは作成時に特定のカスタムフィールドやロール割り当てが必須になっていることが多いです——まず`incidentio_list_custom_fields`と`incidentio_list_incident_roles`でワークスペースの必須項目を確認してください。
+    incident.ioのアカウントでは作成時に特定のカスタムフィールドやロール割り当てが必須になっていることが多いです。まず`incidentio_list_custom_fields`と`incidentio_list_incident_roles`でワークスペースの必須項目を確認してください。
   </Accordion>
   <Accordion title="incidentio_list_schedule_entriesで想定外の抜けが発生する">
-    オーバーライド(`incidentio_list_schedule_overrides`)は基本ローテーションより優先されますが、エントリ表示には自動的にマージされません——オンコール状況が不完全に見える場合は両方のエンドポイントを確認してください。
+    オーバーライド(`incidentio_list_schedule_overrides`)は基本ローテーションより優先されますが、エントリ表示には自動的にマージされません。オンコール状況が不完全に見える場合は両方のエンドポイントを確認してください。
   </Accordion>
   <Accordion title="incidentio_resolve_alertで紐づくインシデントが閉じない">
-    アラートとインシデントは関連していますが別物です——アラートを解決してもインシデントのステータスは自動で遷移しません。必要であれば`incidentio_update_incident_status`で明示的に更新してください。
+    アラートとインシデントは関連していますが別物です。アラートを解決してもインシデントのステータスは自動で遷移しません。必要であれば`incidentio_update_incident_status`で明示的に更新してください。
   </Accordion>
   <Accordion title="incidentio_create_api_keyやincidentio_update_ip_allowlistなどの管理系ツールが権限エラーを返す">
-    これらのエンドポイントには管理者レベルのスコープを持つAPIキーが必要です——インシデント管理操作のみにスコープされたキーでは、アカウント/管理者レベルの変更が拒否されます。
+    これらのエンドポイントには管理者レベルのスコープを持つAPIキーが必要です。インシデント管理操作のみにスコープされたキーでは、アカウント/管理者レベルの変更が拒否されます。
   </Accordion>
 </AccordionGroup>

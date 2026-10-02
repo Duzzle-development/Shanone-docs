@@ -1,12 +1,12 @@
 ---
 title: "OpenSea"
-description: "Browse, trade, and analyze NFTs — collections, listings, offers, orders, stats, and token swaps"
+description: "Browse, trade, and analyze NFTs: collections, listings, offers, orders, stats, and token swaps"
 icon: /images/opensea.svg
 ---
 
 # OpenSea
 
-Shanone's OpenSea integration gives your agent 63 tools covering the full NFT marketplace surface — collection and NFT discovery, listings and offers, order fulfillment, portfolio/account stats, and on-chain token swaps.
+Shanone's OpenSea integration gives your agent 63 tools covering the full NFT marketplace surface: collection and NFT discovery, listings and offers, order fulfillment, portfolio/account stats, and on-chain token swaps.
 
 ## Getting Started
 
@@ -77,7 +77,7 @@ Shanone provides **63 tools** for OpenSea, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="opensea_create_listing or opensea_create_offer fails with a signature error">
-    These tools return an unsigned order payload that must be signed by the connected wallet before submission — check `shanone_get_tool_schema` to confirm whether signing happens client-side or via `opensea_create_listing_actions`.
+    These tools return an unsigned order payload that must be signed by the connected wallet before submission. Check `shanone_get_tool_schema` to confirm whether signing happens client-side or via `opensea_create_listing_actions`.
   </Accordion>
   <Accordion title="opensea_fulfill_listing fails with an insufficient funds or allowance error">
     Confirm token allowances with `opensea_get_token_allowances` first; ERC-20 purchases (not ETH) usually require an approval transaction before the marketplace contract can spend the buyer's tokens.

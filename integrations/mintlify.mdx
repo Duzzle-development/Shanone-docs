@@ -1,6 +1,6 @@
 ---
 title: "Mintlify"
-description: "Manage your Mintlify docs site — trigger deploys, run the docs AI agent, search content, and pull analytics"
+description: "Manage your Mintlify docs site: trigger deploys, run the docs AI agent, search content, and pull analytics"
 icon: /images/mintlify.svg
 ---
 
@@ -15,7 +15,7 @@ Shanone's Mintlify integration gives your agent 16 tools spanning deploys, the d
     In your Mintlify dashboard, generate an **Admin API key** (deploys, analytics) and, if you use the docs AI assistant, an **Assistant API key** as well.
   </Step>
   <Step title="Add the keys in Shanone">
-    Go to **Integrations > Mintlify** in the Shanone dashboard and paste in whichever key(s) you have — most tools only need the Admin key.
+    Go to **Integrations > Mintlify** in the Shanone dashboard and paste in whichever key(s) you have. Most tools only need the Admin key.
   </Step>
   <Step title="Retry your request">
     Once saved, `shanone_execute_tool` calls for `mintlify_*` tools will succeed.
@@ -31,7 +31,7 @@ Shanone provides **16 tools** for Mintlify, organized into these categories:
     `mintlify_trigger_preview`, `mintlify_trigger_deploy`, `mintlify_get_deploy_status`
   </Accordion>
   <Accordion title="AI agent">
-    `mintlify_create_agent_job`, `mintlify_get_agent_job`, `mintlify_send_agent_message` — run background jobs against the Mintlify docs AI agent, e.g. to review or update content
+    `mintlify_create_agent_job`, `mintlify_get_agent_job`, `mintlify_send_agent_message`: run background jobs against the Mintlify docs AI agent, e.g. to review or update content
   </Accordion>
   <Accordion title="Search & chat">
     `mintlify_search`, `mintlify_get_page`, `mintlify_chat`
@@ -62,12 +62,12 @@ Shanone provides **16 tools** for Mintlify, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="mintlify_trigger_deploy succeeds but the site looks unchanged">
-    Poll `mintlify_get_deploy_status` — deploys are asynchronous and can take a minute or more; the tool call returning doesn't mean the build finished.
+    Poll `mintlify_get_deploy_status`: deploys are asynchronous and can take a minute or more; the tool call returning doesn't mean the build finished.
   </Accordion>
   <Accordion title="mintlify_get_feedback_by_page returns nothing for a page I know has feedback">
     Confirm the page path matches exactly what's registered in `docs.json`, including leading slash and no trailing `.mdx` extension.
   </Accordion>
   <Accordion title="Agent job tools fail with an auth error">
-    Agent job tools (`mintlify_create_agent_job`, etc.) require the Assistant API key specifically — the Admin key alone won't authorize them.
+    Agent job tools (`mintlify_create_agent_job`, etc.) require the Assistant API key specifically. The Admin key alone won't authorize them.
   </Accordion>
 </AccordionGroup>

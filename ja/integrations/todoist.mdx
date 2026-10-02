@@ -1,12 +1,12 @@
 ---
 title: "Todoist"
-description: "タスク、プロジェクト、ラベルを管理する — コメント、リマインダー、アクティビティ履歴も"
+description: "タスク、プロジェクト、ラベルを管理する：コメント、リマインダー、アクティビティ履歴も"
 icon: /images/todoist.svg
 ---
 
 # Todoist
 
-ShanoneのTodoist連携は、タスク、プロジェクト、セクション、ラベル、コメント、リマインダーに加え、コラボレーションやアクティビティ追跡もカバーする48個のツールをエージェントに提供します——個人でもチームでも、タスク管理をエージェント経由で完全に運用できます。
+ShanoneのTodoist連携は、タスク、プロジェクト、セクション、ラベル、コメント、リマインダーに加え、コラボレーションやアクティビティ追跡もカバーする48個のツールをエージェントに提供します。個人でもチームでも、タスク管理をエージェント経由で完全に運用できます。
 
 ## はじめに
 
@@ -74,12 +74,12 @@ ShanoneはTodoist向けに**48個のツール**を、以下のカテゴリに整
 
 <AccordionGroup>
   <Accordion title="存在するはずのタスクがtodoist_get_tasksに表示されない">
-    デフォルトのタスク一覧は完了済みタスクを除外し、プロジェクト/フィルタで絞り込まれます——Todoistのフィルタ構文(例: `today`、`p1`、`#Work`)を使う`todoist_get_tasks_by_filter`、または完了済みタスク用の`todoist_get_completed_tasks`を使ってください。
+    デフォルトのタスク一覧は完了済みタスクを除外し、プロジェクト/フィルタで絞り込まれます。Todoistのフィルタ構文(例: `today`、`p1`、`#Work`)を使う`todoist_get_tasks_by_filter`、または完了済みタスク用の`todoist_get_completed_tasks`を使ってください。
   </Accordion>
   <Accordion title="todoist_quick_addが期限日やラベルを想定通りに解析しない">
-    Quick-addはテキスト引数(例: `Submit report @work tomorrow p1`)に対するTodoistの自然言語パーサーに依存しています——構造化されたフィールドを渡すのではなく、`todoist_quick_add`の`shanone_get_tool_schema`を確認してその構文に従ってください。
+    Quick-addはテキスト引数(例: `Submit report @work tomorrow p1`)に対するTodoistの自然言語パーサーに依存しています。構造化されたフィールドを渡すのではなく、`todoist_quick_add`の`shanone_get_tool_schema`を確認してその構文に従ってください。
   </Accordion>
   <Accordion title="todoist_delete_projectやtodoist_delete_labelが予期せず失敗する">
-    削除は永続的で、カスケードされます(プロジェクトを削除するとそのタスクも削除されます)——Todoistはデフォルトでこれをブロックしないため、削除系のツールを呼ぶ前に対象IDを再確認してください。
+    削除は永続的で、カスケードされます(プロジェクトを削除するとそのタスクも削除されます)。Todoistはデフォルトでこれをブロックしないため、削除系のツールを呼ぶ前に対象IDを再確認してください。
   </Accordion>
 </AccordionGroup>

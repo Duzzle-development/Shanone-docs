@@ -1,12 +1,12 @@
 ---
 title: "MoneyForward"
-description: "MoneyForwardの会計・経費・請求書・支払を管理 — 仕訳、取引、レポート、承認"
+description: "MoneyForwardの会計・経費・請求書・支払を管理：仕訳、取引、レポート、承認"
 icon: /images/moneyforward.svg
 ---
 
 # MoneyForward
 
-ShanoneのMoneyForward連携は、コア会計(仕訳、試算表)、経費レポート、請求書発行、支払管理をカバーする59個のツールをエージェントに提供します——MoneyForwardの会計・経費・請求書・支払という個別のサービスにまたがっています。
+ShanoneのMoneyForward連携は、コア会計(仕訳、試算表)、経費レポート、請求書発行、支払管理をカバーする59個のツールをエージェントに提供します。MoneyForwardの会計・経費・請求書・支払という個別のサービスにまたがっています。
 
 ## はじめに
 
@@ -15,7 +15,7 @@ ShanoneのMoneyForward連携は、コア会計(仕訳、試算表)、経費レ�
     エージェントにMoneyForward関連の作業を依頼(例: 「今月の仕訳を一覧表示して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
   </Step>
   <Step title="利用する各MoneyForwardサービスを認可する">
-    MoneyForwardの会計、経費、請求書、支払は、それぞれ個別にOAuth保護されたサービスです——使用する`moneyforward_*`ツールに応じて、複数のサービスを認可する必要がある場合があります。
+    MoneyForwardの会計、経費、請求書、支払は、それぞれ個別にOAuth保護されたサービスです。使用する`moneyforward_*`ツールに応じて、複数のサービスを認可する必要がある場合があります。
   </Step>
   <Step title="リクエストを再実行する">
     接続が完了すると、`moneyforward_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
@@ -74,12 +74,12 @@ ShanoneはMoneyForward向けに**59個のツール**を、以下のカテゴリ�
 
 <AccordionGroup>
   <Accordion title="他のMoneyForwardツールは動くのに特定のツールだけ401エラーになる">
-    会計、経費、請求書、支払はそれぞれ独立したOAuthトークンを持っています——失敗しているツールが属するサービスを**連携**画面から個別に再接続してください。
+    会計、経費、請求書、支払はそれぞれ独立したOAuthトークンを持っています。失敗しているツールが属するサービスを**連携**画面から個別に再接続してください。
   </Accordion>
   <Accordion title="moneyforward_create_journalが仕訳の不整合エラーで失敗する">
-    MoneyForwardでは、すべての仕訳行にわたって借方と貸方の合計が一致している必要があります——送信前に`moneyforward_list_accounts`と`moneyforward_list_sub_accounts`でアカウントIDを確認してください。
+    MoneyForwardでは、すべての仕訳行にわたって借方と貸方の合計が一致している必要があります。送信前に`moneyforward_list_accounts`と`moneyforward_list_sub_accounts`でアカウントIDを確認してください。
   </Accordion>
   <Accordion title="経費レポートを承認できない">
-    レポートは`moneyforward_expense_submit_report`で提出されてからでないと`moneyforward_expense_list_approvals`に表示されません——ドラフト状態のレポートはまだ承認できません。
+    レポートは`moneyforward_expense_submit_report`で提出されてからでないと`moneyforward_expense_list_approvals`に表示されません。ドラフト状態のレポートはまだ承認できません。
   </Accordion>
 </AccordionGroup>

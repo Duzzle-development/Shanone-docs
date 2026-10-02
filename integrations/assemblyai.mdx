@@ -6,7 +6,7 @@ icon: /images/assemblyai.svg
 
 # AssemblyAI
 
-Shanone's AssemblyAI integration gives your agent 17 tools for speech-to-text — asynchronous and synchronous transcription, speaker identification and translation, and an LLM gateway for summarizing or asking questions about a transcript.
+Shanone's AssemblyAI integration gives your agent 17 tools for speech-to-text: asynchronous and synchronous transcription, speaker identification and translation, and an LLM gateway for summarizing or asking questions about a transcript.
 
 ## Getting Started
 
@@ -31,7 +31,7 @@ Shanone provides **17 tools** for AssemblyAI, organized into these categories:
     `assemblyai_transcribe`, `assemblyai_get_transcript`, `assemblyai_list_transcripts`, `assemblyai_delete_transcript`, `assemblyai_upload_file`
   </Accordion>
   <Accordion title="Synchronous transcription">
-    `assemblyai_sync_transcribe` — transcribe short audio and get the result in a single blocking call, instead of polling
+    `assemblyai_sync_transcribe`: transcribe short audio and get the result in a single blocking call, instead of polling
   </Accordion>
   <Accordion title="Speech understanding">
     `assemblyai_translate_transcript`, `assemblyai_identify_speakers`, `assemblyai_apply_custom_formatting`
@@ -71,6 +71,6 @@ Shanone provides **17 tools** for AssemblyAI, organized into these categories:
     Synchronous transcription is intended for short audio only. Use `assemblyai_transcribe` (async) with polling for longer recordings.
   </Accordion>
   <Accordion title="assemblyai_llm_qa or assemblyai_llm_summary returns an error about a missing transcript">
-    The transcript must have finished processing (`status: completed`) before LLM gateway tools can operate on it — check with `assemblyai_get_transcript` first.
+    The transcript must have finished processing (`status: completed`) before LLM gateway tools can operate on it. Check with `assemblyai_get_transcript` first.
   </Accordion>
 </AccordionGroup>

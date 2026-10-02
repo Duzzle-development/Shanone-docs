@@ -6,7 +6,7 @@ icon: /images/huggingface.svg
 
 # Hugging Face
 
-Shanone's Hugging Face integration gives your agent 87 tools covering nearly the entire Hub — models, datasets, spaces, serverless inference, inference endpoints, collections, discussions/PRs, papers, repository operations, security scans, and webhooks.
+Shanone's Hugging Face integration gives your agent 87 tools covering nearly the entire Hub: models, datasets, spaces, serverless inference, inference endpoints, collections, discussions/PRs, papers, repository operations, security scans, and webhooks.
 
 ## Getting Started
 
@@ -86,12 +86,12 @@ Shanone provides **87 tools** for Hugging Face, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="huggingface_text_generation or other inference calls return a 503">
-    Serverless Inference API models can be cold and need to load — retry after a short delay, or use `huggingface_create_inference_endpoint` for a model you call frequently to avoid cold starts entirely.
+    Serverless Inference API models can be cold and need to load. Retry after a short delay, or use `huggingface_create_inference_endpoint` for a model you call frequently to avoid cold starts entirely.
   </Accordion>
   <Accordion title="huggingface_get_dataset_rows is slow or times out on a large dataset">
     Prefer `huggingface_filter_dataset_rows` with a specific filter, or `huggingface_list_parquet_files` plus your own processing, rather than paging through an entire large dataset via rows.
   </Accordion>
   <Accordion title="huggingface_create_model_repo or dataset/space equivalents fail with a permissions error">
-    Repos created under an organization namespace require the token's account to be a member with write access to that organization — check `huggingface_list_organization_members` or create the repo under your personal namespace instead.
+    Repos created under an organization namespace require the token's account to be a member with write access to that organization. Check `huggingface_list_organization_members` or create the repo under your personal namespace instead.
   </Accordion>
 </AccordionGroup>

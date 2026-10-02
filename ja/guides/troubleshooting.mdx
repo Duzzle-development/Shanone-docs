@@ -7,20 +7,20 @@ description: "Shanoneでよく発生する接続・認証・権限・レート�
 
 <AccordionGroup>
   <Accordion title="401 api_key_required">
-    リクエストにAPIキーが含まれていません。MCPクライアントの設定に、[MCPセットアップ](/ja/mcp/setup)に記載の通り`Authorization: Bearer sh_xxx`(または`X-API-Key: sh_xxx`)が含まれているか確認してください。ローカルのstdioプロキシを使っている場合は、`env`ブロックに`SHANONE_API_KEY`が実際に設定されているか確認してください——環境変数の欠落が最も多い原因です。
+    リクエストにAPIキーが含まれていません。MCPクライアントの設定に、[MCPセットアップ](/ja/mcp/setup)に記載の通り`Authorization: Bearer sh_xxx`(または`X-API-Key: sh_xxx`)が含まれているか確認してください。ローカルのstdioプロキシを使っている場合は、`env`ブロックに`SHANONE_API_KEY`が実際に設定されているか確認してください。環境変数の欠落が最も多い原因です。
   </Accordion>
   <Accordion title="401 invalid_api_key">
-    キーの形式が不正、無効化済み、または期限切れです。**Settings → API Keys**から新しいキーを作成し、クライアントの設定を更新してください。平文のキーは作成時に一度しか表示されないことを忘れないでください——失った場合はそのキーを無効化し、新しいものを作成してください。
+    キーの形式が不正、無効化済み、または期限切れです。**Settings → API Keys**から新しいキーを作成し、クライアントの設定を更新してください。平文のキーは作成時に一度しか表示されないことを忘れないでください。失った場合はそのキーを無効化し、新しいものを作成してください。
   </Accordion>
   <Accordion title="401 org_id_required または 403 invalid_org_id(直接HTTP接続の場合のみ)">
-    ローカルプロキシを使わず、`https://app.shanone.ai/mcp`に直接接続しています。このエンドポイントはAPIキーと`X-Org-Id`ヘッダーの**両方**を必要とします——APIキーだけでは不十分です。**Settings → API Keys**から組織IDをコピーし、`X-Org-Id`として追加してください(カスタムヘッダーを送れないクライアントの場合はURLに`?org_id=...`を付加します)。ローカルのstdioプロキシ(`@duzzle/shanone-mcp`)ではこれは不要で、APIキーのみで動作します。
+    ローカルプロキシを使わず、`https://app.shanone.ai/mcp`に直接接続しています。このエンドポイントはAPIキーと`X-Org-Id`ヘッダーの**両方**を必要とします。APIキーだけでは不十分です。**Settings → API Keys**から組織IDをコピーし、`X-Org-Id`として追加してください(カスタムヘッダーを送れないクライアントの場合はURLに`?org_id=...`を付加します)。ローカルのstdioプロキシ(`@duzzle/shanone-mcp`)ではこれは不要で、APIキーのみで動作します。
   </Accordion>
   <Accordion title="429 rate_limit_exceeded">
     APIキーのレート制限(デフォルトで60リクエスト/分、10,000リクエスト/日)を超えました。レスポンスには`Retry-After`ヘッダーが含まれるので、その時間だけ待ってから再試行してください。これが頻発する場合は、Root/管理者に**Settings → API Keys**でキーの`rate_limit`を上げてもらうよう依頼してください。
   </Accordion>
   <Accordion title="エージェント側にツールがまったく表示されない">
     1. 設定を編集した後は、MCPクライアントを完全に再起動してください(リロードだけでは不十分な場合があります)。
-    2. 設定ファイルにJSON構文エラーがないか確認してください——末尾のカンマがあると、多くのクライアントで`mcpServers`ブロック全体が静かに壊れます。
+    2. 設定ファイルにJSON構文エラーがないか確認してください。末尾のカンマがあると、多くのクライアントで`mcpServers`ブロック全体が静かに壊れます。
     3. ツール呼び出しで指定しているサーバー名が、設定ファイルのキー(通常は`shanone`)と一致しているか確認してください。
     4. ローカルプロキシを使っている場合は、`npx -y @duzzle/shanone-mcp`をターミナルで直接実行し、起動時エラーを確認してください。
   </Accordion>
@@ -30,13 +30,13 @@ description: "Shanoneでよく発生する接続・認証・権限・レート�
 
 <AccordionGroup>
   <Accordion title="サービスを接続したはずなのに、ツールがauth_requiredを返し続ける">
-    各サービスのOAuth接続は、あなたのセッションではなくShanoneのユーザーに紐づいています。エージェントが使っているAPIキーの*同じ*Shanoneアカウントでサインインした状態でOAuthフローを完了したか確認してください——チームメイトとしてログインした状態でSlackを接続しても、あなたのキーには反映されません。
+    各サービスのOAuth接続は、あなたのセッションではなくShanoneのユーザーに紐づいています。エージェントが使っているAPIキーの*同じ*Shanoneアカウントでサインインした状態でOAuthフローを完了したか確認してください。チームメイトとしてログインした状態でSlackを接続しても、あなたのキーには反映されません。
   </Accordion>
   <Accordion title="ツールがauth_expiredを返す">
-    そのサービスの保存済みOAuthトークンが期限切れになった、または上流(Slack/Googleなどのアプリ側)でアクセスが取り消されたことを意味します。レスポンスに含まれる新しい`connect_link`をたどって再認可してください——その後、更新されたトークンはShanoneが自動的に保存します。
+    そのサービスの保存済みOAuthトークンが期限切れになった、または上流(Slack/Googleなどのアプリ側)でアクセスが取り消されたことを意味します。レスポンスに含まれる新しい`connect_link`をたどって再認可してください。その後、更新されたトークンはShanoneが自動的に保存します。
   </Accordion>
   <Accordion title="connect_linkを受け取って認可したのに、その後何も起こらない">
-    OAuthプロバイダーによっては、新しいトークンが反映されるまで数秒かかることがあります。少し待ってから、エージェントに同じ`shanone_execute_tool`呼び出しを再試行させてください——検索やスキーマ取得をやり直す必要はありません。
+    OAuthプロバイダーによっては、新しいトークンが反映されるまで数秒かかることがあります。少し待ってから、エージェントに同じ`shanone_execute_tool`呼び出しを再試行させてください。検索やスキーマ取得をやり直す必要はありません。
   </Accordion>
 </AccordionGroup>
 
@@ -50,7 +50,7 @@ description: "Shanoneでよく発生する接続・認証・権限・レート�
     ツール単位の権限オーバーライドは常にサービス単位のオーバーライドより優先され、サービス単位のオーバーライドはロールのデフォルト設定より優先されます。Root/SA2の管理者に、あなたの`user_id`に対して`shanone_get_permission_summary`を実行してもらい、正確に何が有効になっているか確認してもらってください。生のオーバーライド一覧が必要な場合は`shanone_list_user_tool_permissions`を使います。
   </Accordion>
   <Accordion title="「Warning: not found in tool/service master data」">
-    これは、Shanoneのカタログに(まだ)存在しないツール名やサービス名に対して権限を設定しようとしたときに表示されます——多くの場合は入力ミスです。`shanone_list_services`や`shanone_search_tools`で正確な名前を再確認してください。なお、そのオーバーライドはそのまま保存され、該当する名前が登録された時点で自動的に適用されます。
+    これは、Shanoneのカタログに(まだ)存在しないツール名やサービス名に対して権限を設定しようとしたときに表示されます。多くの場合は入力ミスです。`shanone_list_services`や`shanone_search_tools`で正確な名前を再確認してください。なお、そのオーバーライドはそのまま保存され、該当する名前が登録された時点で自動的に適用されます。
   </Accordion>
 </AccordionGroup>
 
@@ -58,7 +58,7 @@ description: "Shanoneでよく発生する接続・認証・権限・レート�
 
 <AccordionGroup>
   <Accordion title="エージェントが間違ったツールを選んだ">
-    `shanone_search_tools`のクエリを、単なるサービス名ではなく、より具体的にタスクに沿ったものにしてください([ベストプラクティス](/ja/guides/best-practices)を参照)——これはSlack、Stripe、HubSpotのような大規模なインテグレーションで特に起こりやすく、多数のツールがキーワードを共有しているためです。
+    `shanone_search_tools`のクエリを、単なるサービス名ではなく、より具体的にタスクに沿ったものにしてください([ベストプラクティス](/ja/guides/best-practices)を参照)。これはSlack、Stripe、HubSpotのような大規模なインテグレーションで特に起こりやすく、多数のツールがキーワードを共有しているためです。
   </Accordion>
   <Accordion title="「Confirmation Required」というレスポンス">
     破壊的操作やリスクの高い一部のツールは、明示的な確認ステップを必要とします。実行を確定したい場合は、同じ引数に加えてJSONペイロードに`"confirm": true`を付けて`shanone_execute_tool`を再実行してください。

@@ -1,6 +1,6 @@
 ---
 title: "Google Tasks"
-description: "Manage task lists and tasks — create, complete, reopen, move, and clear completed items"
+description: "Manage task lists and tasks: create, complete, reopen, move, and clear completed items"
 icon: /images/google-tasks.svg
 ---
 
@@ -56,12 +56,12 @@ Shanone provides **14 tools** for Google Tasks, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="google_tasks_move_task doesn't seem to reorder as expected">
-    `google_tasks_move_task` takes optional `parent` and `previous` parameters to control nesting and position — omitting both moves the task to the top level at the end of the list rather than leaving its position unchanged.
+    `google_tasks_move_task` takes optional `parent` and `previous` parameters to control nesting and position: omitting both moves the task to the top level at the end of the list rather than leaving its position unchanged.
   </Accordion>
   <Accordion title="Completed tasks still show up in google_tasks_list_tasks">
     By default, `google_tasks_list_tasks` includes completed tasks; pass `show_completed=False` (check the exact parameter name with `shanone_get_tool_schema`) to filter them out, or use `google_tasks_clear_completed_tasks` to remove them from the list entirely.
   </Accordion>
   <Accordion title="google_tasks_create_task ignores the due date">
-    Due dates must be RFC 3339 timestamps (date-only values are accepted but time-of-day is ignored by the Tasks UI) — double-check the format if a task shows up without the expected due date.
+    Due dates must be RFC 3339 timestamps (date-only values are accepted but time-of-day is ignored by the Tasks UI). Double-check the format if a task shows up without the expected due date.
   </Accordion>
 </AccordionGroup>

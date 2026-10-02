@@ -1,12 +1,12 @@
 ---
 title: "Browserbase"
-description: "クラウドブラウザのセッション・エージェントを実行 — ページ操作、スクリーンショット、Function、セッション録画"
+description: "クラウドブラウザのセッション・エージェントを実行：ページ操作、スクリーンショット、Function、セッション録画"
 icon: /images/browserbase.svg
 ---
 
 # Browserbase
 
-ShanoneのBrowserbase連携では、ヘッドレスクラウドブラウザに関する**63個のツール**をエージェントに提供します — セッション/コンテキスト管理、低レベルなページ操作(クリック、遷移、スクリーンショット)、より高レベルなブラウザエージェント、そしてブラウザコンテキスト内で実行できるサーバーレスFunctionをカバーしています。
+ShanoneのBrowserbase連携では、ヘッドレスクラウドブラウザに関する**63個のツール**をエージェントに提供します。セッション/コンテキスト管理、低レベルなページ操作(クリック、遷移、スクリーンショット)、より高レベルなブラウザエージェント、そしてブラウザコンテキスト内で実行できるサーバーレスFunctionをカバーしています。
 
 ## はじめに
 
@@ -74,12 +74,12 @@ Shanoneは Browserbase向けに**63個のツール**を提供しており、以�
 
 <AccordionGroup>
   <Accordion title="browserbase_page_clickやbrowserbase_page_inputが対象の要素を見つけられない">
-    まず`browserbase_page_get_elements`で最新のセレクタを取得してください — 動的なページは操作の間に要素が再描画され、古いセレクタが無効になることがあります。
+    まず`browserbase_page_get_elements`で最新のセレクタを取得してください。動的なページは操作の間に要素が再描画され、古いセレクタが無効になることがあります。
   </Accordion>
   <Accordion title="browserbase_run_agentの応答が返るまで時間がかかる">
     エージェントの実行は非同期です。完了までブロックしたい場合は`browserbase_wait_for_run`を使い、その間に他の作業をしたい場合は`browserbase_get_run`をポーリングしてください。
   </Accordion>
   <Accordion title="セッション中にダウンロードしたファイルが後から見つからない">
-    そのセッションに対して`browserbase_list_downloads`でダウンロード参照を取得し、`browserbase_get_download`を使ってください — ダウンロードはセッションのアーティファクトストレージ外には自動的に永続化されません。
+    そのセッションに対して`browserbase_list_downloads`でダウンロード参照を取得し、`browserbase_get_download`を使ってください。ダウンロードはセッションのアーティファクトストレージ外には自動的に永続化されません。
   </Accordion>
 </AccordionGroup>

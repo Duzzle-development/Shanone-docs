@@ -1,12 +1,12 @@
 ---
 title: "Microsoft Teams"
-description: "Manage teams, channels, chats, meetings, and files — messaging, reactions, and calendar integration"
+description: "Manage teams, channels, chats, meetings, and files: messaging, reactions, and calendar integration"
 icon: /images/teams.svg
 ---
 
 # Microsoft Teams
 
-Shanone's Microsoft Teams integration gives your agent 97 tools covering teams/channels, chats and messaging, meetings and calendar, files, tabs, and analytics — enough to run most collaboration workflows without opening the Teams client.
+Shanone's Microsoft Teams integration gives your agent 97 tools covering teams/channels, chats and messaging, meetings and calendar, files, tabs, and analytics, enough to run most collaboration workflows without opening the Teams client.
 
 ## Getting Started
 
@@ -77,12 +77,12 @@ Shanone provides **97 tools** for Microsoft Teams, organized into these categori
 
 <AccordionGroup>
   <Accordion title="teams_get_meeting_transcript or teams_get_meeting_recording returns nothing">
-    Transcription and recording must be enabled for the specific meeting (often an organizer-side setting), and processing can take time after the meeting ends — retry after a delay if it was just enabled.
+    Transcription and recording must be enabled for the specific meeting (often an organizer-side setting), and processing can take time after the meeting ends. Retry after a delay if it was just enabled.
   </Accordion>
   <Accordion title="teams_send_channel_message succeeds but the message doesn't look right">
-    Plain `teams_send_channel_message` only supports basic text — use `teams_send_html_message` for formatted content, `teams_send_card_message` for rich cards, or `teams_send_message_with_mention` to properly @mention users (a raw `@name` in text won't notify anyone).
+    Plain `teams_send_channel_message` only supports basic text. Use `teams_send_html_message` for formatted content, `teams_send_card_message` for rich cards, or `teams_send_message_with_mention` to properly @mention users (a raw `@name` in text won't notify anyone).
   </Accordion>
   <Accordion title="teams_create_team or teams_add_member fails with a permissions error">
-    Most write operations on teams/members require admin-level Microsoft Graph permissions on the connected account, beyond what a regular member has — check with your Microsoft 365 admin if these consistently fail.
+    Most write operations on teams/members require admin-level Microsoft Graph permissions on the connected account, beyond what a regular member has. Check with your Microsoft 365 admin if these consistently fail.
   </Accordion>
 </AccordionGroup>

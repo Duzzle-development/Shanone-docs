@@ -4,7 +4,7 @@
   <a href="README.md">English</a> | <a href="README.ja.md">日本語</a>
 </p>
 
-Official documentation for [Shanone](https://app.shanone.ai) — the Command Center for Agent Harnesses.
+Official documentation for [Shanone](https://app.shanone.ai), the Command Center for Agent Harnesses.
 
 **Live site:** [docs.shanone.ai](https://docs.shanone.ai)
 
@@ -14,12 +14,12 @@ Shanone is a hosted MCP server, tool vendor, skill vendor, and permission-manage
 
 ## Documentation
 
-- **Getting Started** — Introduction and quickstart
-- **How to Use Shanone** — Usage guides, best practices, and troubleshooting
-- **Product Guide** — Skills, Permissions & Access Control, and Webhooks
-- **Release Notes** — Changelog
-- **Integrations** — Slack, GitHub, Notion, Stripe, Linear, Gmail, HubSpot, Ethereum, and more
-- **MCP** — MCP server overview, setup, and full tools reference
+- **Getting Started**: Introduction and quickstart
+- **How to Use Shanone**: Usage guides, best practices, and troubleshooting
+- **Product Guide**: Skills, Permissions & Access Control, and Webhooks
+- **Release Notes**: Changelog
+- **Integrations**: Slack, GitHub, Notion, Stripe, Linear, Gmail, HubSpot, Ethereum, and more
+- **MCP**: MCP server overview, setup, and full tools reference
 
 ## Links
 

@@ -6,7 +6,7 @@ icon: /images/apollo.svg
 
 # Apollo
 
-Shanone's Apollo integration gives your agent 40 tools for B2B sales workflows — contact and account CRM, people/organization search and enrichment, deals, tasks, and outreach sequences.
+Shanone's Apollo integration gives your agent 40 tools for B2B sales workflows: contact and account CRM, people/organization search and enrichment, deals, tasks, and outreach sequences.
 
 ## Getting Started
 
@@ -74,12 +74,12 @@ Shanone provides **40 tools** for Apollo, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="apollo_enrich_person or apollo_enrich_organization returns partial data">
-    Apollo's enrichment coverage varies by how much public/first-party data exists for that person or company — not every field will be populated for every record.
+    Apollo's enrichment coverage varies by how much public/first-party data exists for that person or company: not every field will be populated for every record.
   </Accordion>
   <Accordion title="Bulk tools (apollo_bulk_create_contacts, etc.) fail partway through">
-    Check `apollo_get_api_usage` for rate limit or credit exhaustion — Apollo enforces per-plan limits on search, enrichment, and bulk write operations.
+    Check `apollo_get_api_usage` for rate limit or credit exhaustion: Apollo enforces per-plan limits on search, enrichment, and bulk write operations.
   </Accordion>
   <Accordion title="apollo_add_contacts_to_sequence succeeds but contacts never receive outreach">
-    Confirm the target sequence is active with `apollo_activate_sequence` — contacts added to a paused or draft sequence won't be emailed until it's activated.
+    Confirm the target sequence is active with `apollo_activate_sequence`: contacts added to a paused or draft sequence won't be emailed until it's activated.
   </Accordion>
 </AccordionGroup>

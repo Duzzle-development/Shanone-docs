@@ -1,12 +1,12 @@
 ---
 title: "Trello"
-description: "Manage boards, lists, and cards — checklists, labels, custom fields, and webhooks"
+description: "Manage boards, lists, and cards: checklists, labels, custom fields, and webhooks"
 icon: /images/trello.svg
 ---
 
 # Trello
 
-Shanone's Trello integration gives your agent 113 tools covering boards, lists, cards, checklists, labels, custom fields, comments, and organization/member management — enough to run Trello-based project workflows entirely from an agent.
+Shanone's Trello integration gives your agent 113 tools covering boards, lists, cards, checklists, labels, custom fields, comments, and organization/member management, enough to run Trello-based project workflows entirely from an agent.
 
 ## Getting Started
 
@@ -80,15 +80,15 @@ Shanone provides **113 tools** for Trello, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Every call fails with an unauthorized error">
-    Trello requires both the API Key and a Token authorized against that key — a Key alone only allows very limited public reads. Regenerate the Token from **Power-Ups Admin** if it's expired or was revoked.
+    Trello requires both the API Key and a Token authorized against that key: a Key alone only allows very limited public reads. Regenerate the Token from **Power-Ups Admin** if it's expired or was revoked.
   </Accordion>
   <Accordion title="trello_create_card succeeds but custom fields aren't set">
-    Custom fields must be set in a separate call — use `trello_set_card_customfield` after creating the card, referencing the field ID from `trello_get_board_customfields`.
+    Custom fields must be set in a separate call. Use `trello_set_card_customfield` after creating the card, referencing the field ID from `trello_get_board_customfields`.
   </Accordion>
   <Accordion title="trello_search doesn't find a card I know exists">
-    By default search is scoped broadly but respects board membership — ensure the connected account is a member of the board, and check `shanone_get_tool_schema` for `trello_search` to see how to scope by board/list explicitly.
+    By default search is scoped broadly but respects board membership. Ensure the connected account is a member of the board, and check `shanone_get_tool_schema` for `trello_search` to see how to scope by board/list explicitly.
   </Accordion>
   <Accordion title="trello_archive_list or trello_delete_card doesn't fully remove content">
-    Trello archives rather than permanently deletes most objects by default (lists, boards) — archived items still exist and can be restored, which is expected behavior, not a bug.
+    Trello archives rather than permanently deletes most objects by default (lists, boards): archived items still exist and can be restored, which is expected behavior, not a bug.
   </Accordion>
 </AccordionGroup>

@@ -6,7 +6,7 @@ icon: /images/openhands.svg
 
 # OpenHands
 
-Shanone's OpenHands integration gives your agent 8 tools for driving [OpenHands](https://all-hands.dev) coding-agent conversations — creating, messaging, and monitoring autonomous coding sessions without leaving your Shanone workflow.
+Shanone's OpenHands integration gives your agent 8 tools for driving [OpenHands](https://all-hands.dev) coding-agent conversations: creating, messaging, and monitoring autonomous coding sessions without leaving your Shanone workflow.
 
 ## Getting Started
 
@@ -56,7 +56,7 @@ Shanone provides **8 tools** for OpenHands, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="openhands_create_conversation succeeds but the agent never starts working">
-    Creating a conversation and starting it are separate steps — call `openhands_start_conversation` afterward, or check the tool schema to see if it accepts a start flag directly.
+    Creating a conversation and starting it are separate steps. Call `openhands_start_conversation` afterward, or check the tool schema to see if it accepts a start flag directly.
   </Accordion>
   <Accordion title="openhands_send_message doesn't seem to reach a stopped conversation">
     Messages can only be sent to an active conversation. Check its state with `openhands_get_conversation` first, and restart it with `openhands_start_conversation` if it's stopped.

@@ -6,7 +6,7 @@ icon: /images/stability.svg
 
 # Stability AI
 
-Shanone's Stability AI integration gives your agent 28 tools for image generation, editing (inpainting, outpainting, background removal), control-guided generation, upscaling, 3D asset generation, and text-to-audio — covering most of Stability's generative media API.
+Shanone's Stability AI integration gives your agent 28 tools for image generation, editing (inpainting, outpainting, background removal), control-guided generation, upscaling, 3D asset generation, and text-to-audio, covering most of Stability's generative media API.
 
 ## Getting Started
 
@@ -71,9 +71,9 @@ Shanone provides **28 tools** for Stability AI, organized into these categories:
     Stability AI bills per generation by credits. Check `stability_get_balance` before running large batches to avoid mid-batch failures.
   </Accordion>
   <Accordion title="stability_generate_3d or an audio tool doesn't return the asset immediately">
-    3D and some audio generations run asynchronously and return a job/generation ID — poll `stability_fetch_image_result` or `stability_fetch_audio_result` with that ID until the asset is ready.
+    3D and some audio generations run asynchronously and return a job/generation ID. Poll `stability_fetch_image_result` or `stability_fetch_audio_result` with that ID until the asset is ready.
   </Accordion>
   <Accordion title="stability_inpaint or stability_erase produces unexpected results">
-    These tools rely on a mask image aligned to the source image's dimensions — check `shanone_get_tool_schema` for `stability_inpaint` to confirm the mask format (grayscale, matching resolution) expected.
+    These tools rely on a mask image aligned to the source image's dimensions. Check `shanone_get_tool_schema` for `stability_inpaint` to confirm the mask format (grayscale, matching resolution) expected.
   </Accordion>
 </AccordionGroup>

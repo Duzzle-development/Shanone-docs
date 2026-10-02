@@ -1,6 +1,6 @@
 ---
 title: "Fireworks AI"
-description: "Fast inference, fine-tuning, and deployment management for open models — chat, embeddings, LoRA, and evaluations"
+description: "Fast inference, fine-tuning, and deployment management for open models: chat, embeddings, LoRA, and evaluations"
 icon: /images/fireworks.svg
 ---
 
@@ -80,12 +80,12 @@ Shanone provides **96 tools** for Fireworks AI, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="fireworks_create_sft_job or fireworks_create_dpo_job fails to start">
-    Verify the dataset finished uploading and validating first — use `fireworks_validate_dataset_upload` and check `fireworks_get_dataset` status before referencing it in a fine-tuning job.
+    Verify the dataset finished uploading and validating first. Use `fireworks_validate_dataset_upload` and check `fireworks_get_dataset` status before referencing it in a fine-tuning job.
   </Accordion>
   <Accordion title="fireworks_load_lora returns an error about deployment compatibility">
-    LoRA adapters must be loaded onto a deployment running the exact base model they were fine-tuned from — check the base model on both the LoRA and the target deployment with `fireworks_get_lora` / `fireworks_get_deployment`.
+    LoRA adapters must be loaded onto a deployment running the exact base model they were fine-tuned from. Check the base model on both the LoRA and the target deployment with `fireworks_get_lora` / `fireworks_get_deployment`.
   </Accordion>
   <Accordion title="Admin tools (fireworks_create_user, fireworks_update_account) return a permissions error">
-    These require the connected API key to belong to an account admin, and some management endpoints additionally need an `account_id` configured — inference-only tools work without it.
+    These require the connected API key to belong to an account admin, and some management endpoints additionally need an `account_id` configured: inference-only tools work without it.
   </Accordion>
 </AccordionGroup>

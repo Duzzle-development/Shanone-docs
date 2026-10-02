@@ -1,6 +1,6 @@
 ---
 title: "Dify"
-description: "Run and manage Dify AI apps — chat/completion, workflows, knowledge bases, documents, and annotations"
+description: "Run and manage Dify AI apps: chat/completion, workflows, knowledge bases, documents, and annotations"
 icon: /images/dify.svg
 ---
 
@@ -87,12 +87,12 @@ Shanone provides **65 tools** for Dify, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="dify_chat_message returns an app-type mismatch error">
-    Chat apps and Completion apps use different endpoints — use `dify_completion_message` instead of `dify_chat_message` if your Dify app is configured as a Text Generator / Completion app rather than a Chatbot.
+    Chat apps and Completion apps use different endpoints. Use `dify_completion_message` instead of `dify_chat_message` if your Dify app is configured as a Text Generator / Completion app rather than a Chatbot.
   </Accordion>
   <Accordion title="Uploaded document stays stuck at 'indexing'">
-    Poll `dify_get_document_indexing_status` — large files or documents with heavy chunking rules can take a while; if it never finishes, check the file format is supported by the knowledge base's configured indexing method.
+    Poll `dify_get_document_indexing_status`: large files or documents with heavy chunking rules can take a while; if it never finishes, check the file format is supported by the knowledge base's configured indexing method.
   </Accordion>
   <Accordion title="dify_run_workflow times out on a long-running workflow">
-    For workflows with slow steps, don't wait on the initial call alone — poll `dify_get_workflow_run_detail` with the returned `workflow_run_id` until the status is terminal.
+    For workflows with slow steps, don't wait on the initial call alone. Poll `dify_get_workflow_run_detail` with the returned `workflow_run_id` until the status is terminal.
   </Accordion>
 </AccordionGroup>

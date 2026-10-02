@@ -1,12 +1,12 @@
 ---
 title: "Browserbase"
-description: "Run cloud browser sessions and agents — page automation, screenshots, functions, and session recordings"
+description: "Run cloud browser sessions and agents: page automation, screenshots, functions, and session recordings"
 icon: /images/browserbase.svg
 ---
 
 # Browserbase
 
-Shanone's Browserbase integration gives your agent 63 tools for headless cloud browsers — session and context management, low-level page actions (click, navigate, screenshot), higher-level browser agents, and serverless functions that run inside a browser context.
+Shanone's Browserbase integration gives your agent 63 tools for headless cloud browsers: session and context management, low-level page actions (click, navigate, screenshot), higher-level browser agents, and serverless functions that run inside a browser context.
 
 ## Getting Started
 
@@ -74,12 +74,12 @@ Shanone provides **63 tools** for Browserbase, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="browserbase_page_click or browserbase_page_input can't find the target element">
-    Call `browserbase_page_get_elements` first to get up-to-date selectors — dynamic pages can re-render elements between actions, invalidating stale selectors.
+    Call `browserbase_page_get_elements` first to get up-to-date selectors: dynamic pages can re-render elements between actions, invalidating stale selectors.
   </Accordion>
   <Accordion title="browserbase_run_agent takes a long time to return">
     Agent runs are asynchronous; use `browserbase_wait_for_run` to block until completion, or poll `browserbase_get_run` if you need to do other work in between.
   </Accordion>
   <Accordion title="A file downloaded during a session doesn't show up afterward">
-    Use `browserbase_list_downloads` for that session to retrieve the download reference, then `browserbase_get_download` — downloads aren't automatically persisted outside the session's artifact storage.
+    Use `browserbase_list_downloads` for that session to retrieve the download reference, then `browserbase_get_download`: downloads aren't automatically persisted outside the session's artifact storage.
   </Accordion>
 </AccordionGroup>

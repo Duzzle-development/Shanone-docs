@@ -1,6 +1,6 @@
 ---
 title: "Composio"
-description: "Unified access to 1000+ external services — toolkits, tool execution, connected accounts, and triggers"
+description: "Unified access to 1000+ external services: toolkits, tool execution, connected accounts, and triggers"
 icon: /images/composio.svg
 ---
 
@@ -74,7 +74,7 @@ Shanone provides **60 tools** for Composio, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="composio_execute_tool fails with a missing connected account error">
-    The target toolkit needs its own connected account first — use `composio_create_auth_link` to get an authorization URL, have the end user complete it, then poll `composio_wait_for_connection` before executing.
+    The target toolkit needs its own connected account first. Use `composio_create_auth_link` to get an authorization URL, have the end user complete it, then poll `composio_wait_for_connection` before executing.
   </Accordion>
   <Accordion title="composio_search_tools returns too many irrelevant results">
     Narrow the query with a specific `toolkit_slug` filter, or use `composio_find_tool_for_task` instead, which is tuned to return a single best match for a natural-language task description.

@@ -1,6 +1,6 @@
 ---
 title: "Chatwork"
-description: "Team messaging for Japanese businesses — rooms, messages, tasks, files, contacts, and invite links"
+description: "Team messaging for Japanese businesses: rooms, messages, tasks, files, contacts, and invite links"
 icon: /images/chatwork.svg
 ---
 
@@ -71,7 +71,7 @@ Shanone provides **32 tools** for Chatwork, organized into these categories:
     The connected account must already be a member of the target room. Use `chatwork_list_rooms` to confirm the `room_id` is visible to the authenticated user before sending.
   </Accordion>
   <Accordion title="chatwork_create_task doesn't notify the assignee as expected">
-    `to_ids` must be a comma-separated list of valid Chatwork account IDs that are already members of the room — look them up first with `chatwork_list_room_members`.
+    `to_ids` must be a comma-separated list of valid Chatwork account IDs that are already members of the room. Look them up first with `chatwork_list_room_members`.
   </Accordion>
   <Accordion title="Uploaded file doesn't show up in chatwork_list_files immediately">
     Chatwork processes uploads server-side; if a freshly uploaded file isn't listed yet, retry `chatwork_list_files` after a short delay.

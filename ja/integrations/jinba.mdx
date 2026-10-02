@@ -1,6 +1,6 @@
 ---
 title: "Jinba"
-description: "公開済みのJinba Flowワークフローを実行する — 自然言語とビジュアルによるノーコード自動化"
+description: "公開済みのJinba Flowワークフローを実行する：自然言語とビジュアルによるノーコード自動化"
 icon: /images/jinba.svg
 ---
 
@@ -28,7 +28,7 @@ ShanoneはJinba用に**1のツール**を提供しています。
 
 <AccordionGroup>
   <Accordion title="ワークフロー実行">
-    `jinba_run_workflow` — UUIDを指定して公開済みのJinba Flowワークフローを実行し、ワークフローの`INPUT_`設定で定義された`{name, value}`形式の入力引数のJSON配列を任意で渡す
+    `jinba_run_workflow`：UUIDを指定して公開済みのJinba Flowワークフローを実行し、ワークフローの`INPUT_`設定で定義された`{name, value}`形式の入力引数のJSON配列を任意で渡す
   </Accordion>
 </AccordionGroup>
 
@@ -53,10 +53,10 @@ ShanoneはJinba用に**1のツール**を提供しています。
 
 <AccordionGroup>
   <Accordion title="jinba_run_workflowでワークフローが見つからないというエラーが出る">
-    ワークフローはAPI経由で実行する前にJinba Flowで公開されている必要があります——エディタ上でドラフト保存されているだけのワークフローには到達できません。Jinba Flowダッシュボードに表示されているUUIDを再確認してください。
+    ワークフローはAPI経由で実行する前にJinba Flowで公開されている必要があります。エディタ上でドラフト保存されているだけのワークフローには到達できません。Jinba Flowダッシュボードに表示されているUUIDを再確認してください。
   </Accordion>
   <Accordion title="jinba_run_workflowで引数が不足または無効というエラーが返る">
-    `args`は`{"name": ..., "value": ...}`形式のオブジェクトの配列を表すJSON文字列である必要があります——Jinba側でそのワークフローの`INPUT_`ツール設定を確認し、期待される引数名を確認してください。
+    `args`は`{"name": ..., "value": ...}`形式のオブジェクトの配列を表すJSON文字列である必要があります。Jinba側でそのワークフローの`INPUT_`ツール設定を確認し、期待される引数名を確認してください。
   </Accordion>
   <Accordion title="jinba_run_workflowの応答に時間がかかる">
     実行時間はワークフローの複雑さに依存します。内部のリクエストは最大120秒まで許容されているため、複数ステップの複雑なワークフローでは結果が返るまでそれだけの時間がかかることがあります。

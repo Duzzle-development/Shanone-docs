@@ -6,7 +6,7 @@ icon: /images/huggingface.svg
 
 # Hugging Face
 
-ShanoneのHugging Face連携では、Hubのほぼ全機能——モデル、データセット、Spaces、サーバーレス推論、推論エンドポイント、コレクション、議論/PR、論文、リポジトリ操作、セキュリティスキャン、Webhookを扱う87のツールをエージェントが利用できるようになります。
+ShanoneのHugging Face連携では、Hubのほぼ全機能、モデル、データセット、Spaces、サーバーレス推論、推論エンドポイント、コレクション、議論/PR、論文、リポジトリ操作、セキュリティスキャン、Webhookを扱う87のツールをエージェントが利用できるようになります。
 
 ## はじめに
 
@@ -86,12 +86,12 @@ ShanoneはHugging Face用に**87のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="huggingface_text_generationなど推論呼び出しが503を返す">
-    サーバーレス推論APIのモデルはコールドスタート状態でロードが必要な場合があります——少し待ってから再試行するか、頻繁に呼び出すモデルには`huggingface_create_inference_endpoint`を使ってコールドスタートを完全に回避してください。
+    サーバーレス推論APIのモデルはコールドスタート状態でロードが必要な場合があります。少し待ってから再試行するか、頻繁に呼び出すモデルには`huggingface_create_inference_endpoint`を使ってコールドスタートを完全に回避してください。
   </Accordion>
   <Accordion title="大きなデータセットでhuggingface_get_dataset_rowsが遅い、またはタイムアウトする">
     行単位で大きなデータセット全体をページングするより、具体的な条件を指定した`huggingface_filter_dataset_rows`、または`huggingface_list_parquet_files`と独自処理の組み合わせを優先してください。
   </Accordion>
   <Accordion title="huggingface_create_model_repoやデータセット/Space版で権限エラーが発生する">
-    組織のネームスペース下でリポジトリを作成するには、トークンのアカウントがその組織の書き込み権限を持つメンバーである必要があります——`huggingface_list_organization_members`で確認するか、代わりに個人のネームスペース下で作成してください。
+    組織のネームスペース下でリポジトリを作成するには、トークンのアカウントがその組織の書き込み権限を持つメンバーである必要があります。`huggingface_list_organization_members`で確認するか、代わりに個人のネームスペース下で作成してください。
   </Accordion>
 </AccordionGroup>

@@ -1,6 +1,6 @@
 ---
 title: "Outlook"
-description: "メール、カレンダー、連絡先、タスクの管理 — Microsoft 365のメッセージング & スケジューリング機能全体"
+description: "メール、カレンダー、連絡先、タスクの管理：Microsoft 365のメッセージング & スケジューリング機能全体"
 icon: /images/outlook.svg
 ---
 
@@ -74,7 +74,7 @@ ShanoneはOutlook向けに**134個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="outlook_send_mailが宛先が無効というエラーで失敗する">
-    `outlook_send_mail`の`shanone_get_tool_schema`で正確なペイロード形式を確認してください——宛先はフラットな文字列ではなくネストされたオブジェクト(`{"emailAddress": {"address": "..."}}`)です。
+    `outlook_send_mail`の`shanone_get_tool_schema`で正確なペイロード形式を確認してください。宛先はフラットな文字列ではなくネストされたオブジェクト(`{"emailAddress": {"address": "..."}}`)です。
   </Accordion>
   <Accordion title="outlook_get_mail_deltaやoutlook_get_calendar_deltaが再同期が必要というエラーを返す">
     デルタトークンは長期間使われないと期限切れになります。トークンなしでデルタツールを呼び出して同期を再開し、以降の呼び出し用に新しい`@odata.deltaLink`を保存してください。

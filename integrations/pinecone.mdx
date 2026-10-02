@@ -1,12 +1,12 @@
 ---
 title: "Pinecone"
-description: "Vector database operations — indexes, namespaces, vectors, assistants, backups, and org-level admin"
+description: "Vector database operations: indexes, namespaces, vectors, assistants, backups, and org-level admin"
 icon: /images/pinecone.svg
 ---
 
 # Pinecone
 
-Shanone's Pinecone integration gives your agent 85 tools covering the full vector database surface — index and namespace management, vector CRUD/search, the Assistant API for RAG chat, backups/restore, and organization-level admin (users, service accounts, role bindings) most integrations skip.
+Shanone's Pinecone integration gives your agent 85 tools covering the full vector database surface: index and namespace management, vector CRUD/search, the Assistant API for RAG chat, backups/restore, and organization-level admin (users, service accounts, role bindings) most integrations skip.
 
 ## Getting Started
 
@@ -74,15 +74,15 @@ Shanone provides **85 tools** for Pinecone, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="pinecone_query_vectors or pinecone_upsert_vectors fails with a dimension mismatch">
-    The vector dimension must exactly match the index's configured dimension — check `pinecone_describe_index` first, especially after switching embedding models.
+    The vector dimension must exactly match the index's configured dimension. Check `pinecone_describe_index` first, especially after switching embedding models.
   </Accordion>
   <Accordion title="pinecone_upsert_records or pinecone_search_records behaves differently from the vector-level tools">
-    These operate on Pinecone's newer records API (namespace-scoped, with built-in embedding via integrated inference) rather than raw vectors — check `shanone_get_tool_schema` to confirm which field shapes each expects.
+    These operate on Pinecone's newer records API (namespace-scoped, with built-in embedding via integrated inference) rather than raw vectors. Check `shanone_get_tool_schema` to confirm which field shapes each expects.
   </Accordion>
   <Accordion title="pinecone_chat_assistant gives answers that ignore uploaded files">
-    Confirm the file finished processing with `pinecone_describe_assistant_file` before chatting — newly uploaded files need to be indexed before the assistant can retrieve from them.
+    Confirm the file finished processing with `pinecone_describe_assistant_file` before chatting: newly uploaded files need to be indexed before the assistant can retrieve from them.
   </Accordion>
   <Accordion title="Admin tools (pinecone_admin_*) return a permissions error">
-    Admin endpoints require an API key scoped at the organization level, not a project-level key — generate a dedicated admin key from the Pinecone Console if you only have project keys configured.
+    Admin endpoints require an API key scoped at the organization level, not a project-level key. Generate a dedicated admin key from the Pinecone Console if you only have project keys configured.
   </Accordion>
 </AccordionGroup>

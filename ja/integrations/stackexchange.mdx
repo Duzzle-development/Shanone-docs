@@ -15,7 +15,7 @@ ShanoneのStack Exchange連携は、質問の検索、回答/コメント/バッ
     エージェントにStack Exchange関連の作業を依頼(例: 「Reactフックをデバウンスする方法をStack Overflowで検索して」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
   </Step>
   <Step title="Stack Exchangeアカウントを許可する">
-    OAuth同意画面を承認します。Application KeyとDefault Site(例: `stackoverflow`)を任意で設定できます——キーを設定すると、1日あたりのリクエスト上限が300から10,000に上がります。
+    OAuth同意画面を承認します。Application KeyとDefault Site(例: `stackoverflow`)を任意で設定できます。キーを設定すると、1日あたりのリクエスト上限が300から10,000に上がります。
   </Step>
   <Step title="リクエストを再実行する">
     接続が完了すると、`stackexchange_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。Application Keyが設定されていれば、完全なOAuthなしでも読み取り専用ツールは動作します。
@@ -83,9 +83,9 @@ ShanoneはStack Exchange向けに**82個のツール**を、以下のカテゴ�
     Application Keyを設定していない場合、Stack Exchangeは1日300リクエストに制限されます。連携アプリにキーを設定すると上限が1日10,000に上がります。
   </Accordion>
   <Accordion title="検索ツールが想定と異なるサイトの結果を返す">
-    多くの読み取りツールは`site`パラメータを受け取ります(デフォルトは設定済みのDefault Site)——Stack Overflow以外のサイト(例: `superuser`や`serverfault`)を検索する場合は明示的に指定してください。
+    多くの読み取りツールは`site`パラメータを受け取ります(デフォルトは設定済みのDefault Site)。Stack Overflow以外のサイト(例: `superuser`や`serverfault`)を検索する場合は明示的に指定してください。
   </Accordion>
   <Accordion title="stackexchange_create_answerやstackexchange_upvote_postなどの書き込みツールが失敗する">
-    書き込みや投票操作には、Application Keyだけでなく完全なOAuth認証と、対象サイトでの十分なレピュテーションが必要です——Stack ExchangeはShanoneとは独立して、投稿や投票に自身のレピュテーション閾値を適用します。
+    書き込みや投票操作には、Application Keyだけでなく完全なOAuth認証と、対象サイトでの十分なレピュテーションが必要です。Stack ExchangeはShanoneとは独立して、投稿や投票に自身のレピュテーション閾値を適用します。
   </Accordion>
 </AccordionGroup>

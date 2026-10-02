@@ -1,12 +1,12 @@
 ---
 title: "Google Docs"
-description: "Create and edit documents — text, tables, formatting, comments, and Markdown-native round-trips"
+description: "Create and edit documents: text, tables, formatting, comments, and Markdown-native round-trips"
 icon: /images/google-docs.svg
 ---
 
 # Google Docs
 
-Shanone's Google Docs integration gives your agent 58 tools across the full Docs API surface — content and formatting, tables, images, comments/suggestions, tabs, and the Markdown conversion tools that make agent-driven editing far more convenient than raw block manipulation.
+Shanone's Google Docs integration gives your agent 58 tools across the full Docs API surface: content and formatting, tables, images, comments/suggestions, tabs, and the Markdown conversion tools that make agent-driven editing far more convenient than raw block manipulation.
 
 ## Getting Started
 
@@ -71,12 +71,12 @@ Shanone provides **58 tools** for Google Docs, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="google_docs_update_document_from_markdown produces unexpected formatting">
-    The Markdown converter supports common elements (headings, lists, tables, bold/italic) but not every Docs-native feature — for advanced formatting, follow up with `google_docs_update_text_style` or `google_docs_update_paragraph_style` on the specific range.
+    The Markdown converter supports common elements (headings, lists, tables, bold/italic) but not every Docs-native feature: for advanced formatting, follow up with `google_docs_update_text_style` or `google_docs_update_paragraph_style` on the specific range.
   </Accordion>
   <Accordion title="Multiple edits in a row produce conflicting or overlapping changes">
-    Index-based operations (insert/delete) shift subsequent content offsets — prefer a single `google_docs_batch_update` call with multiple requests over several sequential single-edit calls when making related changes.
+    Index-based operations (insert/delete) shift subsequent content offsets: prefer a single `google_docs_batch_update` call with multiple requests over several sequential single-edit calls when making related changes.
   </Accordion>
   <Accordion title="google_docs_insert_comment or suggestion tools don't seem to take effect">
-    Comments and suggestions are separate from content edits and require Docs' native commenting/suggesting permissions on the file — verify the connected account has at least commenter access.
+    Comments and suggestions are separate from content edits and require Docs' native commenting/suggesting permissions on the file. Verify the connected account has at least commenter access.
   </Accordion>
 </AccordionGroup>

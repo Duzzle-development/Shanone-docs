@@ -1,6 +1,6 @@
 ---
 title: "Figma"
-description: "Read design files, comments, components, styles, and variables — plus webhook management"
+description: "Read design files, comments, components, styles, and variables: plus webhook management"
 icon: /images/figma.svg
 ---
 
@@ -80,7 +80,7 @@ Shanone provides **39 tools** for Figma, organized into these categories:
     Use `figma_get_file_nodes` with specific node IDs instead of fetching the entire file tree when you only need a subset of the design.
   </Accordion>
   <Accordion title="figma_export_images returns an empty or expired URL">
-    Exported image URLs are temporary — re-call `figma_export_images` to get a fresh URL rather than caching the one from a previous response.
+    Exported image URLs are temporary. Re-call `figma_export_images` to get a fresh URL rather than caching the one from a previous response.
   </Accordion>
   <Accordion title="Team-level tools (figma_get_team_projects, figma_get_team_components) return nothing">
     These require a valid team ID and the connected account must be a member of that team; verify the team ID with `figma_get_me` or the Figma web UI first.

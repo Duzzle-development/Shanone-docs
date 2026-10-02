@@ -6,7 +6,7 @@ icon: /images/bigquery.svg
 
 # BigQuery
 
-ShanoneのBigQuery連携では、Googleのデータウェアハウスに関する**40個のツール**をエージェントに提供します — クエリの実行、データセット/テーブル/モデルの管理、データのロード・エクスポート、IAMアクセス制御をカバーしています。
+ShanoneのBigQuery連携では、Googleのデータウェアハウスに関する**40個のツール**をエージェントに提供します。クエリの実行、データセット/テーブル/モデルの管理、データのロード・エクスポート、IAMアクセス制御をカバーしています。
 
 ## はじめに
 
@@ -78,12 +78,12 @@ Shanoneは BigQuery向けに**40個のツール**を提供しており、以下�
 
 <AccordionGroup>
   <Accordion title="bigquery_queryが権限拒否エラーで失敗する">
-    `bigquery_test_iam_permissions`でサービスアカウントのIAMロールを確認してください — ほとんどの読み取り操作には、対象データセットへの`bigquery.jobs.create`と`bigquery.tables.getData`が最低限必要です。
+    `bigquery_test_iam_permissions`でサービスアカウントのIAMロールを確認してください。ほとんどの読み取り操作には、対象データセットへの`bigquery.jobs.create`と`bigquery.tables.getData`が最低限必要です。
   </Accordion>
   <Accordion title="bigquery_queryが完了しないジョブを返す">
     長時間実行されるクエリはブロッキングせず、ジョブ参照を返します。短いクエリでブロッキングが問題ない場合は`bigquery_query_and_wait`を使い、それ以外は`status.state`が`DONE`になるまで`bigquery_get_job`をポーリングしてください。
   </Accordion>
   <Accordion title="bigquery_load_table_from_uriが静かに失敗する、または一部しかロードされない">
-    ロードジョブの`errorResult`と`errors`フィールドを`bigquery_get_job`で確認してください — スキーマの不一致やソースファイル内の不正な行が最も多い原因です。
+    ロードジョブの`errorResult`と`errors`フィールドを`bigquery_get_job`で確認してください。スキーマの不一致やソースファイル内の不正な行が最も多い原因です。
   </Accordion>
 </AccordionGroup>

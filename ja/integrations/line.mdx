@@ -6,7 +6,7 @@ icon: /images/line.svg
 
 # LINE
 
-ShanoneのLINE連携では、LINE Messaging APIおよびLogin APIのほぼ全機能——メッセージ送信、リッチメニュー管理、ターゲティング配信用のオーディエンスセグメント構築、エンゲージメントインサイトの取得を扱う101のツールをエージェントが利用できるようになります。
+ShanoneのLINE連携では、LINE Messaging APIおよびLogin APIのほぼ全機能、メッセージ送信、リッチメニュー管理、ターゲティング配信用のオーディエンスセグメント構築、エンゲージメントインサイトの取得を扱う101のツールをエージェントが利用できるようになります。
 
 ## はじめに
 
@@ -80,15 +80,15 @@ ShanoneはLINE用に**101のツール**を提供しており、以下のカテ�
 
 <AccordionGroup>
   <Accordion title="line_reply_messageで無効または期限切れのリプライトークンエラーが出る">
-    リプライトークンは使い捨てで、Webhookイベントで発行された直後から短時間で失効します——その即時のWebhook処理ウィンドウの外で応答する場合は代わりに`line_push_message`を使用してください。
+    リプライトークンは使い捨てで、Webhookイベントで発行された直後から短時間で失効します。その即時のWebhook処理ウィンドウの外で応答する場合は代わりに`line_push_message`を使用してください。
   </Accordion>
   <Accordion title="line_broadcast_messageやline_multicast_messageがレート制限/クォータエラーを返す">
-    プランの月間上限については`line_get_message_quota`と該当する`line_get_*_message_count`ツールを確認してください——無料プランや下位プランにはプッシュ/配信量の厳格な上限があります。
+    プランの月間上限については`line_get_message_quota`と該当する`line_get_*_message_count`ツールを確認してください。無料プランや下位プランにはプッシュ/配信量の厳格な上限があります。
   </Accordion>
   <Accordion title="特定のユーザーにリッチメニューが表示されない">
-    リッチメニューはアカウント全体のデフォルト(`line_set_default_rich_menu`)として設定するか、ユーザーごとに明示的にリンク(`line_link_rich_menu_to_user`)します——ユーザー単位のリンクは常にデフォルトより優先されるため、意図しないメニューが表示される場合は`line_get_rich_menu_id_of_user`を確認してください。
+    リッチメニューはアカウント全体のデフォルト(`line_set_default_rich_menu`)として設定するか、ユーザーごとに明示的にリンク(`line_link_rich_menu_to_user`)します。ユーザー単位のリンクは常にデフォルトより優先されるため、意図しないメニューが表示される場合は`line_get_rich_menu_id_of_user`を確認してください。
   </Accordion>
   <Accordion title="line_create_upload_audience_group_by_fileの検証が失敗する">
-    まず対応する`line_validate_*`ツールでリクエストを検証してください——オーディエンスのアップロードには厳格なフォーマット要件(例:1行に1つの識別子、サイズ制限)があり、気づかずに違反しやすいです。
+    まず対応する`line_validate_*`ツールでリクエストを検証してください。オーディエンスのアップロードには厳格なフォーマット要件(例:1行に1つの識別子、サイズ制限)があり、気づかずに違反しやすいです。
   </Accordion>
 </AccordionGroup>

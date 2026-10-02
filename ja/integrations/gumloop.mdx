@@ -1,12 +1,12 @@
 ---
 title: "Gumloop"
-description: "GumloopのAI自動化フローを実行・監視する — フロー一覧、実行開始、状態確認、履歴表示"
+description: "GumloopのAI自動化フローを実行・監視する：フロー一覧、実行開始、状態確認、履歴表示"
 icon: /images/gumloop.svg
 ---
 
 # Gumloop
 
-ShanoneのGumloop連携では、Gumloopフロー(ノーコードAI自動化)をトリガー・管理する6のツールをエージェントが利用できるようになります——利用可能なフローの確認から、実行、完了までの追跡まで対応します。
+ShanoneのGumloop連携では、Gumloopフロー(ノーコードAI自動化)をトリガー・管理する6のツールをエージェントが利用できるようになります。利用可能なフローの確認から、実行、完了までの追跡まで対応します。
 
 ## はじめに
 
@@ -28,13 +28,13 @@ ShanoneはGumloop用に**6のツール**を提供しており、以下のカテ�
 
 <AccordionGroup>
   <Accordion title="フロー検出">
-    `gumloop_list_flows`, `gumloop_get_flow_schema` — 保存済みフローを一覧表示し、実行前に必須/オプションの入力項目を確認する
+    `gumloop_list_flows`, `gumloop_get_flow_schema`：保存済みフローを一覧表示し、実行前に必須/オプションの入力項目を確認する
   </Accordion>
   <Accordion title="フロー実行">
-    `gumloop_run_flow`, `gumloop_kill_run` — 入力値を指定してフローを開始する、または時間がかかりすぎているフローを停止する
+    `gumloop_run_flow`, `gumloop_kill_run`：入力値を指定してフローを開始する、または時間がかかりすぎているフローを停止する
   </Accordion>
   <Accordion title="実行監視">
-    `gumloop_get_run_status`, `gumloop_list_run_history` — 特定の実行の完了をポーリングする、またはフローの過去の実行履歴を確認する
+    `gumloop_get_run_status`, `gumloop_list_run_history`：特定の実行の完了をポーリングする、またはフローの過去の実行履歴を確認する
   </Accordion>
 </AccordionGroup>
 
@@ -62,9 +62,9 @@ ShanoneはGumloop用に**6のツール**を提供しており、以下のカテ�
     まずフローの`saved_item_id`を指定して`gumloop_get_flow_schema`を呼び出し、必要な入力キーを正確に確認してから、それらを`inputs`辞書に渡してください。
   </Accordion>
   <Accordion title="gumloop_get_run_statusが長時間RUNNINGのままになる">
-    WebスクレイピングやLLM呼び出しを含むフローなどは、正当に数分かかることがあります——止まっているように見える場合は、無期限に待つのではなく`gumloop_kill_run`で停止して再実行してください。
+    WebスクレイピングやLLM呼び出しを含むフローなどは、正当に数分かかることがあります。止まっているように見える場合は、無期限に待つのではなく`gumloop_kill_run`で停止して再実行してください。
   </Accordion>
   <Accordion title="Gumloopの画面で見えるフローがgumloop_list_flowsに表示されない">
-    保存/公開済みのフローのみが返されます——Gumloopのキャンバスエディタで開いているだけでアイテムとして保存されていないフローは、保存されるまで表示されません。
+    保存/公開済みのフローのみが返されます。Gumloopのキャンバスエディタで開いているだけでアイテムとして保存されていないフローは、保存されるまで表示されません。
   </Accordion>
 </AccordionGroup>

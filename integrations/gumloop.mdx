@@ -1,12 +1,12 @@
 ---
 title: "Gumloop"
-description: "Run and monitor Gumloop AI automation flows — list flows, start runs, poll status, and view history"
+description: "Run and monitor Gumloop AI automation flows: list flows, start runs, poll status, and view history"
 icon: /images/gumloop.svg
 ---
 
 # Gumloop
 
-Shanone's Gumloop integration gives your agent 6 tools for triggering and managing Gumloop flows (no-code AI automations) — from discovering what's available to running a flow and tracking it to completion.
+Shanone's Gumloop integration gives your agent 6 tools for triggering and managing Gumloop flows (no-code AI automations), from discovering what's available to running a flow and tracking it to completion.
 
 ## Getting Started
 
@@ -28,13 +28,13 @@ Shanone provides **6 tools** for Gumloop, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Flow discovery">
-    `gumloop_list_flows`, `gumloop_get_flow_schema` — list saved flows and inspect a flow's required/optional inputs before running it
+    `gumloop_list_flows`, `gumloop_get_flow_schema`: list saved flows and inspect a flow's required/optional inputs before running it
   </Accordion>
   <Accordion title="Flow execution">
-    `gumloop_run_flow`, `gumloop_kill_run` — start a flow with input values, or stop one that's taking too long
+    `gumloop_run_flow`, `gumloop_kill_run`: start a flow with input values, or stop one that's taking too long
   </Accordion>
   <Accordion title="Run monitoring">
-    `gumloop_get_run_status`, `gumloop_list_run_history` — poll a specific run for completion, or review past runs for a flow
+    `gumloop_get_run_status`, `gumloop_list_run_history`: poll a specific run for completion, or review past runs for a flow
   </Accordion>
 </AccordionGroup>
 
@@ -65,6 +65,6 @@ Shanone provides **6 tools** for Gumloop, organized into these categories:
     Some flows (especially ones involving web scraping or LLM calls) can legitimately take minutes; if it seems stuck, use `gumloop_kill_run` and re-run rather than waiting indefinitely.
   </Accordion>
   <Accordion title="gumloop_list_flows doesn't show a flow I can see in the Gumloop UI">
-    Only saved/published flows are returned — a flow still open only in the Gumloop canvas editor without being saved as an item won't appear until it's saved.
+    Only saved/published flows are returned: a flow still open only in the Gumloop canvas editor without being saved as an item won't appear until it's saved.
   </Accordion>
 </AccordionGroup>

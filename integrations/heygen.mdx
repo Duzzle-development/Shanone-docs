@@ -6,7 +6,7 @@ icon: /images/heygen.svg
 
 # HeyGen
 
-Shanone's HeyGen integration gives your agent 69 tools covering nearly all of HeyGen's video generation platform — avatars, voices, lipsync, video translation, templates, batch/bulk operations, and webhooks.
+Shanone's HeyGen integration gives your agent 69 tools covering nearly all of HeyGen's video generation platform: avatars, voices, lipsync, video translation, templates, batch/bulk operations, and webhooks.
 
 ## Getting Started
 
@@ -74,10 +74,10 @@ Shanone provides **69 tools** for HeyGen, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="heygen_create_video succeeds but the video stays in a processing state">
-    HeyGen renders asynchronously — poll `heygen_get_video` (or use `heygen_bulk_video_statuses` for batches) until `status` reports `completed` or `failed` rather than assuming a queued response means the video is ready.
+    HeyGen renders asynchronously. Poll `heygen_get_video` (or use `heygen_bulk_video_statuses` for batches) until `status` reports `completed` or `failed` rather than assuming a queued response means the video is ready.
   </Accordion>
   <Accordion title="heygen_clone_voice or heygen_create_avatar fails with a consent error">
-    Voice cloning and photo avatars require explicit consent recording via `heygen_create_avatar_consent` before the underlying asset can be used — this is a legal/compliance requirement on HeyGen's side, not a Shanone limitation.
+    Voice cloning and photo avatars require explicit consent recording via `heygen_create_avatar_consent` before the underlying asset can be used. This is a legal/compliance requirement on HeyGen's side, not a Shanone limitation.
   </Accordion>
   <Accordion title="Webhook events aren't arriving for a video that finished rendering">
     Confirm the endpoint URL registered with `heygen_create_webhook_endpoint` is publicly reachable over HTTPS, and check `heygen_list_webhook_event_types` to make sure you subscribed to the right event type for that action.

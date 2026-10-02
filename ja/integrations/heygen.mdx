@@ -6,7 +6,7 @@ icon: /images/heygen.svg
 
 # HeyGen
 
-ShanoneのHeyGen連携では、HeyGenの動画生成プラットフォームのほぼ全機能——アバター、音声、リップシンク、動画翻訳、テンプレート、バッチ/一括操作、Webhookを扱う69のツールをエージェントが利用できるようになります。
+ShanoneのHeyGen連携では、HeyGenの動画生成プラットフォームのほぼ全機能、アバター、音声、リップシンク、動画翻訳、テンプレート、バッチ/一括操作、Webhookを扱う69のツールをエージェントが利用できるようになります。
 
 ## はじめに
 
@@ -74,10 +74,10 @@ ShanoneはHeyGen用に**69のツール**を提供しており、以下のカテ�
 
 <AccordionGroup>
   <Accordion title="heygen_create_videoは成功するが動画が処理中のまま">
-    HeyGenのレンダリングは非同期です——キューに入った時点で完成したと見なさず、`status`が`completed`または`failed`を報告するまで`heygen_get_video`(バッチの場合は`heygen_bulk_video_statuses`)をポーリングしてください。
+    HeyGenのレンダリングは非同期です。キューに入った時点で完成したと見なさず、`status`が`completed`または`failed`を報告するまで`heygen_get_video`(バッチの場合は`heygen_bulk_video_statuses`)をポーリングしてください。
   </Accordion>
   <Accordion title="heygen_clone_voiceやheygen_create_avatarが同意エラーで失敗する">
-    音声クローンやフォトアバターの作成には、元のアセットを使用する前に`heygen_create_avatar_consent`による明示的な同意記録が必要です——これはHeyGen側の法的/コンプライアンス要件であり、Shanoneの制約ではありません。
+    音声クローンやフォトアバターの作成には、元のアセットを使用する前に`heygen_create_avatar_consent`による明示的な同意記録が必要です。これはHeyGen側の法的/コンプライアンス要件であり、Shanoneの制約ではありません。
   </Accordion>
   <Accordion title="Webhookイベントが届かない">
     `heygen_create_webhook_endpoint`で登録したエンドポイントURLがHTTPSで公開アクセス可能であることを確認し、`heygen_list_webhook_event_types`でそのアクションに対応する正しいイベントタイプを購読しているか確認してください。

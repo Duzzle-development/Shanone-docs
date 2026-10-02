@@ -1,6 +1,6 @@
 ---
 title: "Datadog"
-description: "Monitor infrastructure and applications — metrics, monitors, dashboards, logs, traces, and SLOs"
+description: "Monitor infrastructure and applications: metrics, monitors, dashboards, logs, traces, and SLOs"
 icon: /images/datadog.svg
 ---
 
@@ -77,12 +77,12 @@ Shanone provides **39 tools** for Datadog, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Tools fail even though one of API Key or Application Key is set">
-    Datadog requires **both** an API Key and an Application Key together — a monitoring-only API Key alone isn't sufficient for most read/write operations exposed here. Check both fields are saved in Integrations.
+    Datadog requires **both** an API Key and an Application Key together: a monitoring-only API Key alone isn't sufficient for most read/write operations exposed here. Check both fields are saved in Integrations.
   </Accordion>
   <Accordion title="datadog_query_metrics returns no data points">
     Confirm the metric name and tags exist by checking `datadog_list_metrics` first, and make sure the time range (`from`/`to`) actually overlaps with when the metric was reported.
   </Accordion>
   <Accordion title="datadog_search_logs returns fewer results than expected">
-    Log retention and indexing are governed by the target log index's retention policy — check `datadog_list_log_indexes` to confirm the index being searched actually retains logs for the requested time range.
+    Log retention and indexing are governed by the target log index's retention policy. Check `datadog_list_log_indexes` to confirm the index being searched actually retains logs for the requested time range.
   </Accordion>
 </AccordionGroup>

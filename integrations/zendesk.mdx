@@ -1,12 +1,12 @@
 ---
 title: "Zendesk"
-description: "Manage support tickets, users, organizations, and macros on Zendesk — the full customer support workflow"
+description: "Manage support tickets, users, organizations, and macros on Zendesk: the full customer support workflow"
 icon: /images/zendesk.svg
 ---
 
 # Zendesk
 
-Shanone's Zendesk integration gives your agent 64 tools for running customer support — tickets, users, organizations, groups, macros, and the satisfaction/SLA data most integrations skip.
+Shanone's Zendesk integration gives your agent 64 tools for running customer support: tickets, users, organizations, groups, macros, and the satisfaction/SLA data most integrations skip.
 
 ## Getting Started
 
@@ -80,15 +80,15 @@ Shanone provides **64 tools** for Zendesk, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Connecting asks for a subdomain I don't recognize">
-    Your Zendesk subdomain is the part before `.zendesk.com` in your support URL (e.g. `acme` for `acme.zendesk.com`) — check your admin's browser URL if unsure.
+    Your Zendesk subdomain is the part before `.zendesk.com` in your support URL (e.g. `acme` for `acme.zendesk.com`). Check your admin's browser URL if unsure.
   </Accordion>
   <Accordion title="zendesk_apply_macro_to_ticket doesn't change the ticket as expected">
     Macros can include conditional actions; call `zendesk_get_macro` first to review exactly what the macro will do before applying it, since its effect isn't always obvious from the name alone.
   </Accordion>
   <Accordion title="zendesk_search_tickets or zendesk_search_users returns unexpected results">
-    Zendesk's search API uses its own query syntax (e.g. `status:open type:ticket`); a plain keyword string may not filter the way you expect — check Zendesk's search reference for supported operators.
+    Zendesk's search API uses its own query syntax (e.g. `status:open type:ticket`); a plain keyword string may not filter the way you expect. Check Zendesk's search reference for supported operators.
   </Accordion>
   <Accordion title="zendesk_merge_tickets fails">
-    Merging requires both tickets to be open (not closed) and typically to belong to the same requester — verify both conditions with `zendesk_get_ticket` before merging.
+    Merging requires both tickets to be open (not closed) and typically to belong to the same requester. Verify both conditions with `zendesk_get_ticket` before merging.
   </Accordion>
 </AccordionGroup>

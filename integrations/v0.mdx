@@ -1,12 +1,12 @@
 ---
 title: "V0"
-description: "Generate and iterate on UI code with Vercel's v0 — chats, projects, deployments, and MCP server management"
+description: "Generate and iterate on UI code with Vercel's v0: chats, projects, deployments, and MCP server management"
 icon: /images/v0.svg
 ---
 
 # V0
 
-Shanone's v0 integration gives your agent 42 tools for driving Vercel's v0 AI UI generator — creating and iterating on chats, managing projects and deployments, and configuring MCP servers, on top of v0's newer v2 chat/message API.
+Shanone's v0 integration gives your agent 42 tools for driving Vercel's v0 AI UI generator: creating and iterating on chats, managing projects and deployments, and configuring MCP servers, on top of v0's newer v2 chat/message API.
 
 ## Getting Started
 
@@ -77,7 +77,7 @@ Shanone provides **42 tools** for V0, organized into these categories:
     `v0_v2_*` tools are v0's newer chat/message API with more creation options (from files, repo, or zip) and async variants. Prefer the `v0_v2_*` family for new integrations; the v1 `v0_create_chat`/`v0_send_message` family remains for existing chats created there.
   </Accordion>
   <Accordion title="v0_v2_deploy_chat or v0_v2_create_vercel_project fails">
-    Both require a valid Vercel account link — run `v0_find_vercel_projects` or `v0_create_vercel_project_link` first to confirm the v0 account is connected to a Vercel team/project.
+    Both require a valid Vercel account link. Run `v0_find_vercel_projects` or `v0_create_vercel_project_link` first to confirm the v0 account is connected to a Vercel team/project.
   </Accordion>
   <Accordion title="Async message/task tools never seem to finish">
     `v0_v2_send_message_async` and `v0_v2_resolve_task_async` return immediately with a task reference; poll `v0_v2_get_message` or the chat's message list rather than expecting the async call itself to block until completion.

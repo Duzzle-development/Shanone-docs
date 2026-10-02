@@ -6,7 +6,7 @@ icon: /images/stability.svg
 
 # Stability AI
 
-ShanoneのStability AI連携は、画像生成、編集(インペインティング、アウトペインティング、背景除去)、コントロール誘導生成、アップスケール、3Dアセット生成、テキストから音声への変換をカバーする28個のツールをエージェントに提供します——StabilityのジェネレーティブメディアAPIの大部分をカバーしています。
+ShanoneのStability AI連携は、画像生成、編集(インペインティング、アウトペインティング、背景除去)、コントロール誘導生成、アップスケール、3Dアセット生成、テキストから音声への変換をカバーする28個のツールをエージェントに提供します。StabilityのジェネレーティブメディアAPIの大部分をカバーしています。
 
 ## はじめに
 
@@ -71,9 +71,9 @@ ShanoneはStability AI向けに**28個のツール**を、以下のカテゴリ�
     Stability AIは生成ごとにクレジットを消費して課金します。大量のバッチを実行する前に`stability_get_balance`で残高を確認し、途中での失敗を避けてください。
   </Accordion>
   <Accordion title="stability_generate_3dや音声系ツールがすぐにアセットを返さない">
-    3Dや一部の音声生成は非同期で実行され、ジョブ/生成IDが返されます——そのIDを使って`stability_fetch_image_result`や`stability_fetch_audio_result`をアセットが準備できるまでポーリングしてください。
+    3Dや一部の音声生成は非同期で実行され、ジョブ/生成IDが返されます。そのIDを使って`stability_fetch_image_result`や`stability_fetch_audio_result`をアセットが準備できるまでポーリングしてください。
   </Accordion>
   <Accordion title="stability_inpaintやstability_eraseが予期しない結果になる">
-    これらのツールは元画像の寸法に合わせたマスク画像に依存します——`stability_inpaint`の`shanone_get_tool_schema`で、期待されるマスク形式(グレースケール、解像度の一致)を確認してください。
+    これらのツールは元画像の寸法に合わせたマスク画像に依存します。`stability_inpaint`の`shanone_get_tool_schema`で、期待されるマスク形式(グレースケール、解像度の一致)を確認してください。
   </Accordion>
 </AccordionGroup>

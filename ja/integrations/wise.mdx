@@ -6,7 +6,7 @@ icon: /images/wise.svg
 
 # Wise
 
-Shanoneのwise連携は、国際的な資金移動 — 見積もり、送金、受取人、多通貨残高、そしてこれらをプログラム的に運用するためのプロフィール/Webhookツールまで含む57個のツールをエージェントに提供します。
+Shanoneのwise連携は、国際的な資金移動、見積もり、送金、受取人、多通貨残高、そしてこれらをプログラム的に運用するためのプロフィール/Webhookツールまで含む57個のツールをエージェントに提供します。
 
 ## はじめに
 
@@ -83,7 +83,7 @@ Shanoneはwise向けに**57個のツール**を、以下のカテゴリに整理
 
 <AccordionGroup>
   <Accordion title="有効な見積もりの後もwise_create_transferが失敗する">
-    送金には資金投入済みの残高か有効な決済手段が必要です — 作成直後に`wise_fund_transfer`を呼ぶか(または`wise_list_balances`で十分な残高を確認)してください。資金未投入の送金は未完了状態のままになります。
+    送金には資金投入済みの残高か有効な決済手段が必要です。作成直後に`wise_fund_transfer`を呼ぶか(または`wise_list_balances`で十分な残高を確認)してください。資金未投入の送金は未完了状態のままになります。
   </Accordion>
   <Accordion title="wise_create_recipientがペイロードを拒否する">
     受取人の必須項目は通貨・国によって異なります。送信前に対象通貨で`wise_get_recipient_requirements`を呼び出し、必須フィールド(IBAN、ソートコード、ルーティング番号など)を確認してください。

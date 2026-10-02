@@ -6,7 +6,7 @@ icon: /images/context7.svg
 
 # Context7
 
-Shanone's Context7 integration gives your agent 3 tools for pulling current, version-accurate documentation and code snippets directly from library source — useful for avoiding outdated API knowledge baked into a model's training data.
+Shanone's Context7 integration gives your agent 3 tools for pulling current, version-accurate documentation and code snippets directly from library source, useful for avoiding outdated API knowledge baked into a model's training data.
 
 ## Getting Started
 
@@ -53,7 +53,7 @@ Shanone provides **3 tools** for Context7:
 
 <AccordionGroup>
   <Accordion title="context7_get_docs or context7_get_code_snippets returns a 404">
-    The `library_id` must come from `context7_search_library` first — Context7 library IDs follow a `/owner/repo` format and aren't guessable from the package name alone.
+    The `library_id` must come from `context7_search_library` first: Context7 library IDs follow a `/owner/repo` format and aren't guessable from the package name alone.
   </Accordion>
   <Accordion title="context7_get_code_snippets returns snippets for the wrong version">
     Pass an explicit `version` parameter (e.g. `v18.2.0`) if you need snippets tied to a specific release; without it, Context7 returns snippets across all indexed versions.

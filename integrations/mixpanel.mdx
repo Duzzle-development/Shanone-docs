@@ -1,6 +1,6 @@
 ---
 title: "Mixpanel"
-description: "Track events, manage user/group profiles, and query analytics — segmentation, retention, funnels, and annotations"
+description: "Track events, manage user/group profiles, and query analytics: segmentation, retention, funnels, and annotations"
 icon: /images/mixpanel.svg
 ---
 
@@ -12,7 +12,7 @@ Shanone's Mixpanel integration gives your agent 46 tools spanning event tracking
 
 <Steps>
   <Step title="Get a Mixpanel service account">
-    In your Mixpanel project settings, go to **Service Accounts** and create one — note the username, password, and project ID.
+    In your Mixpanel project settings, go to **Service Accounts** and create one. Note the username, password, and project ID.
   </Step>
   <Step title="Add the credentials in Shanone">
     Go to **Integrations > Mixpanel** in the Shanone dashboard and enter the project ID, service account username, and password.
@@ -74,12 +74,12 @@ Shanone provides **46 tools** for Mixpanel, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="mixpanel_track_event succeeds but the event doesn't show up right away">
-    Mixpanel's ingestion pipeline has processing lag — events can take a few minutes to appear in reports, even though the tracking call itself returned success immediately.
+    Mixpanel's ingestion pipeline has processing lag: events can take a few minutes to appear in reports, even though the tracking call itself returned success immediately.
   </Accordion>
   <Accordion title="mixpanel_import_events rejects historical data">
     The import endpoint (unlike live tracking) requires events to include a valid `time` property and rejects events older than 5 years or timestamped in the future.
   </Accordion>
   <Accordion title="Segmentation query returns unexpected empty results">
-    Double-check the event name and property names match exactly (case-sensitive) what's tracked — use `mixpanel_get_top_events` and `mixpanel_get_top_event_properties` first to confirm the real names.
+    Double-check the event name and property names match exactly (case-sensitive) what's tracked. Use `mixpanel_get_top_events` and `mixpanel_get_top_event_properties` first to confirm the real names.
   </Accordion>
 </AccordionGroup>

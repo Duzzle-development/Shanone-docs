@@ -6,7 +6,7 @@ icon: /images/resend.svg
 
 # Resend
 
-Shanone's Resend integration gives your agent 69 tools covering transactional and broadcast email — sending, contacts/audiences/segments, domain verification, templates, suppressions, and webhooks.
+Shanone's Resend integration gives your agent 69 tools covering transactional and broadcast email: sending, contacts/audiences/segments, domain verification, templates, suppressions, and webhooks.
 
 ## Getting Started
 
@@ -71,12 +71,12 @@ Shanone provides **69 tools** for Resend, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="resend_send_email fails with a domain not verified error">
-    The `from` address must use a domain that's passed verification — check status with `resend_get_domain` and complete `resend_verify_domain` after adding the required DNS records.
+    The `from` address must use a domain that's passed verification. Check status with `resend_get_domain` and complete `resend_verify_domain` after adding the required DNS records.
   </Accordion>
   <Accordion title="resend_send_broadcast doesn't reach some contacts">
-    Recipients on a suppression list (unsubscribed, bounced, or complained) are automatically excluded — check `resend_list_suppressions` if specific contacts seem to be missing.
+    Recipients on a suppression list (unsubscribed, bounced, or complained) are automatically excluded. Check `resend_list_suppressions` if specific contacts seem to be missing.
   </Accordion>
   <Accordion title="resend_update_email or resend_cancel_email returns an error after sending">
-    Both only work on scheduled emails that haven't been delivered yet — once an email has actually sent, it can no longer be canceled or rescheduled.
+    Both only work on scheduled emails that haven't been delivered yet. Once an email has actually sent, it can no longer be canceled or rescheduled.
   </Accordion>
 </AccordionGroup>

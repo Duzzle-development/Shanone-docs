@@ -1,6 +1,6 @@
 ---
 title: "X"
-description: "Post, search, and engage on X (formerly Twitter) — posts, timelines, lists, DMs, spaces, and relationships"
+description: "Post, search, and engage on X (formerly Twitter): posts, timelines, lists, DMs, spaces, and relationships"
 icon: /images/x.svg
 ---
 
@@ -74,10 +74,10 @@ Shanone provides **67 tools** for X, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="x_upload_media fails for a large video file">
-    Large media requires the chunked upload flow — call `x_upload_media_init`, then one or more `x_upload_media_append` calls, then `x_upload_media_finalize`, and poll `x_get_media_upload_status` before attaching the media ID to a post.
+    Large media requires the chunked upload flow. Call `x_upload_media_init`, then one or more `x_upload_media_append` calls, then `x_upload_media_finalize`, and poll `x_get_media_upload_status` before attaching the media ID to a post.
   </Accordion>
   <Accordion title="x_create_post with media attached is rejected">
-    The media must finish processing (see `x_get_media_upload_status`) before its media ID can be referenced in `x_create_post` — attaching an in-progress upload will fail.
+    The media must finish processing (see `x_get_media_upload_status`) before its media ID can be referenced in `x_create_post`: attaching an in-progress upload will fail.
   </Accordion>
   <Accordion title="x_search_posts returns fewer results than expected">
     X's search API has retention/rate limits on the standard tier; very old posts or high-volume queries may return partial results. Narrow the query or check `x_get_post_counts` to sanity-check expected volume.

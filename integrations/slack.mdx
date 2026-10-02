@@ -18,12 +18,12 @@ Shanone's Slack integration gives your agent 125 tools spanning everyday messagi
     Bot-token operations (posting, reading history, etc.) only work in channels the Slack app has been added to. This usually isn't required for public channels; for private channels, invite the app explicitly from within Slack.
   </Step>
   <Step title="Retry your request">
-    Once connected, ask your agent again — `shanone_execute_tool` will now succeed instead of returning a `connect_link`.
+    Once connected, ask your agent again: `shanone_execute_tool` will now succeed instead of returning a `connect_link`.
   </Step>
 </Steps>
 
 <Note>
-Some tools — reminders, stars, search, and DND settings among them — use a Slack **user token** rather than the bot token, obtained through the same OAuth flow. If these specific tools fail while everything else works, redo the OAuth connection to make sure both tokens were granted. See [Acting as the bot vs. as yourself](#acting-as-the-bot-vs-as-yourself) for details.
+Some tools (reminders, stars, search, and DND settings among them) use a Slack **user token** rather than the bot token, obtained through the same OAuth flow. If these specific tools fail while everything else works, redo the OAuth connection to make sure both tokens were granted. See [Acting as the bot vs. as yourself](#acting-as-the-bot-vs-as-yourself) for details.
 </Note>
 
 ## Acting as the Bot vs. as Yourself
@@ -75,11 +75,11 @@ The same `slack_post_message` call changes sender based on `act_as` alone:
 }
 ```
 
-You can also just tell your agent "send this **as me**" or "notify **as the bot**" in natural language — it will set `act_as` accordingly.
+You can also just tell your agent "send this **as me**" or "notify **as the bot**" in natural language. It will set `act_as` accordingly.
 
 ### Tools that support `act_as` (31)
 
-Tools where either identity is meaningful — posting, reading history, channel operations, and so on.
+Tools where either identity is meaningful: posting, reading history, channel operations, and so on.
 
 <AccordionGroup>
   <Accordion title="Show supported tools">
@@ -99,7 +99,7 @@ Tools where either identity is meaningful — posting, reading history, channel 
 
 ### Tools that don't accept `act_as`
 
-Slack only permits one token type for certain methods. For these, the correct token is **selected automatically** — passing `act_as` won't cause an error.
+Slack only permits one token type for certain methods. For these, the correct token is **selected automatically**: passing `act_as` won't cause an error.
 
 <AccordionGroup>
   <Accordion title="User token only (27 tools)">
@@ -124,7 +124,7 @@ Slack only permits one token type for certain methods. For these, the correct to
 </AccordionGroup>
 
 <Warning>
-**The bot can only post where it's able to join.** A one-on-one DM between two people has a fixed two-member roster, and no third party — including the bot — can join it. Posting to such a DM with `act_as="bot"` returns `channel_not_found`. Use `act_as="user"` for DMs with other people.
+**The bot can only post where it's able to join.** A one-on-one DM between two people has a fixed two-member roster, and no third party (including the bot) can join it. Posting to such a DM with `act_as="bot"` returns `channel_not_found`. Use `act_as="user"` for DMs with other people.
 </Warning>
 
 ### Setting a default
@@ -134,7 +134,7 @@ If passing `act_as` every time is tedious, use a **parameter policy** to set a p
 For example, setting `default_value: "user"` on `act_as` for `slack_post_message` makes your posts default to your own identity.
 
 <Note>
-To enforce a value unconditionally, use the `forced_value` policy instead — it overrides whatever the agent specifies.
+To enforce a value unconditionally, use the `forced_value` policy instead. It overrides whatever the agent specifies.
 </Note>
 
 ## Available Tools

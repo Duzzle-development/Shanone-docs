@@ -1,6 +1,6 @@
 ---
 title: "Monday.com"
-description: "Manage monday.com boards, items, docs, and teams — items, columns, groups, updates, and workspace administration"
+description: "Manage monday.com boards, items, docs, and teams: items, columns, groups, updates, and workspace administration"
 icon: /images/monday.svg
 ---
 
@@ -81,12 +81,12 @@ Shanone provides **68 tools** for Monday.com, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Tool calls fail with a complexity budget error">
-    monday.com's GraphQL API enforces a query complexity limit per minute — check `monday_get_query_complexity` and reduce batch sizes or add delays between heavy calls like `monday_get_items_page`.
+    monday.com's GraphQL API enforces a query complexity limit per minute. Check `monday_get_query_complexity` and reduce batch sizes or add delays between heavy calls like `monday_get_items_page`.
   </Accordion>
   <Accordion title="monday_change_multiple_column_values fails with a format error">
     Column values must be JSON-encoded in the exact shape monday.com expects per column type; check `monday_list_columns` for each column's type before building the payload.
   </Accordion>
   <Accordion title="Can't find an item created moments ago">
-    monday.com's search indexing can lag slightly behind writes — retry `monday_search_items_by_column_values` after a short delay, or fetch directly via `monday_get_item` using the ID returned from creation.
+    monday.com's search indexing can lag slightly behind writes. Retry `monday_search_items_by_column_values` after a short delay, or fetch directly via `monday_get_item` using the ID returned from creation.
   </Accordion>
 </AccordionGroup>

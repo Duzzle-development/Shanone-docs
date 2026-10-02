@@ -6,7 +6,7 @@ icon: /images/google-meet.svg
 
 # Google Meet
 
-Shanone's Google Meet integration gives your agent 14 tools for creating meeting spaces and pulling structured data out of past conferences — participants, recordings, transcripts, and AI-generated smart notes.
+Shanone's Google Meet integration gives your agent 14 tools for creating meeting spaces and pulling structured data out of past conferences: participants, recordings, transcripts, and AI-generated smart notes.
 
 ## Getting Started
 
@@ -43,7 +43,7 @@ Shanone provides **14 tools** for Google Meet, organized into these categories:
     `google_meet_list_transcripts`, `google_meet_get_transcript`, `google_meet_list_transcript_entries`
   </Accordion>
   <Accordion title="Smart notes">
-    `google_meet_list_smart_notes`, `google_meet_get_smart_note` — Gemini-generated meeting summaries, when enabled on the Workspace account
+    `google_meet_list_smart_notes`, `google_meet_get_smart_note`: Gemini-generated meeting summaries, when enabled on the Workspace account
   </Accordion>
 </AccordionGroup>
 
@@ -68,12 +68,12 @@ Shanone provides **14 tools** for Google Meet, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="google_meet_get_transcript or google_meet_get_smart_note returns nothing">
-    Transcripts and smart notes are only generated when recording/transcription was enabled during the meeting and are subject to the Workspace admin's Meet feature settings — they aren't available retroactively for meetings that didn't have them turned on.
+    Transcripts and smart notes are only generated when recording/transcription was enabled during the meeting and are subject to the Workspace admin's Meet feature settings: they aren't available retroactively for meetings that didn't have them turned on.
   </Accordion>
   <Accordion title="google_meet_list_conference_records returns an empty list for a space I know was used">
     Conference records are created per-instance of a meeting in a space; use `google_meet_get_space` first to confirm the space name/ID, then list records scoped to that space rather than assuming a global listing.
   </Accordion>
   <Accordion title="google_meet_create_space succeeds but the join link doesn't work for external users">
-    Space access settings are controlled by the Workspace admin's Meet safety settings (e.g. "Only invited users can join without knocking") — this is configured outside Shanone in the Google Admin console.
+    Space access settings are controlled by the Workspace admin's Meet safety settings (e.g. "Only invited users can join without knocking"). This is configured outside Shanone in the Google Admin console.
   </Accordion>
 </AccordionGroup>

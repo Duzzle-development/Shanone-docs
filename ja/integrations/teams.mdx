@@ -1,12 +1,12 @@
 ---
 title: "Microsoft Teams"
-description: "チーム、チャネル、チャット、会議、ファイルを管理する — メッセージング、リアクション、カレンダー連携"
+description: "チーム、チャネル、チャット、会議、ファイルを管理する：メッセージング、リアクション、カレンダー連携"
 icon: /images/teams.svg
 ---
 
 # Microsoft Teams
 
-ShanoneのMicrosoft Teams連携は、チーム/チャネル、チャットとメッセージング、会議とカレンダー、ファイル、タブ、分析をカバーする97個のツールをエージェントに提供します——Teamsクライアントを開かずに、コラボレーション業務の大半を実行できます。
+ShanoneのMicrosoft Teams連携は、チーム/チャネル、チャットとメッセージング、会議とカレンダー、ファイル、タブ、分析をカバーする97個のツールをエージェントに提供します。Teamsクライアントを開かずに、コラボレーション業務の大半を実行できます。
 
 ## はじめに
 
@@ -77,12 +77,12 @@ ShanoneはMicrosoft Teams向けに**97個のツール**を、以下のカテゴ�
 
 <AccordionGroup>
   <Accordion title="teams_get_meeting_transcriptやteams_get_meeting_recordingが何も返さない">
-    文字起こしと録画は対象の会議で有効化されている必要があり(主催者側の設定であることが多い)、会議終了後の処理に時間がかかることがあります——有効化した直後は、少し待ってから再試行してください。
+    文字起こしと録画は対象の会議で有効化されている必要があり(主催者側の設定であることが多い)、会議終了後の処理に時間がかかることがあります。有効化した直後は、少し待ってから再試行してください。
   </Accordion>
   <Accordion title="teams_send_channel_messageは成功するがメッセージの見た目が想定と違う">
-    通常の`teams_send_channel_message`は基本的なテキストのみをサポートします——書式付きコンテンツには`teams_send_html_message`、リッチなカードには`teams_send_card_message`、ユーザーへの正しい@メンションには`teams_send_message_with_mention`を使ってください(テキスト内に生の`@名前`を書くだけでは誰にも通知されません)。
+    通常の`teams_send_channel_message`は基本的なテキストのみをサポートします。書式付きコンテンツには`teams_send_html_message`、リッチなカードには`teams_send_card_message`、ユーザーへの正しい@メンションには`teams_send_message_with_mention`を使ってください(テキスト内に生の`@名前`を書くだけでは誰にも通知されません)。
   </Accordion>
   <Accordion title="teams_create_teamやteams_add_memberが権限エラーで失敗する">
-    チーム/メンバーに対するほとんどの書き込み操作には、通常のメンバーが持つ以上の管理者レベルのMicrosoft Graph権限が接続アカウントに必要です——継続的に失敗する場合はMicrosoft 365の管理者に確認してください。
+    チーム/メンバーに対するほとんどの書き込み操作には、通常のメンバーが持つ以上の管理者レベルのMicrosoft Graph権限が接続アカウントに必要です。継続的に失敗する場合はMicrosoft 365の管理者に確認してください。
   </Accordion>
 </AccordionGroup>

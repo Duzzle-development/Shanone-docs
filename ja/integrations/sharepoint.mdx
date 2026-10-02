@@ -6,7 +6,7 @@ icon: /images/sharepoint.svg
 
 # SharePoint
 
-ShanoneのSharePoint連携は、サイトの検索、ドキュメントライブラリの閲覧、ファイルの入出力を行う13個のツールをエージェントに提供します——SharePointの管理機能全体ではなく、エージェントが実際に必要とする操作に絞り込んだセットです。
+ShanoneのSharePoint連携は、サイトの検索、ドキュメントライブラリの閲覧、ファイルの入出力を行う13個のツールをエージェントに提供します。SharePointの管理機能全体ではなく、エージェントが実際に必要とする操作に絞り込んだセットです。
 
 ## はじめに
 
@@ -62,10 +62,10 @@ ShanoneはSharePoint向けに**13個のツール**を、以下のカテゴリに
 
 <AccordionGroup>
   <Accordion title="sharepoint_search_sitesやsharepoint_search_filesが何も返さない">
-    接続したアカウントが対象サイトの実際のメンバーである必要があります——SharePointの検索は、テナント全体ではなく認証済みユーザーが見えるサイトに限定されます。
+    接続したアカウントが対象サイトの実際のメンバーである必要があります。SharePointの検索は、テナント全体ではなく認証済みユーザーが見えるサイトに限定されます。
   </Accordion>
   <Accordion title="sharepoint_upload_fileが大きいファイルで失敗する">
-    `sharepoint_upload_file`の`shanone_get_tool_schema`を確認してください——非常に大きいファイル(通常数MBを超えるもの)は、小さいファイルとは異なるアップロードセッションのフローが必要になることが多いため、可能な場合は大きなアップロードを小さいファイルに分割してください。
+    `sharepoint_upload_file`の`shanone_get_tool_schema`を確認してください。非常に大きいファイル(通常数MBを超えるもの)は、小さいファイルとは異なるアップロードセッションのフローが必要になることが多いため、可能な場合は大きなアップロードを小さいファイルに分割してください。
   </Accordion>
   <Accordion title="sharepoint_delete_fileやsharepoint_delete_folderが成功してもアイテムが表示され続ける">
     削除したアイテムは即座に消えるのではなく、サイトのごみ箱に移動します。これはツールの不具合ではなく、SharePointの想定された動作です。

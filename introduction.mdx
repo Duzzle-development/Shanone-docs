@@ -1,15 +1,15 @@
 ---
 title: "Introduction"
-description: "Shanone is the Command Center for Agent Harnesses — a hosted MCP server that gives Cursor, Claude Code, and any MCP client access to 140+ integrations, while your team controls who can use what."
+description: "Shanone is the Command Center for Agent Harnesses: a hosted MCP server that gives Cursor, Claude Code, and any MCP client access to 140+ integrations, while your team controls who can use what."
 ---
 
 ## What is Shanone?
 
-Shanone is **not** an autonomous agent that thinks and plans on its own. Shanone is the layer *underneath* the agents your team already uses — Cursor, Claude Code, or any other [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) client. It is:
+Shanone is **not** an autonomous agent that thinks and plans on its own. Shanone is the layer *underneath* the agents your team already uses: Cursor, Claude Code, or any other [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) client. It is:
 
-- **A tool vendor** — a single hosted MCP server that exposes Slack, GitHub, Notion, Stripe, Google Workspace, Ethereum, and 140+ other services as callable tools, so your agents don't need a bespoke integration for every service they touch.
-- **A skill vendor** — a place to save reusable, step-by-step workflows ("Skills") once and reuse them from any machine, IDE, or agent.
-- **A permission manager** — an IAM-style control plane so the team (or organization) that owns the Shanone account decides exactly which member can use which tool or service, not just who has an account.
+- **A tool vendor**: a single hosted MCP server that exposes Slack, GitHub, Notion, Stripe, Google Workspace, Ethereum, and 140+ other services as callable tools, so your agents don't need a bespoke integration for every service they touch.
+- **A skill vendor**: a place to save reusable, step-by-step workflows ("Skills") once and reuse them from any machine, IDE, or agent.
+- **A permission manager**: an IAM-style control plane so the team (or organization) that owns the Shanone account decides exactly which member can use which tool or service, not just who has an account.
 
 Put simply: **tools for your agents, permissions for your team, all in one place.**
 
@@ -38,7 +38,7 @@ Put simply: **tools for your agents, permissions for your team, all in one place
   </Card>
 </CardGroup>
 
-Don't see a service you need listed on the [Integrations](/integrations/overview) pages? It's very likely already implemented — those pages only cover a curated subset in depth. Ask your agent to run `shanone_search_tools` with the service name; if it's registered, it will show up.
+Don't see a service you need listed on the [Integrations](/integrations/overview) pages? It's very likely already implemented. Those pages only cover a curated subset in depth. Ask your agent to run `shanone_search_tools` with the service name; if it's registered, it will show up.
 
 ## How agents use Shanone
 
@@ -52,13 +52,13 @@ External AI agents don't get a separate MCP tool for every possible action (that
     The agent reads `inputSchema` in the search result. It calls `shanone_get_tool_schema` only when the result has `schemaRef` instead.
   </Step>
   <Step title="Execute the tool">
-    The agent calls `shanone_execute_tool` with the tool name and arguments. If the underlying service needs authentication, Shanone returns a `connect_link` instead of failing outright — the user visits it, authorizes, and the agent retries.
+    The agent calls `shanone_execute_tool` with the tool name and arguments. If the underlying service needs authentication, Shanone returns a `connect_link` instead of failing outright. The user visits it, authorizes, and the agent retries.
   </Step>
 </Steps>
 
 The same pattern repeats for reusable workflows: `shanone_list_skills` → `shanone_get_skill` → the agent follows the instructions itself, calling tools as needed. And for team administrators, `shanone_list_services` → `shanone_set_user_tool_permission` / `shanone_set_user_service_permission` lets a Root or delegated SA2 user control exactly which tools each teammate's agent is allowed to run.
 
-All of this happens over a single MCP connection — no per-service OAuth apps to register, no per-service SDKs to vendor into your agent's runtime.
+All of this happens over a single MCP connection: no per-service OAuth apps to register, no per-service SDKs to vendor into your agent's runtime.
 
 ## Next steps
 

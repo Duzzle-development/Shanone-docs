@@ -1,12 +1,12 @@
 ---
 title: "Square"
-description: "POSコマースを運用する — 注文、決済、請求書、カタログ、ロイヤルティ、予約"
+description: "POSコマースを運用する：注文、決済、請求書、カタログ、ロイヤルティ、予約"
 icon: /images/square.svg
 ---
 
 # Square
 
-ShanoneのSquare連携は、注文、決済、請求書発行、商品カタログ、ロイヤルティ、サブスクリプション、予約にまたがる140個のツールをエージェントに提供します——小売業やサービス業の日常的なコマース運用の大半をカバーできます。
+ShanoneのSquare連携は、注文、決済、請求書発行、商品カタログ、ロイヤルティ、サブスクリプション、予約にまたがる140個のツールをエージェントに提供します。小売業やサービス業の日常的なコマース運用の大半をカバーできます。
 
 ## はじめに
 
@@ -89,15 +89,15 @@ ShanoneはSquare向けに**140個のツール**を、以下のカテゴリに整
 
 <AccordionGroup>
   <Accordion title="square_create_paymentやsquare_create_orderが冪等性エラーで失敗する">
-    Squareは重複課金を防ぐため、書き込み系の呼び出しごとに一意な`idempotency_key`を要求します——`square_create_payment`の`shanone_get_tool_schema`を確認し、リトライごとではなく試行ごとに新しいキーを生成してください。
+    Squareは重複課金を防ぐため、書き込み系の呼び出しごとに一意な`idempotency_key`を要求します。`square_create_payment`の`shanone_get_tool_schema`を確認し、リトライごとではなく試行ごとに新しいキーを生成してください。
   </Accordion>
   <Accordion title="square_upsert_catalog_objectでのカタログ書き込みが期待した結果にならない">
-    Squareのカタログは型付きオブジェクト(ITEM、ITEM_VARIATION、CATEGORYなど)のグラフで構成され、新規オブジェクトにはクライアント側で割り当てる一時IDを使用します——一時IDの不一致や再利用が、想定外のカタログ状態になる最も多い原因です。
+    Squareのカタログは型付きオブジェクト(ITEM、ITEM_VARIATION、CATEGORYなど)のグラフで構成され、新規オブジェクトにはクライアント側で割り当てる一時IDを使用します。一時IDの不一致や再利用が、想定外のカタログ状態になる最も多い原因です。
   </Accordion>
   <Accordion title="square_search_availabilityが空き枠を返さない">
-    空き状況検索は、Square側でビジネスの予約プロフィールとチームメンバーのスケジュールが正しく設定されていることに依存します——ツールの不具合と決めつける前に、`square_retrieve_business_booking_profile`で予約機能が有効になっているか確認してください。
+    空き状況検索は、Square側でビジネスの予約プロフィールとチームメンバーのスケジュールが正しく設定されていることに依存します。ツールの不具合と決めつける前に、`square_retrieve_business_booking_profile`で予約機能が有効になっているか確認してください。
   </Accordion>
   <Accordion title="square_accept_disputeなどの異議申し立て操作が失敗する">
-    異議申し立てには対応期限と特定の必須状態があります(例: 一部の操作の前にエビデンスの提出が必要)——操作する前に`square_get_dispute`で現在の状態を確認してください。
+    異議申し立てには対応期限と特定の必須状態があります(例: 一部の操作の前にエビデンスの提出が必要)。操作する前に`square_get_dispute`で現在の状態を確認してください。
   </Accordion>
 </AccordionGroup>

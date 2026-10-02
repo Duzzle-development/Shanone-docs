@@ -6,7 +6,7 @@ icon: /images/wise.svg
 
 # Wise
 
-Shanone's Wise integration gives your agent 57 tools for cross-border money movement — quotes, transfers, recipients, multi-currency balances, and the profile/webhook tools needed to run it programmatically.
+Shanone's Wise integration gives your agent 57 tools for cross-border money movement: quotes, transfers, recipients, multi-currency balances, and the profile/webhook tools needed to run it programmatically.
 
 ## Getting Started
 
@@ -83,7 +83,7 @@ Shanone provides **57 tools** for Wise, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="wise_create_transfer fails after a valid quote">
-    Transfers require a funded balance or valid payment method — call `wise_fund_transfer` (or ensure sufficient balance via `wise_list_balances`) right after creation, since an unfunded transfer stays in an incomplete state.
+    Transfers require a funded balance or valid payment method. Call `wise_fund_transfer` (or ensure sufficient balance via `wise_list_balances`) right after creation, since an unfunded transfer stays in an incomplete state.
   </Accordion>
   <Accordion title="wise_create_recipient rejects the payload">
     Recipient requirements vary by currency and country. Call `wise_get_recipient_requirements` for the target currency first to see which fields (IBAN, sort code, routing number, etc.) are mandatory before submitting.

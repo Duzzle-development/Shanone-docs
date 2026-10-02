@@ -1,6 +1,6 @@
 ---
 title: "Google Calendar"
-description: "Manage calendars and events — scheduling, free/busy lookup, sharing, and smart scheduling helpers"
+description: "Manage calendars and events: scheduling, free/busy lookup, sharing, and smart scheduling helpers"
 icon: /images/google-calendar.svg
 ---
 
@@ -68,12 +68,12 @@ Shanone provides **49 tools** for Google Calendar, organized into these categori
 
 <AccordionGroup>
   <Accordion title="google_calendar_create_event succeeds but attendees don't get notified">
-    Check the `sendUpdates` behavior in the tool schema with `shanone_get_tool_schema` — notifications are opt-in per call and default settings can vary by calendar.
+    Check the `sendUpdates` behavior in the tool schema with `shanone_get_tool_schema`: notifications are opt-in per call and default settings can vary by calendar.
   </Accordion>
   <Accordion title="google_calendar_find_free_slots misses busy time from a shared calendar">
     Pass all relevant calendar IDs explicitly, or use `google_calendar_list_events_from_all_calendars` first to confirm which calendars the connected account actually has visibility into.
   </Accordion>
   <Accordion title="google_calendar_watch_events or watch_calendar_list stops delivering updates">
-    Push notification channels expire — call `google_calendar_stop_channel` on the old channel and re-issue a new `watch_*` call rather than assuming a channel is permanent.
+    Push notification channels expire. Call `google_calendar_stop_channel` on the old channel and re-issue a new `watch_*` call rather than assuming a channel is permanent.
   </Accordion>
 </AccordionGroup>

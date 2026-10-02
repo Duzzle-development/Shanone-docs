@@ -1,6 +1,6 @@
 ---
 title: "Outlook"
-description: "Manage mail, calendars, contacts, and tasks — Microsoft 365's full messaging and scheduling surface"
+description: "Manage mail, calendars, contacts, and tasks: Microsoft 365's full messaging and scheduling surface"
 icon: /images/outlook.svg
 ---
 
@@ -74,7 +74,7 @@ Shanone provides **134 tools** for Outlook, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="outlook_send_mail fails with an invalid recipient error">
-    Check the exact payload shape with `shanone_get_tool_schema` for `outlook_send_mail` — recipients are nested objects (`{"emailAddress": {"address": "..."}}`), not flat email strings.
+    Check the exact payload shape with `shanone_get_tool_schema` for `outlook_send_mail`: recipients are nested objects (`{"emailAddress": {"address": "..."}}`), not flat email strings.
   </Accordion>
   <Accordion title="outlook_get_mail_delta or outlook_get_calendar_delta returns a resync-required error">
     Delta tokens expire after extended inactivity. Call the delta tool without a token to restart the sync, then persist the new `@odata.deltaLink` for subsequent calls.
@@ -83,6 +83,6 @@ Shanone provides **134 tools** for Outlook, organized into these categories:
     Use `outlook_list_event_instances` to find the specific instance's ID, then `outlook_update_event_instance` rather than `outlook_update_event` on the series master.
   </Accordion>
   <Accordion title="outlook_find_available_rooms returns no results">
-    Room availability depends on the room list/mailbox actually being provisioned as a resource mailbox in Microsoft 365 — confirm with `outlook_list_room_lists` that the expected room list exists first.
+    Room availability depends on the room list/mailbox actually being provisioned as a resource mailbox in Microsoft 365. Confirm with `outlook_list_room_lists` that the expected room list exists first.
   </Accordion>
 </AccordionGroup>

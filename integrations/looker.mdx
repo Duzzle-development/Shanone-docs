@@ -1,6 +1,6 @@
 ---
 title: "Looker"
-description: "Query and manage Looker — looks, dashboards, explores/models, scheduled plans, embed URLs, and admin (users, roles, groups)"
+description: "Query and manage Looker: looks, dashboards, explores/models, scheduled plans, embed URLs, and admin (users, roles, groups)"
 icon: /images/looker.svg
 ---
 
@@ -83,9 +83,9 @@ Shanone provides **71 tools** for Looker, organized into these categories:
     Use `looker_create_query_task` plus `looker_get_query_task_results` for async execution instead of `looker_run_query`, which blocks until the query finishes.
   </Accordion>
   <Accordion title="looker_create_sso_embed_url fails with an invalid signature error">
-    SSO embedding requires the embed secret configured in Looker's Admin > Embed settings to match what Shanone is signing with — double check the embed domain allowlist too.
+    SSO embedding requires the embed secret configured in Looker's Admin > Embed settings to match what Shanone is signing with. Double check the embed domain allowlist too.
   </Accordion>
   <Accordion title="Admin tools return a 403">
-    User, role, and group management require the connected API3 credential to belong to a Looker user with Admin permissions — a viewer-level credential won't work for these calls.
+    User, role, and group management require the connected API3 credential to belong to a Looker user with Admin permissions: a viewer-level credential won't work for these calls.
   </Accordion>
 </AccordionGroup>

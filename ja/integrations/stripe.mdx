@@ -1,12 +1,12 @@
 ---
 title: "Stripe"
-description: "決済、サブスクリプション、請求、Treasury、Issuing — Shanoneカタログ最大の連携"
+description: "決済、サブスクリプション、請求、Treasury、Issuing：Shanoneカタログ最大の連携"
 icon: /images/stripe.svg
 ---
 
 # Stripe
 
-ShanoneのStripe連携は、エージェントに328個のツールを提供します——カタログ中で最大の単一連携であり、基本的な課金処理からStripe TreasuryやIssuingまで幅広くカバーします。
+ShanoneのStripe連携は、エージェントに328個のツールを提供します。カタログ中で最大の単一連携であり、基本的な課金処理からStripe TreasuryやIssuingまで幅広くカバーします。
 
 <Warning>
 Stripeのツールの多くは実際のお金を動かしたり、実際の金融レコードを作成したりします。読み取り専用のクエリ以外をエージェントに実行させる前には引数を必ず確認し、エージェントに本当に必要な範囲だけに絞った制限付きのAPIキーを接続することも検討してください。
@@ -19,7 +19,7 @@ Stripeのツールの多くは実際のお金を動かしたり、実際の金�
     エージェントにStripe関連の作業を依頼するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
   </Step>
   <Step title="テストモードかライブモードかを選ぶ">
-    Stripeはテスト用とライブ用のAPIキーを、どちらのキーを接続したかだけで区別します——エージェントのワークフローを構築・検証している間は**テストモード**のキーを接続してください。
+    Stripeはテスト用とライブ用のAPIキーを、どちらのキーを接続したかだけで区別します。エージェントのワークフローを構築・検証している間は**テストモード**のキーを接続してください。
   </Step>
   <Step title="リクエストを再実行する">
     接続が完了すると、`stripe_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
@@ -28,7 +28,7 @@ Stripeのツールの多くは実際のお金を動かしたり、実際の金�
 
 ## 利用可能なツール
 
-ShanoneはStripe向けに**328個のツール**を提供しています——群を抜いて最大の連携です。慣れないStripeツールを実行する前には必ず`shanone_get_tool_schema`を使ってください。フィールド名はStripe APIに厳密に準拠しており、書き込み操作で間違えた場合のコストは他の連携より大きくなります。
+ShanoneはStripe向けに**328個のツール**を提供しています。群を抜いて最大の連携です。慣れないStripeツールを実行する前には必ず`shanone_get_tool_schema`を使ってください。フィールド名はStripe APIに厳密に準拠しており、書き込み操作で間違えた場合のコストは他の連携より大きくなります。
 
 <AccordionGroup>
   <Accordion title="顧客、決済 & チェックアウト">
@@ -87,12 +87,12 @@ ShanoneはStripe向けに**328個のツール**を提供しています——群
 
 <AccordionGroup>
   <Accordion title="書き込み操作は成功したのにStripeダッシュボードに反映されない">
-    ダッシュボードで見ているのがテストモードかライブモードかを確認してください——接続しているAPIキーのモードと一致している必要があります。
+    ダッシュボードで見ているのがテストモードかライブモードかを確認してください。接続しているAPIキーのモードと一致している必要があります。
   </Accordion>
   <Accordion title="Confirmation Required（確認が必要）というレスポンスが返る">
     リスクの高いStripeツール(例: Issuingカードの操作、大口の返金)は`reason: "confirmation_required"`を返す場合があります。内容に問題がないことを確認してから、同じ引数に`"confirm": true`を加えて再実行してください。
   </Accordion>
   <Accordion title="有効に見えるIDでObject not foundエラーが出る">
-    StripeのIDはモードごとに異なります——テストモードで作成された`cus_...`や`pi_...`のIDはライブモードには存在せず、逆も同様です。
+    StripeのIDはモードごとに異なります。テストモードで作成された`cus_...`や`pi_...`のIDはライブモードには存在せず、逆も同様です。
   </Accordion>
 </AccordionGroup>

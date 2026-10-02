@@ -1,6 +1,6 @@
 ---
 title: "Mem0"
-description: "エージェントに永続的で検索可能な長期記憶を持たせる — メモリとそれが参照するエンティティを追加・検索・管理する"
+description: "エージェントに永続的で検索可能な長期記憶を持たせる：メモリとそれが参照するエンティティを追加・検索・管理する"
 icon: /images/mem0.svg
 ---
 
@@ -40,7 +40,7 @@ ShanoneはMem0向けに**14個のツール**を、以下のカテゴリに整理
     `mem0_list_entities`, `mem0_get_entity`, `mem0_delete_entity`
   </Accordion>
   <Accordion title="イベント">
-    `mem0_get_event_status` — 非同期メモリ操作(バッチでの追加/更新/削除など)のステータスを確認する
+    `mem0_get_event_status`：非同期メモリ操作(バッチでの追加/更新/削除など)のステータスを確認する
   </Accordion>
 </AccordionGroup>
 
@@ -65,7 +65,7 @@ ShanoneはMem0向けに**14個のツール**を、以下のカテゴリに整理
 
 <AccordionGroup>
   <Accordion title="mem0_search_memoriesが関連する結果を返さない">
-    検索の精度はメモリ追加時の情報の与え方に依存します——追加時に十分なコンテキスト(user_id、agent_id、run_id)を渡すことで、後から正しくスコープを絞って取得できるようになります。
+    検索の精度はメモリ追加時の情報の与え方に依存します。追加時に十分なコンテキスト(user_id、agent_id、run_id)を渡すことで、後から正しくスコープを絞って取得できるようになります。
   </Accordion>
   <Accordion title="バッチ操作が成功と表示されたのにメモリが反映されていない">
     `mem0_get_event_status`でバッチ操作が完全に完了したかを確認できます。一部のバッチ追加/更新呼び出しは非同期で処理されるため、結果が確定するまで少し時間がかかることがあります。

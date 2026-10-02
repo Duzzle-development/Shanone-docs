@@ -31,10 +31,10 @@ Shanoneは Bubble向けに**7個のツール**を提供しています。
     `bubble_list_records`, `bubble_get_record`, `bubble_create_record`, `bubble_update_record`, `bubble_delete_record`
   </Accordion>
   <Accordion title="ワークフロー">
-    `bubble_trigger_workflow` — Bubbleのワークフローエディタで公開設定されたAPIワークフローをトリガーする
+    `bubble_trigger_workflow`：Bubbleのワークフローエディタで公開設定されたAPIワークフローをトリガーする
   </Accordion>
   <Accordion title="API仕様の確認">
-    `bubble_get_api_spec` — アプリのSwagger/OpenAPI仕様を取得し、公開されているデータ型やワークフローを確認する
+    `bubble_get_api_spec`：アプリのSwagger/OpenAPI仕様を取得し、公開されているデータ型やワークフローを確認する
   </Accordion>
 </AccordionGroup>
 
@@ -62,7 +62,7 @@ Shanoneは Bubble向けに**7個のツール**を提供しています。
     そのデータ型がData APIに公開されていない可能性があります。Bubbleの**Settings > API**で、そのデータ型の"Data API"トグルが有効になっているか、名前が一致しているか(大文字小文字は区別されず、スペースは除去される)を確認してください。
   </Accordion>
   <Accordion title="存在するはずのワークフローでbubble_trigger_workflowが404を返す">
-    そのワークフローがBubbleのBackend Workflowsエディタで公開APIワークフローとしてマークされている必要があります — 内部限定のワークフローはWorkflow API経由では到達できません。
+    そのワークフローがBubbleのBackend Workflowsエディタで公開APIワークフローとしてマークされている必要があります。内部限定のワークフローはWorkflow API経由では到達できません。
   </Accordion>
   <Accordion title="bubble_create_recordやbubble_update_recordで書き込んだフィールドの値が想定通りに反映されない">
     BubbleのAPI上のフィールド名は、エディタに表示される表示名と微妙に異なることがよくあります。書き込む前に`bubble_get_api_spec`で正確なフィールドキーを確認してください。

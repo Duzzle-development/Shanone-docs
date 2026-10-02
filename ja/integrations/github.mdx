@@ -15,7 +15,7 @@ ShanoneのGitHub連携では、日常的なIssue・PRのワークフローから
     エージェントにGitHubで何か作業をしてもらう(例:「my-org/my-repoのオープンなPRを一覧表示して」)か、Shanoneダッシュボードの**Integrations**から事前に接続します。
   </Step>
   <Step title="リクエストされたスコープを承認する">
-    GitHubのOAuth承認画面には、Shanoneがリクエストするスコープ(リポジトリへのアクセス、組織の読み取りなど)が表示されます——内容を確認して承認してください。
+    GitHubのOAuth承認画面には、Shanoneがリクエストするスコープ(リポジトリへのアクセス、組織の読み取りなど)が表示されます。内容を確認して承認してください。
   </Step>
   <Step title="リクエストを再試行する">
     接続が完了すると、`github_*`ツールに対するエージェントの`shanone_execute_tool`呼び出しが成功するようになります。
@@ -83,9 +83,9 @@ ShanoneはGitHub用に**176のツール**を提供しており、以下のカテ
     組織スコープのツール(`github_list_org_secrets`、`github_get_org`など)を使うには、接続済みアカウントが適切な組織ロールを持っている必要があります。これらが失敗する場合は、管理者権限を持つアカウントで再接続してください。
   </Accordion>
   <Accordion title="ワークフローのトリガーは成功するが何も実行されない">
-    ワークフローファイルが実際に`workflow_dispatch`トリガーを宣言しているか確認してください——`github_trigger_workflow`はこのトリガーをサポートするワークフローのみ開始できます。
+    ワークフローファイルが実際に`workflow_dispatch`トリガーを宣言しているか確認してください。`github_trigger_workflow`はこのトリガーをサポートするワークフローのみ開始できます。
   </Accordion>
   <Accordion title="シークレット/変数ツールが空の値を返す">
-    GitHubは仕様上、APIを通じてシークレットの値を返しません——`github_get_repo_secret`などはメタデータ(名前、タイムスタンプ)のみを返し、平文の値は返しません。
+    GitHubは仕様上、APIを通じてシークレットの値を返しません。`github_get_repo_secret`などはメタデータ(名前、タイムスタンプ)のみを返し、平文の値は返しません。
   </Accordion>
 </AccordionGroup>

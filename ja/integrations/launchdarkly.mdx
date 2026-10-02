@@ -1,12 +1,12 @@
 ---
 title: "LaunchDarkly"
-description: "フィーチャーフラグ、実験、AI Config、セグメント、監査ログなど — 機能管理全般"
+description: "フィーチャーフラグ、実験、AI Config、セグメント、監査ログなど：機能管理全般"
 icon: /images/launchdarkly.svg
 ---
 
 # LaunchDarkly
 
-ShanoneのLaunchDarkly連携では、LaunchDarklyの機能管理プラットフォームのほぼ全機能——フラグ、環境、セグメント、実験、AI Config、承認、監査ログ、チーム/ロール管理を扱う76のツールをエージェントが利用できるようになります。
+ShanoneのLaunchDarkly連携では、LaunchDarklyの機能管理プラットフォームのほぼ全機能、フラグ、環境、セグメント、実験、AI Config、承認、監査ログ、チーム/ロール管理を扱う76のツールをエージェントが利用できるようになります。
 
 ## はじめに
 
@@ -77,12 +77,12 @@ ShanoneはLaunchDarkly用に**76のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="launchdarkly_toggle_feature_flagが反映されないように見える">
-    フラグは環境ごとに切り替わります——正しい`environmentKey`(例:`production`か`staging`か)を指定しているか確認してください。ある環境での切り替えは他の環境には影響しません。
+    フラグは環境ごとに切り替わります。正しい`environmentKey`(例:`production`か`staging`か)を指定しているか確認してください。ある環境での切り替えは他の環境には影響しません。
   </Accordion>
   <Accordion title="launchdarkly_update_feature_flagやlaunchdarkly_delete_feature_flagが競合/承認エラーを返す">
-    LaunchDarklyのワークスペースによっては、フラグの変更に承認ワークフローが必須な場合があります——直接更新する代わりに`launchdarkly_create_approval_request_for_flag`と`launchdarkly_review_approval_request_for_flag`/`launchdarkly_apply_approval_request_for_flag`を使用してください。
+    LaunchDarklyのワークスペースによっては、フラグの変更に承認ワークフローが必須な場合があります。直接更新する代わりに`launchdarkly_create_approval_request_for_flag`と`launchdarkly_review_approval_request_for_flag`/`launchdarkly_apply_approval_request_for_flag`を使用してください。
   </Accordion>
   <Accordion title="アクセストークンが一部のツールでは動作するが他では動作しない">
-    LaunchDarklyのアクセストークンには特定のロール/権限スコープが設定されています——単一プロジェクトや読み取り専用ロールにスコープされたトークンでは、`launchdarkly_create_custom_role`や`launchdarkly_create_project`のような管理者レベルのツールで失敗します。必要に応じてより広い権限を持つトークンを生成してください。
+    LaunchDarklyのアクセストークンには特定のロール/権限スコープが設定されています。単一プロジェクトや読み取り専用ロールにスコープされたトークンでは、`launchdarkly_create_custom_role`や`launchdarkly_create_project`のような管理者レベルのツールで失敗します。必要に応じてより広い権限を持つトークンを生成してください。
   </Accordion>
 </AccordionGroup>

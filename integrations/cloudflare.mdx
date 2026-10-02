@@ -1,6 +1,6 @@
 ---
 title: "Cloudflare"
-description: "Manage your edge platform — DNS, Workers, Pages, R2, D1, Zero Trust Access, AI Gateway, and security"
+description: "Manage your edge platform: DNS, Workers, Pages, R2, D1, Zero Trust Access, AI Gateway, and security"
 icon: /images/cloudflare.svg
 ---
 
@@ -110,13 +110,13 @@ Shanone provides **247 tools** for Cloudflare, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Tools return an 'Authentication error' despite a valid token">
-    Most Cloudflare tools need both an API Token and an Account ID (and DNS/zone tools additionally need a `zone_id`) — check `shanone_get_tool_schema` for the exact required fields, since account-scoped and zone-scoped resources use different identifiers.
+    Most Cloudflare tools need both an API Token and an Account ID (and DNS/zone tools additionally need a `zone_id`). Check `shanone_get_tool_schema` for the exact required fields, since account-scoped and zone-scoped resources use different identifiers.
   </Accordion>
   <Accordion title="cloudflare_d1_query / cloudflare_r2_* tools return a permissions error">
     API Tokens are scoped per-product; a token created only with DNS permissions won't be able to call D1, R2, or Workers endpoints. Create a new token with the additional scopes or use a broader account-level token.
   </Accordion>
   <Accordion title="Newly created DNS record isn't resolving yet">
-    DNS changes propagate through Cloudflare's edge network, which can take a short time even though the API call itself succeeds immediately — this is expected and not a tool failure.
+    DNS changes propagate through Cloudflare's edge network, which can take a short time even though the API call itself succeeds immediately. This is expected and not a tool failure.
   </Accordion>
   <Accordion title="cloudflare_create_pages_deployment doesn't reflect the latest code">
     Pages deployments are tied to whatever build/artifact was pushed at trigger time; make sure the underlying Git integration or direct upload actually contains the changes before triggering a new deployment.

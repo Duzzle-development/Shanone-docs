@@ -1,12 +1,12 @@
 ---
 title: "TikTok Ads"
-description: "Manage TikTok ad campaigns — campaigns, ad groups, ads, audiences, targeting, and reporting"
+description: "Manage TikTok ad campaigns: campaigns, ad groups, ads, audiences, targeting, and reporting"
 icon: /images/tiktok-ads.svg
 ---
 
 # TikTok Ads
 
-Shanone's TikTok Ads integration gives your agent 119 tools covering the full campaign hierarchy (campaigns → ad groups → ads), audience management, targeting dictionaries, creative assets, Business Center administration, and reporting — enough to run TikTok ad operations end-to-end from an agent.
+Shanone's TikTok Ads integration gives your agent 119 tools covering the full campaign hierarchy (campaigns → ad groups → ads), audience management, targeting dictionaries, creative assets, Business Center administration, and reporting, enough to run TikTok ad operations end-to-end from an agent.
 
 ## Getting Started
 
@@ -86,9 +86,9 @@ Shanone provides **119 tools** for TikTok Ads, organized into these categories:
     Use `tiktok_ads_create_async_report_task` instead of `tiktok_ads_run_sync_report` for large date ranges or high-cardinality breakdowns, then poll `tiktok_ads_get_async_report_task_status` and fetch results with `tiktok_ads_download_async_report`.
   </Accordion>
   <Accordion title="tiktok_ads_create_audience_by_file fails after uploading">
-    Audience files must be uploaded with `tiktok_ads_upload_audience_file` first (PII pre-hashed with SHA-256), and the audience creation call must reference the returned file ID(s) — check `shanone_get_tool_schema` for the exact linkage.
+    Audience files must be uploaded with `tiktok_ads_upload_audience_file` first (PII pre-hashed with SHA-256), and the audience creation call must reference the returned file ID(s). Check `shanone_get_tool_schema` for the exact linkage.
   </Accordion>
   <Accordion title="Targeting or budget update tools fail with a permissions error">
-    Some operations (e.g. `tiktok_ads_create_bc_ad_account`, `tiktok_ads_process_payment`) require Business Center admin-level access, not just standard Ad Account access — check the connected account's role with `tiktok_ads_get_bc_members`.
+    Some operations (e.g. `tiktok_ads_create_bc_ad_account`, `tiktok_ads_process_payment`) require Business Center admin-level access, not just standard Ad Account access. Check the connected account's role with `tiktok_ads_get_bc_members`.
   </Accordion>
 </AccordionGroup>

@@ -43,7 +43,7 @@ ShanoneはGoogle Meet用に**14のツール**を提供しており、以下の�
     `google_meet_list_transcripts`, `google_meet_get_transcript`, `google_meet_list_transcript_entries`
   </Accordion>
   <Accordion title="スマートノート">
-    `google_meet_list_smart_notes`, `google_meet_get_smart_note` — Workspaceアカウントで有効化されている場合のGemini生成による会議要約
+    `google_meet_list_smart_notes`, `google_meet_get_smart_note`：Workspaceアカウントで有効化されている場合のGemini生成による会議要約
   </Accordion>
 </AccordionGroup>
 
@@ -68,12 +68,12 @@ ShanoneはGoogle Meet用に**14のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="google_meet_get_transcriptやgoogle_meet_get_smart_noteが何も返さない">
-    トランスクリプトとスマートノートは、会議中に録画・トランスクリプトが有効になっていた場合にのみ生成され、Workspace管理者のMeet機能設定に左右されます——有効になっていなかった会議に対して後から取得することはできません。
+    トランスクリプトとスマートノートは、会議中に録画・トランスクリプトが有効になっていた場合にのみ生成され、Workspace管理者のMeet機能設定に左右されます。有効になっていなかった会議に対して後から取得することはできません。
   </Accordion>
   <Accordion title="使われたはずのスペースでgoogle_meet_list_conference_recordsが空リストを返す">
     会議記録はスペース内の会議インスタンスごとに作成されます。まず`google_meet_get_space`でスペース名/IDを確認し、グローバルな一覧を想定せずそのスペースに限定して記録を一覧表示してください。
   </Accordion>
   <Accordion title="google_meet_create_spaceは成功するが外部ユーザーの参加用リンクが機能しない">
-    スペースへのアクセス設定はWorkspace管理者のMeetセキュリティ設定(例:「招待されたユーザーのみノックなしで参加できる」)によって制御されます——これはShanoneの範囲外で、Google管理コンソールで設定します。
+    スペースへのアクセス設定はWorkspace管理者のMeetセキュリティ設定(例:「招待されたユーザーのみノックなしで参加できる」)によって制御されます。これはShanoneの範囲外で、Google管理コンソールで設定します。
   </Accordion>
 </AccordionGroup>

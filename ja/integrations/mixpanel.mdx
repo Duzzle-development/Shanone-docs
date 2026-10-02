@@ -1,6 +1,6 @@
 ---
 title: "Mixpanel"
-description: "イベントの記録、ユーザー/グループプロフィールの管理、分析クエリの実行 — セグメンテーション、リテンション、ファネル、アノテーション"
+description: "イベントの記録、ユーザー/グループプロフィールの管理、分析クエリの実行：セグメンテーション、リテンション、ファネル、アノテーション"
 icon: /images/mixpanel.svg
 ---
 
@@ -12,7 +12,7 @@ ShanoneのMixpanel連携は、イベントの記録、ユーザー/グループ�
 
 <Steps>
   <Step title="Mixpanelサービスアカウントを取得する">
-    Mixpanelのプロジェクト設定で**Service Accounts**に移動し、サービスアカウントを作成します——ユーザー名、パスワード、プロジェクトIDを控えておいてください。
+    Mixpanelのプロジェクト設定で**Service Accounts**に移動し、サービスアカウントを作成します。ユーザー名、パスワード、プロジェクトIDを控えておいてください。
   </Step>
   <Step title="Shanoneに認証情報を追加する">
     Shanoneダッシュボードの**Integrations > Mixpanel**で、プロジェクトID、サービスアカウントのユーザー名、パスワードを入力します。
@@ -74,12 +74,12 @@ ShanoneはMixpanel向けに**46個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="mixpanel_track_eventは成功するがイベントがすぐに表示されない">
-    Mixpanelの取り込みパイプラインには処理の遅延があります——トラッキング呼び出し自体は即座に成功を返しますが、レポートに反映されるまで数分かかることがあります。
+    Mixpanelの取り込みパイプラインには処理の遅延があります。トラッキング呼び出し自体は即座に成功を返しますが、レポートに反映されるまで数分かかることがあります。
   </Accordion>
   <Accordion title="mixpanel_import_eventsが過去のデータを拒否する">
     インポート用エンドポイントは(通常のトラッキングと異なり)イベントに有効な`time`プロパティを含めることを要求し、5年以上前のイベントや未来の日時のイベントは拒否します。
   </Accordion>
   <Accordion title="セグメンテーションクエリが予期せず空の結果を返す">
-    イベント名やプロパティ名が実際にトラッキングされているもの(大文字小文字を含む)と完全に一致しているか確認してください——まず`mixpanel_get_top_events`と`mixpanel_get_top_event_properties`で実際の名前を確認するとよいでしょう。
+    イベント名やプロパティ名が実際にトラッキングされているもの(大文字小文字を含む)と完全に一致しているか確認してください。まず`mixpanel_get_top_events`と`mixpanel_get_top_event_properties`で実際の名前を確認するとよいでしょう。
   </Accordion>
 </AccordionGroup>

@@ -1,12 +1,12 @@
 ---
 title: "LaunchDarkly"
-description: "Feature flags, experiments, AI Configs, segments, and audit logs — full feature management"
+description: "Feature flags, experiments, AI Configs, segments, and audit logs: full feature management"
 icon: /images/launchdarkly.svg
 ---
 
 # LaunchDarkly
 
-Shanone's LaunchDarkly integration gives your agent 76 tools covering nearly all of LaunchDarkly's feature management platform — flags, environments, segments, experiments, AI Configs, approvals, audit logs, and team/role administration.
+Shanone's LaunchDarkly integration gives your agent 76 tools covering nearly all of LaunchDarkly's feature management platform: flags, environments, segments, experiments, AI Configs, approvals, audit logs, and team/role administration.
 
 ## Getting Started
 
@@ -77,12 +77,12 @@ Shanone provides **76 tools** for LaunchDarkly, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="launchdarkly_toggle_feature_flag doesn't seem to take effect">
-    Flags are toggled per-environment — confirm you're targeting the right `environmentKey` (e.g. `production` vs `staging`), since toggling in one environment has no effect on others.
+    Flags are toggled per-environment. Confirm you're targeting the right `environmentKey` (e.g. `production` vs `staging`), since toggling in one environment has no effect on others.
   </Accordion>
   <Accordion title="launchdarkly_update_feature_flag or launchdarkly_delete_feature_flag returns a conflict/approval error">
-    Some LaunchDarkly workspaces require approval workflows for flag changes — use `launchdarkly_create_approval_request_for_flag` and `launchdarkly_review_approval_request_for_flag`/`launchdarkly_apply_approval_request_for_flag` instead of updating directly.
+    Some LaunchDarkly workspaces require approval workflows for flag changes. Use `launchdarkly_create_approval_request_for_flag` and `launchdarkly_review_approval_request_for_flag`/`launchdarkly_apply_approval_request_for_flag` instead of updating directly.
   </Accordion>
   <Accordion title="Access Token works for some tools but not others">
-    LaunchDarkly access tokens carry specific role/permission scopes — a token scoped to a single project or reader role will fail on admin-level tools like `launchdarkly_create_custom_role` or `launchdarkly_create_project`; generate a token with broader permissions if needed.
+    LaunchDarkly access tokens carry specific role/permission scopes: a token scoped to a single project or reader role will fail on admin-level tools like `launchdarkly_create_custom_role` or `launchdarkly_create_project`; generate a token with broader permissions if needed.
   </Accordion>
 </AccordionGroup>

@@ -1,12 +1,12 @@
 ---
 title: "BrowserUse"
-description: "クラウドでAIブラウザ自動化セッションを実行 — プロファイル、ブラウザ、ワークスペース、請求管理"
+description: "クラウドでAIブラウザ自動化セッションを実行：プロファイル、ブラウザ、ワークスペース、請求管理"
 icon: /images/browseruse.svg
 ---
 
 # BrowserUse
 
-ShanoneのBrowserUse連携では、クラウドブラウザ自動化に関する**27個のツール**をエージェントに提供します — BrowserUse独自のブラウジングエージェントによるセッション、再利用可能なブラウザプロファイル、ワークスペースのファイルストレージ、請求状況の確認をカバーしています。
+ShanoneのBrowserUse連携では、クラウドブラウザ自動化に関する**27個のツール**をエージェントに提供します。BrowserUse独自のブラウジングエージェントによるセッション、再利用可能なブラウザプロファイル、ワークスペースのファイルストレージ、請求状況の確認をカバーしています。
 
 ## はじめに
 
@@ -68,7 +68,7 @@ Shanoneは BrowserUse向けに**27個のツール**を提供しており、以�
     セッションは実際のゴール記述に対して非同期に実行されます。適切なタイムアウトを設定して`browseruse_wait_for_session`を使うか、`browseruse_get_session`をポーリングし、`browseruse_list_session_messages`で進行状況を確認してください。
   </Accordion>
   <Accordion title="保存済みの認証情報を再利用せず、セッションがログインフローを繰り返す">
-    セッション作成時に既存の`profile_id`(`browseruse_create_profile`で作成)を指定してください — プロファイルを指定しないセッションは常にクリーンなブラウザ状態から始まります。
+    セッション作成時に既存の`profile_id`(`browseruse_create_profile`で作成)を指定してください。プロファイルを指定しないセッションは常にクリーンなブラウザ状態から始まります。
   </Accordion>
   <Accordion title="browseruse_upload_workspace_fileが失敗する、またはセッションからファイルが見えない">
     ワークスペースIDがセッションの設定と一致しているか確認し、`browseruse_get_workspace_size`でストレージの容量制限に達していないか確認してください。

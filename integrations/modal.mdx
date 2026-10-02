@@ -1,6 +1,6 @@
 ---
 title: "Modal"
-description: "Run code on Modal's serverless cloud — sandboxes, functions, volumes, dicts, queues, and secrets"
+description: "Run code on Modal's serverless cloud: sandboxes, functions, volumes, dicts, queues, and secrets"
 icon: /images/modal.svg
 ---
 
@@ -12,10 +12,10 @@ Shanone's Modal integration gives your agent 49 tools for running commands and f
 
 <Steps>
   <Step title="Create a Modal token">
-    In your Modal account, go to **Settings > API Tokens** and create a token — ideally a Service User token for automation. This gives you a token ID and token secret.
+    In your Modal account, go to **Settings > API Tokens** and create a token: ideally a Service User token for automation. This gives you a token ID and token secret.
   </Step>
   <Step title="Add both values in Shanone">
-    Go to **Integrations > Modal** in the Shanone dashboard and enter both the token ID and token secret — both are required.
+    Go to **Integrations > Modal** in the Shanone dashboard and enter both the token ID and token secret. Both are required.
   </Step>
   <Step title="Retry your request">
     Once saved, `shanone_execute_tool` calls for `modal_*` tools will succeed.
@@ -71,12 +71,12 @@ Shanone provides **49 tools** for Modal, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="modal_exec_command times out on a long job">
-    Use `modal_run_command_background` instead, then poll `modal_get_background_output` and `modal_check_process_status` — `modal_exec_command` blocks for the process's full runtime.
+    Use `modal_run_command_background` instead, then poll `modal_get_background_output` and `modal_check_process_status`: `modal_exec_command` blocks for the process's full runtime.
   </Accordion>
   <Accordion title="modal_call_function fails with a not-found error">
     Confirm the app is actually deployed and running with `modal_lookup_app` first; function calls target a specific deployed app/function name, not just any code in your workspace.
   </Accordion>
   <Accordion title="Sandbox filesystem writes disappear after the sandbox ends">
-    Sandbox filesystems are ephemeral — write anything you need to persist to a Volume via `modal_volume_write_file` instead of the sandbox's local filesystem.
+    Sandbox filesystems are ephemeral. Write anything you need to persist to a Volume via `modal_volume_write_file` instead of the sandbox's local filesystem.
   </Accordion>
 </AccordionGroup>

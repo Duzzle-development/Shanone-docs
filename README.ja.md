@@ -4,7 +4,7 @@
   <a href="README.md">English</a> | <a href="README.ja.md">日本語</a>
 </p>
 
-[Shanone](https://app.shanone.ai) — Command Center for Agent Harnesses — の公式ドキュメントです。
+[Shanone](https://app.shanone.ai)（Command Center for Agent Harnesses）の公式ドキュメントです。
 
 **公開サイト:** [docs.shanone.ai](https://docs.shanone.ai)
 
@@ -14,12 +14,12 @@ Shanoneは、Cursor・Claude Code・その他の[MCP](https://modelcontextprotoc
 
 ## ドキュメント
 
-- **はじめに** — イントロダクションとクイックスタート
-- **Shanoneの使い方** — 使い方ガイド、ベストプラクティス、トラブルシューティング
-- **製品ガイド** — Skills、権限管理(Permissions & Access Control)、Webhooks
-- **リリースノート** — 更新履歴
-- **インテグレーション** — Slack、GitHub、Notion、Stripe、Linear、Gmail、HubSpot、Ethereumなど
-- **MCP** — MCPサーバーの概要、セットアップ、ツール完全リファレンス
+- **はじめに**：イントロダクションとクイックスタート
+- **Shanoneの使い方**：使い方ガイド、ベストプラクティス、トラブルシューティング
+- **製品ガイド**：Skills、権限管理(Permissions & Access Control)、Webhooks
+- **リリースノート**：更新履歴
+- **インテグレーション**：Slack、GitHub、Notion、Stripe、Linear、Gmail、HubSpot、Ethereumなど
+- **MCP**：MCPサーバーの概要、セットアップ、ツール完全リファレンス
 
 ## リンク
 

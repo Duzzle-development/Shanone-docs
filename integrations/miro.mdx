@@ -1,12 +1,12 @@
 ---
 title: "Miro"
-description: "Create and edit Miro boards — sticky notes, shapes, cards, connectors, frames, and board membership"
+description: "Create and edit Miro boards: sticky notes, shapes, cards, connectors, frames, and board membership"
 icon: /images/miro.svg
 ---
 
 # Miro
 
-Shanone's Miro integration gives your agent 47 tools for building out boards programmatically — every widget type (sticky notes, shapes, cards, text, images, frames, connectors) plus board sharing and tags.
+Shanone's Miro integration gives your agent 47 tools for building out boards programmatically: every widget type (sticky notes, shapes, cards, text, images, frames, connectors) plus board sharing and tags.
 
 ## Getting Started
 
@@ -74,12 +74,12 @@ Shanone provides **47 tools** for Miro, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Items appear at the wrong position or overlapping">
-    Miro board coordinates are in a fixed canvas space, not pixels-on-screen — check `miro_get_items` on an existing board first to get a sense of the coordinate range in use before creating new items.
+    Miro board coordinates are in a fixed canvas space, not pixels-on-screen. Check `miro_get_items` on an existing board first to get a sense of the coordinate range in use before creating new items.
   </Accordion>
   <Accordion title="miro_bulk_create_items partially fails">
     Bulk creation is all-or-nothing per request but limited to a maximum item count per call; split larger batches into multiple `miro_bulk_create_items` calls if you hit a size limit error.
   </Accordion>
   <Accordion title="miro_share_board doesn't seem to grant access">
-    Sharing requires an email invite to go through Miro's own flow — the invited user must accept it; check `miro_get_board_members` to confirm pending vs. active status.
+    Sharing requires an email invite to go through Miro's own flow. The invited user must accept it; check `miro_get_board_members` to confirm pending vs. active status.
   </Accordion>
 </AccordionGroup>

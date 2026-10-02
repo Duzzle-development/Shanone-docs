@@ -1,6 +1,6 @@
 ---
 title: "Databricks"
-description: "Run SQL, manage clusters and jobs, and administer Unity Catalog — the full Databricks REST API surface"
+description: "Run SQL, manage clusters and jobs, and administer Unity Catalog: the full Databricks REST API surface"
 icon: /images/databricks.svg
 ---
 
@@ -15,7 +15,7 @@ Shanone's Databricks integration gives your agent 155 tools spanning SQL executi
     Ask your agent to do something with Databricks (e.g. "list my SQL warehouses"), or connect proactively from **Integrations** in the Shanone dashboard. You'll be asked for your workspace URL (e.g. `https://adb-1234567890123456.7.azuredatabricks.net`) and then get a `connect_link` to authorize Shanone.
   </Step>
   <Step title="Authorize the workspace">
-    Approve Databricks' OAuth consent screen for the specific workspace you entered — Databricks credentials are workspace-scoped, so reconnect separately for each workspace you want Shanone to act on.
+    Approve Databricks' OAuth consent screen for the specific workspace you entered: Databricks credentials are workspace-scoped, so reconnect separately for each workspace you want Shanone to act on.
   </Step>
   <Step title="Retry your request">
     Once connected, `shanone_execute_tool` calls for `databricks_*` tools will succeed.
@@ -42,7 +42,7 @@ Shanone provides **155 tools** for Databricks, organized into these categories:
   <Accordion title="Pipelines (12 tools)">
     `databricks_list_pipelines`, `databricks_get_pipeline`, `databricks_create_pipeline`, `databricks_update_pipeline`, `databricks_delete_pipeline`, `databricks_clone_pipeline`, `databricks_start_pipeline`, `databricks_stop_pipeline`, `databricks_get_pipeline_update`, `databricks_list_pipeline_updates`, `databricks_list_pipeline_events`, `databricks_get_pipeline_permissions`
   </Accordion>
-  <Accordion title="Unity Catalog — Catalogs, Schemas & Tables (15 tools)">
+  <Accordion title="Unity Catalog: Catalogs, Schemas & Tables (15 tools)">
     `databricks_list_catalogs`, `databricks_get_catalog`, `databricks_create_catalog`, `databricks_update_catalog`, `databricks_delete_catalog`, `databricks_list_schemas`, `databricks_get_schema`, `databricks_create_schema`, `databricks_update_schema`, `databricks_delete_schema`, `databricks_list_tables`, `databricks_get_table`, `databricks_list_table_summaries`, `databricks_table_exists`, `databricks_delete_table`
   </Accordion>
   <Accordion title="Volumes & DBFS (15 tools)">
@@ -89,12 +89,12 @@ Shanone provides **155 tools** for Databricks, organized into these categories:
     Databricks OAuth tokens are workspace-scoped and expire; if a long-idle connection stops working, reconnect from **Integrations** to refresh the token for that specific `workspace_url`.
   </Accordion>
   <Accordion title="databricks_execute_sql hangs or times out on a large query">
-    Use `databricks_execute_async` instead, then poll `databricks_get_statement_status` / `databricks_get_statement_result` — synchronous execution isn't suited to long-running queries.
+    Use `databricks_execute_async` instead, then poll `databricks_get_statement_status` / `databricks_get_statement_result`: synchronous execution isn't suited to long-running queries.
   </Accordion>
   <Accordion title="Unity Catalog tools return a permissions error">
-    Unity Catalog operations (create/update/delete on catalogs, schemas, tables) require the connected identity to have the appropriate `USE CATALOG`/`CREATE`/`OWNER` privileges — check with a workspace admin if a tool that should work returns 403.
+    Unity Catalog operations (create/update/delete on catalogs, schemas, tables) require the connected identity to have the appropriate `USE CATALOG`/`CREATE`/`OWNER` privileges. Check with a workspace admin if a tool that should work returns 403.
   </Accordion>
   <Accordion title="databricks_run_job_now succeeds but the job fails silently">
-    Call `databricks_get_run_output` on the resulting run ID to see the actual task error — the "now" call only confirms the run was triggered, not that it completed successfully.
+    Call `databricks_get_run_output` on the resulting run ID to see the actual task error. The "now" call only confirms the run was triggered, not that it completed successfully.
   </Accordion>
 </AccordionGroup>

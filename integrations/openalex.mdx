@@ -6,13 +6,13 @@ icon: /images/openalex.svg
 
 # OpenAlex
 
-Shanone's OpenAlex integration gives your agent 2 tools for searching and retrieving scholarly works from [OpenAlex](https://openalex.org), a fully open catalog of papers, authors, and citations — no account or API key required.
+Shanone's OpenAlex integration gives your agent 2 tools for searching and retrieving scholarly works from [OpenAlex](https://openalex.org), a fully open catalog of papers, authors, and citations: no account or API key required.
 
 ## Getting Started
 
 <Steps>
   <Step title="No connection required">
-    OpenAlex is a free, open API. There's nothing to authorize in **Integrations** — the tools work out of the box.
+    OpenAlex is a free, open API. There's nothing to authorize in **Integrations**. The tools work out of the box.
   </Step>
   <Step title="Ask your agent to search">
     Try something like "search OpenAlex for recent papers on transformer architectures" or "look up this paper by its DOI".
@@ -28,8 +28,8 @@ Shanone provides **2 tools** for OpenAlex, organized into this category:
 
 <AccordionGroup>
   <Accordion title="Works search">
-    `openalex_search_works` — full-text search across OpenAlex's works index with filters (publication year, open access status, etc.) and paging
-    `openalex_get_work_by_doi` — retrieve full details (authors, citation count, open access status, abstract) for a paper by its DOI
+    `openalex_search_works`: full-text search across OpenAlex's works index with filters (publication year, open access status, etc.) and paging
+    `openalex_get_work_by_doi`: retrieve full details (authors, citation count, open access status, abstract) for a paper by its DOI
   </Accordion>
 </AccordionGroup>
 
@@ -54,10 +54,10 @@ Shanone provides **2 tools** for OpenAlex, organized into this category:
 
 <AccordionGroup>
   <Accordion title="openalex_get_work_by_doi returns a 404 for a DOI I know exists">
-    Pass the bare DOI (e.g. `10.1038/nature12373`) rather than a full `https://doi.org/...` URL — the tool strips common prefixes automatically, but unusual formats can still fail to resolve.
+    Pass the bare DOI (e.g. `10.1038/nature12373`) rather than a full `https://doi.org/...` URL. The tool strips common prefixes automatically, but unusual formats can still fail to resolve.
   </Accordion>
   <Accordion title="openalex_search_works results feel slow or rate-limited">
-    OpenAlex prioritizes requests that include a contact email ("polite pool"). This is configured at the Shanone deployment level via an environment variable, not per-user — if you're self-hosting, set `OPENALEX_EMAIL`.
+    OpenAlex prioritizes requests that include a contact email ("polite pool"). This is configured at the Shanone deployment level via an environment variable, not per-user. If you're self-hosting, set `OPENALEX_EMAIL`.
   </Accordion>
   <Accordion title="Abstracts are missing or truncated">
     OpenAlex stores abstracts as an inverted index and Shanone reconstructs them from word positions; very long abstracts are truncated to the first 100 words to keep responses compact.

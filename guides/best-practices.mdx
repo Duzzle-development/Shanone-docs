@@ -26,7 +26,7 @@ description: "How to phrase agent instructions so Shanone's meta-tools find and 
 
 ## Ask for a full listing when you mean "everything"
 
-If you (or your agent) actually want the complete set of tools for a service — not just the most relevant few — say so explicitly, and have the agent call `shanone_list_service_tools` instead of `shanone_search_tools`. This matters most for large integrations:
+If you (or your agent) actually want the complete set of tools for a service (not just the most relevant few), say so explicitly, and have the agent call `shanone_list_service_tools` instead of `shanone_search_tools`. This matters most for large integrations:
 
 | Service | Tool count |
 |---------|-----------|
@@ -41,11 +41,11 @@ If you (or your agent) actually want the complete set of tools for a service —
 | Linear | 46 |
 | Notion | 45 |
 
-`shanone_search_tools` is not guaranteed to surface every tool for services this size — check `data.has_more` in the response, and if it's true, either narrow the query or switch to `shanone_list_service_tools`.
+`shanone_search_tools` is not guaranteed to surface every tool for services this size. Check `data.has_more` in the response, and if it's true, either narrow the query or switch to `shanone_list_service_tools`.
 
 ## Let the schema step do its job
 
-For unfamiliar tools, have your agent call `shanone_get_tool_schema` before `shanone_execute_tool`. This avoids guessed argument names (Shanone tools use descriptive but not always obvious field names — e.g. `slack_post_message` takes `channel`, not `channel_id`) and surfaces required vs. optional fields up front.
+For unfamiliar tools, have your agent call `shanone_get_tool_schema` before `shanone_execute_tool`. This avoids guessed argument names (Shanone tools use descriptive but not always obvious field names: e.g. `slack_post_message` takes `channel`, not `channel_id`) and surfaces required vs. optional fields up front.
 
 <Steps>
   <Step title="Search">
@@ -61,20 +61,20 @@ For unfamiliar tools, have your agent call `shanone_get_tool_schema` before `sha
 
 ## Save workflows as Skills, don't repeat yourself
 
-If you find yourself giving your agent the same multi-step instructions more than once (e.g. "check the Notion project page, summarize it, post to Slack"), save it with `shanone_create_skill`. Skills are stored server-side, so the same workflow is available from any machine, IDE, or agent that connects to your Shanone account — and it shows up in Shanone's web dashboard too.
+If you find yourself giving your agent the same multi-step instructions more than once (e.g. "check the Notion project page, summarize it, post to Slack"), save it with `shanone_create_skill`. Skills are stored server-side, so the same workflow is available from any machine, IDE, or agent that connects to your Shanone account, and it shows up in Shanone's web dashboard too.
 
 <CardGroup cols={2}>
   <Card title="Check first" icon="magnifying-glass">
-    Call `shanone_list_skills` before starting a non-trivial multi-step task — someone on your team may have already saved it
+    Call `shanone_list_skills` before starting a non-trivial multi-step task. Someone on your team may have already saved it
   </Card>
   <Card title="Name things clearly" icon="tag">
-    A Skill's `name` and `summary` are the only things shown in list results — make them specific enough to recognize later
+    A Skill's `name` and `summary` are the only things shown in list results. Make them specific enough to recognize later
   </Card>
 </CardGroup>
 
 ## Handle the auth wall gracefully
 
-When `shanone_execute_tool` returns `reason: "auth_required"` or `"auth_expired"`, that's not a failure to work around — it's Shanone telling you the service isn't connected yet. Surface the `connect_link` to the user, wait for them to complete OAuth, then retry the *exact same* tool call.
+When `shanone_execute_tool` returns `reason: "auth_required"` or `"auth_expired"`, that's not a failure to work around. It's Shanone telling you the service isn't connected yet. Surface the `connect_link` to the user, wait for them to complete OAuth, then retry the *exact same* tool call.
 
 <Note>
 Don't ask your agent to try alternate tools or workarounds when it hits `auth_required`. The fix is always: visit the connect link, then retry.

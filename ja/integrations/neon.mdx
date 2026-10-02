@@ -1,6 +1,6 @@
 ---
 title: "Neon"
-description: "Neonのサーバーレスpostgresを管理 — プロジェクト、ブランチ、データベース、ロール、Neon Auth、Data API、組織"
+description: "Neonのサーバーレスpostgresを管理：プロジェクト、ブランチ、データベース、ロール、Neon Auth、Data API、組織"
 icon: /images/neon.svg
 ---
 
@@ -98,15 +98,15 @@ ShanoneはNeon向けに**162個のツール**を、以下のカテゴリに整�
 
 <AccordionGroup>
   <Accordion title="neon_create_branchは成功するが、そのブランチへのクエリが失敗する">
-    新しいブランチには稼働中のcomputeエンドポイントが必要です——接続する前に`neon_create_endpoint`を呼ぶ(または自動作成されているか確認する)、そして`neon_start_endpoint`を呼んでください。
+    新しいブランチには稼働中のcomputeエンドポイントが必要です。接続する前に`neon_create_endpoint`を呼ぶ(または自動作成されているか確認する)、そして`neon_start_endpoint`を呼んでください。
   </Accordion>
   <Accordion title="neon_reveal_role_passwordがエラーを返す">
-    パスワードを表示できるのはNeonを通じて作成されたロールのみです(外部管理のロールは不可)——表示できない場合は`neon_reset_role_password`で新しいパスワードを発行してください。
+    パスワードを表示できるのはNeonを通じて作成されたロールのみです(外部管理のロールは不可)。表示できない場合は`neon_reset_role_password`で新しいパスワードを発行してください。
   </Accordion>
   <Accordion title="Auth系ツールが「authが有効になっていない」エラーで失敗する">
-    Neon Authはプロジェクトごとに`neon_enable_auth`で明示的に有効化する必要があります——それより前は、ドメイン、OAuthプロバイダ、プラグインなどの関連設定を管理できません。
+    Neon Authはプロジェクトごとに`neon_enable_auth`で明示的に有効化する必要があります。それより前は、ドメイン、OAuthプロバイダ、プラグインなどの関連設定を管理できません。
   </Accordion>
   <Accordion title="組織レベルのツールが権限エラーを返す">
-    組織メンバー、課金、VPCエンドポイント関連のツールには、Neon組織における管理者ロールが必要です——`neon_get_org_member`で自分のユーザーIDのロールを確認してください。
+    組織メンバー、課金、VPCエンドポイント関連のツールには、Neon組織における管理者ロールが必要です。`neon_get_org_member`で自分のユーザーIDのロールを確認してください。
   </Accordion>
 </AccordionGroup>

@@ -6,7 +6,7 @@ icon: /images/bitbucket.svg
 
 # Bitbucket
 
-Shanone's Bitbucket integration gives your agent 15 tools covering the everyday code-review workflow — repositories and branches, pull requests, issues, and code search.
+Shanone's Bitbucket integration gives your agent 15 tools covering the everyday code-review workflow: repositories and branches, pull requests, issues, and code search.
 
 ## Getting Started
 
@@ -68,9 +68,9 @@ Shanone provides **15 tools** for Bitbucket, organized into these categories:
     Results are scoped to the workspace(s) authorized during OAuth. Call `bitbucket_list_workspaces` to confirm which workspaces are connected, and reconnect if a workspace is missing.
   </Accordion>
   <Accordion title="bitbucket_search_code returns no results for code you know exists">
-    Bitbucket's code search indexes asynchronously after pushes — very recent commits may not be searchable yet. Try `bitbucket_list_commits` on the specific branch instead if you need up-to-the-minute results.
+    Bitbucket's code search indexes asynchronously after pushes: very recent commits may not be searchable yet. Try `bitbucket_list_commits` on the specific branch instead if you need up-to-the-minute results.
   </Accordion>
   <Accordion title="bitbucket_create_pull_request fails with a branch not found error">
-    Confirm the source and destination branch names with `bitbucket_list_branches` first — Bitbucket requires both branches to already exist in the repository.
+    Confirm the source and destination branch names with `bitbucket_list_branches` first: Bitbucket requires both branches to already exist in the repository.
   </Accordion>
 </AccordionGroup>

@@ -23,7 +23,7 @@ Shanone's Amplitude integration gives your agent 62 tools covering analytics que
 </Steps>
 
 <Note>
-Amplitude uses API key authentication rather than OAuth, and Shanone requires both the API Key and Secret Key together — most endpoints need the pair for HTTP Basic auth.
+Amplitude uses API key authentication rather than OAuth, and Shanone requires both the API Key and Secret Key together. Most endpoints need the pair for HTTP Basic auth.
 </Note>
 
 ## Available Tools
@@ -78,10 +78,10 @@ Shanone provides **62 tools** for Amplitude, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Any amplitude_* call fails with a 401/403">
-    Amplitude requires both the API Key and Secret Key to be connected — a single key isn't enough for most endpoints. Check **Integrations** in the Shanone dashboard for both values.
+    Amplitude requires both the API Key and Secret Key to be connected: a single key isn't enough for most endpoints. Check **Integrations** in the Shanone dashboard for both values.
   </Accordion>
   <Accordion title="amplitude_get_funnel_analysis or amplitude_get_retention_analysis returns unexpectedly empty results">
-    Double-check the event names against `amplitude_get_event_types` — Amplitude event names are case-sensitive and must match exactly what was ingested.
+    Double-check the event names against `amplitude_get_event_types`: Amplitude event names are case-sensitive and must match exactly what was ingested.
   </Accordion>
   <Accordion title="amplitude_check_cohort_status stays in a pending state">
     Cohort downloads and syncs are processed asynchronously by Amplitude; poll `amplitude_check_cohort_status` periodically rather than expecting an immediate result from `amplitude_request_cohort_download`.

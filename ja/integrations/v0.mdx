@@ -1,6 +1,6 @@
 ---
 title: "V0"
-description: "VercelのUI生成AI「v0」でUIコードを生成・反復 — チャット、プロジェクト、デプロイ、MCPサーバー管理"
+description: "VercelのUI生成AI「v0」でUIコードを生成・反復：チャット、プロジェクト、デプロイ、MCPサーバー管理"
 icon: /images/v0.svg
 ---
 
@@ -77,7 +77,7 @@ Shanoneはv0向けに**42個のツール**を、以下のカテゴリに整理�
     `v0_v2_*`系はv0の新しいチャット/メッセージAPIで、より多くの作成オプション(ファイル・リポジトリ・zipから)と非同期版を備えています。新規連携では`v0_v2_*`系を優先し、v1の`v0_create_chat`/`v0_send_message`系は既存チャットの操作用に残されています。
   </Accordion>
   <Accordion title="v0_v2_deploy_chatやv0_v2_create_vercel_projectが失敗する">
-    どちらも有効なVercelアカウント連携が必要です — まず`v0_find_vercel_projects`または`v0_create_vercel_project_link`を実行し、v0アカウントがVercelのチーム/プロジェクトに接続されているか確認してください。
+    どちらも有効なVercelアカウント連携が必要です。まず`v0_find_vercel_projects`または`v0_create_vercel_project_link`を実行し、v0アカウントがVercelのチーム/プロジェクトに接続されているか確認してください。
   </Accordion>
   <Accordion title="非同期のメッセージ/タスクツールがいつまでも完了しない">
     `v0_v2_send_message_async`や`v0_v2_resolve_task_async`はタスク参照を即座に返す仕組みです。呼び出し自体が完了までブロックすることを期待せず、`v0_v2_get_message`やチャットのメッセージ一覧をポーリングしてください。

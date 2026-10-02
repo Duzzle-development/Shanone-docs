@@ -1,12 +1,12 @@
 ---
 title: "ngrok"
-description: "ngrokのイングレスプラットフォームを管理 — エンドポイント、トンネル、予約ドメイン、TLS証明書、バックエンド、AI Gateway、Vault"
+description: "ngrokのイングレスプラットフォームを管理：エンドポイント、トンネル、予約ドメイン、TLS証明書、バックエンド、AI Gateway、Vault"
 icon: /images/ngrok.svg
 ---
 
 # ngrok
 
-Shanoneのngrok連携は、ngrok APIの全体をカバーする171個のツールをエージェントに提供します——エンドポイント/トンネル管理、ドメインとTLS管理、負荷分散バックエンド、セキュリティポリシー、可観測性、AI Gateway、シークレットVaultまで扱えます。
+Shanoneのngrok連携は、ngrok APIの全体をカバーする171個のツールをエージェントに提供します。エンドポイント/トンネル管理、ドメインとTLS管理、負荷分散バックエンド、セキュリティポリシー、可観測性、AI Gateway、シークレットVaultまで扱えます。
 
 ## はじめに
 
@@ -77,15 +77,15 @@ Shanoneはngrok向けに**171個のツール**を、以下のカテゴリに整�
 
 <AccordionGroup>
   <Accordion title="ngrok_create_endpointは成功するがトラフィックがルーティングされない">
-    エンドポイントの背後には稼働中のトンネルセッションが必要です——`ngrok_list_tunnel_sessions`で、そのエンドポイントのURLに対してngrokエージェントが実際に接続されているか確認してください。
+    エンドポイントの背後には稼働中のトンネルセッションが必要です。`ngrok_list_tunnel_sessions`で、そのエンドポイントのURLに対してngrokエージェントが実際に接続されているか確認してください。
   </Accordion>
   <Accordion title="ngrok_create_reserved_domainがDNS/証明書の検証に失敗する">
-    予約カスタムドメインは、証明書が発行される前にngrokを指すCNAMEレコードが必要です——`ngrok_get_reserved_domain`で正確な検証状態と必要なDNSレコードを確認してください。
+    予約カスタムドメインは、証明書が発行される前にngrokを指すCNAMEレコードが必要です。`ngrok_get_reserved_domain`で正確な検証状態と必要なDNSレコードを確認してください。
   </Accordion>
   <Accordion title="使用中のIPポリシーを削除できない">
-    まずそのポリシーを参照しているエンドポイントやエッジからデタッチしてください——`ngrok_delete_ip_policy`は、ポリシーがまだ使用中だと失敗します。
+    まずそのポリシーを参照しているエンドポイントやエッジからデタッチしてください。`ngrok_delete_ip_policy`は、ポリシーがまだ使用中だと失敗します。
   </Accordion>
   <Accordion title="AI Gatewayの使用状況ツールでデータが表示されない">
-    使用状況/クレジット系ツールには、まずAI Gatewayに少なくとも1つのプロバイダキーが設定されている必要があります——`ngrok_create_ai_gateway_provider_key`でキーを設定してから使用状況イベントを確認してください。
+    使用状況/クレジット系ツールには、まずAI Gatewayに少なくとも1つのプロバイダキーが設定されている必要があります。`ngrok_create_ai_gateway_provider_key`でキーを設定してから使用状況イベントを確認してください。
   </Accordion>
 </AccordionGroup>

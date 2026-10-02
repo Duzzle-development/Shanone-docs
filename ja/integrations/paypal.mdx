@@ -1,6 +1,6 @@
 ---
 title: "PayPal"
-description: "注文、請求書、サブスクリプション、紛争、ペイアウト、Webhook — PayPalの決済API全体"
+description: "注文、請求書、サブスクリプション、紛争、ペイアウト、Webhook：PayPalの決済API全体"
 icon: /images/paypal.svg
 ---
 
@@ -80,6 +80,6 @@ ShanoneはPayPal向けに**105個のツール**を、以下のカテゴリに整
     WebhookのURLが外部からアクセス可能であること、そして`paypal_list_available_events`に登録したいイベントタイプが含まれていることを確認してください。`paypal_simulate_webhook_event`でエンドポイントを直接テストすることもできます。
   </Accordion>
   <Accordion title="paypal_provide_dispute_evidenceが送信を拒否する">
-    `shanone_get_tool_schema`で正確な証拠ペイロードの形式を確認してください——PayPalは自由記述のテキストや任意の添付ファイルではなく、特定の証拠タイプ(例: `PROOF_OF_FULFILLMENT`)を要求します。
+    `shanone_get_tool_schema`で正確な証拠ペイロードの形式を確認してください。PayPalは自由記述のテキストや任意の添付ファイルではなく、特定の証拠タイプ(例: `PROOF_OF_FULFILLMENT`)を要求します。
   </Accordion>
 </AccordionGroup>

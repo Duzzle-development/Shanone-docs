@@ -1,12 +1,12 @@
 ---
 title: "Jira"
-description: "Issues, projects, boards, sprints, worklogs, and more — full Jira Cloud project management"
+description: "Issues, projects, boards, sprints, worklogs, and more: full Jira Cloud project management"
 icon: /images/jira.svg
 ---
 
 # Jira
 
-Shanone's Jira integration gives your agent 47 tools for Jira Cloud project management — issues, projects, boards, sprints, worklogs, dashboards, filters, and more, across multi-site Atlassian accounts.
+Shanone's Jira integration gives your agent 47 tools for Jira Cloud project management: issues, projects, boards, sprints, worklogs, dashboards, filters, and more, across multi-site Atlassian accounts.
 
 ## Getting Started
 
@@ -80,12 +80,12 @@ Shanone provides **47 tools** for Jira, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="jira_create_issue fails with a required field error">
-    Different Jira projects have different required fields (e.g. custom fields, components) — call `jira_get_project` and `jira_get_issue_types` first to see what's mandatory before creating, especially for issue types beyond the default Task/Bug/Story.
+    Different Jira projects have different required fields (e.g. custom fields, components). Call `jira_get_project` and `jira_get_issue_types` first to see what's mandatory before creating, especially for issue types beyond the default Task/Bug/Story.
   </Accordion>
   <Accordion title="jira_transition_issue fails saying the transition isn't valid">
-    Available transitions depend on the issue's current status and the project's workflow — call `jira_get_transitions` first to get the exact transition IDs available from the issue's current state, rather than assuming a status name maps directly to a transition.
+    Available transitions depend on the issue's current status and the project's workflow. Call `jira_get_transitions` first to get the exact transition IDs available from the issue's current state, rather than assuming a status name maps directly to a transition.
   </Accordion>
   <Accordion title="Tools return a 401/403 error even though I connected successfully">
-    Jira Cloud accounts can have multiple sites (cloud_id); if you have access to more than one Jira site, confirm the OAuth connection is scoped to the site containing the project you're trying to reach — reconnect via Integrations to pick a different site if needed.
+    Jira Cloud accounts can have multiple sites (cloud_id); if you have access to more than one Jira site, confirm the OAuth connection is scoped to the site containing the project you're trying to reach. Reconnect via Integrations to pick a different site if needed.
   </Accordion>
 </AccordionGroup>

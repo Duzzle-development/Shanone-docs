@@ -6,7 +6,7 @@ icon: /images/google-drive.svg
 
 # Google Drive
 
-Shanone's Google Drive integration gives your agent 50 tools for files, folders, shared drives, permissions, comments, and revision history — covering everything from a quick upload to auditing who has access to a document.
+Shanone's Google Drive integration gives your agent 50 tools for files, folders, shared drives, permissions, comments, and revision history, covering everything from a quick upload to auditing who has access to a document.
 
 ## Getting Started
 
@@ -65,15 +65,15 @@ Shanone provides **50 tools** for Google Drive, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="google_drive_get_file returns a 404 for a file I can see in the browser">
-    The file ID is likely wrong — copy it from the Drive URL (the long string between `/d/` and the next `/`) rather than typing it manually, and confirm the connected account actually has access to that file.
+    The file ID is likely wrong. Copy it from the Drive URL (the long string between `/d/` and the next `/`) rather than typing it manually, and confirm the connected account actually has access to that file.
   </Accordion>
   <Accordion title="google_drive_download_file fails on a Google Doc/Sheet/Slide">
-    Native Google Workspace files (Docs, Sheets, Slides) aren't downloadable as raw bytes — use `google_drive_export_file` instead, which converts them to a format like PDF or DOCX first.
+    Native Google Workspace files (Docs, Sheets, Slides) aren't downloadable as raw bytes. Use `google_drive_export_file` instead, which converts them to a format like PDF or DOCX first.
   </Accordion>
   <Accordion title="google_drive_watch_changes notifications aren't arriving">
     Push notifications require a publicly reachable HTTPS webhook URL configured as the channel address; this is a project-level setup step outside Shanone. Use `google_drive_list_changes` for polling instead if you don't need push notifications.
   </Accordion>
   <Accordion title="Permission changes don't seem to take effect">
-    Check the `role` and `type` fields sent to `google_drive_create_permission` — Drive's permission model distinguishes `user`, `group`, `domain`, and `anyone`, and each has a different set of valid roles.
+    Check the `role` and `type` fields sent to `google_drive_create_permission`: Drive's permission model distinguishes `user`, `group`, `domain`, and `anyone`, and each has a different set of valid roles.
   </Accordion>
 </AccordionGroup>

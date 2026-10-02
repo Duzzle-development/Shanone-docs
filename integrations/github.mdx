@@ -6,7 +6,7 @@ icon: /images/github.svg
 
 # GitHub
 
-Shanone's GitHub integration gives your agent 176 tools — from everyday issue and PR workflows to CI/CD, code/secret scanning, org administration, and gists.
+Shanone's GitHub integration gives your agent 176 tools, from everyday issue and PR workflows to CI/CD, code/secret scanning, org administration, and gists.
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ Shanone's GitHub integration gives your agent 176 tools — from everyday issue 
     Ask your agent to do something with GitHub (e.g. "list open PRs in my-org/my-repo"), or connect proactively from **Integrations** in the Shanone dashboard.
   </Step>
   <Step title="Authorize the requested scopes">
-    GitHub's OAuth consent screen shows the scopes Shanone requests (repo access, org read, etc.) — review and approve them.
+    GitHub's OAuth consent screen shows the scopes Shanone requests (repo access, org read, etc.). Review and approve them.
   </Step>
   <Step title="Retry your request">
     Once connected, your agent's `shanone_execute_tool` calls for `github_*` tools will succeed.
@@ -83,9 +83,9 @@ Shanone provides **176 tools** for GitHub, organized into these categories:
     Org-scoped tools (`github_list_org_secrets`, `github_get_org`, etc.) require the connected account to have the appropriate org role. Reconnect with an account that has admin access if these fail.
   </Accordion>
   <Accordion title="Workflow trigger succeeds but nothing runs">
-    Confirm the workflow file actually declares a `workflow_dispatch` trigger — `github_trigger_workflow` can only start workflows that support it.
+    Confirm the workflow file actually declares a `workflow_dispatch` trigger: `github_trigger_workflow` can only start workflows that support it.
   </Accordion>
   <Accordion title="Secret/variable tools return empty values">
-    GitHub never returns secret values over the API by design — `github_get_repo_secret` and friends only return metadata (name, timestamps), never the plaintext value.
+    GitHub never returns secret values over the API by design: `github_get_repo_secret` and friends only return metadata (name, timestamps), never the plaintext value.
   </Accordion>
 </AccordionGroup>

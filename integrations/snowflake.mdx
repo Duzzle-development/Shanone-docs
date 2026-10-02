@@ -1,12 +1,12 @@
 ---
 title: "Snowflake"
-description: "Query and manage your Snowflake data warehouse — databases, tables, warehouses, tasks, and Cortex AI"
+description: "Query and manage your Snowflake data warehouse: databases, tables, warehouses, tasks, and Cortex AI"
 icon: /images/snowflake.svg
 ---
 
 # Snowflake
 
-Shanone's Snowflake integration gives your agent 142 tools spanning SQL execution, the full object model (databases, schemas, tables, views, warehouses), data engineering primitives (streams, tasks, pipes, dynamic/iceberg tables), governance (roles, grants, network policies), and Cortex AI — enough to run most data-platform operations directly from an agent.
+Shanone's Snowflake integration gives your agent 142 tools spanning SQL execution, the full object model (databases, schemas, tables, views, warehouses), data engineering primitives (streams, tasks, pipes, dynamic/iceberg tables), governance (roles, grants, network policies), and Cortex AI, enough to run most data-platform operations directly from an agent.
 
 ## Getting Started
 
@@ -80,15 +80,15 @@ Shanone provides **142 tools** for Snowflake, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Every call fails with an authentication error">
-    Snowflake requires the Account Identifier, Username, and Private Key together — a partial credential set will not authenticate. Double-check the private key is the unencrypted PEM matching the public key registered on the Snowflake user.
+    Snowflake requires the Account Identifier, Username, and Private Key together: a partial credential set will not authenticate. Double-check the private key is the unencrypted PEM matching the public key registered on the Snowflake user.
   </Accordion>
   <Accordion title="snowflake_execute_sql returns a statement handle instead of results">
-    Long-running queries execute asynchronously — poll `snowflake_get_statement_status` and `snowflake_get_statement_result` with the returned statement handle, or use `snowflake_poll_until_complete` to wait for it automatically.
+    Long-running queries execute asynchronously. Poll `snowflake_get_statement_status` and `snowflake_get_statement_result` with the returned statement handle, or use `snowflake_poll_until_complete` to wait for it automatically.
   </Accordion>
   <Accordion title="A warehouse or compute pool operation fails with an insufficient privileges error">
-    Most create/delete/grant operations require the connected user's role to have the relevant object privilege — use `snowflake_list_grants` to check what the current role can actually do before assuming a bug.
+    Most create/delete/grant operations require the connected user's role to have the relevant object privilege. Use `snowflake_list_grants` to check what the current role can actually do before assuming a bug.
   </Accordion>
   <Accordion title="snowflake_create_dynamic_table or snowflake_create_stream succeeds but data isn't updating">
-    Dynamic tables and streams only refresh on their configured lag/schedule or when explicitly triggered — use `snowflake_refresh_dynamic_table` or check the object's `TARGET_LAG` setting.
+    Dynamic tables and streams only refresh on their configured lag/schedule or when explicitly triggered. Use `snowflake_refresh_dynamic_table` or check the object's `TARGET_LAG` setting.
   </Accordion>
 </AccordionGroup>

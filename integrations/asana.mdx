@@ -1,12 +1,12 @@
 ---
 title: "Asana"
-description: "Manage tasks, projects, portfolios, and goals — with full support for custom fields, dependencies, and time tracking"
+description: "Manage tasks, projects, portfolios, and goals: with full support for custom fields, dependencies, and time tracking"
 icon: /images/asana.svg
 ---
 
 # Asana
 
-Shanone's Asana integration gives your agent 115 tools — one of the deepest integrations in the catalog, covering not just tasks and projects but portfolios, goals, custom fields, dependencies, time tracking, and webhooks.
+Shanone's Asana integration gives your agent 115 tools: one of the deepest integrations in the catalog, covering not just tasks and projects but portfolios, goals, custom fields, dependencies, time tracking, and webhooks.
 
 ## Getting Started
 
@@ -74,12 +74,12 @@ Shanone provides **115 tools** for Asana, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="asana_create_task fails with an invalid custom field value">
-    Custom field option IDs (for enum/dropdown fields) must match exactly what `asana_get_custom_field` returns — free-text values won't work for enum-type fields.
+    Custom field option IDs (for enum/dropdown fields) must match exactly what `asana_get_custom_field` returns: free-text values won't work for enum-type fields.
   </Accordion>
   <Accordion title="asana_search_tasks returns fewer results than expected">
     Asana's search API only searches within a single workspace at a time and has its own field-limiting rules; confirm the `workspace` parameter matches the project's actual workspace.
   </Accordion>
   <Accordion title="asana_create_webhook succeeds but no events arrive">
-    Asana requires the webhook target to respond to a handshake request immediately after creation — if your endpoint doesn't complete the handshake, Asana silently disables the webhook.
+    Asana requires the webhook target to respond to a handshake request immediately after creation. If your endpoint doesn't complete the handshake, Asana silently disables the webhook.
   </Accordion>
 </AccordionGroup>

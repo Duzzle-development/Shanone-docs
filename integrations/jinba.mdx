@@ -1,12 +1,12 @@
 ---
 title: "Jinba"
-description: "Execute published Jinba Flow workflows — natural-language and visual no-code automations"
+description: "Execute published Jinba Flow workflows: natural-language and visual no-code automations"
 icon: /images/jinba.svg
 ---
 
 # Jinba
 
-Shanone's Jinba integration gives your agent 1 tool: running a published Jinba Flow workflow with custom input arguments. Jinba Flow itself is a no-code, natural-language workflow builder — Shanone's role is simply to trigger workflows you've already built and published there.
+Shanone's Jinba integration gives your agent 1 tool: running a published Jinba Flow workflow with custom input arguments. Jinba Flow itself is a no-code, natural-language workflow builder: Shanone's role is simply to trigger workflows you've already built and published there.
 
 ## Getting Started
 
@@ -28,7 +28,7 @@ Shanone provides **1 tool** for Jinba:
 
 <AccordionGroup>
   <Accordion title="Workflow execution">
-    `jinba_run_workflow` — execute a published Jinba Flow workflow by its UUID, optionally passing a JSON array of `{name, value}` input arguments defined by the workflow's `INPUT_` configuration
+    `jinba_run_workflow`: execute a published Jinba Flow workflow by its UUID, optionally passing a JSON array of `{name, value}` input arguments defined by the workflow's `INPUT_` configuration
   </Accordion>
 </AccordionGroup>
 
@@ -53,10 +53,10 @@ Shanone provides **1 tool** for Jinba:
 
 <AccordionGroup>
   <Accordion title="jinba_run_workflow fails saying the workflow can't be found">
-    The workflow must be published in Jinba Flow before it's runnable via the API — a workflow only saved as a draft in the editor won't be reachable, and double-check the UUID from the Jinba Flow dashboard.
+    The workflow must be published in Jinba Flow before it's runnable via the API: a workflow only saved as a draft in the editor won't be reachable, and double-check the UUID from the Jinba Flow dashboard.
   </Accordion>
   <Accordion title="jinba_run_workflow returns an error about missing or invalid arguments">
-    `args` must be a JSON string representing an array of `{"name": ..., "value": ...}` objects — check the workflow's `INPUT_` tools configuration in Jinba to see which argument names it expects.
+    `args` must be a JSON string representing an array of `{"name": ..., "value": ...}` objects. Check the workflow's `INPUT_` tools configuration in Jinba to see which argument names it expects.
   </Accordion>
   <Accordion title="jinba_run_workflow takes a long time to return">
     Execution time depends on workflow complexity; the underlying request allows up to 120 seconds, so a complex multi-step workflow may legitimately take that long before returning a result.

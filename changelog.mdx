@@ -1,32 +1,32 @@
 ---
 title: "Changelog"
-description: "Recent platform milestones — rebrand, permission management, microservices, and more."
+description: "Recent platform milestones: rebrand, permission management, microservices, and more."
 ---
 
 <Note>
-Shanone evolves quickly. This page tracks major, user-visible platform milestones rather than every internal change — see [Integrations](/integrations/overview) for the latest additions to the tool catalog.
+Shanone evolves quickly. This page tracks major, user-visible platform milestones rather than every internal change. See [Integrations](/integrations/overview) for the latest additions to the tool catalog.
 </Note>
 
 ## August 2026
 
 **Rebrand: emma → Shanone**
 
-The product formerly known as emma is now **Shanone** — "Command Center for Agent Harnesses." The rebrand reflects a deliberate pivot: Shanone no longer runs its own autonomous planning/execution engine (the previous LangGraph-based orchestrator was fully removed as dead code once nothing called it anymore). Shanone's role today is to be the **tool vendor, skill vendor, and permission layer** that *other* agents — Cursor, Claude Code, and any MCP client — call into.
+The product formerly known as emma is now **Shanone**: "Command Center for Agent Harnesses." The rebrand reflects a deliberate pivot: Shanone no longer runs its own autonomous planning/execution engine (the previous LangGraph-based orchestrator was fully removed as dead code once nothing called it anymore). Shanone's role today is to be the **tool vendor, skill vendor, and permission layer** that *other* agents (Cursor, Claude Code, and any MCP client) call into.
 
 **Added:**
 - Permission Vendor: IAM-style tool and service permission management (`shanone_list_services`, `shanone_set_user_tool_permission`, `shanone_set_user_service_permission`, `shanone_get_permission_summary`, `shanone_batch_set_user_permissions`, `shanone_list_user_tool_permissions`), scoped to Root users and delegated SA2 administrators
-- Skill Vendor rewritten around a simple, DynamoDB-backed storage model (`name` / `summary` / `instructions`) with progressive disclosure — list calls return metadata only, full instructions are fetched on demand
+- Skill Vendor rewritten around a simple, DynamoDB-backed storage model (`name` / `summary` / `instructions`) with progressive disclosure: list calls return metadata only, full instructions are fetched on demand
 - `shanone_list_service_tools` meta-tool, for fully enumerating a large integration's tools instead of relying on relevance-ranked search
 - Webhooks: inbound event sources (starting with Typeform) can automatically launch a connected agent platform (Devin, Cursor Cloud Agents, or Manus)
 
 **Changed:**
-- Removed the legacy hierarchical "Skill" system tied to the old orchestrator (per-agent prompt files, `excel_operator`, and similar) — the term "Skill" now refers exclusively to the Skill Vendor's user-saved workflows
+- Removed the legacy hierarchical "Skill" system tied to the old orchestrator (per-agent prompt files, `excel_operator`, and similar). The term "Skill" now refers exclusively to the Skill Vendor's user-saved workflows
 - Backend split into independently deployable services (tool execution, analytics, billing, crawling) for more granular scaling
 
 ## June–July 2026
 
 **Added:**
-- `@duzzle/shanone-mcp` published to npm — a local stdio MCP proxy for clients that don't yet speak remote Streamable HTTP MCP with custom headers
+- `@duzzle/shanone-mcp` published to npm: a local stdio MCP proxy for clients that don't yet speak remote Streamable HTTP MCP with custom headers
 - Continued expansion of the integration catalog toward 269+ live service integrations
 
 ---

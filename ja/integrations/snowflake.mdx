@@ -1,12 +1,12 @@
 ---
 title: "Snowflake"
-description: "Snowflakeデータウェアハウスを操作する — データベース、テーブル、ウェアハウス、タスク、Cortex AI"
+description: "Snowflakeデータウェアハウスを操作する：データベース、テーブル、ウェアハウス、タスク、Cortex AI"
 icon: /images/snowflake.svg
 ---
 
 # Snowflake
 
-ShanoneのSnowflake連携は、SQL実行、オブジェクトモデル全体(データベース、スキーマ、テーブル、ビュー、ウェアハウス)、データエンジニアリング用プリミティブ(ストリーム、タスク、パイプ、動的/Icebergテーブル)、ガバナンス(ロール、権限、ネットワークポリシー)、Cortex AIにまたがる142個のツールをエージェントに提供します——データプラットフォームの運用の大半をエージェントから直接実行できます。
+ShanoneのSnowflake連携は、SQL実行、オブジェクトモデル全体(データベース、スキーマ、テーブル、ビュー、ウェアハウス)、データエンジニアリング用プリミティブ(ストリーム、タスク、パイプ、動的/Icebergテーブル)、ガバナンス(ロール、権限、ネットワークポリシー)、Cortex AIにまたがる142個のツールをエージェントに提供します。データプラットフォームの運用の大半をエージェントから直接実行できます。
 
 ## はじめに
 
@@ -80,15 +80,15 @@ ShanoneはSnowflake向けに**142個のツール**を、以下のカテゴリに
 
 <AccordionGroup>
   <Accordion title="すべての呼び出しが認証エラーになる">
-    SnowflakeはAccount Identifier、Username、Private Keyの3つすべてを必要とします——一部だけでは認証できません。Private KeyがSnowflakeユーザーに登録された公開鍵に対応する、暗号化されていないPEM形式であることを再確認してください。
+    SnowflakeはAccount Identifier、Username、Private Keyの3つすべてを必要とします。一部だけでは認証できません。Private KeyがSnowflakeユーザーに登録された公開鍵に対応する、暗号化されていないPEM形式であることを再確認してください。
   </Accordion>
   <Accordion title="snowflake_execute_sqlが結果ではなくステートメントハンドルを返す">
-    実行時間の長いクエリは非同期で実行されます——返されたステートメントハンドルで`snowflake_get_statement_status`と`snowflake_get_statement_result`をポーリングするか、`snowflake_poll_until_complete`を使って自動的に完了を待ってください。
+    実行時間の長いクエリは非同期で実行されます。返されたステートメントハンドルで`snowflake_get_statement_status`と`snowflake_get_statement_result`をポーリングするか、`snowflake_poll_until_complete`を使って自動的に完了を待ってください。
   </Accordion>
   <Accordion title="ウェアハウスやコンピュートプールの操作が権限不足エラーで失敗する">
-    ほとんどのcreate/delete/grant操作は、接続ユーザーのロールに対応するオブジェクト権限が必要です——不具合と決めつける前に、`snowflake_list_grants`で現在のロールが実際にできることを確認してください。
+    ほとんどのcreate/delete/grant操作は、接続ユーザーのロールに対応するオブジェクト権限が必要です。不具合と決めつける前に、`snowflake_list_grants`で現在のロールが実際にできることを確認してください。
   </Accordion>
   <Accordion title="snowflake_create_dynamic_tableやsnowflake_create_streamは成功するがデータが更新されない">
-    動的テーブルとストリームは、設定されたラグ/スケジュールに従うか明示的にトリガーされた場合のみ更新されます——`snowflake_refresh_dynamic_table`を使うか、オブジェクトの`TARGET_LAG`設定を確認してください。
+    動的テーブルとストリームは、設定されたラグ/スケジュールに従うか明示的にトリガーされた場合のみ更新されます。`snowflake_refresh_dynamic_table`を使うか、オブジェクトの`TARGET_LAG`設定を確認してください。
   </Accordion>
 </AccordionGroup>

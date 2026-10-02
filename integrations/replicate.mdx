@@ -1,12 +1,12 @@
 ---
 title: "Replicate"
-description: "Run and manage AI models — predictions, trainings, deployments, and model versions"
+description: "Run and manage AI models: predictions, trainings, deployments, and model versions"
 icon: /images/replicate.svg
 ---
 
 # Replicate
 
-Shanone's Replicate integration gives your agent 31 tools for running and managing hosted AI models on [Replicate](https://replicate.com) — predictions, fine-tuning/training, deployments, and browsing the model catalog.
+Shanone's Replicate integration gives your agent 31 tools for running and managing hosted AI models on [Replicate](https://replicate.com): predictions, fine-tuning/training, deployments, and browsing the model catalog.
 
 ## Getting Started
 
@@ -68,12 +68,12 @@ Shanone provides **31 tools** for Replicate, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="replicate_create_prediction returns immediately with a status of 'starting'">
-    Predictions run asynchronously — poll `replicate_get_prediction` with the returned ID until `status` becomes `succeeded` or `failed` rather than expecting output in the initial response.
+    Predictions run asynchronously. Poll `replicate_get_prediction` with the returned ID until `status` becomes `succeeded` or `failed` rather than expecting output in the initial response.
   </Accordion>
   <Accordion title="replicate_run_model fails with an invalid input error">
     Each model defines its own input schema; check `replicate_get_model_readme` or the model's version details for the exact expected parameters before calling `replicate_run_model`.
   </Accordion>
   <Accordion title="replicate_create_training runs much longer than expected">
-    Training duration depends heavily on dataset size and base model — use `replicate_get_training` to check status rather than assuming a fixed runtime, and `replicate_cancel_training` if it needs to be stopped.
+    Training duration depends heavily on dataset size and base model. Use `replicate_get_training` to check status rather than assuming a fixed runtime, and `replicate_cancel_training` if it needs to be stopped.
   </Accordion>
 </AccordionGroup>

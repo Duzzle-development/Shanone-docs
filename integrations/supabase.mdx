@@ -1,12 +1,12 @@
 ---
 title: "Supabase"
-description: "Manage Supabase projects, databases, storage, auth, and edge functions — plus run SQL and PostgREST queries"
+description: "Manage Supabase projects, databases, storage, auth, and edge functions: plus run SQL and PostgREST queries"
 icon: /images/supabase.svg
 ---
 
 # Supabase
 
-Shanone's Supabase integration gives your agent 120 tools spanning the Management API (projects, branches, backups, network security) and direct data access (SQL execution, table records, storage, edge functions) — enough to manage a Supabase project's infrastructure and its data from the same agent.
+Shanone's Supabase integration gives your agent 120 tools spanning the Management API (projects, branches, backups, network security) and direct data access (SQL execution, table records, storage, edge functions), enough to manage a Supabase project's infrastructure and its data from the same agent.
 
 ## Getting Started
 
@@ -80,15 +80,15 @@ Shanone provides **120 tools** for Supabase, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="supabase_execute_sql fails but supabase_execute_sql_readonly works">
-    Write-capable SQL execution requires the connected role to have write privileges on the target project — use the readonly variant for analysis-only queries to avoid accidental writes.
+    Write-capable SQL execution requires the connected role to have write privileges on the target project. Use the readonly variant for analysis-only queries to avoid accidental writes.
   </Accordion>
   <Accordion title="supabase_create_branch or supabase_push_branch fails">
-    Branching requires preview branching to be enabled on the project first — call `supabase_enable_preview_branching` before creating branches.
+    Branching requires preview branching to be enabled on the project first. Call `supabase_enable_preview_branching` before creating branches.
   </Accordion>
   <Accordion title="supabase_restore_backup or supabase_restore_pitr doesn't apply immediately">
-    Restores are long-running operations performed asynchronously by Supabase's infrastructure — check `supabase_get_project_health` afterward rather than expecting an instant result.
+    Restores are long-running operations performed asynchronously by Supabase's infrastructure. Check `supabase_get_project_health` afterward rather than expecting an instant result.
   </Accordion>
   <Accordion title="supabase_upload_file or supabase_download_file fails on a bucket I can see">
-    Storage bucket access depends on the bucket's public/private setting and RLS policies — a bucket being visible via `supabase_list_buckets` doesn't guarantee the connected role can read/write its objects.
+    Storage bucket access depends on the bucket's public/private setting and RLS policies: a bucket being visible via `supabase_list_buckets` doesn't guarantee the connected role can read/write its objects.
   </Accordion>
 </AccordionGroup>

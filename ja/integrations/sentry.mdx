@@ -1,12 +1,12 @@
 ---
 title: "Sentry"
-description: "エラー、パフォーマンス、リリースを追跡 — issue、トレース、プロファイリング、セッションリプレイ、ダッシュボード"
+description: "エラー、パフォーマンス、リリースを追跡：issue、トレース、プロファイリング、セッションリプレイ、ダッシュボード"
 icon: /images/sentry.svg
 ---
 
 # Sentry
 
-ShanoneのSentry連携は、issueのトリアージ、パフォーマンストレーシング、セッションリプレイ、リリースヘルス、組織管理(メンバー、SCIM、連携アプリ)にまたがる115個のツールをエージェントに提供します——日常的なSentry運用の大半をエージェントから離れずに行えます。
+ShanoneのSentry連携は、issueのトリアージ、パフォーマンストレーシング、セッションリプレイ、リリースヘルス、組織管理(メンバー、SCIM、連携アプリ)にまたがる115個のツールをエージェントに提供します。日常的なSentry運用の大半をエージェントから離れずに行えます。
 
 ## はじめに
 
@@ -86,13 +86,13 @@ ShanoneはSentry向けに**115個のツール**を、以下のカテゴリに整
 
 <AccordionGroup>
   <Accordion title="トークンが有効なはずなのに401/403エラーになる">
-    Auth Tokenのスコープはエンドポイントごとに一致している必要があります——例えば`sentry_bulk_update_issues`には`event:write`が必要ですが、`sentry_list_projects`には`project:read`のみで十分です。**Settings → Developer Settings**で不足しているスコープを追加してトークンを再生成してください。
+    Auth Tokenのスコープはエンドポイントごとに一致している必要があります。例えば`sentry_bulk_update_issues`には`event:write`が必要ですが、`sentry_list_projects`には`project:read`のみで十分です。**Settings → Developer Settings**で不足しているスコープを追加してトークンを再生成してください。
   </Accordion>
   <Accordion title="issueがあるはずのプロジェクトでsentry_list_issuesが空になる">
-    多くの一覧系ツールはデフォルトで短い期間(Sentryの`statsPeriod`)かつ未解決issueのみを対象にしています。明示的に`query`/`statsPeriod`を指定してください——正確なパラメータ名は`sentry_list_issues`の`shanone_get_tool_schema`で確認できます。
+    多くの一覧系ツールはデフォルトで短い期間(Sentryの`statsPeriod`)かつ未解決issueのみを対象にしています。明示的に`query`/`statsPeriod`を指定してください。正確なパラメータ名は`sentry_list_issues`の`shanone_get_tool_schema`で確認できます。
   </Accordion>
   <Accordion title="呼び出しごとにOrganization Slugのエラーが出る">
-    接続時に設定していない場合、多くのツールは呼び出しごとに明示的な`organization_slug`引数を要求します——連携アプリ側で一度設定しておけば、毎回指定する必要がなくなります。
+    接続時に設定していない場合、多くのツールは呼び出しごとに明示的な`organization_slug`引数を要求します。連携アプリ側で一度設定しておけば、毎回指定する必要がなくなります。
   </Accordion>
   <Accordion title="sentry_trigger_issue_autofixがすぐに結果を返さない">
     Seer autofixは非同期で実行されます。実行状態が完了するまで、同じissueに対して`sentry_get_issue_autofix`をポーリングしてください。

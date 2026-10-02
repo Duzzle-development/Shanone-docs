@@ -1,12 +1,12 @@
 ---
 title: "Backlog"
-description: "Manage issues, projects, wikis, pull requests, and Git repositories in Backlog — Nulab's project management tool"
+description: "Manage issues, projects, wikis, pull requests, and Git repositories in Backlog: Nulab's project management tool"
 icon: /images/backlog.svg
 ---
 
 # Backlog
 
-Shanone's Backlog integration gives your agent 96 tools — one of the deepest integrations in the catalog, covering issues, projects, wikis, Git/pull requests, and the administrative surface (teams, custom fields, notifications, watching) around them.
+Shanone's Backlog integration gives your agent 96 tools: one of the deepest integrations in the catalog, covering issues, projects, wikis, Git/pull requests, and the administrative surface (teams, custom fields, notifications, watching) around them.
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ Shanone's Backlog integration gives your agent 96 tools — one of the deepest i
     Ask your agent to do something with Backlog (e.g. "list open issues in my project"), or connect proactively from **Integrations** in the Shanone dashboard.
   </Step>
   <Step title="Authorize your Backlog space">
-    Approve Backlog's OAuth consent screen for the specific space (subdomain) you want Shanone to access — Backlog's OAuth is scoped per-space rather than per-organization.
+    Approve Backlog's OAuth consent screen for the specific space (subdomain) you want Shanone to access: Backlog's OAuth is scoped per-space rather than per-organization.
   </Step>
   <Step title="Retry your request">
     Once connected, `shanone_execute_tool` calls for `backlog_*` tools will succeed.
@@ -80,12 +80,12 @@ Shanone provides **96 tools** for Backlog, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Any backlog_* call fails with a domain/space error">
-    Backlog's OAuth is scoped to a single space (subdomain) at connection time — if you need to work across multiple Backlog spaces, reconnect the integration for each one.
+    Backlog's OAuth is scoped to a single space (subdomain) at connection time. If you need to work across multiple Backlog spaces, reconnect the integration for each one.
   </Accordion>
   <Accordion title="backlog_create_issue fails with an invalid issue type or category">
     Issue types, categories, and custom fields are all project-specific. Call `backlog_get_issue_types` or `backlog_get_categories` for the target project first to get valid IDs.
   </Accordion>
   <Accordion title="backlog_create_pull_request succeeds but doesn't show the expected diff">
-    Confirm the `base` and `branch` names exactly match existing Git branches in `backlog_get_git_repository` — Backlog won't auto-correct a mistyped branch name.
+    Confirm the `base` and `branch` names exactly match existing Git branches in `backlog_get_git_repository`: Backlog won't auto-correct a mistyped branch name.
   </Accordion>
 </AccordionGroup>

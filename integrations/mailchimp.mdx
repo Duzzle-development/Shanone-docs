@@ -1,12 +1,12 @@
 ---
 title: "Mailchimp"
-description: "Run Mailchimp email/SMS marketing and e-commerce integrations — audiences, campaigns, automations, templates, and reports"
+description: "Run Mailchimp email/SMS marketing and e-commerce integrations: audiences, campaigns, automations, templates, and reports"
 icon: /images/mailchimp.svg
 ---
 
 # Mailchimp
 
-Shanone's Mailchimp integration gives your agent 279 tools covering nearly the entire Marketing API — audiences, campaigns, automations, SMS, e-commerce, templates, landing pages, and reporting.
+Shanone's Mailchimp integration gives your agent 279 tools covering nearly the entire Marketing API: audiences, campaigns, automations, SMS, e-commerce, templates, landing pages, and reporting.
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ Shanone's Mailchimp integration gives your agent 279 tools covering nearly the e
     Ask your agent to do something with Mailchimp (e.g. "list my email campaigns from this month"), or connect proactively from **Integrations** in the Shanone dashboard.
   </Step>
   <Step title="Authorize your Mailchimp account">
-    Approve Mailchimp's OAuth consent screen for the account you want Shanone to act on. Mailchimp OAuth tokens don't expire or refresh — if a token is later revoked, you'll need to reconnect.
+    Approve Mailchimp's OAuth consent screen for the account you want Shanone to act on. Mailchimp OAuth tokens don't expire or refresh. If a token is later revoked, you'll need to reconnect.
   </Step>
   <Step title="Retry your request">
     Once connected, `shanone_execute_tool` calls for `mailchimp_*` tools will succeed.
@@ -89,12 +89,12 @@ Shanone provides **279 tools** for Mailchimp, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="mailchimp_send_campaign fails with a checklist error">
-    Call `mailchimp_get_send_checklist` first — Mailchimp blocks sending until required items (from address, subject line, content) pass its pre-send checklist.
+    Call `mailchimp_get_send_checklist` first: Mailchimp blocks sending until required items (from address, subject line, content) pass its pre-send checklist.
   </Accordion>
   <Accordion title="Batch operations return immediately but data hasn't changed">
-    Batch operations run asynchronously on Mailchimp's side — use `mailchimp_wait_for_batch_completion` or poll `mailchimp_get_batch_operation` rather than assuming completion from the initial response.
+    Batch operations run asynchronously on Mailchimp's side. Use `mailchimp_wait_for_batch_completion` or poll `mailchimp_get_batch_operation` rather than assuming completion from the initial response.
   </Accordion>
   <Accordion title="A tool call suddenly returns a 401 after working fine before">
-    Mailchimp OAuth tokens have no refresh flow — if the underlying app authorization was revoked or expired, you'll need to fully reconnect Mailchimp from **Integrations** rather than expecting a silent refresh.
+    Mailchimp OAuth tokens have no refresh flow. If the underlying app authorization was revoked or expired, you'll need to fully reconnect Mailchimp from **Integrations** rather than expecting a silent refresh.
   </Accordion>
 </AccordionGroup>

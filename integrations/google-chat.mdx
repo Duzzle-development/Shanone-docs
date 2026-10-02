@@ -1,6 +1,6 @@
 ---
 title: "Google Chat"
-description: "Manage spaces, messages, members, and reactions — plus availability status and custom emoji"
+description: "Manage spaces, messages, members, and reactions: plus availability status and custom emoji"
 icon: /images/google-chat.svg
 ---
 
@@ -74,12 +74,12 @@ Shanone provides **49 tools** for Google Chat, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="google_chat_create_message fails when trying to send a rich card">
-    Use `google_chat_create_card_message` instead of `google_chat_create_message` for card-formatted content — the plain message tool only accepts text.
+    Use `google_chat_create_card_message` instead of `google_chat_create_message` for card-formatted content. The plain message tool only accepts text.
   </Accordion>
   <Accordion title="google_chat_search_messages doesn't find an older message">
-    Search indexing can lag for very recent messages, and search only covers spaces the connected account is a member of — verify with `google_chat_list_spaces` first.
+    Search indexing can lag for very recent messages, and search only covers spaces the connected account is a member of. Verify with `google_chat_list_spaces` first.
   </Accordion>
   <Accordion title="google_chat_upload_attachment succeeds but the file doesn't appear in the message">
-    Attachments must be referenced in a follow-up `google_chat_create_message` call using the returned attachment resource — uploading alone doesn't post it to the space.
+    Attachments must be referenced in a follow-up `google_chat_create_message` call using the returned attachment resource: uploading alone doesn't post it to the space.
   </Accordion>
 </AccordionGroup>

@@ -1,6 +1,6 @@
 ---
 title: "Zendesk"
-description: "Zendeskでサポートチケット、ユーザー、組織、マクロを管理 — カスタマーサポートの一連のワークフロー"
+description: "Zendeskでサポートチケット、ユーザー、組織、マクロを管理：カスタマーサポートの一連のワークフロー"
 icon: /images/zendesk.svg
 ---
 
@@ -80,15 +80,15 @@ Shanoneはzendesk向けに**64個のツール**を、以下のカテゴリに整
 
 <AccordionGroup>
   <Accordion title="接続時に見覚えのないサブドメインを求められる">
-    Zendeskのサブドメインは、サポートURLの`.zendesk.com`より前の部分です(例: `acme.zendesk.com`なら`acme`) — 不明な場合は管理画面のブラウザURLを確認してください。
+    Zendeskのサブドメインは、サポートURLの`.zendesk.com`より前の部分です(例: `acme.zendesk.com`なら`acme`)。不明な場合は管理画面のブラウザURLを確認してください。
   </Accordion>
   <Accordion title="zendesk_apply_macro_to_ticketを実行しても想定通りにチケットが変わらない">
-    マクロには条件付きアクションが含まれることがあります — 適用前に`zendesk_get_macro`でマクロの内容を確認してください。名前だけでは効果が明らかでない場合があります。
+    マクロには条件付きアクションが含まれることがあります。適用前に`zendesk_get_macro`でマクロの内容を確認してください。名前だけでは効果が明らかでない場合があります。
   </Accordion>
   <Accordion title="zendesk_search_ticketsやzendesk_search_usersの結果が想定と異なる">
     Zendeskの検索APIは独自のクエリ構文(例: `status:open type:ticket`)を使用します。単純なキーワード文字列では期待通りに絞り込めない場合があるため、Zendeskの検索リファレンスで対応する演算子を確認してください。
   </Accordion>
   <Accordion title="zendesk_merge_ticketsが失敗する">
-    マージには両方のチケットが未解決(クローズされていない)状態で、通常は同じ依頼者に属している必要があります — マージ前に`zendesk_get_ticket`で両方の条件を確認してください。
+    マージには両方のチケットが未解決(クローズされていない)状態で、通常は同じ依頼者に属している必要があります。マージ前に`zendesk_get_ticket`で両方の条件を確認してください。
   </Accordion>
 </AccordionGroup>

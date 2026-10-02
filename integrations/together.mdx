@@ -1,12 +1,12 @@
 ---
 title: "Together AI"
-description: "Run inference, fine-tuning, and dedicated deployments — chat, embeddings, GPU clusters, and DMI"
+description: "Run inference, fine-tuning, and dedicated deployments: chat, embeddings, GPU clusters, and DMI"
 icon: /images/together.svg
 ---
 
 # Together AI
 
-Shanone's Together AI integration gives your agent 127 tools spanning serverless inference (chat/completions/embeddings/rerank), fine-tuning, batch and evaluation jobs, GPU cluster management, and Dedicated Model Inference (DMI) — a broad surface for teams running their own models on Together's infrastructure.
+Shanone's Together AI integration gives your agent 127 tools spanning serverless inference (chat/completions/embeddings/rerank), fine-tuning, batch and evaluation jobs, GPU cluster management, and Dedicated Model Inference (DMI): a broad surface for teams running their own models on Together's infrastructure.
 
 ## Getting Started
 
@@ -77,15 +77,15 @@ Shanone provides **127 tools** for Together AI, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="together_create_fine_tuning_job fails on validation">
-    Use `together_estimate_fine_tuning_price` first — it validates the training file and base model compatibility before you commit to a paid job.
+    Use `together_estimate_fine_tuning_price` first. It validates the training file and base model compatibility before you commit to a paid job.
   </Accordion>
   <Accordion title="A DMI deployment stays in a pending state">
-    Dedicated Model Inference deployments provision GPU capacity and can take several minutes — poll `together_dmi_get_deployment` (or `together_dci_get_deployment` for container-based deployments) rather than assuming failure.
+    Dedicated Model Inference deployments provision GPU capacity and can take several minutes. Poll `together_dmi_get_deployment` (or `together_dci_get_deployment` for container-based deployments) rather than assuming failure.
   </Accordion>
   <Accordion title="together_execute_code doesn't retain state between calls">
-    Code interpreter sessions are explicit — use `together_list_code_sessions` to find or reuse an existing session ID; a fresh call without one starts a brand-new session.
+    Code interpreter sessions are explicit. Use `together_list_code_sessions` to find or reuse an existing session ID; a fresh call without one starts a brand-new session.
   </Accordion>
   <Accordion title="GPU cluster operations fail with a quota or capacity error">
-    GPU clusters are a scarce, billed resource — check `together_list_cluster_regions` for availability and confirm your account's quota before retrying `together_create_gpu_cluster`.
+    GPU clusters are a scarce, billed resource. Check `together_list_cluster_regions` for availability and confirm your account's quota before retrying `together_create_gpu_cluster`.
   </Accordion>
 </AccordionGroup>

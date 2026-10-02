@@ -68,10 +68,10 @@ Shanone provides **27 tools** for Webex, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="webex_create_membership or webex_send_message fails with a not found error">
-    Room, team, and person identifiers in Webex are opaque IDs, not emails or names — use `webex_list_rooms`/`webex_list_people` (or `webex_get_person`) to resolve the correct ID first.
+    Room, team, and person identifiers in Webex are opaque IDs, not emails or names. Use `webex_list_rooms`/`webex_list_people` (or `webex_get_person`) to resolve the correct ID first.
   </Accordion>
   <Accordion title="webex_delete_room or webex_delete_team appears to succeed but content still shows elsewhere">
-    Deleting a room or team is a moderator-level action; if the connected account isn't a moderator of that space, the call may fail silently depending on Webex's permission response — verify with `webex_get_membership` first.
+    Deleting a room or team is a moderator-level action; if the connected account isn't a moderator of that space, the call may fail silently depending on Webex's permission response. Verify with `webex_get_membership` first.
   </Accordion>
   <Accordion title="Meeting attendee list looks incomplete">
     `webex_get_meeting` returns the scheduled meeting's core fields; invitee lists are managed separately and may require checking the meeting's associated room membership via `webex_list_memberships`.

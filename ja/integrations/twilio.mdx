@@ -1,6 +1,6 @@
 ---
 title: "Twilio"
-description: "SMS・WhatsAppメッセージの送信、電話番号・カンファレンス・録音の管理 — エージェントのためのプログラマブルな通信"
+description: "SMS・WhatsAppメッセージの送信、電話番号・カンファレンス・録音の管理：エージェントのためのプログラマブルな通信"
 icon: /images/twilio.svg
 ---
 
@@ -15,7 +15,7 @@ ShanoneのTwilio連携は、SMS/WhatsAppメッセージングに加え、電話�
     [Twilio Console](https://www.twilio.com/docs/iam/api)のダッシュボードから**Account SID**と**Auth Token**を取得します。
   </Step>
   <Step title="APIキーで接続する">
-    Shanoneダッシュボードの**連携 → Twilio**でAccount SIDとAuth Tokenの両方を入力します — Twilioはどちらか片方だけでは認証できないため、両方の設定が必須です。
+    Shanoneダッシュボードの**連携 → Twilio**でAccount SIDとAuth Tokenの両方を入力します。Twilioはどちらか片方だけでは認証できないため、両方の設定が必須です。
   </Step>
   <Step title="リクエストを再実行する">
     接続が完了すると、`twilio_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
@@ -83,13 +83,13 @@ ShanoneはTwilio向けに**45個のツール**を、以下のカテゴリに整�
 
 <AccordionGroup>
   <Accordion title="トークンを入力したのに接続に失敗する">
-    TwilioはAccount SIDとAuth Tokenの**両方**の設定が必須です — Shanoneの接続チェックは片方のみの設定を「未接続」として扱うため、**連携**画面で両方のフィールドを確認してください。
+    TwilioはAccount SIDとAuth Tokenの**両方**の設定が必須です。Shanoneの接続チェックは片方のみの設定を「未接続」として扱うため、**連携**画面で両方のフィールドを確認してください。
   </Accordion>
   <Accordion title="twilio_send_whatsapp_templateがテンプレート無効エラーで失敗する">
     WhatsAppテンプレートメッセージは、Twilioのコンテンツテンプレートカタログで承認済みのテンプレートを参照する必要があります。まず`twilio_list_content_templates`で有効な承認済みテンプレートSIDを確認してください。
   </Accordion>
   <Accordion title="twilio_purchase_phone_numberで該当する番号が見つからない">
-    先に`twilio_search_available_phone_numbers`を国番号・エリアコード/パターンを指定して実行してください — 番号の在庫は地域や番号種別(ローカル/フリーダイヤル/モバイル)によって大きく異なります。
+    先に`twilio_search_available_phone_numbers`を国番号・エリアコード/パターンを指定して実行してください。番号の在庫は地域や番号種別(ローカル/フリーダイヤル/モバイル)によって大きく異なります。
   </Accordion>
   <Accordion title="録音・文字起こし系ツールの結果が空になる">
     録音・文字起こしは特定の通話またはカンファレンスSIDに紐づいています。グローバルな一覧を期待するのではなく、正しい通話/カンファレンスSIDを指定して`twilio_list_call_recordings`や`twilio_list_conference_recordings`を使用してください。

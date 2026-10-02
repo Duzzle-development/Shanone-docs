@@ -1,12 +1,12 @@
 ---
 title: "ElevenLabs"
-description: "AI voice generation — text-to-speech, voice cloning, dubbing, music, and transcription"
+description: "AI voice generation: text-to-speech, voice cloning, dubbing, music, and transcription"
 icon: /images/elevenlabs.svg
 ---
 
 # ElevenLabs
 
-Shanone's ElevenLabs integration gives your agent 83 tools covering the full audio-AI surface — speech synthesis, voice design, dubbing, music generation, and transcription — not just basic text-to-speech.
+Shanone's ElevenLabs integration gives your agent 83 tools covering the full audio-AI surface (speech synthesis, voice design, dubbing, music generation, and transcription), not just basic text-to-speech.
 
 ## Getting Started
 
@@ -89,6 +89,6 @@ Shanone provides **83 tools** for ElevenLabs, organized into these categories:
     Dubbing and project/chapter conversion are asynchronous; poll `elevenlabs_get_dubbing_metadata` or `elevenlabs_get_project_snapshots` until status reflects completion before calling the download tools.
   </Accordion>
   <Accordion title="Voice cloning quality is poor">
-    `elevenlabs_add_voice` quality depends heavily on clean, noise-free samples — run `elevenlabs_audio_isolation` on source recordings first to strip background noise before cloning.
+    `elevenlabs_add_voice` quality depends heavily on clean, noise-free samples. Run `elevenlabs_audio_isolation` on source recordings first to strip background noise before cloning.
   </Accordion>
 </AccordionGroup>

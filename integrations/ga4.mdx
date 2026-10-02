@@ -1,6 +1,6 @@
 ---
 title: "Google Analytics 4"
-description: "Query reports, manage properties, and send events — Admin API, Data API, and Measurement Protocol"
+description: "Query reports, manage properties, and send events: Admin API, Data API, and Measurement Protocol"
 icon: /images/ga4.svg
 ---
 
@@ -68,12 +68,12 @@ Shanone provides **33 tools** for GA4, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="ga4_run_report returns fewer rows or a sampling warning">
-    Check `ga4_check_compatibility` before combining dimensions/metrics — some combinations aren't compatible and GA4 silently drops or samples data instead of erroring.
+    Check `ga4_check_compatibility` before combining dimensions/metrics. Some combinations aren't compatible and GA4 silently drops or samples data instead of erroring.
   </Accordion>
   <Accordion title="ga4_list_access_bindings fails with an insufficient scope error">
-    This endpoint is in the GA4 Admin API's alpha surface and needs an additional OAuth scope beyond the standard read/edit scopes — reconnect the integration if you hit this.
+    This endpoint is in the GA4 Admin API's alpha surface and needs an additional OAuth scope beyond the standard read/edit scopes. Reconnect the integration if you hit this.
   </Accordion>
   <Accordion title="ga4_send_events events don't show up in reports">
-    Measurement Protocol events aren't validated server-side by default — run `ga4_validate_events` first, and remember real-time/standard reports can take minutes to hours to reflect new events.
+    Measurement Protocol events aren't validated server-side by default. Run `ga4_validate_events` first, and remember real-time/standard reports can take minutes to hours to reflect new events.
   </Accordion>
 </AccordionGroup>

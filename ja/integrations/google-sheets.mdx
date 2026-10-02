@@ -1,12 +1,12 @@
 ---
 title: "Google Sheets"
-description: "Sheets APIのほぼ全機能 — スプレッドシート、セル、書式、グラフ、フィルタ、テーブルなど"
+description: "Sheets APIのほぼ全機能：スプレッドシート、セル、書式、グラフ、フィルタ、テーブルなど"
 icon: /images/google-sheets.svg
 ---
 
 # Google Sheets
 
-ShanoneのGoogle Sheets連携では、Sheets APIのほぼ全機能を扱う88のツールをエージェントが利用できるようになります——値の読み書きだけでなく、書式、グラフ、フィルタ、保護範囲、テーブル、行/列管理など、多くの連携が省略しがちな機能まで含まれます。
+ShanoneのGoogle Sheets連携では、Sheets APIのほぼ全機能を扱う88のツールをエージェントが利用できるようになります。値の読み書きだけでなく、書式、グラフ、フィルタ、保護範囲、テーブル、行/列管理など、多くの連携が省略しがちな機能まで含まれます。
 
 ## はじめに
 
@@ -83,12 +83,12 @@ ShanoneはGoogle Sheets用に**88のツール**を提供しており、以下の
 
 <AccordionGroup>
   <Accordion title="google_sheets_update_valuesが意図しないセルを上書きしてしまう">
-    A1表記の範囲(例:`Sheet1!B2:D10`)を再確認してください——シート名を省略すると最初のシートがデフォルトになり、意図しない上書きの典型的な原因になります。
+    A1表記の範囲(例:`Sheet1!B2:D10`)を再確認してください。シート名を省略すると最初のシートがデフォルトになり、意図しない上書きの典型的な原因になります。
   </Accordion>
   <Accordion title="google_sheets_add_chartやgoogle_sheets_add_tableが不正な範囲エラーで失敗する">
-    グラフ、テーブル、交互の色、保護範囲などの構造系ツールの多くは、シート名ではなく`sheetId`(数値ID)を必要とします——先に`google_sheets_get_spreadsheet`や`google_sheets_get_sheet_names`を呼んで解決してください。
+    グラフ、テーブル、交互の色、保護範囲などの構造系ツールの多くは、シート名ではなく`sheetId`(数値ID)を必要とします。先に`google_sheets_get_spreadsheet`や`google_sheets_get_sheet_names`を呼んで解決してください。
   </Accordion>
   <Accordion title="バッチ操作が一部しか適用されない">
-    `google_sheets_batch_update_values`のようなバッチツールは各範囲を個別に処理します——全体が成功したからといって全範囲が成功したとは限らないため、レスポンス内の範囲ごとのエラーを確認してください。
+    `google_sheets_batch_update_values`のようなバッチツールは各範囲を個別に処理します。全体が成功したからといって全範囲が成功したとは限らないため、レスポンス内の範囲ごとのエラーを確認してください。
   </Accordion>
 </AccordionGroup>

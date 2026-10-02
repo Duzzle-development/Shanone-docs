@@ -1,6 +1,6 @@
 ---
 title: "Discord"
-description: "Manage servers end-to-end — messages, channels, roles, moderation, voice, events, and webhooks"
+description: "Manage servers end-to-end: messages, channels, roles, moderation, voice, events, and webhooks"
 icon: /images/discord.svg
 ---
 
@@ -23,7 +23,7 @@ Shanone's Discord integration gives your agent 182 tools covering nearly all of 
 </Steps>
 
 <Note>
-Most write operations (posting messages, moderation, role management) require Shanone's bot to have the relevant permissions in your server — if a tool that should work returns a permissions error, check the bot's role permissions in Discord's Server Settings.
+Most write operations (posting messages, moderation, role management) require Shanone's bot to have the relevant permissions in your server. If a tool that should work returns a permissions error, check the bot's role permissions in Discord's Server Settings.
 </Note>
 
 ## Available Tools
@@ -96,15 +96,15 @@ Shanone provides **182 tools** for Discord, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="discord_send_message or moderation tools fail with a Missing Permissions error">
-    Discord permissions are role-based and hierarchical — Shanone's bot role needs the specific permission (e.g. `Send Messages`, `Ban Members`) *and* must be positioned above the target role/member in the server's role list for moderation actions.
+    Discord permissions are role-based and hierarchical: Shanone's bot role needs the specific permission (e.g. `Send Messages`, `Ban Members`) *and* must be positioned above the target role/member in the server's role list for moderation actions.
   </Accordion>
   <Accordion title="discord_search_messages returns limited or no results">
-    Discord's native search API only indexes messages in channels the bot can see and has limited support for complex queries — for exhaustive history, paginate `discord_get_channel_messages` instead.
+    Discord's native search API only indexes messages in channels the bot can see and has limited support for complex queries: for exhaustive history, paginate `discord_get_channel_messages` instead.
   </Accordion>
   <Accordion title="Voice state or soundboard tools return no effect">
     Most voice-related write operations require the bot to already be connected to a voice channel in that guild; check `discord_get_current_user_voice_state` first before modifying voice state or triggering soundboard sounds.
   </Accordion>
   <Accordion title="discord_create_scheduled_event fails with a validation error">
-    External-location events (`entity_type: EXTERNAL`) require both `scheduled_end_time` and an `entity_metadata.location` — voice/stage events don't need those fields but do need a valid `channel_id`.
+    External-location events (`entity_type: EXTERNAL`) require both `scheduled_end_time` and an `entity_metadata.location`: voice/stage events don't need those fields but do need a valid `channel_id`.
   </Accordion>
 </AccordionGroup>

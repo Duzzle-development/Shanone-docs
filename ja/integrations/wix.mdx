@@ -1,6 +1,6 @@
 ---
 title: "Wix"
-description: "Wixストア、予約、ブログ、コンタクト、サイトデータを管理 — 商品、注文、CMSコレクション、マーケティング"
+description: "Wixストア、予約、ブログ、コンタクト、サイトデータを管理：商品、注文、CMSコレクション、マーケティング"
 icon: /images/wix.svg
 ---
 
@@ -92,15 +92,15 @@ Shanoneはwix向けに**144個のツール**を、以下のカテゴリに整理
 
 <AccordionGroup>
   <Accordion title="有効なAPIキーでも全ての呼び出しが認証エラーになる">
-    WixのAPI呼び出しにはAPIキーと**Site ID**の両方が必要です — キーだけではリクエストをサイトにスコープできません。**連携**画面で両方が設定されているか確認してください。
+    WixのAPI呼び出しにはAPIキーと**Site ID**の両方が必要です。キーだけではリクエストをサイトにスコープできません。**連携**画面で両方が設定されているか確認してください。
   </Accordion>
   <Accordion title="wix_commit_draft_orderを実行しても実際の注文が作成されない">
-    ドラフト注文は準備段階のステップです — 先に`wix_update_draft_order_line_items`/`wix_set_draft_order_shipping_info`で明細と配送情報を組み立て、その後`wix_commit_draft_order`を呼んで実際の注文に変換してください。
+    ドラフト注文は準備段階のステップです。先に`wix_update_draft_order_line_items`/`wix_set_draft_order_shipping_info`で明細と配送情報を組み立て、その後`wix_commit_draft_order`を呼んで実際の注文に変換してください。
   </Accordion>
   <Accordion title="データがあるはずのコレクションでwix_query_data_itemsが何も返さない">
-    カスタムコレクションは`wix_get_data_permissions`で権限モデルを確認する必要があります — 一部のコレクションはロールごとに読み取りアクセスを制限しており、APIキーベースのクエリが空の結果を返す原因になります。
+    カスタムコレクションは`wix_get_data_permissions`で権限モデルを確認する必要があります。一部のコレクションはロールごとに読み取りアクセスを制限しており、APIキーベースのクエリが空の結果を返す原因になります。
   </Accordion>
   <Accordion title="wix_create_bookingは成功するがスロットの空き状況が他で反映されない">
-    予約の直前に`wix_get_service_availability`を呼び出してください — 特に人気の時間帯では、エージェントが確認した時点から予約する時点までの間に空き状況が変わることがあります。
+    予約の直前に`wix_get_service_availability`を呼び出してください。特に人気の時間帯では、エージェントが確認した時点から予約する時点までの間に空き状況が変わることがあります。
   </Accordion>
 </AccordionGroup>

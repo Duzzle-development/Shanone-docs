@@ -1,12 +1,12 @@
 ---
 title: "incident.io"
-description: "Full incident lifecycle management — incidents, alerts, on-call schedules, workflows, and status pages"
+description: "Full incident lifecycle management: incidents, alerts, on-call schedules, workflows, and status pages"
 icon: /images/incident-io.svg
 ---
 
 # incident.io
 
-Shanone's incident.io integration gives your agent 178 tools covering nearly the entire incident.io platform — incident management, alerting, on-call schedules, workflows, catalog, status pages, and admin/API operations.
+Shanone's incident.io integration gives your agent 178 tools covering nearly the entire incident.io platform: incident management, alerting, on-call schedules, workflows, catalog, status pages, and admin/API operations.
 
 ## Getting Started
 
@@ -86,15 +86,15 @@ Shanone provides **178 tools** for incident.io, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="incidentio_create_incident fails with a validation error about custom fields or roles">
-    incident.io accounts often require certain custom fields or role assignments on creation — call `incidentio_list_custom_fields` and `incidentio_list_incident_roles` first to see what's mandatory for your workspace.
+    incident.io accounts often require certain custom fields or role assignments on creation. Call `incidentio_list_custom_fields` and `incidentio_list_incident_roles` first to see what's mandatory for your workspace.
   </Accordion>
   <Accordion title="incidentio_list_schedule_entries returns unexpected gaps">
-    Overrides (`incidentio_list_schedule_overrides`) take priority over the base rotation and aren't merged automatically into the entries view — check both endpoints if the on-call picture looks incomplete.
+    Overrides (`incidentio_list_schedule_overrides`) take priority over the base rotation and aren't merged automatically into the entries view. Check both endpoints if the on-call picture looks incomplete.
   </Accordion>
   <Accordion title="incidentio_resolve_alert doesn't close the linked incident">
-    Alerts and incidents are related but distinct — resolving an alert doesn't automatically transition its incident; update the incident status explicitly with `incidentio_update_incident_status` if needed.
+    Alerts and incidents are related but distinct: resolving an alert doesn't automatically transition its incident; update the incident status explicitly with `incidentio_update_incident_status` if needed.
   </Accordion>
   <Accordion title="Admin tools like incidentio_create_api_key or incidentio_update_ip_allowlist return a permissions error">
-    These endpoints require an API Key with admin-level scope — a key scoped only to incident management operations will be rejected for account/admin-level changes.
+    These endpoints require an API Key with admin-level scope: a key scoped only to incident management operations will be rejected for account/admin-level changes.
   </Accordion>
 </AccordionGroup>

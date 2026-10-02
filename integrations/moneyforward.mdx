@@ -1,12 +1,12 @@
 ---
 title: "MoneyForward"
-description: "Manage MoneyForward accounting, expenses, invoices, and payables — journals, transactions, reports, and approvals"
+description: "Manage MoneyForward accounting, expenses, invoices, and payables: journals, transactions, reports, and approvals"
 icon: /images/moneyforward.svg
 ---
 
 # MoneyForward
 
-Shanone's MoneyForward integration gives your agent 59 tools spanning core accounting (journals, trial balances), expense reports, invoicing, and payables — across MoneyForward's separate accounting, expense, invoice, and payable services.
+Shanone's MoneyForward integration gives your agent 59 tools spanning core accounting (journals, trial balances), expense reports, invoicing, and payables, across MoneyForward's separate accounting, expense, invoice, and payable services.
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ Shanone's MoneyForward integration gives your agent 59 tools spanning core accou
     Ask your agent to do something with MoneyForward (e.g. "list this month's journal entries"), or connect proactively from **Integrations** in the Shanone dashboard.
   </Step>
   <Step title="Authorize each MoneyForward service you use">
-    MoneyForward Accounting, Expense, Invoice, and Payable are separate OAuth-protected services — you may need to authorize more than one depending on which `moneyforward_*` tools you use.
+    MoneyForward Accounting, Expense, Invoice, and Payable are separate OAuth-protected services. You may need to authorize more than one depending on which `moneyforward_*` tools you use.
   </Step>
   <Step title="Retry your request">
     Once connected, `shanone_execute_tool` calls for `moneyforward_*` tools will succeed.
@@ -74,12 +74,12 @@ Shanone provides **59 tools** for MoneyForward, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="A tool call fails with a 401 even though other MoneyForward tools work">
-    Accounting, Expense, Invoice, and Payable each have their own OAuth token — reconnect the specific service the failing tool belongs to from **Integrations**.
+    Accounting, Expense, Invoice, and Payable each have their own OAuth token. Reconnect the specific service the failing tool belongs to from **Integrations**.
   </Accordion>
   <Accordion title="moneyforward_create_journal fails with an unbalanced entry error">
     MoneyForward requires debit and credit amounts to sum to zero across all journal lines; use `moneyforward_list_accounts` and `moneyforward_list_sub_accounts` to confirm account IDs before submitting.
   </Accordion>
   <Accordion title="Expense report can't be approved">
-    Reports must be submitted (`moneyforward_expense_submit_report`) before they appear in `moneyforward_expense_list_approvals` — draft reports aren't approvable yet.
+    Reports must be submitted (`moneyforward_expense_submit_report`) before they appear in `moneyforward_expense_list_approvals`: draft reports aren't approvable yet.
   </Accordion>
 </AccordionGroup>

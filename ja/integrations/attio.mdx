@@ -6,7 +6,7 @@ icon: /images/attio.svg
 
 # Attio
 
-ShanoneのAttio連携では、Attioの柔軟なオブジェクトモデルをカバーする**76個のツール**をエージェントに提供します — 企業・人物・取引といった標準的なCRMレコードに加え、カスタムオブジェクト、リスト、属性(attribute)、ノート、コメント、タスクまで扱えます。
+ShanoneのAttio連携では、Attioの柔軟なオブジェクトモデルをカバーする**76個のツール**をエージェントに提供します。企業・人物・取引といった標準的なCRMレコードに加え、カスタムオブジェクト、リスト、属性(attribute)、ノート、コメント、タスクまで扱えます。
 
 ## はじめに
 
@@ -80,9 +80,9 @@ Shanoneは Attio向けに**76個のツール**を提供しており、以下の�
     Attioのオブジェクトスキーマはワークスペースごとに異なり、カスタム属性を含むことがあります。まず`attio_get_object_attributes`または`attio_list_attributes`で正確な属性のslugと型を確認してください。
   </Accordion>
   <Accordion title="attio_assert_record / attio_assert_entryの動作が想定と違う">
-    これらはマッチする属性(企業ならドメインなど)に基づくupsert的な操作です — マッチ条件が曖昧または不足していると、意図したレコードを更新するのではなく重複を作成してしまう場合があります。
+    これらはマッチする属性(企業ならドメインなど)に基づくupsert的な操作です。マッチ条件が曖昧または不足していると、意図したレコードを更新するのではなく重複を作成してしまう場合があります。
   </Accordion>
   <Accordion title="select/statusフィールドの更新が拒否される">
-    enum型の属性(select、status)には、`attio_get_select_options`から取得した正確なオプションIDまたはタイトルが必要です — 既存のオプションに一致しない自由入力の値は、`attio_create_select_option`で先にオプションを作成しない限り失敗します。
+    enum型の属性(select、status)には、`attio_get_select_options`から取得した正確なオプションIDまたはタイトルが必要です。既存のオプションに一致しない自由入力の値は、`attio_create_select_option`で先にオプションを作成しない限り失敗します。
   </Accordion>
 </AccordionGroup>

@@ -23,7 +23,7 @@ ShanoneのAmplitude連携では、分析クエリ、ユーザー/イベントの
 </Steps>
 
 <Note>
-AmplitudeはOAuthではなくAPIキー認証を使用し、ShanoneはAPI KeyとSecret Keyの両方を必要とします — ほとんどのエンドポイントがHTTP Basic認証でこのペアを要求します。
+AmplitudeはOAuthではなくAPIキー認証を使用し、ShanoneはAPI KeyとSecret Keyの両方を必要とします。ほとんどのエンドポイントがHTTP Basic認証でこのペアを要求します。
 </Note>
 
 ## 利用可能なツール
@@ -78,10 +78,10 @@ Shanoneは Amplitude向けに**62個のツール**を提供しており、以下
 
 <AccordionGroup>
   <Accordion title="amplitude_* の呼び出しが401/403で失敗する">
-    Amplitudeでは API KeyとSecret Keyの両方の接続が必要です — ほとんどのエンドポイントは1つのキーだけでは動作しません。Shanoneダッシュボードの**インテグレーション**で両方の値を確認してください。
+    Amplitudeでは API KeyとSecret Keyの両方の接続が必要です。ほとんどのエンドポイントは1つのキーだけでは動作しません。Shanoneダッシュボードの**インテグレーション**で両方の値を確認してください。
   </Accordion>
   <Accordion title="amplitude_get_funnel_analysisやamplitude_get_retention_analysisの結果が想定外に空になる">
-    `amplitude_get_event_types`でイベント名を確認してください — Amplitudeのイベント名は大文字小文字を区別し、実際に取り込まれた名前と完全に一致させる必要があります。
+    `amplitude_get_event_types`でイベント名を確認してください。Amplitudeのイベント名は大文字小文字を区別し、実際に取り込まれた名前と完全に一致させる必要があります。
   </Accordion>
   <Accordion title="amplitude_check_cohort_statusが保留状態のまま変わらない">
     コホートのダウンロードや同期はAmplitude側で非同期に処理されます。`amplitude_request_cohort_download`の即時レスポンスを期待するのではなく、`amplitude_check_cohort_status`を定期的にポーリングしてください。

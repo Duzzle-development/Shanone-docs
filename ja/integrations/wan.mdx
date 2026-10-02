@@ -56,9 +56,9 @@ ShanoneはWan向けに**4個のツール**を、以下のカテゴリに整理�
 
 <AccordionGroup>
   <Accordion title="wan_text_to_videoやwan_image_to_videoがすぐに動画を返さない">
-    動画生成は非同期です——両方のツールはタスクIDを返すので、それを`wan_wait_for_task`に渡す(または`wan_get_task`で手動ポーリングする)ことでジョブの完了を待ってください。
+    動画生成は非同期です。両方のツールはタスクIDを返すので、それを`wan_wait_for_task`に渡す(または`wan_get_task`で手動ポーリングする)ことでジョブの完了を待ってください。
   </Accordion>
   <Accordion title="wan_image_to_videoが元画像で失敗する">
-    `wan_image_to_video`の`shanone_get_tool_schema`を確認してください——元画像は通常、生のバイナリデータではなく公開アクセス可能なURLである必要があり、DashScopeの形式/サイズ要件を満たす必要があります。
+    `wan_image_to_video`の`shanone_get_tool_schema`を確認してください。元画像は通常、生のバイナリデータではなく公開アクセス可能なURLである必要があり、DashScopeの形式/サイズ要件を満たす必要があります。
   </Accordion>
 </AccordionGroup>

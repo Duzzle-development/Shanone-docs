@@ -1,12 +1,12 @@
 ---
 title: "Hyperliquid"
-description: "Perpetual DEX account, market, and order data — balances, orderbooks, funding, positions, and trading"
+description: "Perpetual DEX account, market, and order data: balances, orderbooks, funding, positions, and trading"
 icon: /images/hyperliquid.svg
 ---
 
 # Hyperliquid
 
-Shanone's Hyperliquid integration gives your agent 34 tools for the Hyperliquid perpetual DEX — account/portfolio state, market data (orderbooks, candles, funding), order management, leverage, and TWAP orders.
+Shanone's Hyperliquid integration gives your agent 34 tools for the Hyperliquid perpetual DEX: account/portfolio state, market data (orderbooks, candles, funding), order management, leverage, and TWAP orders.
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ Shanone's Hyperliquid integration gives your agent 34 tools for the Hyperliquid 
     Open **Integrations** in the Shanone dashboard, select Hyperliquid, and enter your wallet address. This is enough for all read-only account and market data tools.
   </Step>
   <Step title="Configure a private key for trading (optional)">
-    Placing or modifying orders requires a private key, which is configured separately as an environment variable rather than through the standard integration form — check with your Shanone admin if trading tools return an authentication error.
+    Placing or modifying orders requires a private key, which is configured separately as an environment variable rather than through the standard integration form. Check with your Shanone admin if trading tools return an authentication error.
   </Step>
 </Steps>
 
@@ -74,12 +74,12 @@ Shanone provides **34 tools** for Hyperliquid, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="hyperliquid_place_order or other trading tools fail with an authentication error">
-    Read-only tools work with just a wallet address, but placing/modifying/canceling orders requires a private key configured server-side — confirm with your admin that trading is enabled for your account.
+    Read-only tools work with just a wallet address, but placing/modifying/canceling orders requires a private key configured server-side. Confirm with your admin that trading is enabled for your account.
   </Accordion>
   <Accordion title="hyperliquid_get_account_state shows different numbers than the Hyperliquid UI">
-    Confirm you're checking the right subaccount with `hyperliquid_get_subaccounts` — perp and spot balances are tracked separately (`hyperliquid_get_account_state` vs `hyperliquid_get_spot_balances`), and it's easy to check the wrong one.
+    Confirm you're checking the right subaccount with `hyperliquid_get_subaccounts`: perp and spot balances are tracked separately (`hyperliquid_get_account_state` vs `hyperliquid_get_spot_balances`), and it's easy to check the wrong one.
   </Accordion>
   <Accordion title="hyperliquid_place_twap_order behaves unexpectedly">
-    TWAP orders execute over a specified duration in slices rather than immediately — use `hyperliquid_get_order_status` to track progress instead of expecting an instant fill, and `hyperliquid_cancel_twap_order` to stop it early if needed.
+    TWAP orders execute over a specified duration in slices rather than immediately. Use `hyperliquid_get_order_status` to track progress instead of expecting an instant fill, and `hyperliquid_cancel_twap_order` to stop it early if needed.
   </Accordion>
 </AccordionGroup>

@@ -6,7 +6,7 @@ icon: /images/google-drive.svg
 
 # Google Drive
 
-ShanoneのGoogle Drive連携では、ファイル、フォルダ、共有ドライブ、権限、コメント、リビジョン履歴を扱う50のツールをエージェントが利用できるようになります——ちょっとしたアップロードから、誰がドキュメントにアクセスできるかの監査まで幅広くカバーします。
+ShanoneのGoogle Drive連携では、ファイル、フォルダ、共有ドライブ、権限、コメント、リビジョン履歴を扱う50のツールをエージェントが利用できるようになります。ちょっとしたアップロードから、誰がドキュメントにアクセスできるかの監査まで幅広くカバーします。
 
 ## はじめに
 
@@ -65,15 +65,15 @@ ShanoneはGoogle Drive用に**50のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="ブラウザでは見えるファイルなのにgoogle_drive_get_fileが404を返す">
-    ファイルIDが間違っている可能性が高いです——手入力せず、DriveのURL内(`/d/`と次の`/`の間の長い文字列)からコピーしてください。また、接続済みアカウントが実際にそのファイルへのアクセス権を持っているかも確認してください。
+    ファイルIDが間違っている可能性が高いです。手入力せず、DriveのURL内(`/d/`と次の`/`の間の長い文字列)からコピーしてください。また、接続済みアカウントが実際にそのファイルへのアクセス権を持っているかも確認してください。
   </Accordion>
   <Accordion title="Google Doc/Sheet/Slideでgoogle_drive_download_fileが失敗する">
-    Google Workspaceのネイティブファイル(Docs、Sheets、Slides)は生バイトとしてダウンロードできません——代わりに`google_drive_export_file`を使用してください。これはまずPDFやDOCXなどの形式に変換します。
+    Google Workspaceのネイティブファイル(Docs、Sheets、Slides)は生バイトとしてダウンロードできません。代わりに`google_drive_export_file`を使用してください。これはまずPDFやDOCXなどの形式に変換します。
   </Accordion>
   <Accordion title="google_drive_watch_changesの通知が届かない">
-    プッシュ通知には、チャンネルアドレスとして設定された公開アクセス可能なHTTPS Webhook URLが必要です——これはShanoneの範囲外のプロジェクトレベルの設定作業です。プッシュ通知が不要であれば、代わりにポーリング用に`google_drive_list_changes`を使用してください。
+    プッシュ通知には、チャンネルアドレスとして設定された公開アクセス可能なHTTPS Webhook URLが必要です。これはShanoneの範囲外のプロジェクトレベルの設定作業です。プッシュ通知が不要であれば、代わりにポーリング用に`google_drive_list_changes`を使用してください。
   </Accordion>
   <Accordion title="権限の変更が反映されないように見える">
-    `google_drive_create_permission`に渡す`role`と`type`フィールドを確認してください——Driveの権限モデルでは`user`、`group`、`domain`、`anyone`が区別され、それぞれ有効なroleの組み合わせが異なります。
+    `google_drive_create_permission`に渡す`role`と`type`フィールドを確認してください。Driveの権限モデルでは`user`、`group`、`domain`、`anyone`が区別され、それぞれ有効なroleの組み合わせが異なります。
   </Accordion>
 </AccordionGroup>

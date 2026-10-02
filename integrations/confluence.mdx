@@ -1,6 +1,6 @@
 ---
 title: "Confluence"
-description: "Read, write, and search Confluence — pages, blog posts, comments, labels, and attachments"
+description: "Read, write, and search Confluence: pages, blog posts, comments, labels, and attachments"
 icon: /images/confluence.svg
 ---
 
@@ -77,10 +77,10 @@ Shanone provides **46 tools** for Confluence, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Tools fail with a 401 despite a valid-looking token">
-    Confluence Cloud requires the account **email** and API Token together (Basic Auth), not the token alone — double-check both fields were saved in the Integrations page.
+    Confluence Cloud requires the account **email** and API Token together (Basic Auth), not the token alone. Double-check both fields were saved in the Integrations page.
   </Accordion>
   <Accordion title="confluence_create_page fails with a body format error">
-    Confluence's page body uses Atlassian Document Format (ADF) or storage-format XHTML depending on the API version — check `shanone_get_tool_schema` for `confluence_create_page` to confirm which format is expected before sending rich content.
+    Confluence's page body uses Atlassian Document Format (ADF) or storage-format XHTML depending on the API version. Check `shanone_get_tool_schema` for `confluence_create_page` to confirm which format is expected before sending rich content.
   </Accordion>
   <Accordion title="confluence_search returns fewer results than expected">
     `confluence_search` uses CQL (Confluence Query Language) under the hood; a plain keyword works, but for precise filtering (by space, label, or type) construct a proper CQL expression rather than free text.

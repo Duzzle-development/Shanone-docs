@@ -1,12 +1,12 @@
 ---
 title: "Reddit Ads"
-description: "Manage Reddit advertising — businesses, campaigns, targeting, creatives, catalogs, and reporting"
+description: "Manage Reddit advertising: businesses, campaigns, targeting, creatives, catalogs, and reporting"
 icon: /images/reddit-ads.svg
 ---
 
 # Reddit Ads
 
-Shanone's Reddit Ads integration gives your agent 90 tools covering the full ads workflow — business/ad account discovery, campaign and creative management, audience targeting, product catalogs, conversion tracking, and reporting.
+Shanone's Reddit Ads integration gives your agent 90 tools covering the full ads workflow: business/ad account discovery, campaign and creative management, audience targeting, product catalogs, conversion tracking, and reporting.
 
 ## Getting Started
 
@@ -74,10 +74,10 @@ Shanone provides **90 tools** for Reddit Ads, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Most tools fail until I call reddit_ads_get_me first">
-    `reddit_ads_get_me` is the required entry point for verifying the connection before navigating to businesses and ad accounts — follow it with `reddit_ads_list_my_businesses` then `reddit_ads_list_ad_accounts_by_business` to get the `ad_account_id` most other tools need.
+    `reddit_ads_get_me` is the required entry point for verifying the connection before navigating to businesses and ad accounts. Follow it with `reddit_ads_list_my_businesses` then `reddit_ads_list_ad_accounts_by_business` to get the `ad_account_id` most other tools need.
   </Accordion>
   <Accordion title="reddit_ads_create_campaign or reddit_ads_create_ad_group fails with a validation error">
-    Check `shanone_get_tool_schema` for the exact required fields — campaign objectives, budget types, and targeting objects have interdependent constraints that differ by campaign type.
+    Check `shanone_get_tool_schema` for the exact required fields: campaign objectives, budget types, and targeting objects have interdependent constraints that differ by campaign type.
   </Accordion>
   <Accordion title="reddit_ads_post_conversion_events doesn't show up in reporting immediately">
     Conversion attribution can lag; use `reddit_ads_get_pixel_last_fired_at` or `reddit_ads_get_app_last_fired_at` to confirm events are actually being received before assuming a reporting issue.

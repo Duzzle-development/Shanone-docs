@@ -6,7 +6,7 @@ icon: /images/gitlab.svg
 
 # GitLab
 
-Shanone's GitLab integration gives your agent 60 tools covering the full development workflow — issues, merge requests, branches/commits, CI/CD pipelines and jobs, and repository file operations.
+Shanone's GitLab integration gives your agent 60 tools covering the full development workflow: issues, merge requests, branches/commits, CI/CD pipelines and jobs, and repository file operations.
 
 ## Getting Started
 
@@ -71,12 +71,12 @@ Shanone provides **60 tools** for GitLab, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="gitlab_get_job_log returns truncated or empty output">
-    GitLab job logs can be very large and are streamed — for long-running jobs, call `gitlab_get_job_log` again after the job finishes to get the complete trace rather than a partial one mid-run.
+    GitLab job logs can be very large and are streamed: for long-running jobs, call `gitlab_get_job_log` again after the job finishes to get the complete trace rather than a partial one mid-run.
   </Accordion>
   <Accordion title="gitlab_create_file or gitlab_update_file fails with a branch conflict">
-    These operations commit directly to a branch — pass the correct `branch` parameter and make sure no one else has pushed conflicting changes since you last read the file with `gitlab_get_file`.
+    These operations commit directly to a branch. Pass the correct `branch` parameter and make sure no one else has pushed conflicting changes since you last read the file with `gitlab_get_file`.
   </Accordion>
   <Accordion title="Pipeline or job tools return a 403/permission error">
-    Retrying, canceling, or playing pipelines/jobs requires at least Developer-level access on the project for the connected GitLab account — check `gitlab_list_project_members` if unsure.
+    Retrying, canceling, or playing pipelines/jobs requires at least Developer-level access on the project for the connected GitLab account. Check `gitlab_list_project_members` if unsure.
   </Accordion>
 </AccordionGroup>

@@ -65,7 +65,7 @@ ShanoneはGoogle Cloud向けに**24個のツール**を、以下のカテゴリ�
 
 <AccordionGroup>
   <Accordion title="接続直後にすべてのgcloud_*呼び出しが失敗する">
-    まず`gcloud_audit_get_connection_status`を実行してください——Workload Identity Federationの信頼関係となりすまし先のサービスアカウントが正しく設定されているかを確認する最も速い方法です。
+    まず`gcloud_audit_get_connection_status`を実行してください。Workload Identity Federationの信頼関係となりすまし先のサービスアカウントが正しく設定されているかを確認する最も速い方法です。
   </Accordion>
   <Accordion title="gcloud_iam_add_bindingまたはgcloud_org_add_bindingが権限拒否エラーを返す">
     なりすまし先のサービスアカウント自体に`resourcemanager.projects.setIamPolicy`(または組織レベルの同等の権限)が必要です。対象リソースに対する`gcloud_iam_get_policy`でそのサービスアカウント自身のIAMロールを確認してください。

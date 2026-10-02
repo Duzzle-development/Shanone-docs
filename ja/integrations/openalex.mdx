@@ -28,8 +28,8 @@ ShanoneはOpenAlex向けに**2個のツール**を、以下のカテゴリに整
 
 <AccordionGroup>
   <Accordion title="論文検索">
-    `openalex_search_works` — 出版年やオープンアクセス状況などのフィルタとページングに対応した、OpenAlexの論文インデックス全文検索
-    `openalex_get_work_by_doi` — DOIを指定して論文の詳細情報(著者、被引用数、オープンアクセス状況、要約)を取得
+    `openalex_search_works`：出版年やオープンアクセス状況などのフィルタとページングに対応した、OpenAlexの論文インデックス全文検索
+    `openalex_get_work_by_doi`：DOIを指定して論文の詳細情報(著者、被引用数、オープンアクセス状況、要約)を取得
   </Accordion>
 </AccordionGroup>
 
@@ -57,7 +57,7 @@ ShanoneはOpenAlex向けに**2個のツール**を、以下のカテゴリに整
     完全な`https://doi.org/...`形式のURLではなく、素のDOI(例: `10.1038/nature12373`)を渡してください。ツールは一般的なプレフィックスを自動的に除去しますが、特殊な形式では解決に失敗することがあります。
   </Accordion>
   <Accordion title="openalex_search_worksが遅い・レート制限にかかっているように感じる">
-    OpenAlexは連絡先メールアドレスを含むリクエスト("polite pool")を優先的に処理します。これはユーザー単位ではなくShanoneのデプロイ単位で環境変数として設定されます——セルフホストの場合は`OPENALEX_EMAIL`を設定してください。
+    OpenAlexは連絡先メールアドレスを含むリクエスト("polite pool")を優先的に処理します。これはユーザー単位ではなくShanoneのデプロイ単位で環境変数として設定されます。セルフホストの場合は`OPENALEX_EMAIL`を設定してください。
   </Accordion>
   <Accordion title="要約(abstract)が欠けている・途中で切れている">
     OpenAlexは要約を単語位置の転置インデックスとして保存しており、Shanoneはそこから要約を再構築します。非常に長い要約はレスポンスを簡潔にするため最初の100単語で切り捨てられます。

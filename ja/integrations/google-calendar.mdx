@@ -1,6 +1,6 @@
 ---
 title: "Google Calendar"
-description: "カレンダーとイベントの管理 — スケジューリング、空き時間検索、共有、スマートスケジューリング補助機能"
+description: "カレンダーとイベントの管理：スケジューリング、空き時間検索、共有、スマートスケジューリング補助機能"
 icon: /images/google-calendar.svg
 ---
 
@@ -68,7 +68,7 @@ ShanoneはGoogle Calendar向けに**49個のツール**を、以下のカテゴ�
 
 <AccordionGroup>
   <Accordion title="google_calendar_create_eventは成功するが参加者に通知が届かない">
-    `shanone_get_tool_schema`で`sendUpdates`の挙動を確認してください——通知は呼び出しごとのオプトイン設定であり、デフォルトの挙動はカレンダーによって異なる場合があります。
+    `shanone_get_tool_schema`で`sendUpdates`の挙動を確認してください。通知は呼び出しごとのオプトイン設定であり、デフォルトの挙動はカレンダーによって異なる場合があります。
   </Accordion>
   <Accordion title="google_calendar_find_free_slotsが共有カレンダーの予定時間を見逃す">
     関連するすべてのカレンダーIDを明示的に渡すか、まず`google_calendar_list_events_from_all_calendars`を使って接続中のアカウントが実際にどのカレンダーを閲覧できるか確認してください。

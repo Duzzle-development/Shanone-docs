@@ -1,6 +1,6 @@
 ---
 title: "クイックスタート"
-description: "APIキーを取得し、CursorやClaude CodeをShanoneに接続して、最初のインテグレーションを認可し、最初のツール呼び出しを実行する——所要時間は約5分です。"
+description: "APIキーを取得し、CursorやClaude CodeをShanoneに接続して、最初のインテグレーションを認可し、最初のツール呼び出しを実行する。所要時間は約5分です。"
 ---
 
 このガイドでは、MCPクライアントとShanoneをエンドツーエンドでつなぎます。APIキーの取得 → クライアントの設定 → 最初のOAuth接続 → 最初のツール呼び出し、という流れです。
@@ -18,7 +18,7 @@ description: "APIキーを取得し、CursorやClaude CodeをShanoneに接続し
     Shanoneにサインインし、[API Keysページ](https://app.shanone.ai/api-keys)を開きます。
   </Step>
   <Step title="キーを作成する">
-    **Create API Key**をクリックし、わかりやすい名前(例: 「Cursor — laptop」)を付け、有効期限を選んで確定します。初期値は**30日**です。7日・60日・90日・カスタム（1〜366日）・無期限も選べます。
+    **Create API Key**をクリックし、わかりやすい名前(例: 「Cursor: laptop」)を付け、有効期限を選んで確定します。初期値は**30日**です。7日・60日・90日・カスタム（1〜366日）・無期限も選べます。
   </Step>
   <Step title="今すぐコピーする">
     平文のキーは`sh_xxxxxxxxxxxxxxxx`という形式で**一度だけ**表示されます。安全な場所に保管してください。それ以降Shanoneが保持するのはハッシュ値のみです。
@@ -93,13 +93,13 @@ APIキーはパスワードと同様に扱ってください。これを持つ�
     }
     ```
 
-    この直接エンドポイントを使うにはAPIキーと組織ID(**API Keys**ページにも表示されています)の**両方**が必要です——この複合チェックにより、APIキーが1つ漏洩しただけではツールを呼び出せない仕組みになっています。ローカルプロキシとの詳しい比較は[MCPセットアップ](/ja/mcp/setup)を参照してください。
+    この直接エンドポイントを使うにはAPIキーと組織ID(**API Keys**ページにも表示されています)の**両方**が必要です。この複合チェックにより、APIキーが1つ漏洩しただけではツールを呼び出せない仕組みになっています。ローカルプロキシとの詳しい比較は[MCPセットアップ](/ja/mcp/setup)を参照してください。
   </Tab>
 </Tabs>
 
 ## ステップ3: 最初のインテグレーションを接続する
 
-Shanoneでは、すべてのサービスを事前にまとめて認可しておく必要はありません——OAuthが必要なツールは、エージェントが最初にそのツールを使おうとしたタイミングで単純に`connect_link`を返します。
+Shanoneでは、すべてのサービスを事前にまとめて認可しておく必要はありません。OAuthが必要なツールは、エージェントが最初にそのツールを使おうとしたタイミングで単純に`connect_link`を返します。
 
 <Steps>
   <Step title="エージェントにサービスが必要な作業を依頼する">
@@ -127,7 +127,7 @@ Shanoneでは、すべてのサービスを事前にまとめて認可してお�
 "Create a GitHub issue titled 'Fix login redirect bug' in my-org/my-repo"
 ```
 
-裏側では、エージェントは`shanone_search_tools`(全件を確認したい場合は`shanone_list_service_tools`)を呼び出し、続いて自分で組み立てた引数で`shanone_execute_tool`を呼び出しています——あなたが手でJSONを用意する必要はありません。
+裏側では、エージェントは`shanone_search_tools`(全件を確認したい場合は`shanone_list_service_tools`)を呼び出し、続いて自分で組み立てた引数で`shanone_execute_tool`を呼び出しています。あなたが手でJSONを用意する必要はありません。
 
 ## 次のステップ
 

@@ -1,12 +1,12 @@
 ---
 title: "BigQuery"
-description: "Query and manage Google BigQuery datasets, tables, jobs, and IAM — using a service account key"
+description: "Query and manage Google BigQuery datasets, tables, jobs, and IAM: using a service account key"
 icon: /images/bigquery.svg
 ---
 
 # BigQuery
 
-Shanone's BigQuery integration gives your agent 40 tools for Google's data warehouse — running queries, managing datasets/tables/models, loading and exporting data, and controlling IAM access.
+Shanone's BigQuery integration gives your agent 40 tools for Google's data warehouse: running queries, managing datasets/tables/models, loading and exporting data, and controlling IAM access.
 
 ## Getting Started
 
@@ -78,12 +78,12 @@ Shanone provides **40 tools** for BigQuery, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="bigquery_query fails with a permission denied error">
-    Check the service account's IAM roles with `bigquery_test_iam_permissions` — most read operations need at least `bigquery.jobs.create` and `bigquery.tables.getData` on the target dataset.
+    Check the service account's IAM roles with `bigquery_test_iam_permissions`. Most read operations need at least `bigquery.jobs.create` and `bigquery.tables.getData` on the target dataset.
   </Accordion>
   <Accordion title="bigquery_query returns a job that never completes">
     Long-running queries return a job reference rather than blocking. Poll `bigquery_get_job` until `status.state` is `DONE`, or use `bigquery_query_and_wait` for short queries where blocking is acceptable.
   </Accordion>
   <Accordion title="bigquery_load_table_from_uri fails silently or partially loads data">
-    Check `bigquery_get_job` for the load job's `errorResult` and `errors` fields — schema mismatches or malformed rows in the source file are the most common cause.
+    Check `bigquery_get_job` for the load job's `errorResult` and `errors` fields: schema mismatches or malformed rows in the source file are the most common cause.
   </Accordion>
 </AccordionGroup>

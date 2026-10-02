@@ -1,12 +1,12 @@
 ---
 title: "freee"
-description: "Japanese accounting and HR platform — deals, invoices, payroll, expense workflows, and bank reconciliation"
+description: "Japanese accounting and HR platform: deals, invoices, payroll, expense workflows, and bank reconciliation"
 icon: /images/freee.svg
 ---
 
 # freee
 
-Shanone's freee integration gives your agent 125 tools across freee's accounting and HR platform — deals, invoices/quotations, payroll, expense/approval workflows, and bank account reconciliation.
+Shanone's freee integration gives your agent 125 tools across freee's accounting and HR platform: deals, invoices/quotations, payroll, expense/approval workflows, and bank account reconciliation.
 
 ## Getting Started
 
@@ -68,12 +68,12 @@ Shanone provides **125 tools** for freee, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="freee_create_deal fails with a missing account_item error">
-    Deals require valid `account_item_id` and `partner_id` references — look them up first with `freee_list_account_items` and `freee_list_partners` rather than guessing IDs.
+    Deals require valid `account_item_id` and `partner_id` references. Look them up first with `freee_list_account_items` and `freee_list_partners` rather than guessing IDs.
   </Accordion>
   <Accordion title="freee_request_journal_download returns a status instead of the file">
-    Journal exports are asynchronous — poll `freee_get_journal_status` until it reports completion, then call `freee_download_journal` to fetch the actual file.
+    Journal exports are asynchronous. Poll `freee_get_journal_status` until it reports completion, then call `freee_download_journal` to fetch the actual file.
   </Accordion>
   <Accordion title="HR tools (freee_hr_*) return a different company than accounting tools">
-    freee treats accounting (`company_id`) and HR (`company_id` under the separate HR API) as distinct scopes even for the same business — verify you're passing the ID returned by `freee_hr_get_me`, not the accounting `freee_get_company` ID.
+    freee treats accounting (`company_id`) and HR (`company_id` under the separate HR API) as distinct scopes even for the same business. Verify you're passing the ID returned by `freee_hr_get_me`, not the accounting `freee_get_company` ID.
   </Accordion>
 </AccordionGroup>

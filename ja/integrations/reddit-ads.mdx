@@ -1,6 +1,6 @@
 ---
 title: "Reddit Ads"
-description: "Reddit広告の管理 — ビジネス、キャンペーン、ターゲティング、クリエイティブ、カタログ、レポーティング"
+description: "Reddit広告の管理：ビジネス、キャンペーン、ターゲティング、クリエイティブ、カタログ、レポーティング"
 icon: /images/reddit-ads.svg
 ---
 
@@ -77,7 +77,7 @@ ShanoneはReddit Ads向けに**90個のツール**を、以下のカテゴリに
     `reddit_ads_get_me`は、ビジネスや広告アカウントを操作する前に接続を確認するための必須の入口です。続けて`reddit_ads_list_my_businesses`、`reddit_ads_list_ad_accounts_by_business`を呼び、他のほとんどのツールが必要とする`ad_account_id`を取得してください。
   </Accordion>
   <Accordion title="reddit_ads_create_campaignやreddit_ads_create_ad_groupがバリデーションエラーで失敗する">
-    `shanone_get_tool_schema`で正確な必須フィールドを確認してください——キャンペーンの目的、予算タイプ、ターゲティングオブジェクトには、キャンペーンタイプによって異なる相互依存の制約があります。
+    `shanone_get_tool_schema`で正確な必須フィールドを確認してください。キャンペーンの目的、予算タイプ、ターゲティングオブジェクトには、キャンペーンタイプによって異なる相互依存の制約があります。
   </Accordion>
   <Accordion title="reddit_ads_post_conversion_eventsの結果がレポートにすぐ反映されない">
     コンバージョンのアトリビューションには遅延が発生することがあります。レポートの問題と判断する前に、`reddit_ads_get_pixel_last_fired_at`や`reddit_ads_get_app_last_fired_at`でイベントが実際に受信されているか確認してください。

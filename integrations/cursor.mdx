@@ -1,6 +1,6 @@
 ---
 title: "Cursor"
-description: "Launch and monitor Cursor Cloud Agents — agent lifecycle, background runs, and artifacts"
+description: "Launch and monitor Cursor Cloud Agents: agent lifecycle, background runs, and artifacts"
 icon: /images/cursor.svg
 ---
 
@@ -62,12 +62,12 @@ Shanone provides **17 tools** for Cursor, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="cursor_launch_agent fails with a repository access error">
-    The target repository must be listed in `cursor_list_repositories` for the connected account — Cursor Cloud Agents can only act on repositories the API Key's account actually has access to.
+    The target repository must be listed in `cursor_list_repositories` for the connected account: Cursor Cloud Agents can only act on repositories the API Key's account actually has access to.
   </Accordion>
   <Accordion title="cursor_get_agent_status stays in a running state indefinitely">
     Long-running agents are expected to take minutes; poll `cursor_get_agent_status` periodically rather than expecting immediate completion, and check `cursor_get_agent_conversation` for intermediate progress.
   </Accordion>
   <Accordion title="cursor_add_followup has no effect">
-    Follow-ups can only be sent to agents that are still active (not archived, deleted, or already finished) — check `cursor_get_agent_status` first, and use `cursor_launch_agent` to start fresh if the agent has already completed.
+    Follow-ups can only be sent to agents that are still active (not archived, deleted, or already finished). Check `cursor_get_agent_status` first, and use `cursor_launch_agent` to start fresh if the agent has already completed.
   </Accordion>
 </AccordionGroup>

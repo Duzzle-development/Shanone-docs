@@ -1,6 +1,6 @@
 ---
 title: "Google Tasks"
-description: "タスクリストとタスクを管理する — 作成、完了、再開、移動、完了済みアイテムのクリア"
+description: "タスクリストとタスクを管理する：作成、完了、再開、移動、完了済みアイテムのクリア"
 icon: /images/google-tasks.svg
 ---
 
@@ -56,12 +56,12 @@ ShanoneはGoogle Tasks用に**14のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="google_tasks_move_taskで期待通りに並び替わらない">
-    `google_tasks_move_task`はネストと位置を制御するための`parent`と`previous`のオプションパラメータを受け取ります——両方を省略すると、位置が変わらず維持されるのではなく、タスクはトップレベルのリスト末尾に移動します。
+    `google_tasks_move_task`はネストと位置を制御するための`parent`と`previous`のオプションパラメータを受け取ります。両方を省略すると、位置が変わらず維持されるのではなく、タスクはトップレベルのリスト末尾に移動します。
   </Accordion>
   <Accordion title="完了済みタスクがgoogle_tasks_list_tasksに表示され続ける">
-    デフォルトでは`google_tasks_list_tasks`は完了済みタスクも含みます——除外するには`show_completed=False`(正確なパラメータ名は`shanone_get_tool_schema`で確認してください)を指定するか、`google_tasks_clear_completed_tasks`でリストから完全に削除してください。
+    デフォルトでは`google_tasks_list_tasks`は完了済みタスクも含みます。除外するには`show_completed=False`(正確なパラメータ名は`shanone_get_tool_schema`で確認してください)を指定するか、`google_tasks_clear_completed_tasks`でリストから完全に削除してください。
   </Accordion>
   <Accordion title="google_tasks_create_taskで期限日が無視される">
-    期限日はRFC 3339形式のタイムスタンプである必要があります(日付のみの値は受け付けられますが、時刻部分はTasksのUI上では無視されます)——期待した期限が表示されない場合はフォーマットを確認してください。
+    期限日はRFC 3339形式のタイムスタンプである必要があります(日付のみの値は受け付けられますが、時刻部分はTasksのUI上では無視されます)。期待した期限が表示されない場合はフォーマットを確認してください。
   </Accordion>
 </AccordionGroup>

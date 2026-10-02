@@ -6,7 +6,7 @@ icon: /images/wordpress.svg
 
 # WordPress
 
-Shanone's WordPress integration gives your agent 42 tools for content management — posts, pages, media, comments, taxonomies, and users, via WordPress's built-in REST API.
+Shanone's WordPress integration gives your agent 42 tools for content management: posts, pages, media, comments, taxonomies, and users, via WordPress's built-in REST API.
 
 ## Getting Started
 
@@ -71,10 +71,10 @@ Shanone provides **42 tools** for WordPress, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Connection fails with a 401 even with a correct-looking password">
-    WordPress Application Passwords are shown with spaces (e.g. `xxxx xxxx xxxx xxxx`) — some setups require the password exactly as displayed, including spaces; don't strip them when entering it in **Integrations**.
+    WordPress Application Passwords are shown with spaces (e.g. `xxxx xxxx xxxx xxxx`). Some setups require the password exactly as displayed, including spaces; don't strip them when entering it in **Integrations**.
   </Accordion>
   <Accordion title="wordpress_create_post publishes immediately when I wanted a draft">
-    Check the `status` field in the payload via `shanone_get_tool_schema` for `wordpress_create_post` — omitting it may default to `publish` depending on your WordPress configuration; set it explicitly to `draft`.
+    Check the `status` field in the payload via `shanone_get_tool_schema` for `wordpress_create_post`: omitting it may default to `publish` depending on your WordPress configuration; set it explicitly to `draft`.
   </Accordion>
   <Accordion title="wordpress_delete_post or wordpress_delete_page only trashes instead of permanently deleting">
     By default WordPress moves posts/pages to trash rather than deleting them outright; check the tool's `force` parameter if you need permanent deletion.

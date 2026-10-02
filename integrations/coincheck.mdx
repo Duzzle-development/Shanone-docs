@@ -1,6 +1,6 @@
 ---
 title: "Coincheck"
-description: "Trade and manage assets on Coincheck — orders, market data, transfers, and withdrawals"
+description: "Trade and manage assets on Coincheck: orders, market data, transfers, and withdrawals"
 icon: /images/coincheck.svg
 ---
 
@@ -15,7 +15,7 @@ Shanone's Coincheck integration gives your agent 24 tools for the Japanese crypt
     In Coincheck, go to **設定 (Settings) → API** and create a new API Key/Secret pair with the permissions you need (order, withdraw, etc.).
   </Step>
   <Step title="Add credentials to Shanone">
-    Open **Integrations** in the Shanone dashboard, select Coincheck, and enter both the API Key and API Secret — both are required.
+    Open **Integrations** in the Shanone dashboard, select Coincheck, and enter both the API Key and API Secret. Both are required.
   </Step>
   <Step title="Retry your request">
     Once saved, `shanone_execute_tool` calls for `coincheck_*` tools will succeed.
@@ -65,12 +65,12 @@ Shanone provides **24 tools** for Coincheck, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="coincheck_create_order or coincheck_create_withdraw fails with an authentication error">
-    Coincheck signs every private request with an HMAC built from both the API Key and API Secret — if either is missing or the account's IP allowlist (if configured in Coincheck) doesn't include Shanone's egress IP, private endpoints will reject the request.
+    Coincheck signs every private request with an HMAC built from both the API Key and API Secret. If either is missing or the account's IP allowlist (if configured in Coincheck) doesn't include Shanone's egress IP, private endpoints will reject the request.
   </Accordion>
   <Accordion title="coincheck_cancel_withdraw or coincheck_cancel_order returns an error for a recent action">
     Orders and withdrawals can only be canceled while still pending; once Coincheck has started processing them (matched, or sent to the bank/network), cancellation is no longer possible.
   </Accordion>
   <Accordion title="Rate-related tools return stale or unexpected prices">
-    `coincheck_get_rate` and `coincheck_calculate_rate` reflect Coincheck's own order book at request time, not an external index — always confirm with `coincheck_get_ticker` immediately before placing an order.
+    `coincheck_get_rate` and `coincheck_calculate_rate` reflect Coincheck's own order book at request time, not an external index: always confirm with `coincheck_get_ticker` immediately before placing an order.
   </Accordion>
 </AccordionGroup>

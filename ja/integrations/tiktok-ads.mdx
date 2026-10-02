@@ -1,12 +1,12 @@
 ---
 title: "TikTok Ads"
-description: "TikTok広告キャンペーンを管理する — キャンペーン、広告グループ、広告、オーディエンス、ターゲティング、レポート"
+description: "TikTok広告キャンペーンを管理する：キャンペーン、広告グループ、広告、オーディエンス、ターゲティング、レポート"
 icon: /images/tiktok-ads.svg
 ---
 
 # TikTok Ads
 
-ShanoneのTikTok Ads連携は、キャンペーン階層全体(キャンペーン → 広告グループ → 広告)、オーディエンス管理、ターゲティング辞書、クリエイティブアセット、ビジネスセンター運用、レポートをカバーする119個のツールをエージェントに提供します——TikTok広告運用をエンドツーエンドでエージェントから実行できます。
+ShanoneのTikTok Ads連携は、キャンペーン階層全体(キャンペーン → 広告グループ → 広告)、オーディエンス管理、ターゲティング辞書、クリエイティブアセット、ビジネスセンター運用、レポートをカバーする119個のツールをエージェントに提供します。TikTok広告運用をエンドツーエンドでエージェントから実行できます。
 
 ## はじめに
 
@@ -86,9 +86,9 @@ ShanoneはTikTok Ads向けに**119個のツール**を、以下のカテゴリ�
     大きな日付範囲や次元数の多い集計には、`tiktok_ads_run_sync_report`ではなく`tiktok_ads_create_async_report_task`を使い、`tiktok_ads_get_async_report_task_status`をポーリングして`tiktok_ads_download_async_report`で結果を取得してください。
   </Accordion>
   <Accordion title="アップロード後にtiktok_ads_create_audience_by_fileが失敗する">
-    オーディエンスファイルは先に`tiktok_ads_upload_audience_file`でアップロードする必要があります(個人情報はSHA-256で事前にハッシュ化)。オーディエンス作成の呼び出しでは、返されたファイルIDを参照する必要があります——正確な紐付け方法は`shanone_get_tool_schema`で確認してください。
+    オーディエンスファイルは先に`tiktok_ads_upload_audience_file`でアップロードする必要があります(個人情報はSHA-256で事前にハッシュ化)。オーディエンス作成の呼び出しでは、返されたファイルIDを参照する必要があります。正確な紐付け方法は`shanone_get_tool_schema`で確認してください。
   </Accordion>
   <Accordion title="ターゲティングや予算更新ツールが権限エラーで失敗する">
-    一部の操作(例: `tiktok_ads_create_bc_ad_account`、`tiktok_ads_process_payment`)には、通常の広告アカウントアクセスではなくビジネスセンターの管理者レベルのアクセスが必要です——`tiktok_ads_get_bc_members`で接続アカウントのロールを確認してください。
+    一部の操作(例: `tiktok_ads_create_bc_ad_account`、`tiktok_ads_process_payment`)には、通常の広告アカウントアクセスではなくビジネスセンターの管理者レベルのアクセスが必要です。`tiktok_ads_get_bc_members`で接続アカウントのロールを確認してください。
   </Accordion>
 </AccordionGroup>

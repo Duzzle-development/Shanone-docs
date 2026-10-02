@@ -6,7 +6,7 @@ icon: /images/zoom.svg
 
 # Zoom
 
-Shanone's Zoom integration gives your agent 67 tools for meetings and webinars — scheduling, registrants, recordings/transcripts, polls/surveys, and the reporting tools most integrations skip.
+Shanone's Zoom integration gives your agent 67 tools for meetings and webinars: scheduling, registrants, recordings/transcripts, polls/surveys, and the reporting tools most integrations skip.
 
 ## Getting Started
 
@@ -83,13 +83,13 @@ Shanone provides **67 tools** for Zoom, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="zoom_get_meeting_summary or zoom_get_meeting_transcript returns nothing">
-    AI Companion summaries and transcripts are only generated for meetings with cloud recording and the AI summary feature enabled at the account/meeting level — check `zoom_get_recording_settings` if a recent meeting has no summary.
+    AI Companion summaries and transcripts are only generated for meetings with cloud recording and the AI summary feature enabled at the account/meeting level. Check `zoom_get_recording_settings` if a recent meeting has no summary.
   </Accordion>
   <Accordion title="zoom_create_meeting succeeds but registrants can't join">
-    If the meeting requires registration, registrants must be added via `zoom_add_meeting_registrant` and use their unique join link — the generic meeting URL alone won't work for a registration-required meeting.
+    If the meeting requires registration, registrants must be added via `zoom_add_meeting_registrant` and use their unique join link. The generic meeting URL alone won't work for a registration-required meeting.
   </Accordion>
   <Accordion title="zoom_get_past_meeting fails right after a meeting ends">
-    Past-meeting data (participants, polls, Q&A) can take a few minutes to become available after a meeting ends — retry after a short delay rather than assuming the meeting ID is wrong.
+    Past-meeting data (participants, polls, Q&A) can take a few minutes to become available after a meeting ends. Retry after a short delay rather than assuming the meeting ID is wrong.
   </Accordion>
   <Accordion title="zoom_delete_meeting_recordings doesn't free up storage immediately">
     Deleted cloud recordings may be retained in Zoom's trash for a recovery window before being permanently purged, depending on account settings.

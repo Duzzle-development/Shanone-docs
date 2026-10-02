@@ -1,12 +1,12 @@
 ---
 title: "Sentry"
-description: "Track errors, performance, and releases — issues, traces, profiling, session replay, and dashboards"
+description: "Track errors, performance, and releases: issues, traces, profiling, session replay, and dashboards"
 icon: /images/sentry.svg
 ---
 
 # Sentry
 
-Shanone's Sentry integration gives your agent 115 tools spanning issue triage, performance tracing, session replay, release health, and org administration (members, SCIM, integrations) — enough to run most day-to-day Sentry workflows without leaving the agent.
+Shanone's Sentry integration gives your agent 115 tools spanning issue triage, performance tracing, session replay, release health, and org administration (members, SCIM, integrations), enough to run most day-to-day Sentry workflows without leaving the agent.
 
 ## Getting Started
 
@@ -86,13 +86,13 @@ Shanone provides **115 tools** for Sentry, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Calls fail with a 401/403 even though the token looks valid">
-    The Auth Token's scopes must match the endpoint — e.g. `sentry_bulk_update_issues` needs `event:write`, while `sentry_list_projects` only needs `project:read`. Regenerate the token in **Settings → Developer Settings** with the missing scope.
+    The Auth Token's scopes must match the endpoint: e.g. `sentry_bulk_update_issues` needs `event:write`, while `sentry_list_projects` only needs `project:read`. Regenerate the token in **Settings → Developer Settings** with the missing scope.
   </Accordion>
   <Accordion title="sentry_list_issues returns an empty list for a project I know has issues">
-    Most list tools default to a short time window (Sentry's `statsPeriod`) and to unresolved issues only. Pass an explicit `query`/`statsPeriod` — check `shanone_get_tool_schema` for `sentry_list_issues` for the exact parameter names.
+    Most list tools default to a short time window (Sentry's `statsPeriod`) and to unresolved issues only. Pass an explicit `query`/`statsPeriod`. Check `shanone_get_tool_schema` for `sentry_list_issues` for the exact parameter names.
   </Accordion>
   <Accordion title="Organization Slug errors on every call">
-    If it wasn't set on the connection, most tools require an explicit `organization_slug` argument per call — set it once on the integration to avoid repeating it.
+    If it wasn't set on the connection, most tools require an explicit `organization_slug` argument per call. Set it once on the integration to avoid repeating it.
   </Accordion>
   <Accordion title="sentry_trigger_issue_autofix doesn't return a result immediately">
     Seer autofix runs asynchronously; poll `sentry_get_issue_autofix` for the same issue until the run status is complete.

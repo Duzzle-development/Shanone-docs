@@ -74,6 +74,6 @@ Shanone provides **45 tools** for Linear, organized into these categories:
     Linear issues require a valid `teamId` and, in some workflows, a valid state ID. Call `linear_list_teams` and `linear_list_workflow_states` first to get valid values, or check `shanone_get_tool_schema` for `linear_create_issue`.
   </Accordion>
   <Accordion title="Can't find an issue by its human-readable identifier (e.g. ENG-123)">
-    Use `linear_search_issues` with the identifier as the query, or `linear_list_issues` filtered by team — `linear_get_issue` expects Linear's internal issue ID, not the short identifier, unless the tool schema indicates otherwise.
+    Use `linear_search_issues` with the identifier as the query, or `linear_list_issues` filtered by team: `linear_get_issue` expects Linear's internal issue ID, not the short identifier, unless the tool schema indicates otherwise.
   </Accordion>
 </AccordionGroup>

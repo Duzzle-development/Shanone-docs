@@ -1,12 +1,12 @@
 ---
 title: "Together AI"
-description: "推論、ファインチューニング、専用デプロイメントを実行する — チャット、埋め込み、GPUクラスタ、DMI"
+description: "推論、ファインチューニング、専用デプロイメントを実行する：チャット、埋め込み、GPUクラスタ、DMI"
 icon: /images/together.svg
 ---
 
 # Together AI
 
-ShanoneのTogether AI連携は、サーバーレス推論(チャット/補完/埋め込み/リランク)、ファインチューニング、バッチ処理と評価ジョブ、GPUクラスタ管理、専用モデル推論(DMI)にまたがる127個のツールをエージェントに提供します——Together上で自社モデルを運用するチームにとって幅広いカバレッジです。
+ShanoneのTogether AI連携は、サーバーレス推論(チャット/補完/埋め込み/リランク)、ファインチューニング、バッチ処理と評価ジョブ、GPUクラスタ管理、専用モデル推論(DMI)にまたがる127個のツールをエージェントに提供します。Together上で自社モデルを運用するチームにとって幅広いカバレッジです。
 
 ## はじめに
 
@@ -77,15 +77,15 @@ ShanoneはTogether AI向けに**127個のツール**を、以下のカテゴリ�
 
 <AccordionGroup>
   <Accordion title="together_create_fine_tuning_jobが検証エラーで失敗する">
-    まず`together_estimate_fine_tuning_price`を使ってください——これは有料ジョブを実行する前に、トレーニングファイルとベースモデルの互換性を検証します。
+    まず`together_estimate_fine_tuning_price`を使ってください。これは有料ジョブを実行する前に、トレーニングファイルとベースモデルの互換性を検証します。
   </Accordion>
   <Accordion title="DMIデプロイメントが保留状態のまま止まっている">
-    専用モデル推論のデプロイメントはGPUキャパシティをプロビジョニングするため数分かかることがあります——失敗と決めつけず、`together_dmi_get_deployment`(コンテナベースのデプロイメントの場合は`together_dci_get_deployment`)をポーリングしてください。
+    専用モデル推論のデプロイメントはGPUキャパシティをプロビジョニングするため数分かかることがあります。失敗と決めつけず、`together_dmi_get_deployment`(コンテナベースのデプロイメントの場合は`together_dci_get_deployment`)をポーリングしてください。
   </Accordion>
   <Accordion title="together_execute_codeが呼び出し間で状態を保持しない">
-    コードインタープリタのセッションは明示的です——`together_list_code_sessions`で既存のセッションIDを探して再利用してください。IDを指定せずに呼び出すと、常に新しいセッションが開始されます。
+    コードインタープリタのセッションは明示的です。`together_list_code_sessions`で既存のセッションIDを探して再利用してください。IDを指定せずに呼び出すと、常に新しいセッションが開始されます。
   </Accordion>
   <Accordion title="GPUクラスタ操作がクォータや容量エラーで失敗する">
-    GPUクラスタは限られた、課金対象のリソースです——`together_create_gpu_cluster`を再試行する前に、`together_list_cluster_regions`で利用可能状況を確認し、アカウントのクォータを確認してください。
+    GPUクラスタは限られた、課金対象のリソースです。`together_create_gpu_cluster`を再試行する前に、`together_list_cluster_regions`で利用可能状況を確認し、アカウントのクォータを確認してください。
   </Accordion>
 </AccordionGroup>

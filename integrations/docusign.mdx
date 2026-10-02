@@ -1,12 +1,12 @@
 ---
 title: "DocuSign"
-description: "Send, sign, and manage electronic signature envelopes — templates, recipients, documents, and account administration"
+description: "Send, sign, and manage electronic signature envelopes: templates, recipients, documents, and account administration"
 icon: /images/docusign.svg
 ---
 
 # DocuSign
 
-Shanone's DocuSign integration gives your agent 144 tools covering the full eSignature lifecycle — envelopes, templates, recipients, documents, and the account/billing administration that most integrations leave out.
+Shanone's DocuSign integration gives your agent 144 tools covering the full eSignature lifecycle: envelopes, templates, recipients, documents, and the account/billing administration that most integrations leave out.
 
 ## Getting Started
 
@@ -77,7 +77,7 @@ Shanone provides **144 tools** for DocuSign, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="docusign_send_envelope fails with a recipient routing error">
-    Check `docusign_list_recipients` and `docusign_list_recipient_tabs` first — DocuSign requires signature/initial tabs to be anchored to a valid document and recipient before the envelope can be sent.
+    Check `docusign_list_recipients` and `docusign_list_recipient_tabs` first: DocuSign requires signature/initial tabs to be anchored to a valid document and recipient before the envelope can be sent.
   </Accordion>
   <Accordion title="Template-based envelope is missing fields">
     Templates carry their own recipient/tab definitions; use `docusign_create_envelope_from_template` and only override recipient roles that need to change rather than rebuilding tabs from scratch.

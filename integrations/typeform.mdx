@@ -1,12 +1,12 @@
 ---
 title: "Typeform"
-description: "Manage forms, responses, themes, and workspaces — plus images and webhooks"
+description: "Manage forms, responses, themes, and workspaces: plus images and webhooks"
 icon: /images/typeform.svg
 ---
 
 # Typeform
 
-Shanone's Typeform integration gives your agent 31 tools for building and updating forms, reading and clearing responses, managing themes/images, and organizing workspaces — a focused set for treating form creation and response handling as agent-driven tasks.
+Shanone's Typeform integration gives your agent 31 tools for building and updating forms, reading and clearing responses, managing themes/images, and organizing workspaces: a focused set for treating form creation and response handling as agent-driven tasks.
 
 ## Getting Started
 
@@ -71,12 +71,12 @@ Shanone provides **31 tools** for Typeform, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="typeform_list_responses returns fewer results than expected">
-    Responses are paginated and can be filtered by date/completion status — check `shanone_get_tool_schema` for `typeform_list_responses` and pass `since`/`until` or `completed` explicitly rather than assuming a single call returns everything.
+    Responses are paginated and can be filtered by date/completion status. Check `shanone_get_tool_schema` for `typeform_list_responses` and pass `since`/`until` or `completed` explicitly rather than assuming a single call returns everything.
   </Accordion>
   <Accordion title="typeform_update_form overwrites fields I didn't intend to change">
-    `typeform_update_form` replaces the full form definition (PUT semantics) — use `typeform_patch_form` instead for partial updates to specific fields.
+    `typeform_update_form` replaces the full form definition (PUT semantics). Use `typeform_patch_form` instead for partial updates to specific fields.
   </Accordion>
   <Accordion title="typeform_create_or_update_webhook doesn't fire on new responses">
-    Confirm the webhook tag is unique per form and that the form is actually receiving submissions — use `typeform_list_webhook_deliveries` to check recent delivery attempts and failures.
+    Confirm the webhook tag is unique per form and that the form is actually receiving submissions. Use `typeform_list_webhook_deliveries` to check recent delivery attempts and failures.
   </Accordion>
 </AccordionGroup>

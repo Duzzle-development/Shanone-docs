@@ -104,7 +104,7 @@ Shanoneはvercel向けに**107個のツール**を、以下のカテゴリに整
     プロジェクト/ドメイン/チーム系ツールの多くは、接続中のVercelアカウントが所属するチームに対して操作します。権限バグと決めつける前に、`vercel_list_teams`と`vercel_get_team`で正しいチームコンテキストを確認してください。
   </Accordion>
   <Accordion title="vercel_redeployやvercel_promote_deploymentの効果が反映されない">
-    どちらも暗黙的に「最新の」デプロイを対象にするのではなく、特定のデプロイIDに対して操作します — まず`vercel_list_deployments`を呼び出し、意図したデプロイを対象にしているか確認してください。
+    どちらも暗黙的に「最新の」デプロイを対象にするのではなく、特定のデプロイIDに対して操作します。まず`vercel_list_deployments`を呼び出し、意図したデプロイを対象にしているか確認してください。
   </Accordion>
   <Accordion title="Edge Configやキャッシュの変更がすぐに反映されない">
     Edge Configの読み取りは高速だが結果整合性のあるエッジキャッシュから提供されます。`vercel_update_edge_config_items`の変更が`vercel_get_edge_config_items`にグローバルに反映されるまで、短い伝播時間がかかることがあります。

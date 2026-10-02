@@ -1,6 +1,6 @@
 ---
 title: "Twilio"
-description: "Send SMS and WhatsApp messages, manage phone numbers, conferences, and recordings — programmable communications for your agent"
+description: "Send SMS and WhatsApp messages, manage phone numbers, conferences, and recordings: programmable communications for your agent"
 icon: /images/twilio.svg
 ---
 
@@ -15,7 +15,7 @@ Shanone's Twilio integration gives your agent 45 tools covering SMS/WhatsApp mes
     Grab your **Account SID** and **Auth Token** from the [Twilio Console](https://www.twilio.com/docs/iam/api) dashboard.
   </Step>
   <Step title="Connect via API key">
-    In the Shanone dashboard, go to **Integrations → Twilio** and enter both the Account SID and Auth Token — Twilio requires both together, not just one.
+    In the Shanone dashboard, go to **Integrations → Twilio** and enter both the Account SID and Auth Token: Twilio requires both together, not just one.
   </Step>
   <Step title="Retry your request">
     Once connected, `shanone_execute_tool` calls for `twilio_*` tools will succeed.
@@ -83,13 +83,13 @@ Shanone provides **45 tools** for Twilio, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Connecting fails even though I entered a token">
-    Twilio requires **both** the Account SID and Auth Token to be set — Shanone's connection check rejects a partially-configured integration, so double-check both fields in **Integrations**.
+    Twilio requires **both** the Account SID and Auth Token to be set: Shanone's connection check rejects a partially-configured integration, so double-check both fields in **Integrations**.
   </Accordion>
   <Accordion title="twilio_send_whatsapp_template fails with an invalid template error">
     WhatsApp template messages must reference a template already approved in your Twilio Content Template catalog. Use `twilio_list_content_templates` to find a valid, approved template SID first.
   </Accordion>
   <Accordion title="twilio_purchase_phone_number returns no matching numbers">
-    Run `twilio_search_available_phone_numbers` first with a country code and area code/pattern — number availability varies significantly by region and number type (local/toll-free/mobile).
+    Run `twilio_search_available_phone_numbers` first with a country code and area code/pattern: number availability varies significantly by region and number type (local/toll-free/mobile).
   </Accordion>
   <Accordion title="Recording or transcription tools return empty results">
     Recordings and transcriptions are scoped to a specific call or conference SID. Use `twilio_list_call_recordings` or `twilio_list_conference_recordings` with the right call/conference SID rather than expecting a global list.

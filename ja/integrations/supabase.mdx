@@ -6,7 +6,7 @@ icon: /images/supabase.svg
 
 # Supabase
 
-ShanoneのSupabase連携は、Management API(プロジェクト、ブランチ、バックアップ、ネットワークセキュリティ)と直接的なデータアクセス(SQL実行、テーブルレコード、ストレージ、エッジ関数)の両方をカバーする120個のツールをエージェントに提供します——Supabaseプロジェクトのインフラとデータの両方を同じエージェントから管理できます。
+ShanoneのSupabase連携は、Management API(プロジェクト、ブランチ、バックアップ、ネットワークセキュリティ)と直接的なデータアクセス(SQL実行、テーブルレコード、ストレージ、エッジ関数)の両方をカバーする120個のツールをエージェントに提供します。Supabaseプロジェクトのインフラとデータの両方を同じエージェントから管理できます。
 
 ## はじめに
 
@@ -80,15 +80,15 @@ ShanoneはSupabase向けに**120個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="supabase_execute_sqlは失敗するがsupabase_execute_sql_readonlyは動作する">
-    書き込み可能なSQL実行には、接続中のロールが対象プロジェクトへの書き込み権限を持っている必要があります——分析のみが目的のクエリでは、意図しない書き込みを避けるためreadonly版を使ってください。
+    書き込み可能なSQL実行には、接続中のロールが対象プロジェクトへの書き込み権限を持っている必要があります。分析のみが目的のクエリでは、意図しない書き込みを避けるためreadonly版を使ってください。
   </Accordion>
   <Accordion title="supabase_create_branchやsupabase_push_branchが失敗する">
-    ブランチ機能を使うには、まずプロジェクトでプレビューブランチ機能が有効になっている必要があります——ブランチを作成する前に`supabase_enable_preview_branching`を呼び出してください。
+    ブランチ機能を使うには、まずプロジェクトでプレビューブランチ機能が有効になっている必要があります。ブランチを作成する前に`supabase_enable_preview_branching`を呼び出してください。
   </Accordion>
   <Accordion title="supabase_restore_backupやsupabase_restore_pitrがすぐに反映されない">
-    復元処理はSupabaseのインフラによって非同期に実行される長時間の操作です——即座の結果を期待せず、後で`supabase_get_project_health`を確認してください。
+    復元処理はSupabaseのインフラによって非同期に実行される長時間の操作です。即座の結果を期待せず、後で`supabase_get_project_health`を確認してください。
   </Accordion>
   <Accordion title="見えているはずのバケットでsupabase_upload_fileやsupabase_download_fileが失敗する">
-    ストレージバケットへのアクセスは、バケットの公開/非公開設定とRLSポリシーに依存します——`supabase_list_buckets`でバケットが見えていても、接続中のロールがそのオブジェクトを読み書きできるとは限りません。
+    ストレージバケットへのアクセスは、バケットの公開/非公開設定とRLSポリシーに依存します。`supabase_list_buckets`でバケットが見えていても、接続中のロールがそのオブジェクトを読み書きできるとは限りません。
   </Accordion>
 </AccordionGroup>

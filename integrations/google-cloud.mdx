@@ -6,7 +6,7 @@ icon: /images/google-cloud.svg
 
 # Google Cloud
 
-Shanone's Google Cloud integration gives your agent 24 tools for operator-level GCP administration — enabling/disabling services, managing IAM policies and roles, and auditing organization-level changes — authenticated via Workload Identity Federation rather than a downloadable service account key.
+Shanone's Google Cloud integration gives your agent 24 tools for operator-level GCP administration (enabling/disabling services, managing IAM policies and roles, and auditing organization-level changes), authenticated via Workload Identity Federation rather than a downloadable service account key.
 
 ## Getting Started
 
@@ -65,12 +65,12 @@ Shanone provides **24 tools** for Google Cloud, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="Every gcloud_* call fails immediately after connecting">
-    Run `gcloud_audit_get_connection_status` first — it's the fastest way to confirm the Workload Identity Federation trust relationship and impersonated service account are configured correctly.
+    Run `gcloud_audit_get_connection_status` first. It's the fastest way to confirm the Workload Identity Federation trust relationship and impersonated service account are configured correctly.
   </Accordion>
   <Accordion title="gcloud_iam_add_binding or gcloud_org_add_binding returns a permission-denied error">
-    The impersonated service account itself needs `resourcemanager.projects.setIamPolicy` (or the organization equivalent) — check its own IAM role with `gcloud_iam_get_policy` on the target resource.
+    The impersonated service account itself needs `resourcemanager.projects.setIamPolicy` (or the organization equivalent). Check its own IAM role with `gcloud_iam_get_policy` on the target resource.
   </Accordion>
   <Accordion title="gcloud_service_usage_enable succeeds but the API isn't usable yet">
-    Enabling a service can take a minute or two to propagate — poll `gcloud_service_usage_get` or `gcloud_service_usage_disable_check` rather than assuming it's instantly active.
+    Enabling a service can take a minute or two to propagate. Poll `gcloud_service_usage_get` or `gcloud_service_usage_disable_check` rather than assuming it's instantly active.
   </Accordion>
 </AccordionGroup>

@@ -6,7 +6,7 @@ icon: /images/youtube.svg
 
 # YouTube
 
-Shanone's YouTube integration gives your agent 82 tools covering the YouTube Data API's full surface — videos, live streaming, playlists, comments/moderation, captions, analytics, and reporting.
+Shanone's YouTube integration gives your agent 82 tools covering the YouTube Data API's full surface: videos, live streaming, playlists, comments/moderation, captions, analytics, and reporting.
 
 ## Getting Started
 
@@ -80,15 +80,15 @@ Shanone provides **82 tools** for YouTube, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="youtube_upload_video succeeds but the video isn't visible">
-    Check the video's privacy status in the upload payload — new uploads without an explicit `status.privacyStatus` may default to `private`, so set it explicitly if you expect `public` or `unlisted`.
+    Check the video's privacy status in the upload payload: new uploads without an explicit `status.privacyStatus` may default to `private`, so set it explicitly if you expect `public` or `unlisted`.
   </Accordion>
   <Accordion title="youtube_post_live_chat_message fails during a broadcast">
-    Live chat messages require an active, live broadcast with chat enabled — verify the broadcast's `lifeCycleStatus` via `youtube_list_live_broadcasts` is `live`, not `ready` or `complete`.
+    Live chat messages require an active, live broadcast with chat enabled. Verify the broadcast's `lifeCycleStatus` via `youtube_list_live_broadcasts` is `live`, not `ready` or `complete`.
   </Accordion>
   <Accordion title="youtube_analytics_query returns no data for recent dates">
     YouTube Analytics data typically has a processing delay of 1-2 days; querying for "today" or "yesterday" often returns incomplete or empty results.
   </Accordion>
   <Accordion title="OAuth connection works for Gmail but not YouTube">
-    YouTube uses its own dedicated Google Cloud OAuth client (separate from Gmail, Drive, etc.) for scope isolation — connect YouTube independently from **Integrations** even if other Google services are already connected.
+    YouTube uses its own dedicated Google Cloud OAuth client (separate from Gmail, Drive, etc.) for scope isolation. Connect YouTube independently from **Integrations** even if other Google services are already connected.
   </Accordion>
 </AccordionGroup>

@@ -1,6 +1,6 @@
 ---
 title: "DocuSign"
-description: "電子署名エンベロープの送信・署名・管理 — テンプレート、受信者、ドキュメント、アカウント管理"
+description: "電子署名エンベロープの送信・署名・管理：テンプレート、受信者、ドキュメント、アカウント管理"
 icon: /images/docusign.svg
 ---
 
@@ -77,7 +77,7 @@ ShanoneはDocuSign向けに**144個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="docusign_send_envelopeが受信者のルーティングエラーで失敗する">
-    まず`docusign_list_recipients`と`docusign_list_recipient_tabs`を確認してください——DocuSignはエンベロープを送信する前に、署名・イニシャルタブが有効なドキュメントと受信者に紐付いていることを要求します。
+    まず`docusign_list_recipients`と`docusign_list_recipient_tabs`を確認してください。DocuSignはエンベロープを送信する前に、署名・イニシャルタブが有効なドキュメントと受信者に紐付いていることを要求します。
   </Accordion>
   <Accordion title="テンプレートベースのエンベロープでフィールドが欠落する">
     テンプレートには独自の受信者/タブ定義が含まれています。タブをゼロから作り直すのではなく、`docusign_create_envelope_from_template`を使い、変更が必要な受信者ロールだけを上書きしてください。

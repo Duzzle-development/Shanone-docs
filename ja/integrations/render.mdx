@@ -1,6 +1,6 @@
 ---
 title: "Render"
-description: "クラウドインフラの管理 — サービス、デプロイ、データベース、環境、ワークフロー"
+description: "クラウドインフラの管理：サービス、デプロイ、データベース、環境、ワークフロー"
 icon: /images/render.svg
 ---
 
@@ -77,7 +77,7 @@ ShanoneはRender向けに**171個のツール**を、以下のカテゴリに整
 
 <AccordionGroup>
   <Accordion title="render_trigger_deployは成功するがサービスが更新されない">
-    `render_get_deploy`や`render_list_service_events`でデプロイが実際に完了したか確認してください——トリガー呼び出し自体が成功しても、ビルドステップで失敗することがあります。
+    `render_get_deploy`や`render_list_service_events`でデプロイが実際に完了したか確認してください。トリガー呼び出し自体が成功しても、ビルドステップで失敗することがあります。
   </Accordion>
   <Accordion title="render_create_postgres_exportやrender_trigger_postgres_recoveryがタイムアウトする">
     大きなデータベースはエクスポートやリカバリに長い時間がかかることがあります。同期的なレスポンスを期待するのではなく、`render_get_postgres_recovery_status`をポーリングしてください。

@@ -1,6 +1,6 @@
 ---
 title: "Mem0"
-description: "Give your agent persistent, searchable long-term memory — add, search, and manage memories and the entities they reference"
+description: "Give your agent persistent, searchable long-term memory: add, search, and manage memories and the entities they reference"
 icon: /images/mem0.svg
 ---
 
@@ -40,7 +40,7 @@ Shanone provides **14 tools** for Mem0, organized into these categories:
     `mem0_list_entities`, `mem0_get_entity`, `mem0_delete_entity`
   </Accordion>
   <Accordion title="Events">
-    `mem0_get_event_status` — check the status of an async memory operation (e.g. a batch add/update/delete)
+    `mem0_get_event_status`: check the status of an async memory operation (e.g. a batch add/update/delete)
   </Accordion>
 </AccordionGroup>
 
@@ -65,7 +65,7 @@ Shanone provides **14 tools** for Mem0, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="mem0_search_memories returns nothing relevant">
-    Search quality depends on how memories were added — pass enough context (user_id, agent_id, or run_id) at add time so memories are scoped correctly for later retrieval.
+    Search quality depends on how memories were added. Pass enough context (user_id, agent_id, or run_id) at add time so memories are scoped correctly for later retrieval.
   </Accordion>
   <Accordion title="Batch operations report success but a memory wasn't affected">
     `mem0_get_event_status` can confirm whether a batch operation fully completed; some batch add/update calls process asynchronously and may need a short delay before the result is final.

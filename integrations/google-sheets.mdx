@@ -1,12 +1,12 @@
 ---
 title: "Google Sheets"
-description: "The full Sheets API surface — spreadsheets, cells, formatting, charts, filters, tables, and more"
+description: "The full Sheets API surface: spreadsheets, cells, formatting, charts, filters, tables, and more"
 icon: /images/google-sheets.svg
 ---
 
 # Google Sheets
 
-Shanone's Google Sheets integration gives your agent 88 tools covering nearly the entire Sheets API — not just reading and writing values, but formatting, charts, filters, protected ranges, tables, and dimension management that most integrations leave out.
+Shanone's Google Sheets integration gives your agent 88 tools covering nearly the entire Sheets API, not just reading and writing values, but formatting, charts, filters, protected ranges, tables, and dimension management that most integrations leave out.
 
 ## Getting Started
 
@@ -83,10 +83,10 @@ Shanone provides **88 tools** for Google Sheets, organized into these categories
 
 <AccordionGroup>
   <Accordion title="google_sheets_update_values silently overwrites the wrong cells">
-    Double-check the A1 notation range (e.g. `Sheet1!B2:D10`) — a missing sheet name defaults to the first sheet, which is a common source of accidental overwrites.
+    Double-check the A1 notation range (e.g. `Sheet1!B2:D10`): a missing sheet name defaults to the first sheet, which is a common source of accidental overwrites.
   </Accordion>
   <Accordion title="google_sheets_add_chart or google_sheets_add_table fails with an invalid range error">
-    Most structural tools (charts, tables, banding, protected ranges) require `sheetId` (a numeric ID) rather than the sheet name — call `google_sheets_get_spreadsheet` or `google_sheets_get_sheet_names` first to resolve it.
+    Most structural tools (charts, tables, banding, protected ranges) require `sheetId` (a numeric ID) rather than the sheet name. Call `google_sheets_get_spreadsheet` or `google_sheets_get_sheet_names` first to resolve it.
   </Accordion>
   <Accordion title="Batch operations only partially apply">
     Batch tools like `google_sheets_batch_update_values` process each range independently; check the response for per-range errors rather than assuming an overall success means every range succeeded.

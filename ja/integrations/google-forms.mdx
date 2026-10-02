@@ -40,7 +40,7 @@ ShanoneはGoogle Forms用に**16のツール**を提供しており、以下の�
     `google_forms_list_responses`, `google_forms_get_response`
   </Accordion>
   <Accordion title="ウォッチ">
-    `google_forms_create_watch`, `google_forms_delete_watch`, `google_forms_list_watches`, `google_forms_renew_watch` — フォームの回答やスキーマが変更されたときにプッシュ通知を受け取るよう登録する
+    `google_forms_create_watch`, `google_forms_delete_watch`, `google_forms_list_watches`, `google_forms_renew_watch`：フォームの回答やスキーマが変更されたときにプッシュ通知を受け取るよう登録する
   </Accordion>
 </AccordionGroup>
 
@@ -65,10 +65,10 @@ ShanoneはGoogle Forms用に**16のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="google_forms_add_questionが不正なitem構造エラーで失敗する">
-    `google_forms_add_question`の正確なペイロード形式は`shanone_get_tool_schema`で確認してください——質問タイプ(テキスト、選択肢、スケール、日付など)ごとに異なる形状のitem本体が必要です。
+    `google_forms_add_question`の正確なペイロード形式は`shanone_get_tool_schema`で確認してください。質問タイプ(テキスト、選択肢、スケール、日付など)ごとに異なる形状のitem本体が必要です。
   </Accordion>
   <Accordion title="google_forms_create_watchの通知が届かない">
-    ウォッチには接続済みプロジェクトに設定されたGoogle Cloud Pub/Subトピックが必要で、定期的に失効します——失効前に`google_forms_renew_watch`を呼び出すか、`google_forms_create_watch`でウォッチを再作成してください。
+    ウォッチには接続済みプロジェクトに設定されたGoogle Cloud Pub/Subトピックが必要で、定期的に失効します。失効前に`google_forms_renew_watch`を呼び出すか、`google_forms_create_watch`でウォッチを再作成してください。
   </Accordion>
   <Accordion title="google_forms_list_responsesで最近の回答が見つからない">
     フォームの回答は送信後インデックス化までに少し時間がかかることがあります。それでも見つからない場合は、フォームIDが編集用URLのIDと公開用URLのIDのどちらか(両者は異なります)、正しい方を使っているか確認してください。

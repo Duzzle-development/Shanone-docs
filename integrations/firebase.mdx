@@ -1,12 +1,12 @@
 ---
 title: "Firebase"
-description: "Manage Firebase projects — Firestore, Authentication, Cloud Messaging, Remote Config, Storage, and Hosting"
+description: "Manage Firebase projects: Firestore, Authentication, Cloud Messaging, Remote Config, Storage, and Hosting"
 icon: /images/firebase.svg
 ---
 
 # Firebase
 
-Shanone's Firebase integration gives your agent 45 tools across the Firebase Admin surface — Firestore, Auth, Cloud Messaging, Remote Config, Cloud Storage, and app/project management.
+Shanone's Firebase integration gives your agent 45 tools across the Firebase Admin surface: Firestore, Auth, Cloud Messaging, Remote Config, Cloud Storage, and app/project management.
 
 ## Getting Started
 
@@ -71,12 +71,12 @@ Shanone provides **45 tools** for Firebase, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="firebase_query_firestore returns fewer results than expected">
-    Firestore queries require indexes for compound filters/sorts — check the Firebase console for a missing-index error before assuming the query logic is wrong.
+    Firestore queries require indexes for compound filters/sorts. Check the Firebase console for a missing-index error before assuming the query logic is wrong.
   </Accordion>
   <Accordion title="firebase_auth_delete_users silently skips some UIDs">
     Batch user deletion reports per-UID errors in its response; inspect the returned error list rather than assuming a 200-level success means every UID was deleted.
   </Accordion>
   <Accordion title="Tool calls fail with a permission or project-mismatch error">
-    The service account JSON is scoped to one Firebase project — verify `firebase_get_project` returns the project you expect, since a key from the wrong project will fail on every subsequent call.
+    The service account JSON is scoped to one Firebase project. Verify `firebase_get_project` returns the project you expect, since a key from the wrong project will fail on every subsequent call.
   </Accordion>
 </AccordionGroup>

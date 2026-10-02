@@ -6,7 +6,7 @@ icon: "shield-check"
 
 ## Why this exists
 
-Every teammate connecting an agent to your Shanone account could, by default, reach every one of the 269+ integrations Shanone implements. For most teams that's too broad — engineers don't need billing tools, and not everyone should be able to force-push to production repos through an agent. Shanone's **Permission Vendor** lets a **Root** user (or a delegated administrator) control access at two levels of granularity:
+Every teammate connecting an agent to your Shanone account could, by default, reach every one of the 269+ integrations Shanone implements. For most teams that's too broad. Engineers don't need billing tools, and not everyone should be able to force-push to production repos through an agent. Shanone's **Permission Vendor** lets a **Root** user (or a delegated administrator) control access at two levels of granularity:
 
 <CardGroup cols={2}>
   <Card title="Service-level" icon="layer-group">
@@ -24,18 +24,18 @@ A tool-level override always wins over a service-level override, which always wi
 | Role | Default tool access | Can manage others' permissions? |
 |------|---------------------|----------------------------------|
 | **Root** | All services/tools enabled by default | Yes, for any user |
-| **SA2** (delegated administrator) | All services/tools disabled by default | Only if explicitly delegated the `tool-permissions:ManageOthers` policy action — and even then, cannot modify a Root user's permissions |
+| **SA2** (delegated administrator) | All services/tools disabled by default | Only if explicitly delegated the `tool-permissions:ManageOthers` policy action, and even then, cannot modify a Root user's permissions |
 | Regular member | Disabled by default (enabled per override) | No |
 
 <Note>
-"SA2" refers to Shanone's secondary-administrator role tier — an account can delegate specific policy actions (like managing other users' tool permissions) to an SA2 user without granting full Root access. See [SA2 Users](/product-guide/sa2-users) for how SA2 users are created, how they sign in, and how policies work.
+"SA2" refers to Shanone's secondary-administrator role tier. An account can delegate specific policy actions (like managing other users' tool permissions) to an SA2 user without granting full Root access. See [SA2 Users](/product-guide/sa2-users) for how SA2 users are created, how they sign in, and how policies work.
 </Note>
 
 ## The Permission Vendor tools
 
 | Tool | Who can call it | Description |
 |------|------------------|-------------|
-| `shanone_list_services` | Anyone | List every registered service (integration), with tool counts — no special permission required |
+| `shanone_list_services` | Anyone | List every registered service (integration), with tool counts: no special permission required |
 | `shanone_list_user_tool_permissions` | Root / delegated SA2 | List a target user's service- and tool-level overrides |
 | `shanone_set_user_tool_permission` | Root / delegated SA2 | Enable/disable one specific tool for a target user |
 | `shanone_set_user_service_permission` | Root / delegated SA2 | Enable/disable every tool of one service for a target user |
@@ -83,11 +83,11 @@ This keeps every other GitHub tool available to that user while blocking just th
 shanone_get_permission_summary(target_user_id="usr_123")
 ```
 
-Returns their role, default access, and enabled/disabled counts for both services and tools — including the explicit list of disabled services. For the raw override list instead of a summary, use `shanone_list_user_tool_permissions`.
+Returns their role, default access, and enabled/disabled counts for both services and tools, including the explicit list of disabled services. For the raw override list instead of a summary, use `shanone_list_user_tool_permissions`.
 
 ## Master data warnings
 
-If you set a permission for a `tool_name` or `service_name` that Shanone doesn't recognize yet (usually a typo, or a tool added after your last sync), the call still succeeds and stores the override — but the response includes a warning like `not found in tool permission master data`. Double-check the exact name with `shanone_list_services` or `shanone_search_tools` before assuming the override is broken.
+If you set a permission for a `tool_name` or `service_name` that Shanone doesn't recognize yet (usually a typo, or a tool added after your last sync), the call still succeeds and stores the override, but the response includes a warning like `not found in tool permission master data`. Double-check the exact name with `shanone_list_services` or `shanone_search_tools` before assuming the override is broken.
 
 ## Next steps
 

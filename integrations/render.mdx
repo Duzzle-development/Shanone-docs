@@ -1,12 +1,12 @@
 ---
 title: "Render"
-description: "Manage cloud infrastructure — services, deploys, databases, environments, and workflows"
+description: "Manage cloud infrastructure: services, deploys, databases, environments, and workflows"
 icon: /images/render.svg
 ---
 
 # Render
 
-Shanone's Render integration gives your agent 171 tools covering nearly all of [Render](https://render.com)'s cloud platform — services and deploys, Postgres and Key Value databases, environment variables/secrets, custom domains and routing, background jobs, and observability.
+Shanone's Render integration gives your agent 171 tools covering nearly all of [Render](https://render.com)'s cloud platform: services and deploys, Postgres and Key Value databases, environment variables/secrets, custom domains and routing, background jobs, and observability.
 
 ## Getting Started
 
@@ -77,15 +77,15 @@ Shanone provides **171 tools** for Render, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="render_trigger_deploy succeeds but the service doesn't update">
-    Confirm the deploy actually completed with `render_get_deploy` or `render_list_service_events` — a triggered deploy can still fail during the build step even if the trigger call itself succeeded.
+    Confirm the deploy actually completed with `render_get_deploy` or `render_list_service_events`: a triggered deploy can still fail during the build step even if the trigger call itself succeeded.
   </Accordion>
   <Accordion title="render_create_postgres_export or render_trigger_postgres_recovery times out">
     Large databases can take a long time to export or recover; poll `render_get_postgres_recovery_status` rather than expecting a synchronous response.
   </Accordion>
   <Accordion title="Environment variable changes don't seem to take effect">
-    Most env var and secret file changes require a new deploy to take effect on running instances — trigger one with `render_trigger_deploy` after calling `render_set_env_var` or `render_set_secret_file`.
+    Most env var and secret file changes require a new deploy to take effect on running instances. Trigger one with `render_trigger_deploy` after calling `render_set_env_var` or `render_set_secret_file`.
   </Accordion>
   <Accordion title="render_add_custom_domain leaves the domain unverified">
-    DNS propagation isn't instant — call `render_verify_custom_domain` again after confirming the required CNAME/A record is in place, and allow time for DNS to propagate.
+    DNS propagation isn't instant. Call `render_verify_custom_domain` again after confirming the required CNAME/A record is in place, and allow time for DNS to propagate.
   </Accordion>
 </AccordionGroup>

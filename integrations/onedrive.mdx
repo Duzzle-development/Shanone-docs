@@ -1,6 +1,6 @@
 ---
 title: "OneDrive"
-description: "Manage OneDrive and SharePoint files — drives, folders, sharing, versions, sync, and Microsoft 365 governance"
+description: "Manage OneDrive and SharePoint files: drives, folders, sharing, versions, sync, and Microsoft 365 governance"
 icon: /images/onedrive.svg
 ---
 
@@ -83,7 +83,7 @@ Shanone provides **87 tools** for OneDrive, organized into these categories:
     Delta tokens can expire or be invalidated server-side. Call `onedrive_get_delta` without a token to restart the sync loop, then persist the new token from the response for subsequent `onedrive_get_delta_by_token` calls.
   </Accordion>
   <Accordion title="SharePoint tools return empty results or a 403">
-    Most `onedrive_*` SharePoint tools require a specific site or drive ID — start with `onedrive_search_sites` or `onedrive_get_site` to resolve the right site, and confirm the connected Microsoft account actually has access to it.
+    Most `onedrive_*` SharePoint tools require a specific site or drive ID. Start with `onedrive_search_sites` or `onedrive_get_site` to resolve the right site, and confirm the connected Microsoft account actually has access to it.
   </Accordion>
   <Accordion title="onedrive_delete_file doesn't seem to free up space">
     Deleted items move to the recycle bin first. Use `onedrive_list_recycle_bin_items` to confirm, and `onedrive_permanent_delete` if you need to remove them for good.

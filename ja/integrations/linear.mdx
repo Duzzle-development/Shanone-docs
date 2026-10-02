@@ -74,6 +74,6 @@ ShanoneはLinear向けに**45個のツール**を、以下のカテゴリに整�
     Linearのイシューには有効な`teamId`が必要で、ワークフローによっては有効なstate IDも必要です。まず`linear_list_teams`と`linear_list_workflow_states`を呼び出して有効な値を取得するか、`linear_create_issue`の`shanone_get_tool_schema`を確認してください。
   </Accordion>
   <Accordion title="人が読める識別子(例: ENG-123)でイシューが見つからない">
-    その識別子をクエリとして`linear_search_issues`を使うか、チームでフィルタした`linear_list_issues`を使ってください——`linear_get_issue`はツールスキーマに特に記載がない限り、短い識別子ではなくLinear内部のイシューIDを想定しています。
+    その識別子をクエリとして`linear_search_issues`を使うか、チームでフィルタした`linear_list_issues`を使ってください。`linear_get_issue`はツールスキーマに特に記載がない限り、短い識別子ではなくLinear内部のイシューIDを想定しています。
   </Accordion>
 </AccordionGroup>

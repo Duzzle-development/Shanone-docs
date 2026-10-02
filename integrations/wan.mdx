@@ -56,9 +56,9 @@ Shanone provides **4 tools** for Wan, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="wan_text_to_video or wan_image_to_video doesn't return a video immediately">
-    Video generation is asynchronous — both tools return a task ID that you should pass to `wan_wait_for_task` (or poll manually with `wan_get_task`) until the job completes.
+    Video generation is asynchronous. Both tools return a task ID that you should pass to `wan_wait_for_task` (or poll manually with `wan_get_task`) until the job completes.
   </Accordion>
   <Accordion title="wan_image_to_video fails on the source image">
-    Check `shanone_get_tool_schema` for `wan_image_to_video` — the source image typically needs to be a publicly accessible URL rather than raw binary data, and must meet DashScope's format/size requirements.
+    Check `shanone_get_tool_schema` for `wan_image_to_video`. The source image typically needs to be a publicly accessible URL rather than raw binary data, and must meet DashScope's format/size requirements.
   </Accordion>
 </AccordionGroup>

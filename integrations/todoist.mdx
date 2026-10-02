@@ -1,12 +1,12 @@
 ---
 title: "Todoist"
-description: "Manage tasks, projects, and labels — plus comments, reminders, and activity history"
+description: "Manage tasks, projects, and labels: plus comments, reminders, and activity history"
 icon: /images/todoist.svg
 ---
 
 # Todoist
 
-Shanone's Todoist integration gives your agent 48 tools covering tasks, projects, sections, labels, comments, and reminders — plus collaboration and activity tracking — enough to run personal or team task management entirely through an agent.
+Shanone's Todoist integration gives your agent 48 tools covering tasks, projects, sections, labels, comments, and reminders (plus collaboration and activity tracking), enough to run personal or team task management entirely through an agent.
 
 ## Getting Started
 
@@ -74,12 +74,12 @@ Shanone provides **48 tools** for Todoist, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="todoist_get_tasks doesn't show a task I know exists">
-    The default task list excludes completed tasks and can be scoped by project/filter — use `todoist_get_tasks_by_filter` with Todoist's filter syntax (e.g. `today`, `p1`, `#Work`) or `todoist_get_completed_tasks` for done items.
+    The default task list excludes completed tasks and can be scoped by project/filter. Use `todoist_get_tasks_by_filter` with Todoist's filter syntax (e.g. `today`, `p1`, `#Work`) or `todoist_get_completed_tasks` for done items.
   </Accordion>
   <Accordion title="todoist_quick_add doesn't parse due dates or labels as expected">
-    Quick-add relies on Todoist's natural-language parser for its text argument (e.g. `Submit report @work tomorrow p1`) — check `shanone_get_tool_schema` for `todoist_quick_add` and follow that syntax rather than passing structured fields.
+    Quick-add relies on Todoist's natural-language parser for its text argument (e.g. `Submit report @work tomorrow p1`). Check `shanone_get_tool_schema` for `todoist_quick_add` and follow that syntax rather than passing structured fields.
   </Accordion>
   <Accordion title="todoist_delete_project or todoist_delete_label fails unexpectedly">
-    Deletion is permanent and cascades (deleting a project deletes its tasks) — Todoist doesn't block this by default, so double-check the target ID before calling delete tools.
+    Deletion is permanent and cascades (deleting a project deletes its tasks): Todoist doesn't block this by default, so double-check the target ID before calling delete tools.
   </Accordion>
 </AccordionGroup>

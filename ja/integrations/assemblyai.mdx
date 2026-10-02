@@ -6,7 +6,7 @@ icon: /images/assemblyai.svg
 
 # AssemblyAI
 
-ShanoneのAssemblyAI連携では、音声認識に関する**17個のツール**をエージェントに提供します — 非同期/同期の文字起こし、話者識別・翻訳、そして文字起こし内容の要約や質問応答を行うLLMゲートウェイをカバーしています。
+ShanoneのAssemblyAI連携では、音声認識に関する**17個のツール**をエージェントに提供します。非同期/同期の文字起こし、話者識別・翻訳、そして文字起こし内容の要約や質問応答を行うLLMゲートウェイをカバーしています。
 
 ## はじめに
 
@@ -31,7 +31,7 @@ Shanoneは AssemblyAI向けに**17個のツール**を提供しており、以�
     `assemblyai_transcribe`, `assemblyai_get_transcript`, `assemblyai_list_transcripts`, `assemblyai_delete_transcript`, `assemblyai_upload_file`
   </Accordion>
   <Accordion title="同期的な文字起こし">
-    `assemblyai_sync_transcribe` — ポーリングの代わりに、単一のブロッキング呼び出しで短い音声の文字起こし結果を取得する
+    `assemblyai_sync_transcribe`：ポーリングの代わりに、単一のブロッキング呼び出しで短い音声の文字起こし結果を取得する
   </Accordion>
   <Accordion title="スピーチ理解">
     `assemblyai_translate_transcript`, `assemblyai_identify_speakers`, `assemblyai_apply_custom_formatting`
@@ -71,6 +71,6 @@ Shanoneは AssemblyAI向けに**17個のツール**を提供しており、以�
     同期的な文字起こしは短い音声のみを対象としています。より長い録音には、`assemblyai_transcribe`(非同期)をポーリングと組み合わせて使用してください。
   </Accordion>
   <Accordion title="assemblyai_llm_qaやassemblyai_llm_summaryが文字起こしが見つからないというエラーを返す">
-    LLMゲートウェイのツールを使う前に、文字起こしの処理が完了している(`status: completed`)必要があります — まず`assemblyai_get_transcript`で確認してください。
+    LLMゲートウェイのツールを使う前に、文字起こしの処理が完了している(`status: completed`)必要があります。まず`assemblyai_get_transcript`で確認してください。
   </Accordion>
 </AccordionGroup>

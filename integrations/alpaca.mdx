@@ -6,7 +6,7 @@ icon: /images/alpaca.svg
 
 # Alpaca
 
-Shanone's Alpaca integration gives your agent 44 tools for trading — account info, orders, positions, watchlists, and both stock and crypto market data.
+Shanone's Alpaca integration gives your agent 44 tools for trading: account info, orders, positions, watchlists, and both stock and crypto market data.
 
 <Warning>
 Alpaca's order and position tools can place real trades and move real money if you connect a live-trading API key. Confirm arguments carefully, and consider connecting Alpaca's paper-trading keys while you build and test agent workflows.
@@ -16,7 +16,7 @@ Alpaca's order and position tools can place real trades and move real money if y
 
 <Steps>
   <Step title="Generate an API key pair">
-    In the Alpaca dashboard, go to **API Keys** and generate a key ID and secret key — for paper trading, use the paper-trading keys instead of live keys.
+    In the Alpaca dashboard, go to **API Keys** and generate a key ID and secret key: for paper trading, use the paper-trading keys instead of live keys.
   </Step>
   <Step title="Connect in Shanone">
     Ask your agent to do something with Alpaca (e.g. "show my open positions"), or add the key ID and secret key proactively from **Integrations** in the Shanone dashboard.
@@ -78,7 +78,7 @@ Shanone provides **44 tools** for Alpaca, organized into these categories:
     Check `alpaca_get_account` for current buying power and confirm the account isn't restricted (e.g. pattern day trading rules) before resizing the order.
   </Accordion>
   <Accordion title="Market data tools return no data outside market hours">
-    Use `alpaca_get_clock` and `alpaca_get_calendar` to confirm the market is open — some snapshot/latest endpoints only reflect data from the most recent session.
+    Use `alpaca_get_clock` and `alpaca_get_calendar` to confirm the market is open. Some snapshot/latest endpoints only reflect data from the most recent session.
   </Accordion>
   <Accordion title="Trades placed with a live key don't show up in the paper dashboard (or vice versa)">
     Paper and live trading use separate API key pairs and separate account states. Confirm which key pair is connected under **Integrations** in the Shanone dashboard.

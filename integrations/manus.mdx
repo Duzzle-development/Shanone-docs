@@ -1,6 +1,6 @@
 ---
 title: "Manus"
-description: "Control Manus AI agents and their tasks — send messages, manage projects, files, websites, and webhooks"
+description: "Control Manus AI agents and their tasks: send messages, manage projects, files, websites, and webhooks"
 icon: /images/manus.svg
 ---
 
@@ -71,12 +71,12 @@ Shanone provides **32 tools** for Manus, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="A Manus task is stuck waiting on confirmation">
-    Some Manus actions require explicit approval — check `manus_list_messages` for a pending confirmation prompt and respond with `manus_confirm_action`.
+    Some Manus actions require explicit approval. Check `manus_list_messages` for a pending confirmation prompt and respond with `manus_confirm_action`.
   </Accordion>
   <Accordion title="manus_stop_task doesn't stop the task immediately">
     Stopping is best-effort and can take a moment if the agent is mid-step; poll `manus_get_task` to confirm the task actually reached a stopped state.
   </Accordion>
   <Accordion title="manus_publish_website fails or shows a stale version">
-    Check `manus_list_checkpoints` first — you may need to specify a specific checkpoint if the latest one hasn't finished building.
+    Check `manus_list_checkpoints` first. You may need to specify a specific checkpoint if the latest one hasn't finished building.
   </Accordion>
 </AccordionGroup>

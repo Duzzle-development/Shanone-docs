@@ -6,7 +6,7 @@ icon: /images/shopify.svg
 
 # Shopify
 
-ShanoneのShopify連携は、商品、注文、フルフィルメント、顧客、割引、マーケティング、ストアフロントコンテンツにまたがるAdmin REST APIのほぼ全体をカバーする149個のツールをエージェントに提供します——コマース業務をエンドツーエンドで実行できる、最も充実した連携の一つです。
+ShanoneのShopify連携は、商品、注文、フルフィルメント、顧客、割引、マーケティング、ストアフロントコンテンツにまたがるAdmin REST APIのほぼ全体をカバーする149個のツールをエージェントに提供します。コマース業務をエンドツーエンドで実行できる、最も充実した連携の一つです。
 
 ## はじめに
 
@@ -15,7 +15,7 @@ ShanoneのShopify連携は、商品、注文、フルフィルメント、顧客
     エージェントにShopify関連の作業を依頼(例: 「今月の売れ筋商品トップ10を教えて」)するか、Shanoneダッシュボードの**連携**から事前に接続しておきます。
   </Step>
   <Step title="ストア名を入力する">
-    ShopifyのOAuthフローでは、どのストアを許可するか特定する必要があります——プロンプトが表示されたら、ストア名(`.myshopify.com`の前の部分)を入力してください。
+    ShopifyのOAuthフローでは、どのストアを許可するか特定する必要があります。プロンプトが表示されたら、ストア名(`.myshopify.com`の前の部分)を入力してください。
   </Step>
   <Step title="リクエストを再実行する">
     接続が完了すると、`shopify_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
@@ -83,15 +83,15 @@ ShanoneはShopify向けに**149個のツール**を、以下のカテゴリに�
 
 <AccordionGroup>
   <Accordion title="shopify_create_productやshopify_update_productが422エラーを返す">
-    Shopifyは必須項目(タイトル、バリエーションの価格)を厳密に検証します——`shopify_create_product`の`shanone_get_tool_schema`を確認し、価格が設定されたバリエーションを少なくとも1つ含めてください。
+    Shopifyは必須項目(タイトル、バリエーションの価格)を厳密に検証します。`shopify_create_product`の`shanone_get_tool_schema`を確認し、価格が設定されたバリエーションを少なくとも1つ含めてください。
   </Accordion>
   <Accordion title="一括処理でレート制限(429)にかかる">
     ShopifyのAdmin APIはストアごとにリーキーバケット方式のレート制限を課しています。`shopify_update_inventory_item`や`shopify_create_fulfillment`のような呼び出しを大量に処理する場合は、一度にまとめて実行せず間隔を空けてください。
   </Accordion>
   <Accordion title="shopify_cancel_orderやshopify_delete_orderがフルフィルメント済みの注文で失敗する">
-    フルフィルメントや支払いが完了した注文は直接キャンセル/削除できないことが多いです——まず`shopify_create_refund`と`shopify_cancel_fulfillment`を使って注文を巻き戻してください。
+    フルフィルメントや支払いが完了した注文は直接キャンセル/削除できないことが多いです。まず`shopify_create_refund`と`shopify_cancel_fulfillment`を使って注文を巻き戻してください。
   </Accordion>
   <Accordion title="在庫調整が反映されないように見える">
-    `shopify_adjust_inventory_level`は現在の在庫数に対する相対的な変更を行い、`shopify_set_inventory_level`は絶対値を設定します——どちらを使うか間違えることが、想定外の在庫数になる最も多い原因です。
+    `shopify_adjust_inventory_level`は現在の在庫数に対する相対的な変更を行い、`shopify_set_inventory_level`は絶対値を設定します。どちらを使うか間違えることが、想定外の在庫数になる最も多い原因です。
   </Accordion>
 </AccordionGroup>

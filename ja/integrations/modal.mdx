@@ -1,6 +1,6 @@
 ---
 title: "Modal"
-description: "Modalのサーバーレスクラウドでコードを実行 — サンドボックス、関数、ボリューム、Dict、キュー、シークレット"
+description: "Modalのサーバーレスクラウドでコードを実行：サンドボックス、関数、ボリューム、Dict、キュー、シークレット"
 icon: /images/modal.svg
 ---
 
@@ -12,10 +12,10 @@ ShanoneのModal連携は、サンドボックス内でのコマンド・関数�
 
 <Steps>
   <Step title="Modalトークンを作成する">
-    Modalアカウントで**Settings > API Tokens**に移動し、トークンを作成します——自動化用途にはService Userトークンが推奨されます。これによりトークンIDとトークンシークレットが発行されます。
+    Modalアカウントで**Settings > API Tokens**に移動し、トークンを作成します。自動化用途にはService Userトークンが推奨されます。これによりトークンIDとトークンシークレットが発行されます。
   </Step>
   <Step title="Shanoneに両方の値を追加する">
-    Shanoneダッシュボードの**Integrations > Modal**で、トークンIDとトークンシークレットの両方を入力します——どちらも必須です。
+    Shanoneダッシュボードの**Integrations > Modal**で、トークンIDとトークンシークレットの両方を入力します。どちらも必須です。
   </Step>
   <Step title="リクエストを再実行する">
     保存が完了すると、`modal_*`ツールに対する`shanone_execute_tool`呼び出しが成功するようになります。
@@ -71,12 +71,12 @@ ShanoneはModal向けに**49個のツール**を、以下のカテゴリに整�
 
 <AccordionGroup>
   <Accordion title="modal_exec_commandが長時間ジョブでタイムアウトする">
-    代わりに`modal_run_command_background`を使い、`modal_get_background_output`と`modal_check_process_status`をポーリングしてください——`modal_exec_command`はプロセスの実行が終わるまでブロックします。
+    代わりに`modal_run_command_background`を使い、`modal_get_background_output`と`modal_check_process_status`をポーリングしてください。`modal_exec_command`はプロセスの実行が終わるまでブロックします。
   </Accordion>
   <Accordion title="modal_call_functionがnot-foundエラーで失敗する">
-    まず`modal_lookup_app`でアプリが実際にデプロイされ実行中であることを確認してください——関数呼び出しはワークスペース内の任意のコードではなく、特定のデプロイ済みアプリ/関数名を対象とします。
+    まず`modal_lookup_app`でアプリが実際にデプロイされ実行中であることを確認してください。関数呼び出しはワークスペース内の任意のコードではなく、特定のデプロイ済みアプリ/関数名を対象とします。
   </Accordion>
   <Accordion title="サンドボックスのファイルシステムへの書き込みが、サンドボックス終了後に消えてしまう">
-    サンドボックスのファイルシステムは一時的なものです——永続化したいデータは、サンドボックスのローカルファイルシステムではなく`modal_volume_write_file`を使ってVolumeに書き込んでください。
+    サンドボックスのファイルシステムは一時的なものです。永続化したいデータは、サンドボックスのローカルファイルシステムではなく`modal_volume_write_file`を使ってVolumeに書き込んでください。
   </Accordion>
 </AccordionGroup>

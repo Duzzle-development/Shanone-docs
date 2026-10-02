@@ -1,6 +1,6 @@
 ---
 title: "npm"
-description: "Manage npm packages, orgs, teams, and tokens — access control, download stats, and security audits"
+description: "Manage npm packages, orgs, teams, and tokens: access control, download stats, and security audits"
 icon: /images/npm.svg
 ---
 
@@ -74,12 +74,12 @@ Shanone provides **52 tools** for npm, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="npm_add_org_member or team tools fail with a permission error">
-    Organization and team management requires the token to belong to an npm org owner or admin — a token scoped to a single package won't work for these calls.
+    Organization and team management requires the token to belong to an npm org owner or admin: a token scoped to a single package won't work for these calls.
   </Accordion>
   <Accordion title="npm_audit_bulk returns fewer advisories than expected">
     Bulk audit matches against exact package name + version ranges; ensure you're passing the resolved versions from a lockfile rather than the semver ranges in `package.json`.
   </Accordion>
   <Accordion title="npm_set_package_access fails for a scoped package">
-    Setting visibility (public/restricted) on scoped packages requires a paid npm org plan for private packages — free accounts can only publish scoped packages as public.
+    Setting visibility (public/restricted) on scoped packages requires a paid npm org plan for private packages: free accounts can only publish scoped packages as public.
   </Accordion>
 </AccordionGroup>

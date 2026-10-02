@@ -77,7 +77,7 @@ ShanoneはRunway向けに**43個のツール**を、以下のカテゴリに整�
     レシピは複数の生成ステップを連結し、特定の入力アセット(例: 商品画像のURL)を期待します。呼び出す前に`shanone_get_tool_schema`で正確な必須フィールドを確認してください。
   </Accordion>
   <Accordion title="runway_create_avatar_videoがアバターに設定した音声と一致しない">
-    動画を生成する前に、`runway_get_avatar`でアバターが完全に作成され、音声の紐づけが保存されているか確認してください——作成直後のアバターはまだ反映が完了していない場合があります。
+    動画を生成する前に、`runway_get_avatar`でアバターが完全に作成され、音声の紐づけが保存されているか確認してください。作成直後のアバターはまだ反映が完了していない場合があります。
   </Accordion>
   <Accordion title="タスクの実行に時間がかかる・使用量が想定より多い">
     `runway_get_organization_usage`で現在の消費量を確認し、停止した、または不要になった生成ジョブは`runway_cancel_task`で取り消してください。

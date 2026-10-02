@@ -6,7 +6,7 @@ icon: /images/line.svg
 
 # LINE
 
-Shanone's LINE integration gives your agent 101 tools covering nearly all of the LINE Messaging and Login APIs — sending messages, managing rich menus, building audience segments for targeted messaging, and reading engagement insights.
+Shanone's LINE integration gives your agent 101 tools covering nearly all of the LINE Messaging and Login APIs: sending messages, managing rich menus, building audience segments for targeted messaging, and reading engagement insights.
 
 ## Getting Started
 
@@ -80,15 +80,15 @@ Shanone provides **101 tools** for LINE, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="line_reply_message fails with an invalid or expired reply token">
-    Reply tokens are single-use and expire quickly after being issued in a webhook event — use `line_push_message` instead if you're responding outside that immediate webhook-handling window.
+    Reply tokens are single-use and expire quickly after being issued in a webhook event. Use `line_push_message` instead if you're responding outside that immediate webhook-handling window.
   </Accordion>
   <Accordion title="line_broadcast_message or line_multicast_message returns a rate limit or quota error">
-    Check `line_get_message_quota` and the relevant `line_get_*_message_count` tool for your plan's monthly limits — free and lower-tier plans have hard caps on push/broadcast volume.
+    Check `line_get_message_quota` and the relevant `line_get_*_message_count` tool for your plan's monthly limits: free and lower-tier plans have hard caps on push/broadcast volume.
   </Accordion>
   <Accordion title="A rich menu doesn't appear for a specific user">
-    Rich menus are either set as the account-wide default (`line_set_default_rich_menu`) or explicitly linked per-user (`line_link_rich_menu_to_user`) — a per-user link always overrides the default, so check `line_get_rich_menu_id_of_user` if the wrong menu is showing.
+    Rich menus are either set as the account-wide default (`line_set_default_rich_menu`) or explicitly linked per-user (`line_link_rich_menu_to_user`): a per-user link always overrides the default, so check `line_get_rich_menu_id_of_user` if the wrong menu is showing.
   </Accordion>
   <Accordion title="line_create_upload_audience_group_by_file fails validation">
-    Validate the request first with the corresponding `line_validate_*` tool — audience uploads have strict format requirements (e.g. one identifier per line, size limits) that are easy to violate silently.
+    Validate the request first with the corresponding `line_validate_*` tool: audience uploads have strict format requirements (e.g. one identifier per line, size limits) that are easy to violate silently.
   </Accordion>
 </AccordionGroup>

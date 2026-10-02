@@ -1,12 +1,12 @@
 ---
 title: "Square"
-description: "Run point-of-sale commerce — orders, payments, invoices, catalog, loyalty, and bookings"
+description: "Run point-of-sale commerce: orders, payments, invoices, catalog, loyalty, and bookings"
 icon: /images/square.svg
 ---
 
 # Square
 
-Shanone's Square integration gives your agent 140 tools covering orders, payments, invoicing, the product catalog, loyalty, subscriptions, and appointment bookings — enough to run most of a retail or service business's day-to-day commerce operations.
+Shanone's Square integration gives your agent 140 tools covering orders, payments, invoicing, the product catalog, loyalty, subscriptions, and appointment bookings, enough to run most of a retail or service business's day-to-day commerce operations.
 
 ## Getting Started
 
@@ -89,15 +89,15 @@ Shanone provides **140 tools** for Square, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="square_create_payment or square_create_order fails with an idempotency error">
-    Square requires a unique `idempotency_key` per write call to prevent duplicate charges — check `shanone_get_tool_schema` for `square_create_payment` and generate a fresh key per attempt, not per retry.
+    Square requires a unique `idempotency_key` per write call to prevent duplicate charges. Check `shanone_get_tool_schema` for `square_create_payment` and generate a fresh key per attempt, not per retry.
   </Accordion>
   <Accordion title="Catalog writes via square_upsert_catalog_object don't show the expected result">
-    Square's catalog uses a graph of typed objects (ITEM, ITEM_VARIATION, CATEGORY, etc.) with client-assigned temporary IDs for new objects — mismatched or reused temporary IDs are the most common cause of unexpected catalog state.
+    Square's catalog uses a graph of typed objects (ITEM, ITEM_VARIATION, CATEGORY, etc.) with client-assigned temporary IDs for new objects: mismatched or reused temporary IDs are the most common cause of unexpected catalog state.
   </Accordion>
   <Accordion title="square_search_availability returns no open slots">
-    Availability search depends on the business booking profile and team member schedules being configured correctly in Square first — use `square_retrieve_business_booking_profile` to confirm bookings are enabled before assuming the tool is broken.
+    Availability search depends on the business booking profile and team member schedules being configured correctly in Square first. Use `square_retrieve_business_booking_profile` to confirm bookings are enabled before assuming the tool is broken.
   </Accordion>
   <Accordion title="A dispute action like square_accept_dispute fails">
-    Disputes have a limited window and specific required states (e.g. evidence must be submitted before certain actions) — check `square_get_dispute` for the current state before acting on it.
+    Disputes have a limited window and specific required states (e.g. evidence must be submitted before certain actions). Check `square_get_dispute` for the current state before acting on it.
   </Accordion>
 </AccordionGroup>

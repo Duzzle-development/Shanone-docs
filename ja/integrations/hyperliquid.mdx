@@ -1,12 +1,12 @@
 ---
 title: "Hyperliquid"
-description: "パーペチュアルDEXのアカウント・マーケット・注文データ — 残高、オーダーブック、ファンディング、ポジション、取引"
+description: "パーペチュアルDEXのアカウント・マーケット・注文データ：残高、オーダーブック、ファンディング、ポジション、取引"
 icon: /images/hyperliquid.svg
 ---
 
 # Hyperliquid
 
-ShanoneのHyperliquid連携では、パーペチュアルDEXであるHyperliquidを扱う34のツールをエージェントが利用できるようになります——アカウント/ポートフォリオ状態、マーケットデータ(オーダーブック、ローソク足、ファンディング)、注文管理、レバレッジ、TWAP注文まで対応します。
+ShanoneのHyperliquid連携では、パーペチュアルDEXであるHyperliquidを扱う34のツールをエージェントが利用できるようになります。アカウント/ポートフォリオ状態、マーケットデータ(オーダーブック、ローソク足、ファンディング)、注文管理、レバレッジ、TWAP注文まで対応します。
 
 ## はじめに
 
@@ -18,7 +18,7 @@ ShanoneのHyperliquid連携では、パーペチュアルDEXであるHyperliquid
     Shanoneダッシュボードの**Integrations**を開き、Hyperliquidを選択してウォレットアドレスを入力します。読み取り専用のアカウント・マーケットデータツールにはこれで十分です。
   </Step>
   <Step title="取引用の秘密鍵を設定する(任意)">
-    注文の作成・変更には秘密鍵が必要ですが、これは通常の連携フォームではなく環境変数として別途設定されます——取引系ツールで認証エラーが出る場合はShanoneの管理者に確認してください。
+    注文の作成・変更には秘密鍵が必要ですが、これは通常の連携フォームではなく環境変数として別途設定されます。取引系ツールで認証エラーが出る場合はShanoneの管理者に確認してください。
   </Step>
 </Steps>
 
@@ -74,12 +74,12 @@ ShanoneはHyperliquid用に**34のツール**を提供しており、以下の�
 
 <AccordionGroup>
   <Accordion title="hyperliquid_place_orderなど取引系ツールが認証エラーで失敗する">
-    読み取り専用ツールはウォレットアドレスのみで動作しますが、注文の発注/変更/キャンセルにはサーバー側で設定された秘密鍵が必要です——アカウントで取引が有効になっているか管理者に確認してください。
+    読み取り専用ツールはウォレットアドレスのみで動作しますが、注文の発注/変更/キャンセルにはサーバー側で設定された秘密鍵が必要です。アカウントで取引が有効になっているか管理者に確認してください。
   </Accordion>
   <Accordion title="hyperliquid_get_account_stateがHyperliquidのUIと異なる数値を表示する">
-    `hyperliquid_get_subaccounts`で正しいサブアカウントを確認しているか確認してください——パーペチュアルと現物の残高は別々に管理されており(`hyperliquid_get_account_state`と`hyperliquid_get_spot_balances`)、誤った方を確認しがちです。
+    `hyperliquid_get_subaccounts`で正しいサブアカウントを確認しているか確認してください。パーペチュアルと現物の残高は別々に管理されており(`hyperliquid_get_account_state`と`hyperliquid_get_spot_balances`)、誤った方を確認しがちです。
   </Accordion>
   <Accordion title="hyperliquid_place_twap_orderの動作が想定と異なる">
-    TWAP注文は即時執行ではなく指定した期間にわたって小分けに執行されます——即時約定を期待せず`hyperliquid_get_order_status`で進行状況を追跡し、必要であれば`hyperliquid_cancel_twap_order`で早期に停止してください。
+    TWAP注文は即時執行ではなく指定した期間にわたって小分けに執行されます。即時約定を期待せず`hyperliquid_get_order_status`で進行状況を追跡し、必要であれば`hyperliquid_cancel_twap_order`で早期に停止してください。
   </Accordion>
 </AccordionGroup>

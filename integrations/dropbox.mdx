@@ -1,6 +1,6 @@
 ---
 title: "Dropbox"
-description: "Store, share, and manage files and folders — uploads, sharing, team administration, and Paper docs"
+description: "Store, share, and manage files and folders: uploads, sharing, team administration, and Paper docs"
 icon: /images/dropbox.svg
 ---
 
@@ -80,12 +80,12 @@ Shanone provides **166 tools** for Dropbox, organized into these categories:
 
 <AccordionGroup>
   <Accordion title="dropbox_upload_file fails on large files">
-    Files above roughly 150MB need the chunked upload session flow — use `dropbox_upload_session_start`, `dropbox_upload_session_append`, and `dropbox_upload_session_finish` (or the batch variants) instead of a single upload call.
+    Files above roughly 150MB need the chunked upload session flow. Use `dropbox_upload_session_start`, `dropbox_upload_session_append`, and `dropbox_upload_session_finish` (or the batch variants) instead of a single upload call.
   </Accordion>
   <Accordion title="Team admin tools return a permission error">
     `dropbox_team_*` tools require the connected account to be a Dropbox Business/Team admin; a personal Dropbox account or non-admin team member cannot call them.
   </Accordion>
   <Accordion title="A shared folder operation returns an async job status instead of a result">
-    Some sharing operations (like `dropbox_share_folder` or `dropbox_transfer_folder`) run asynchronously — poll `dropbox_check_share_job_status` or `dropbox_check_job_status` with the returned job ID until it completes.
+    Some sharing operations (like `dropbox_share_folder` or `dropbox_transfer_folder`) run asynchronously. Poll `dropbox_check_share_job_status` or `dropbox_check_job_status` with the returned job ID until it completes.
   </Accordion>
 </AccordionGroup>

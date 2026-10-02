@@ -80,15 +80,15 @@ Shanoneはyoutube向けに**82個のツール**を、以下のカテゴリに整
 
 <AccordionGroup>
   <Accordion title="youtube_upload_videoは成功するが動画が表示されない">
-    アップロードペイロード内の公開設定を確認してください — `status.privacyStatus`を明示的に指定しない新規アップロードは`private`がデフォルトになる場合があるため、`public`や`unlisted`を期待する場合は明示的に指定してください。
+    アップロードペイロード内の公開設定を確認してください。`status.privacyStatus`を明示的に指定しない新規アップロードは`private`がデフォルトになる場合があるため、`public`や`unlisted`を期待する場合は明示的に指定してください。
   </Accordion>
   <Accordion title="配信中にyoutube_post_live_chat_messageが失敗する">
-    ライブチャットへの投稿にはチャットが有効な進行中のライブ配信が必要です — `youtube_list_live_broadcasts`で配信の`lifeCycleStatus`が`ready`や`complete`ではなく`live`になっているか確認してください。
+    ライブチャットへの投稿にはチャットが有効な進行中のライブ配信が必要です。`youtube_list_live_broadcasts`で配信の`lifeCycleStatus`が`ready`や`complete`ではなく`live`になっているか確認してください。
   </Accordion>
   <Accordion title="youtube_analytics_queryで最近の日付のデータが返らない">
     YouTube Analyticsのデータは通常1〜2日の処理遅延があります。「今日」や「昨日」を指定するクエリはしばしば不完全または空の結果を返します。
   </Accordion>
   <Accordion title="OAuth接続がGmailでは機能するがYouTubeでは機能しない">
-    YouTubeはスコープを分離するため、Gmail・Driveなどとは別の専用のGoogle Cloud OAuthクライアントを使用します — 他のGoogleサービスが既に接続済みでも、YouTubeは**連携**画面から個別に接続してください。
+    YouTubeはスコープを分離するため、Gmail・Driveなどとは別の専用のGoogle Cloud OAuthクライアントを使用します。他のGoogleサービスが既に接続済みでも、YouTubeは**連携**画面から個別に接続してください。
   </Accordion>
 </AccordionGroup>
