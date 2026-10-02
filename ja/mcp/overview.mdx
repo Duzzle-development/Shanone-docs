@@ -29,8 +29,6 @@ Shanone は Model Context Protocol（MCP）を通じて、AI クライアント�
 | Remote MCP（Streamable HTTP） | `https://mcp.shanone.ai/mcp` に接続します。このドキュメントの 32 ツールとパラメーターはこの方式を対象にしています。 |
 | ローカル stdio プロキシ | npm の `@duzzle/shanone-mcp` または Python の `shanone-mcp` を起動し、Shanone の REST API に転送します。公開ツールと引数形式はパッケージ・バージョンによって異なります。 |
 
-更新後の実装では `shanone_execute_tool.arguments` は全方式でオブジェクトです。接続先・インストール済みバージョンの実際の仕様は `tools/list` で確認してください。
-
 <Note>
 検索・実行時の引数をオブジェクトに統一する更新は、dev/akasoのリモート環境で検証済みです。本番への反映とnpm/PyPIへの公開は別工程です。検索・実行機能の対応ソースはNode.js 0.6.0／Python 0.3.0以降です。古いサーバーが文字列型を公開している場合は、そのスキーマに従うか、更新済みの接続先へ切り替えてください。
 </Note>
