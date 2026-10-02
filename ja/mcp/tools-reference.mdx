@@ -4,7 +4,7 @@ description: "Remote MCP の32ツールについて、引数・プラン・課�
 ---
 
 <Note>
-Analyticsの3ツールはNode.js 0.7.0／Python 0.4.0のソースに追加されています。Remote MCPの配備とnpm/PyPI公開は別工程です。接続先の `tools/list` で提供状況を確認してください。
+共通応答形式v1はRemote MCPのソース、およびNode.js 0.8.0／Python 0.5.0のソースに実装されています。本番への配備とnpm/PyPI公開は別工程で、このバージョン表記は公開済みであることを意味しません。接続先の `tools/list` と `outputSchema` で実際の形式を確認してください。
 </Note>
 
 Remote MCP の32ツールについて、引数・プラン・課金・利用回数の扱いを説明します。
@@ -17,7 +17,54 @@ Remote MCP の32ツールについて、引数・プラン・課金・利用回�
 
 スキルツールは Free にも名前・説明・入力スキーマを公開します。Free からの実行は、スキルデータにアクセスする前に `PLAN_UPGRADE_REQUIRED` で拒否します。再ログインでは解消しません。
 
-応答はツールにより Markdown テキスト、JSON を含むテキスト、構造化エラーを返します。スキルのプラン拒否・操作失敗は MCP の `isError: true` で返ります。実行ツールでは JSON 内の `status`、`success`、`reason` と外部サービスの結果も確認してください。
+## 共通応答形式
+
+更新後のRemote MCP・Python stdio・Node stdioでは、すべての登録済みツールが同じ外側のJSON形式を返します。Remote MCPは32ツール、PythonとNodeはそれぞれ21ツールで、提供するツールの内訳は異なります。以下のツール固有フィールドは、`data` 内の値を指します。
+
+- `content[0].text` はJSON文字列です。パースすると `structuredContent` と同じオブジェクトになります。
+- `response_version` は `1`、`success` は今回の呼び出しの成否です。
+- `data` はツールの結果です。取得できた元のサービスエラー情報も保持します。
+- `error` は成功時に `null`、失敗時に `code`・`message`・`retryable` を含むオブジェクトです。`success: false` の場合はMCPの `isError: true` になります。
+- `pagination` はツールがページ情報を返す場合に付与します。元のフィールドは `data` 内にも残ります。カーソルは加工せず、同じ検索条件で次ページに渡してください。
+- 各ツールの `outputSchema` にこの応答形式を公開します。
+
+該当するツールがない場合も成功として空の配列を返し、「見つからない」というテキストには置き換えません。
+
+```json
+{
+  "response_version": 1,
+  "success": true,
+  "data": {
+    "tools": [],
+    "total": 0,
+    "offset": 0,
+    "limit": 50,
+    "has_more": false
+  },
+  "error": null,
+  "pagination": {
+    "total": 0,
+    "offset": 0,
+    "limit": 50,
+    "has_more": false
+  }
+}
+```
+
+外側の応答を一度パースし、`data` からツールの結果を取得します。
+
+```javascript
+const response = result.structuredContent ?? JSON.parse(result.content[0].text);
+if (!response.success) {
+  throw new Error(response.error.message);
+}
+const data = response.data;
+const tools = data.tools; // Tool listing
+```
+
+パースしたルートから直接値を読むコードは `data` 配下を読むよう変更し、Markdownの解析は不要になります。検索スキーマは `data.tools[].inputSchema`、稼働状態は `data.status`、外部サービスの出力は `data.result` にあります。実行結果の `result` がJSON文字列の場合はデコードしますが、スキル本文や任意の入れ子のテキストは変更しません。この変更はMCPツールの応答が対象で、REST APIの応答を同じ形式に変更するものではありません。
+
+サービス側のエラーコードがない場合は `TOOL_ERROR` を使います。`retryable` はサービスが指定しない限り `false` です。すでに処理が行われた可能性のある操作を繰り返してよいという承認ではありません。SDKによる引数検証の失敗は `INVALID_ARGUMENTS`、未知のMCPツール名は `UNKNOWN_TOOL` です。通信・認証エラーは、ツール応答が生成される前にリクエストを拒否する場合があります。
 
 ## プラン・課金・Analytics の一覧
 
@@ -66,6 +113,8 @@ Remote MCP の32ツールについて、引数・プラン・課金・利用回�
 
 MCP の接続、API キー認証、バックエンドの稼働状態を確認します。外部サービスの認証は検証しません。
 
+`data` 内に `status` や表示用の `screen` 文字列などを返します。稼働状態が `degraded` の場合は `success: false`、MCPの `isError: true` になります。
+
 パラメーターはありません。`{}` を渡します。
 
 ## Tool Vendor
@@ -93,7 +142,7 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 }
 ```
 
-検索結果は JSON テキストです。`tools`、`total`、`query`、`service`、`offset`、`limit`、`has_more` と、次の操作を示す `next_step` を返します。各ツールには `name`、`service`、`description` と、次のどちらかが含まれます。
+検索結果は共通JSON形式で、`data` 内に `tools`、`total`、`query`、`service`、`offset`、`limit`、`has_more` と、次の操作を示す `next_step` を返します。各ツールには `name`、`service`、`description` と、次のどちらかが含まれます。
 
 | フィールド | 次の操作 |
 |---|---|
@@ -119,6 +168,8 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 
 指定サービスのツールをページ単位で取得します。全件取得する場合は後続ページも取得してください。
 
+JSONで `data.tools` と一覧のメタデータを返します。該当なしは `tools: []` です。`pagination.has_more`（`data.has_more` にも保持）を確認し、次ページでは `offset` を `limit` 分進めてください。
+
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
 | `service` | string | 必須 | gmail、slack などの正確なサービス識別子。 |
@@ -128,6 +179,8 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 ### shanone_get_tool_schema
 
 検索結果が `inputSchema` ではなく `schemaRef` を返した場合や、取得済みスキーマを更新したい場合に使います。このツールは廃止していません。
+
+`data` 配下に `name`・`description`・`inputSchema` などのスキーマ情報を返します。スキーマはMarkdownのコードブロックではなくJSONオブジェクトです。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
@@ -180,6 +233,8 @@ MCP の接続、API キー認証、バックエンドの稼働状態を確認し
 
 連携ツールを実行します。実行結果の外側のステータスと外部サービスの結果を確認してください。呼び出しの完了だけで業務処理の成功とは判断しません。
 
+外側の `success`・`error` を確認し、続いて `data.result` を読みます。バックエンドの `reason`・`connect_link`・処理時間・接続情報などは、提供された場合に `data` 配下に保持します。外部サービスの結果が `success: false` の場合もMCPエラーになります。入れ子の本文は保持し、実行結果の `result` にあるJSON文字列だけをデコードします。
+
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
 | `tool_name` | string | 必須 | gmail_get_profile などの正確なツール名。 |
@@ -210,6 +265,8 @@ Gmail は先に list_connections で接続 ID を取得し、呼び出しごと�
 
 保存済みスキルを新しい順に一覧表示します。query は任意で、空の場合は対象の保存済みスキルをページ単位で取得します。
 
+スキル一覧とページ情報を `data` 配下に返します。該当なしは `data.skills: []` です。
+
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
 | `query` | string | `""` | 検索文字列。任意項目の場合は空文字で省略できます。 |
@@ -219,6 +276,8 @@ Gmail は先に list_connections で接続 ID を取得し、呼び出しごと�
 ### shanone_get_skill
 
 スキルの名前、説明、指示本文を取得します。指示の実行は呼出元のエージェントが行い、この呼び出し自体がワークフローを実行するわけではありません。
+
+スキル情報を `data` として返し、指示本文も保持します。作成・更新ツールも、処理後のスキル情報を同じ形式で返します。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
@@ -257,6 +316,8 @@ Gmail は先に list_connections で接続 ID を取得し、呼び出しごと�
 
 スキルを完全に削除します。
 
+成功時の `data` に `skill_id` と `deleted: true` を返します。
+
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
 | `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
@@ -265,6 +326,8 @@ Gmail は先に list_connections で接続 ID を取得し、呼び出しごと�
 
 スキルに付属する追加ファイルのパスやサイズを一覧表示します。指示本文は get_skill で取得します。
 
+`data.skill_id`・`data.files`・`data.count` を返します。ファイルがない場合も空の配列を保持します。
+
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
 | `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
@@ -272,6 +335,8 @@ Gmail は先に list_connections で接続 ID を取得し、呼び出しごと�
 ### shanone_read_skill_file
 
 スキルのテキストファイルを読み取ります。バイナリの場合は内容の代わりに説明を返すため、表示やダウンロードにはダッシュボードを使ってください。
+
+JSONの結果にファイルのメタデータを保持します。バイナリの場合は `data.content: null`・`data.content_omitted: true` と、ダッシュボードへの案内 `message` を返します。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
@@ -299,6 +364,8 @@ UTF-8 テキストファイルを作成、または上書きします。親フ�
 ### shanone_delete_skill_file
 
 スキルに付属するファイルを１件削除します。
+
+成功時の `data` に `skill_id`・`path`・`deleted: true` を返します。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
@@ -337,6 +404,8 @@ UTF-8 テキストファイルを作成、または上書きします。親フ�
 
 フォルダーと、その中のファイル・サブフォルダーを削除します。元に戻せない操作です。
 
+成功時の `data` に `skill_id`・`path`・`deleted: true` を返します。
+
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
 | `skill_id` | string | 必須 | list_skills または create_skill で取得した正確なスキル ID。 |
@@ -360,9 +429,11 @@ list_services を除く権限管理とパラメーターポリシー管理は、
 
 登録済みサービスの名前、表示名、ツール数を取得します。管理者ロールは不要です。
 
+`data.services` に各サービスの `tools_count`、一覧に `total`・`offset`・`limit`・`has_more` を返します。ページ情報は `pagination` にも含みます。
+
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
-| `limit` | integer | `100` | １ページあたりの最大件数。 最大500件。 |
+| `limit` | integer | `100` | １ページあたりの最大件数。1〜200件。 |
 | `offset` | integer | `0` | 先頭からスキップする件数。 |
 
 ### shanone_list_user_tool_permissions
@@ -376,6 +447,8 @@ list_services を除く権限管理とパラメーターポリシー管理は、
 ### shanone_set_user_tool_permission
 
 対象ユーザーの１つのツールを許可・拒否します。ツール単位の設定は、サービス単位やロールの既定設定より優先されます。
+
+保存に失敗した場合は、権限変更の成功として扱わずエラーを返します。サービス単位の権限更新も同様です。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
@@ -404,6 +477,8 @@ list_services を除く権限管理とパラメーターポリシー管理は、
 ### shanone_batch_set_user_permissions
 
 最大500件のサービス・ツール権限操作をまとめて適用します。１件の失敗で全体は中断しないため、各操作の結果を確認してください。
+
+一部でも失敗すると外側の `success: false`、MCPの `isError: true` になります。成功済みの操作は元に戻しません。Remote MCPは `error.code: "PARTIAL_FAILURE"`、各操作の結果を `data.operations`、更新件数を `data.updated_count` に返します。Node版も外側の形式は共通ですが、各操作の結果は `data.results`、引数の `operations` はJSON文字列ではなく配列です。
 
 | 引数 | 型 | 必須 / 既定値 | 説明 |
 |---|---|---|---|
@@ -485,7 +560,7 @@ list_services を除く権限管理とパラメーターポリシー管理は、
 
 `shanone_create_execution_context`、`shanone_get_execution_context`、`shanone_switch_connection` は廃止されました。クライアントのツール一覧を再取得し、接続 ID の明示指定へ移行してください。
 
-Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開済みツールには含まれません。
+Analyticsの3ツールはソースに含まれます。接続先での提供状況は `tools/list` で確認してください。
 
 [接続設定を見る](/ja/mcp/setup)。
 
@@ -559,43 +634,53 @@ Analytics を取得する `shanone_get_tool_usage` は設計段階で、公開�
 
 #### レスポンスの読み方（バージョン2）
 
-Analytics取得が成功すると `response_version: 2`、`query_status: "success"`、短い `summary` を返します。これはログ取得の成功であり、記録された各ツール実行の成功ではありません。Analytics取得自体の失敗はMCPの `isError: true` で、共通実行処理に到達した場合はエラー本文に `query_status: "error"` を含めます。プロトコル・入力検証でそれ以前に拒否される場合もあります。既存の `totals`、`rows`、`logs`、`status`、`duration_ms`、`billable` は維持します。
+外側のMCP応答は `response_version: 1` です。Analytics取得が成功すると、`data` 内に `response_version: 2`、`query_status: "success"`、短い `summary` を返します。これはログ取得の成功であり、記録された各ツール実行の成功ではありません。Analytics取得自体の失敗はMCPの `isError: true` で、共通実行処理に到達した場合はエラー本文に `query_status: "error"` を含めます。プロトコル・入力検証でそれ以前に拒否される場合もあります。既存の `totals`、`rows`、`logs`、`status`、`duration_ms`、`billable` は `data` 内に維持します。ログに失敗した実行が含まれていても、Analytics取得が成功していればMCPエラーにはなりません。
 
-検索結果の例（説明用・一部省略）:
+Analyticsデータを含む応答の例（説明用・一部省略）:
 
 ```json
 {
-  "response_version": 2,
-  "query_status": "success",
-  "summary": "Showing 1 of 1 matching execution logs, newest first.",
-  "logs": [{
-    "log_id": "log_example",
-    "tool_name": "example_update",
-    "status": "failed",
-    "execution": {
-      "status": "failed",
-      "recorded_status": "error",
-      "duration_ms": 320,
-      "summary": "Execution was recorded as failed.",
-      "error": {
-        "state": "recorded_classification",
-        "category": "timeout",
-        "message": "The recorded execution timed out.",
-        "suggested_action": "Check whether the original operation completed before retrying; a timeout does not prove it had no effect.",
-        "automatic_retry": false
+  "response_version": 1,
+  "success": true,
+  "data": {
+    "response_version": 2,
+    "query_status": "success",
+    "summary": "Showing 1 of 1 matching execution logs, newest first.",
+    "logs": [
+      {
+        "log_id": "log_example",
+        "tool_name": "example_update",
+        "status": "failed",
+        "execution": {
+          "status": "failed",
+          "recorded_status": "error",
+          "duration_ms": 320,
+          "summary": "Execution was recorded as failed.",
+          "error": {
+            "state": "recorded_classification",
+            "category": "timeout",
+            "message": "The recorded execution timed out.",
+            "suggested_action": "Check whether the original operation completed before retrying; a timeout does not prove it had no effect.",
+            "automatic_retry": false
+          }
+        },
+        "billing": {
+          "billable": true,
+          "decision_source": "recorded",
+          "reason": "billable_failed_execution",
+          "reason_state": "recorded"
+        },
+        "detail_query": {
+          "tool": "shanone_get_tool_log",
+          "arguments": {
+            "log_id": "log_example",
+            "scope": "self"
+          }
+        }
       }
-    },
-    "billing": {
-      "billable": true,
-      "decision_source": "recorded",
-      "reason": "billable_failed_execution",
-      "reason_state": "recorded"
-    },
-    "detail_query": {
-      "tool": "shanone_get_tool_log",
-      "arguments": {"log_id": "log_example", "scope": "self"}
-    }
-  }]
+    ]
+  },
+  "error": null
 }
 ```
 
@@ -619,7 +704,7 @@ Analytics取得が成功すると `response_version: 2`、`query_status: "succes
 
 過去のログで理由がなければ `reason: null`、`reason_state: not_recorded` です。現在の課金設定から過去の理由を推測しません。`decision_source: legacy_default` は課金フラグ自体が欠損し、共通の旧形式フォールバックを適用したことを表します。課金理由と最上位リストの要素数は、対応する実行サービスへの配備後に新しく記録されるログで利用できます。過去ログの補完は行いません。
 
-レスポンスバージョン2ではスナップショットの識別条件を変更しています。更新前のカーソルは新しい検索で取り直してください。既存の認可、読取上限、本文の制限、課金ルールは引き続き適用されます。
+Analyticsデータのバージョン2ではスナップショットの識別条件を変更しています。外側にMCPのv1形式を追加すること自体は、Analyticsのカーソル形式を変更しません。Analyticsのバージョン2更新前のカーソルは、新しい検索で取り直してください。既存の認可、読取上限、本文の制限、課金ルールは引き続き適用されます。
 
 ## OpenAI連携ツール
 

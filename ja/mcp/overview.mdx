@@ -4,8 +4,10 @@ description: "Shanone の MCP ツール、接続方式、プランと利用回�
 ---
 
 <Note>
-Analyticsの3ツールはNode.js 0.7.0／Python 0.4.0のソースに追加されています。Remote MCPの配備とnpm/PyPI公開は別工程です。接続先の `tools/list` で提供状況を確認してください。
+共通応答形式v1はRemote MCPのソース、およびNode.js 0.8.0／Python 0.5.0のソースに実装されています。本番への配備とnpm/PyPI公開は別工程で、このバージョン表記は公開済みであることを意味しません。接続先の `tools/list` と `outputSchema` で実際の形式を確認してください。
 </Note>
+
+更新後のツールは `content[0].text` にJSON文字列を返し、`structuredContent` と内容が一致します。成否はルートの `success`・`error`、ツール固有の値は `data` 配下を確認してください。[共通応答形式と移行方法](/ja/mcp/tools-reference#共通応答形式)。
 
 Shanone は Model Context Protocol（MCP）を通じて、AI クライアントから外部サービス、保存したスキル、権限管理を利用できるようにします。Remote MCP は **32 ツール**を公開しています。
 
@@ -30,7 +32,7 @@ Shanone は Model Context Protocol（MCP）を通じて、AI クライアント�
 更新後の実装では `shanone_execute_tool.arguments` は全方式でオブジェクトです。接続先・インストール済みバージョンの実際の仕様は `tools/list` で確認してください。
 
 <Note>
-この更新はdev/akasoのリモート環境で検証済みです。本番への反映とnpm/PyPIへの公開は別工程です。検索・実行機能の対応ソースはNode.js 0.6.0／Python 0.3.0以降です。古いサーバーが文字列型を公開している場合は、そのスキーマに従うか、更新済みの接続先へ切り替えてください。
+検索・実行時の引数をオブジェクトに統一する更新は、dev/akasoのリモート環境で検証済みです。本番への反映とnpm/PyPIへの公開は別工程です。検索・実行機能の対応ソースはNode.js 0.6.0／Python 0.3.0以降です。古いサーバーが文字列型を公開している場合は、そのスキーマに従うか、更新済みの接続先へ切り替えてください。
 </Note>
 
 ## 認証とアクセス制御

@@ -4,8 +4,10 @@ description: "32ツールの構成、プラン、課金とアカウント選択�
 ---
 
 <Note>
-Analyticsの3ツールはNode.js 0.7.0／Python 0.4.0のソースに追加されています。Remote MCPの配備とnpm/PyPI公開は別工程です。接続先の `tools/list` で提供状況を確認してください。
+共通応答形式v1はRemote MCPのソース、およびNode.js 0.8.0／Python 0.5.0のソースに実装されています。本番への配備とnpm/PyPI公開は別工程で、このバージョン表記は公開済みであることを意味しません。接続先の `tools/list` と `outputSchema` で実際の形式を確認してください。
 </Note>
+
+更新後のツールは `content[0].text` にJSON文字列を返し、`structuredContent` と内容が一致します。成否はルートの `success`・`error`、ツール固有の値は `data` 配下を確認してください。[共通応答形式と移行方法](/ja/mcp/tools-reference#共通応答形式)。
 
 Remote MCP は **32ツール**を公開します。内訳はヘルスチェック１、検索・スキーマ・実行４、接続管理２、スキル13、サービス・権限管理９、Analytics３です。
 

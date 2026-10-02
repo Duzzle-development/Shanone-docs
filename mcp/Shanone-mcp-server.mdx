@@ -4,8 +4,10 @@ description: "32 tools, plan availability, billing, and explicit account selecti
 ---
 
 <Note>
-The three Analytics tools are added in the Node.js 0.7.0 / Python 0.4.0 source release. Remote deployment and npm/PyPI publication are separate steps. Check your endpoint’s `tools/list` for availability.
+Response contract v1 is implemented in the Remote MCP source and Node.js 0.8.0 / Python 0.5.0 source releases. Production deployment and npm/PyPI publication are separate steps; these versions do not imply publication. Check your endpoint’s `tools/list` and `outputSchema` for the actual contract.
 </Note>
+
+Updated tools return JSON in `content[0].text` matching `structuredContent`. Read `success` and `error` at the root and tool-specific fields under `data`. See the [response format and migration guide](/mcp/tools-reference#response-format).
 
 Remote MCP exposes **32 tools**: one health check, four discovery/schema/execution tools, two connection tools, 13 skill tools, nine service/permission tools, and three Analytics tools.
 

@@ -4,7 +4,7 @@ description: "Parameters, plan availability, billing, and usage accounting for t
 ---
 
 <Note>
-The three Analytics tools are added in the Node.js 0.7.0 / Python 0.4.0 source release. Remote deployment and npm/PyPI publication are separate steps. Check your endpoint’s `tools/list` for availability.
+Response contract v1 is implemented in the Remote MCP source and Node.js 0.8.0 / Python 0.5.0 source releases. Production deployment and npm/PyPI publication are separate steps; these versions do not imply publication. Check your endpoint’s `tools/list` and `outputSchema` for the actual contract.
 </Note>
 
 Parameters, plan availability, billing, and usage accounting for the 32 Remote MCP tools.
@@ -17,7 +17,54 @@ Plan availability does not grant authorization: API-key scopes, user permissions
 
 Free users can discover skill names, descriptions, and input schemas. Execution is rejected with `PLAN_UPGRADE_REQUIRED` before accessing skill data. Signing in again does not resolve a plan restriction.
 
-Results vary by tool: Markdown text, text containing JSON, or structured errors. Skill plan denials and operation failures use MCP `isError: true`. For execution tools, also inspect JSON fields such as `status`, `success`, and `reason`, plus the provider result.
+## Response format
+
+Updated Remote MCP, Python stdio, and Node stdio use the same envelope for every registered tool. Remote MCP has 32 tools; Python and Node each have 21, with different tool inventories. Tool-specific fields below refer to values inside `data`.
+
+- `content[0].text` is a JSON string. Parsing it produces the same object as `structuredContent`.
+- `response_version` is `1`; `success` indicates whether this call succeeded.
+- `data` contains the tool result, including original service error details when available.
+- `error` is `null` on success, or an object with `code`, `message`, and `retryable` on failure. MCP `isError` is `true` when `success` is `false`.
+- `pagination` is included when the tool supplies pagination fields. Original fields also remain in `data`. Preserve opaque cursors and resend the same filters.
+- Each tool advertises this envelope through `outputSchema`.
+
+An empty tool listing is a successful response with an empty array, rather than a text message.
+
+```json
+{
+  "response_version": 1,
+  "success": true,
+  "data": {
+    "tools": [],
+    "total": 0,
+    "offset": 0,
+    "limit": 50,
+    "has_more": false
+  },
+  "error": null,
+  "pagination": {
+    "total": 0,
+    "offset": 0,
+    "limit": 50,
+    "has_more": false
+  }
+}
+```
+
+Read the envelope once, then access the tool result:
+
+```javascript
+const response = result.structuredContent ?? JSON.parse(result.content[0].text);
+if (!response.success) {
+  throw new Error(response.error.message);
+}
+const data = response.data;
+const tools = data.tools; // Tool listing
+```
+
+Migrate code that reads fields directly from the parsed root to `data`, and remove Markdown parsing. Search schemas are at `data.tools[].inputSchema`, health is at `data.status`, and provider output is at `data.result`. Execution decodes JSON strings in the known `result` slot; skill instructions and arbitrary nested text remain unchanged. This changes MCP tool responses, not the REST API response format.
+
+Errors without a supplied service code use `TOOL_ERROR`. `retryable` defaults to `false` unless supplied by the service; it does not authorize repeating an operation that may already have had an effect. SDK argument validation failures use `INVALID_ARGUMENTS`; unknown MCP tool names use `UNKNOWN_TOOL`. Transport/authentication failures can reject a request before a tool response exists.
 
 ## Plans, billing, and Analytics
 
@@ -66,6 +113,8 @@ Unauthenticated requests, unknown MCP tools, and schema validation failures that
 
 Check MCP connectivity, API-key authentication, and backend health. No provider credentials are tested.
 
+Returns health fields under `data`, including `status` and the terminal-style `screen` string. A degraded health result sets `success: false` and MCP `isError: true`.
+
 No parameters. Pass `{}`.
 
 ## Tool Vendor
@@ -93,7 +142,7 @@ Search integration tools by keyword, ranked by relevance. The same response incl
 }
 ```
 
-Search returns JSON text containing `tools`, `total`, `query`, `service`, `offset`, `limit`, `has_more`, and `next_step` instructions. Each tool contains `name`, `service`, `description`, and one of these fields:
+Search returns a JSON envelope whose `data` contains `tools`, `total`, `query`, `service`, `offset`, `limit`, `has_more`, and `next_step` instructions. Each tool contains `name`, `service`, `description`, and one of these fields:
 
 | Field | Next action |
 |---|---|
@@ -119,6 +168,8 @@ This reduces the usual search → schema retrieval → execution path to two cal
 
 List tools for one service with pagination. Follow subsequent pages to retrieve the full list.
 
+Returns `data.tools` and the service listing metadata as JSON. Empty listings keep `tools: []`. Read `pagination.has_more` (also retained at `data.has_more`) and advance `offset` by `limit` for the next page.
+
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
 | `service` | string | Required | Exact service identifier, such as gmail or slack. |
@@ -128,6 +179,8 @@ List tools for one service with pagination. Follow subsequent pages to retrieve 
 ### shanone_get_tool_schema
 
 Fetch the input JSON Schema when search returns `schemaRef` instead of `inputSchema`, or to refresh a known schema. This tool remains available; it is not required after every search.
+
+Returns the schema record under `data`, including `name`, `description`, and `inputSchema`. The schema is a JSON object, not a Markdown code block.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
@@ -180,6 +233,8 @@ Results include `verified`, `reauth_required`, `insufficient_permissions`, `perm
 
 Execute an integration tool. Inspect both the execution envelope and the provider result; completing a tool invocation does not by itself prove the provider operation succeeded.
 
+Check the outer `success` and `error`, then inspect `data.result`. Backend fields such as `reason`, `connect_link`, timing, and connection metadata are retained under `data` when provided. A provider result with `success: false` is also reported as an MCP error. Nested provider text is preserved; only JSON strings in the execution `result` slot are decoded.
+
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
 | `tool_name` | string | Required | Exact tool name, such as gmail_get_profile. |
@@ -210,6 +265,8 @@ All 13 tools require Plus or above and are billable only on success. Skill owner
 
 List saved skills, newest first. The query is optional; an empty query lists your saved skills with pagination.
 
+Returns the skill list and pagination metadata under `data`; an empty list remains `data.skills: []`.
+
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
 | `query` | string | `""` | Search text; empty where optional. |
@@ -219,6 +276,8 @@ List saved skills, newest first. The query is optional; an empty query lists you
 ### shanone_get_skill
 
 Read a skill’s name, summary, and full instructions. The agent follows the instructions itself; this call does not execute the workflow.
+
+Returns the skill record as `data`, including the complete instructions. Create and update operations also return their resulting skill records in this format.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
@@ -257,6 +316,8 @@ Update an existing skill. Only non-empty optional fields are changed; empty stri
 
 Permanently delete a skill.
 
+On success, `data` contains `skill_id` and `deleted: true`.
+
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
 | `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
@@ -265,6 +326,8 @@ Permanently delete a skill.
 
 List additional files bundled with a skill, including paths and sizes. The main instructions are read with get_skill.
 
+Returns `data.skill_id`, `data.files`, and `data.count`. Empty results retain an empty file array.
+
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
 | `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
@@ -272,6 +335,8 @@ List additional files bundled with a skill, including paths and sizes. The main 
 ### shanone_read_skill_file
 
 Read a text file bundled with a skill. Binary files return a description instead of their contents; use the dashboard to view or download them.
+
+The JSON result retains file metadata. Binary content uses `data.content: null` and `data.content_omitted: true`, with a `message` directing you to the dashboard.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
@@ -299,6 +364,8 @@ Create or overwrite a UTF-8 text file. Missing parent folders are created automa
 ### shanone_delete_skill_file
 
 Delete one file bundled with a skill.
+
+On success, `data` contains `skill_id`, `path`, and `deleted: true`.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
@@ -337,6 +404,8 @@ Create an empty skill folder. This is optional before writing files because writ
 
 Delete a folder and all files and subfolders inside it. This operation cannot be undone.
 
+On success, `data` contains `skill_id`, `path`, and `deleted: true`.
+
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
 | `skill_id` | string | Required | Exact skill ID returned by list_skills or create_skill. |
@@ -360,9 +429,11 @@ Permission and parameter-policy management, except list_services, requires Root 
 
 List registered service names, display names, and tool counts. No administrator role is required.
 
+Returns `data.services` with `tools_count` per service, plus `total`, `offset`, `limit`, and `has_more`. The same page metadata is available in `pagination`.
+
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
-| `limit` | integer | `100` | Maximum results per page. Maximum 500. |
+| `limit` | integer | `100` | Maximum results per page, from 1 to 200. |
 | `offset` | integer | `0` | Number of results to skip. |
 
 ### shanone_list_user_tool_permissions
@@ -376,6 +447,8 @@ List a target user’s tool and service permission overrides.
 ### shanone_set_user_tool_permission
 
 Allow or deny one tool for a target user. A tool override takes priority over a service override or role default.
+
+Storage failures are reported as errors instead of successful permission changes. The same applies to service permission updates.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
@@ -404,6 +477,8 @@ Summarize a target user’s enabled and disabled services and tools.
 ### shanone_batch_set_user_permissions
 
 Apply up to 500 service/tool permission operations in one call. Inspect each operation’s result; one failure does not abort the entire batch.
+
+If any operation fails, the outer `success` is `false` and MCP `isError` is `true`; already successful operations are not rolled back. Remote MCP reports `error.code: "PARTIAL_FAILURE"` and per-operation outcomes in `data.operations`, with `data.updated_count`. Node uses the same outer contract with per-operation outcomes in `data.results`; its `operations` argument is an array, not a JSON string.
 
 | Parameter | Type | Required / default | Description |
 |---|---|---|---|
@@ -485,7 +560,7 @@ Remove the policy on one field. This does not change the tool’s allow/deny per
 
 `shanone_create_execution_context`, `shanone_get_execution_context`, and `shanone_switch_connection` have been removed. Refresh the client’s tool list and migrate to explicit connection IDs.
 
-`shanone_get_tool_usage` is a design proposal, not an available tool.
+The three Analytics tools are included in source; check `tools/list` for availability on your endpoint.
 
 [Configure your connection](/mcp/setup).
 
@@ -559,43 +634,53 @@ Errors use MCP `isError: true`: `PLAN_UPGRADE_REQUIRED`, `PERMISSION_DENIED`, `I
 
 #### Reading the response (version 2)
 
-Successful Analytics responses include `response_version: 2`, `query_status: "success"`, and a short `summary`. This means the Analytics query succeeded, not that every recorded execution succeeded. A failed Analytics operation uses MCP `isError: true` and a `query_status: "error"` error body when it reaches the shared execution policy. Protocol/input validation may reject earlier. Existing fields (`totals`, `rows`, `logs`, `status`, `duration_ms`, `billable`) remain available.
+The outer MCP envelope uses `response_version: 1`. Successful Analytics data inside `data` includes `response_version: 2`, `query_status: "success"`, and a short `summary`. This means the Analytics query succeeded, not that every recorded execution succeeded. A failed Analytics operation uses MCP `isError: true` and a `query_status: "error"` error body when it reaches the shared execution policy. Protocol/input validation may reject earlier. Existing fields (`totals`, `rows`, `logs`, `status`, `duration_ms`, `billable`) remain inside `data`. Logged execution failures do not make a successful Analytics query an MCP error.
 
-Illustrative search row, abbreviated:
+Illustrative response with abbreviated Analytics data:
 
 ```json
 {
-  "response_version": 2,
-  "query_status": "success",
-  "summary": "Showing 1 of 1 matching execution logs, newest first.",
-  "logs": [{
-    "log_id": "log_example",
-    "tool_name": "example_update",
-    "status": "failed",
-    "execution": {
-      "status": "failed",
-      "recorded_status": "error",
-      "duration_ms": 320,
-      "summary": "Execution was recorded as failed.",
-      "error": {
-        "state": "recorded_classification",
-        "category": "timeout",
-        "message": "The recorded execution timed out.",
-        "suggested_action": "Check whether the original operation completed before retrying; a timeout does not prove it had no effect.",
-        "automatic_retry": false
+  "response_version": 1,
+  "success": true,
+  "data": {
+    "response_version": 2,
+    "query_status": "success",
+    "summary": "Showing 1 of 1 matching execution logs, newest first.",
+    "logs": [
+      {
+        "log_id": "log_example",
+        "tool_name": "example_update",
+        "status": "failed",
+        "execution": {
+          "status": "failed",
+          "recorded_status": "error",
+          "duration_ms": 320,
+          "summary": "Execution was recorded as failed.",
+          "error": {
+            "state": "recorded_classification",
+            "category": "timeout",
+            "message": "The recorded execution timed out.",
+            "suggested_action": "Check whether the original operation completed before retrying; a timeout does not prove it had no effect.",
+            "automatic_retry": false
+          }
+        },
+        "billing": {
+          "billable": true,
+          "decision_source": "recorded",
+          "reason": "billable_failed_execution",
+          "reason_state": "recorded"
+        },
+        "detail_query": {
+          "tool": "shanone_get_tool_log",
+          "arguments": {
+            "log_id": "log_example",
+            "scope": "self"
+          }
+        }
       }
-    },
-    "billing": {
-      "billable": true,
-      "decision_source": "recorded",
-      "reason": "billable_failed_execution",
-      "reason_state": "recorded"
-    },
-    "detail_query": {
-      "tool": "shanone_get_tool_log",
-      "arguments": {"log_id": "log_example", "scope": "self"}
-    }
-  }]
+    ]
+  },
+  "error": null
 }
 ```
 
@@ -619,7 +704,7 @@ New execution records persist their billing decision reason:
 
 For older records, `reason` is `null` and `reason_state` is `not_recorded`; current pricing is never used to invent a historical reason. `decision_source: legacy_default` indicates the billing flag itself was absent and the shared legacy fallback was applied. Reasons and top-level collection counts become available for newly written records after the relevant execution service is deployed. Older records are not backfilled.
 
-Response version 2 uses a separate snapshot binding. Cursors created before this output update must be replaced by a new query; existing authorization, read budgets, payload restrictions, and billing rules still apply.
+The Analytics data version 2 update uses a separate snapshot binding. Adding the outer MCP version 1 envelope does not itself change the Analytics cursor format. Cursors created before the Analytics version 2 update must be replaced by a new query; existing authorization, read budgets, payload restrictions, and billing rules still apply.
 
 ## OpenAI integration tools
 
