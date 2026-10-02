@@ -21,7 +21,7 @@ Connect directly to **Remote MCP (Streamable HTTP)** to use all 32 tools. A loca
 ## Prerequisites
 
 - One of the supported clients: **Cursor**, **Claude Code**, or **Codex**
-- A Shanone account and an API key from **Settings → API Keys** (starts with `sh_`)
+- A Shanone account and an API key from the [API Keys page](https://app.shanone.ai/api-keys) (starts with `sh_`)
 - Node.js 18+ if using the local proxy
 
 ## Step 1: Get your API key
@@ -31,7 +31,7 @@ Connect directly to **Remote MCP (Streamable HTTP)** to use all 32 tools. A loca
     Go to [app.shanone.ai](https://app.shanone.ai) and sign in.
   </Step>
   <Step title="Open API Keys">
-    Go to **Settings → API Keys**.
+    Open the [API Keys page](https://app.shanone.ai/api-keys).
   </Step>
   <Step title="Create a key">
     Click **Create API Key**, name it, and choose an expiration (**30 days** by default). You can also choose 7, 60, or 90 days, Custom (1–366 days), or Never. Create the key and copy the plaintext value — shown only once, in the form `sh_xxxxxxxxxxxxxxxx`.
@@ -87,7 +87,7 @@ X-Org-Id: org_xxxxxxxxxxxxxxxx
     }
     ```
 
-    Find your organization ID on the same **Settings → API Keys** page as your API key.
+    Find your organization ID on the same [API Keys page](https://app.shanone.ai/api-keys) as your API key.
   </Tab>
   <Tab title="Claude Code (local proxy)">
     ```bash
@@ -189,10 +189,10 @@ pip install shanone-mcp
     No API key was sent. Double-check your config's `env`/`headers` block matches exactly what's shown above.
   </Accordion>
   <Accordion title="401 invalid_api_key">
-    The key is missing, malformed, revoked, or expired. Check its status and expiration in **Settings → API Keys**. For an expired or revoked key, create a new one and update your client configuration; the old key cannot be reactivated.
+    The key is missing, malformed, revoked, or expired. Check its status and expiration on the [API Keys page](https://app.shanone.ai/api-keys). For an expired or revoked key, create a new one and update your client configuration; the old key cannot be reactivated.
   </Accordion>
   <Accordion title="401 org_id_required / 403 invalid_org_id (direct HTTP only)">
-    You're using the direct `/mcp` endpoint without (or with the wrong) `X-Org-Id`. Copy the exact organization ID from **Settings → API Keys**, or switch to the local proxy, which doesn't need it.
+    You're using the direct `/mcp` endpoint without (or with the wrong) `X-Org-Id`. Copy the exact organization ID from the [API Keys page](https://app.shanone.ai/api-keys), or switch to the local proxy, which doesn't need it.
   </Accordion>
   <Accordion title="429 rate_limit_exceeded">
     You've exceeded your key's rate limit. Wait for the duration in the `Retry-After` header, or ask an admin to raise the limit.
@@ -215,7 +215,7 @@ pip install shanone-mcp
     So you can revoke one without affecting others.
   </Step>
   <Step title="Rotate periodically">
-    Before a key expires, create a new one from **Settings → API Keys**, update your client configuration, and confirm it works before revoking the old key.
+    Before a key expires, create a new one from the [API Keys page](https://app.shanone.ai/api-keys), update your client configuration, and confirm it works before revoking the old key.
   </Step>
 </Steps>
 

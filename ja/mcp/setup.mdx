@@ -21,7 +21,7 @@ description: "Remote MCP またはローカル stdio プロキシで Shanone に
 ## 前提条件
 
 - サポート対象クライアントのいずれか: **Cursor**、**Claude Code**、または**Codex**
-- Shanoneアカウントと、**Settings → API Keys**から取得したAPIキー(`sh_`で始まります)
+- Shanoneアカウントと、[API Keysページ](https://app.shanone.ai/api-keys)から取得したAPIキー(`sh_`で始まります)
 - ローカルプロキシを使う場合はNode.js 18以上
 
 ## ステップ1: APIキーを取得する
@@ -31,7 +31,7 @@ description: "Remote MCP またはローカル stdio プロキシで Shanone に
     [app.shanone.ai](https://app.shanone.ai)にアクセスしてサインインします。
   </Step>
   <Step title="API Keysを開く">
-    **Settings → API Keys**に移動します。
+    [API Keysページ](https://app.shanone.ai/api-keys)を開きます。
   </Step>
   <Step title="キーを作成する">
     **Create API Key**をクリックし、名前を付けて有効期限を選択します（初期値は**30日**）。7日・60日・90日・カスタム（1〜366日）・無期限も選べます。作成後に平文の値をコピーしてください——`sh_xxxxxxxxxxxxxxxx`という形式で、1度だけ表示されます。
@@ -87,7 +87,7 @@ X-Org-Id: org_xxxxxxxxxxxxxxxx
     }
     ```
 
-    組織IDは、APIキーと同じ**Settings → API Keys**ページで確認できます。
+    組織IDは、APIキーと同じ[API Keysページ](https://app.shanone.ai/api-keys)で確認できます。
   </Tab>
   <Tab title="Claude Code (local proxy)">
     ```bash
@@ -189,10 +189,10 @@ pip install shanone-mcp
     APIキーが送信されていません。設定の`env`/`headers`ブロックが、上記の内容と正確に一致しているか確認してください。
   </Accordion>
   <Accordion title="401 invalid_api_key">
-    キーが欠落している、不正な形式である、無効化されている、または期限切れです。**Settings → API Keys**で状態と有効期限を確認してください。期限切れ・無効化済みの場合は、新しいキーを作成してクライアント設定を更新します。古いキーの再有効化はできません。
+    キーが欠落している、不正な形式である、無効化されている、または期限切れです。[API Keysページ](https://app.shanone.ai/api-keys)で状態と有効期限を確認してください。期限切れ・無効化済みの場合は、新しいキーを作成してクライアント設定を更新します。古いキーの再有効化はできません。
   </Accordion>
   <Accordion title="401 org_id_required / 403 invalid_org_id (direct HTTP only)">
-    `X-Org-Id`を指定せずに(あるいは誤った値で)、直接`/mcp`エンドポイントを使用しています。**Settings → API Keys**から正確な組織IDをコピーするか、この設定が不要なローカルプロキシに切り替えてください。
+    `X-Org-Id`を指定せずに(あるいは誤った値で)、直接`/mcp`エンドポイントを使用しています。[API Keysページ](https://app.shanone.ai/api-keys)から正確な組織IDをコピーするか、この設定が不要なローカルプロキシに切り替えてください。
   </Accordion>
   <Accordion title="429 rate_limit_exceeded">
     キーのレート制限を超えました。`Retry-After`ヘッダーに示された時間だけ待つか、管理者に制限の緩和を依頼してください。
@@ -215,7 +215,7 @@ pip install shanone-mcp
     そうすることで、1つを無効化しても他に影響が及びません。
   </Step>
   <Step title="定期的にローテーションする">
-    期限が切れる前に**Settings → API Keys**から新しいキーを作成し、クライアント設定を更新してください。新しいキーで動作することを確認してから、古いキーを無効化します。
+    期限が切れる前に[API Keysページ](https://app.shanone.ai/api-keys)から新しいキーを作成し、クライアント設定を更新してください。新しいキーで動作することを確認してから、古いキーを無効化します。
   </Step>
 </Steps>
 
