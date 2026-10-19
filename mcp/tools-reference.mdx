@@ -1,13 +1,13 @@
 ---
 title: "Tools Reference"
-description: "Parameters, plan availability, billing, and usage accounting for the 32 Remote MCP tools."
+description: "Parameters, plan availability, billing, and usage accounting for the Remote MCP tools."
 ---
 
 <Note>
 Response contract v1 is implemented in the Remote MCP source and Node.js 0.8.0 / Python 0.5.0 source releases. Production deployment and npm/PyPI publication are separate steps; these versions do not imply publication. Check your endpoint’s `tools/list` and `outputSchema` for the actual contract.
 </Note>
 
-Parameters, plan availability, billing, and usage accounting for the 32 Remote MCP tools.
+Parameters, plan availability, billing, and usage accounting for the Remote MCP tools.
 
 This reference describes **Remote MCP over Streamable HTTP**. Local proxies differ by package and version; check your server’s `tools/list` for the actual tools and schemas.
 
@@ -19,7 +19,7 @@ Free users can discover skill names, descriptions, and input schemas. Execution 
 
 ## Response format
 
-Updated Remote MCP, Python stdio, and Node stdio use the same envelope for every registered tool. Remote MCP has 32 tools; Python and Node each have 21, with different tool inventories. Tool-specific fields below refer to values inside `data`.
+Updated Remote MCP, Python stdio, and Node stdio use the same envelope for every registered tool. Tool inventories depend on the endpoint and installed package release. Tool-specific fields below refer to values inside `data`.
 
 - `content[0].text` is a JSON string. Parsing it produces the same object as `structuredContent`.
 - `response_version` is `1`; `success` indicates whether this call succeeded.
@@ -709,3 +709,14 @@ The Analytics data version 2 update uses a separate snapshot binding. Adding the
 ## OpenAI integration tools
 
 OpenAI provides 10 integration tools through `shanone_execute_tool`: image generation/editing, background research with status/cancellation, transcription, speech generation, and background file analysis with status/cancellation. See the [OpenAI tool reference](/integrations/openai) for exact arguments, model constraints, API mappings, output fields and migration notes. These are integration tools, not additional MCP control tools.
+
+
+## shanone_prepare_file_upload
+
+Prepare a built-in Shanone temporary upload. Parameters: `filename`, `content_type`, `size_bytes` (1–50,000,000), and `sha256` (64 lowercase hex characters). Successful `data` contains `attachment_id` and `upload.url`/`upload.fields`. The client sends a multipart POST.
+
+## shanone_get_file_upload_status
+
+Parameter: `attachment_id`. Verifies ownership, expiry, size and SHA-256; returns `data.status: "ready"` on completion. Does not extend expiry.
+
+[Workflow, permissions, retention and compatibility](/mcp/file-transfers).

@@ -1,6 +1,6 @@
 ---
 title: "Shanone MCP サーバー"
-description: "32ツールの構成、プラン、課金とアカウント選択。"
+description: "標準ツールの構成、プラン、課金とアカウント選択。"
 ---
 
 <Note>
@@ -9,12 +9,14 @@ description: "32ツールの構成、プラン、課金とアカウント選択�
 
 更新後のツールは `content[0].text` にJSON文字列を返し、`structuredContent` と内容が一致します。成否はルートの `success`・`error`、ツール固有の値は `data` 配下を確認してください。[共通応答形式と移行方法](/ja/mcp/tools-reference#共通応答形式)。
 
-Remote MCP は **32ツール**を公開します。内訳はヘルスチェック１、検索・スキーマ・実行４、接続管理２、スキル13、サービス・権限管理９、Analytics３です。
+Remote MCPでは、ヘルスチェック、標準ファイル機能、ツール検索・実行、接続管理、スキル、権限管理、Analyticsを利用できます。公開状況は接続先の `tools/list` で確認してください。
 
 ## ツール一覧
 
 | ツール | 用途 | プラン・課金 |
 |---|---|---|
+| [`shanone_prepare_file_upload`](/ja/mcp/tools-reference#shanone_prepare_file_upload) | Shanone標準の一時ファイル送信を準備 | 既存のファイル権限・利用枠を適用 |
+| [`shanone_get_file_upload_status`](/ja/mcp/tools-reference#shanone_get_file_upload_status) | 所有者・内容・期限を照合 | 既存のファイル権限・利用枠を適用 |
 | [`shanone_health_check`](/ja/mcp/tools-reference#shanone_health_check) | MCP の接続、API キー認証、バックエンドの稼働状態を確認します。外部サービスの認証は検証しません。 | Free 以上・非課金 |
 | [`shanone_search_tools`](/ja/mcp/tools-reference#shanone_search_tools) | 上位候補の入力スキーマも同梱して検索します。schemaRef の場合のみ追加取得し、全件列挙には list_service_tools を使います。 | Free 以上・非課金 |
 | [`shanone_list_service_tools`](/ja/mcp/tools-reference#shanone_list_service_tools) | 指定サービスのツールをページ単位で取得します。全件取得する場合は後続ページも取得してください。 | Free 以上・非課金 |
@@ -62,3 +64,5 @@ Remote MCP は **32ツール**を公開します。内訳はヘルスチェッ�
 管理操作は非課金でも Analytics に記録されます。スキルは成功時だけ１回分を消費します。接続確認は内部の確認用 API を含めて非課金で、親１回だけを集計します。外部ツールの実行は実行先の通常の課金ルールに従います。
 
 [全パラメーターとエラー](/ja/mcp/tools-reference) · [接続設定](/ja/mcp/setup)
+
+[標準ファイル機能の利用手順](/ja/mcp/file-transfers).

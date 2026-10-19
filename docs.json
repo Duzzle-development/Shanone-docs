@@ -237,7 +237,8 @@
                   "mcp/overview",
                   "mcp/Shanone-mcp-server",
                   "mcp/setup",
-                  "mcp/tools-reference"
+                  "mcp/tools-reference",
+                  "mcp/file-transfers"
                 ]
               }
             ]
@@ -449,7 +450,8 @@
                   "ja/mcp/overview",
                   "ja/mcp/Shanone-mcp-server",
                   "ja/mcp/setup",
-                  "ja/mcp/tools-reference"
+                  "ja/mcp/tools-reference",
+                  "ja/mcp/file-transfers"
                 ]
               }
             ]

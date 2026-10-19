@@ -9,7 +9,7 @@ description: "Shanone の MCP ツール、接続方式、プランと利用回�
 
 更新後のツールは `content[0].text` にJSON文字列を返し、`structuredContent` と内容が一致します。成否はルートの `success`・`error`、ツール固有の値は `data` 配下を確認してください。[共通応答形式と移行方法](/ja/mcp/tools-reference#共通応答形式)。
 
-Shanone は Model Context Protocol（MCP）を通じて、AI クライアントから外部サービス、保存したスキル、権限管理を利用できるようにします。Remote MCP は **32 ツール**を公開しています。
+Shanone は Model Context Protocol（MCP）を通じて、AI クライアントから外部サービス、保存したスキル、権限管理を利用できるようにします。Remote MCP は **標準ツール**を公開しています。
 
 ## 必要なツールを探して実行する
 
@@ -26,7 +26,7 @@ Shanone は Model Context Protocol（MCP）を通じて、AI クライアント�
 
 | 方式 | 特徴 |
 |---|---|
-| Remote MCP（Streamable HTTP） | `https://mcp.shanone.ai/mcp` に接続します。このドキュメントの 32 ツールとパラメーターはこの方式を対象にしています。 |
+| Remote MCP（Streamable HTTP） | `https://mcp.shanone.ai/mcp` に接続します。このドキュメントの標準ツールとパラメーターはこの方式を対象にしています。 |
 | ローカル stdio プロキシ | npm の `@duzzle/shanone-mcp` または Python の `shanone-mcp` を起動し、Shanone の REST API に転送します。公開ツールと引数形式はパッケージ・バージョンによって異なります。 |
 
 <Note>

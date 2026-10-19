@@ -9,7 +9,7 @@ Response contract v1 is implemented in the Remote MCP source and Node.js 0.8.0 /
 
 Updated tools return JSON in `content[0].text` matching `structuredContent`. Read `success` and `error` at the root and tool-specific fields under `data`. See the [response format and migration guide](/mcp/tools-reference#response-format).
 
-Shanone uses the Model Context Protocol (MCP) to give AI clients access to external services, saved skills, and permission management. Remote MCP exposes **32 tools**.
+Shanone uses the Model Context Protocol (MCP) to give AI clients access to external services, saved skills, and permission management. Remote MCP exposes **standard tools**.
 
 ## Discover and execute tools
 
@@ -26,7 +26,7 @@ When provider OAuth is required, follow the connection instructions in the execu
 
 | Transport | Behavior |
 |---|---|
-| Remote MCP (Streamable HTTP) | Connect to `https://mcp.shanone.ai/mcp`. The 32 tools and parameters in this documentation describe this transport. |
+| Remote MCP (Streamable HTTP) | Connect to `https://mcp.shanone.ai/mcp`. The standard tools and parameters in this documentation describe this transport. |
 | Local stdio proxy | Run the npm package `@duzzle/shanone-mcp` or Python package `shanone-mcp` to forward calls to Shanone’s REST API. Available tools and argument formats depend on the package and version. |
 
 <Note>

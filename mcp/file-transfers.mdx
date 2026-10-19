@@ -1,0 +1,66 @@
+---
+title: "File transfers"
+description: "Upload local files through Shanone's built-in MCP tools and pass attachment IDs to integrations."
+---
+
+Shanone provides file transfer as a **built-in MCP capability**, not an external integration to connect. Call `shanone_prepare_file_upload` and `shanone_get_file_upload_status` directly from your MCP client. You do not need Dropbox or another file-hosting service to obtain an image URL.
+
+<Note>
+These tools are being rolled out to the development environment first. Production deployment and npm/PyPI package publication are separate steps. Check your endpoint's `tools/list`; reconnect your MCP client after its endpoint is updated. The Python and Node source implementations include both tools, but older installed packages may not.
+</Note>
+
+## Upload a local file
+
+<Steps>
+  <Step title="Prepare the upload">
+    Compute the file's byte count and lowercase SHA-256 on the client, then call `shanone_prepare_file_upload` with `filename`, `content_type`, `size_bytes`, and `sha256`.
+
+    ```json
+    {
+      "filename": "photo.jpg",
+      "content_type": "image/jpeg",
+      "size_bytes": 192489,
+      "sha256": "REPLACE_WITH_THE_FILE_S_64_CHARACTER_LOWERCASE_SHA256"
+    }
+    ```
+
+    Use your actual file size and digest. The successful response's `data` contains `attachment_id`, `expires_at`, and `upload` with `method`, `url`, `fields`, and its own `expires_at`.
+  </Step>
+  <Step title="Send the bytes from the client">
+    Send an HTTP **multipart POST** to `upload.url`, including every returned `upload.fields` value unchanged, with the local file as the final field named `file`. Do not PUT raw bytes. The remote MCP server cannot read a path on your computer.
+
+    The repository includes `scripts/upload_temporary_attachment.py`: run it with `--file` to obtain preparation arguments, or add `--prepared prepared.json` to upload. Save the preparation response's `data` object in that private JSON file. Delete it afterward because it contains temporary upload credentials.
+  </Step>
+  <Step title="Verify the upload">
+    Call `shanone_get_file_upload_status` with the returned `attachment_id`. Continue when `data.status` is `ready`. The server verifies ownership, expiry, size and SHA-256.
+  </Step>
+  <Step title="Use the attachment">
+    Pass the ID to a consuming tool through `shanone_execute_tool`. For example, use `attachment_id` with `openai_edit_image`, or `attachment_ids` with `openai_analyze_file`. The consuming tool checks the file again before using it.
+  </Step>
+</Steps>
+
+## Supported consumers
+
+- `openai_edit_image`: `attachment_id`, `reference_attachment_ids`, `mask_attachment_id`. Choose either the main image URL or attachment ID; likewise choose a mask URL or ID. URL and ID references share the 15-reference limit.
+- `openai_transcribe_audio`: `attachment_id` instead of `audio_url`; up to 25 MB and the tool's supported audio formats.
+- `openai_analyze_file`: `attachment_ids` instead of `file_url`/`file_urls`; up to five files and 20 MB combined.
+- `openai_compare_sources`: `attachment_ids` and/or `file_urls`; up to five files and 20 MB combined.
+- `gmail_send_message`: `attachment_ids`; up to ten files and 18 MB combined before MIME encoding.
+
+The common upload limit is **50 MB per file**. Each consuming tool retains its own lower size and format limits. Existing public HTTPS inputs remain supported.
+
+## Privacy and retention
+
+- Files are private in Shanone's S3 storage and bound to the authenticated user.
+- Upload authorization lasts **at most 15 minutes**. AWS session expiry may shorten it.
+- Attachment use expires **24 hours after preparation**. Verification does not extend it.
+- S3 deletes files asynchronously through lifecycle rules, including old versions. Physical deletion is not guaranteed at exactly 24 hours; the application rejects expired inputs regardless.
+- Generated images, provider-side copies and sent email attachments have separate retention policies.
+
+## Permissions, usage and compatibility
+
+The new names are native Shanone MCP tools, so call them directly rather than searching for an external `artifacts` integration. No OAuth connection or separate storage API key is required. Your Shanone API key must allow `tasks:create` (or `all`), and existing file tool permissions and Tool Call quotas still apply.
+
+For compatibility, the stored permission and execution keys remain `artifacts_prepare_upload` and `artifacts_get_upload_status`, displayed under **Shanone Files**. Existing allow/deny overrides, attachment IDs and old `shanone_execute_tool` calls continue to work. Enable these two existing permission keys if access is denied; no permission is automatically granted by switching to the new names.
+
+Each native call delegates once to the existing file execution engine: it does not add a second Tool Call. Usage logs currently retain the compatibility operation names. Consuming image/audio/analysis tools have their own Tool Call and provider charges.

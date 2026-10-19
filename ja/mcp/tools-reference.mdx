@@ -1,13 +1,13 @@
 ---
 title: "ツールリファレンス"
-description: "Remote MCP の32ツールについて、引数・プラン・課金・利用回数の扱いを説明します。"
+description: "Remote MCP の標準ツールについて、引数・プラン・課金・利用回数の扱いを説明します。"
 ---
 
 <Note>
 共通応答形式v1はRemote MCPのソース、およびNode.js 0.8.0／Python 0.5.0のソースに実装されています。本番への配備とnpm/PyPI公開は別工程で、このバージョン表記は公開済みであることを意味しません。接続先の `tools/list` と `outputSchema` で実際の形式を確認してください。
 </Note>
 
-Remote MCP の32ツールについて、引数・プラン・課金・利用回数の扱いを説明します。
+Remote MCP の標準ツールについて、引数・プラン・課金・利用回数の扱いを説明します。
 
 このリファレンスは **Remote MCP（Streamable HTTP）** を対象とします。ローカルプロキシの公開ツールや引数形式はパッケージ・バージョンにより異なります。実際の一覧は接続先の `tools/list` で確認してください。
 
@@ -19,7 +19,7 @@ Remote MCP の32ツールについて、引数・プラン・課金・利用回�
 
 ## 共通応答形式
 
-更新後のRemote MCP・Python stdio・Node stdioでは、すべての登録済みツールが同じ外側のJSON形式を返します。Remote MCPは32ツール、PythonとNodeはそれぞれ21ツールで、提供するツールの内訳は異なります。以下のツール固有フィールドは、`data` 内の値を指します。
+更新後のRemote MCP・Python stdio・Node stdioでは、すべての登録済みツールが同じ外側のJSON形式を返します。公開ツールの一覧は接続先とインストールしたパッケージのバージョンによって異なります。以下のツール固有フィールドは、`data` 内の値を指します。
 
 - `content[0].text` はJSON文字列です。パースすると `structuredContent` と同じオブジェクトになります。
 - `response_version` は `1`、`success` は今回の呼び出しの成否です。
@@ -709,3 +709,14 @@ Analyticsデータのバージョン2ではスナップショットの識別条�
 ## OpenAI連携ツール
 
 `shanone_execute_tool`からOpenAIの10ツールを実行できます。画像生成・編集、非同期調査と状態取得・停止、文字起こし、音声生成、非同期ファイル分析と状態取得・停止に対応します。引数・モデル別制約・APIエンドポイント・出力・移行時の変更点は[OpenAIツールリファレンス](/ja/integrations/openai)を参照してください。これらは連携ツールであり、MCP制御ツールの追加ではありません。
+
+
+## shanone_prepare_file_upload
+
+Shanone標準の一時アップロードを準備します。引数は `filename`・`content_type`・`size_bytes`（1〜50,000,000）・`sha256`（64文字の小文字16進数）です。成功時の `data` に `attachment_id` と `upload.url`／`upload.fields` が返ります。クライアント側でmultipart POSTしてください。
+
+## shanone_get_file_upload_status
+
+引数は `attachment_id`。所有者・期限・サイズ・SHA-256を確認し、完了時に `data.status: "ready"` を返します。期限は延長しません。
+
+[手順・権限・保存期間・互換性](/ja/mcp/file-transfers).

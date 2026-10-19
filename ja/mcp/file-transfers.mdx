@@ -1,0 +1,66 @@
+---
+title: "ファイルの受け渡し"
+description: "Shanone標準MCPツールでローカルファイルを一時アップロードし、添付IDを各ツールに渡します。"
+---
+
+ファイルの受け渡しは、接続が必要な外部サービスではなく、**Shanone標準のMCP機能**です。`shanone_prepare_file_upload` と `shanone_get_file_upload_status` を直接呼び出します。画像URLを得るためにDropboxなどを経由する必要はありません。
+
+<Note>
+開発環境から順次反映しています。本番環境へのデプロイとnpm/PyPIパッケージの公開は別工程です。接続先の `tools/list` で利用可否を確認し、更新後は必要に応じてMCPクライアントを再接続してください。Python版・Node.js版のソースには両ツールを追加していますが、インストール済みの旧版には含まれない場合があります。
+</Note>
+
+## ローカルファイルを送る
+
+<Steps>
+  <Step title="アップロードを準備する">
+    クライアント側でファイルのバイト数と小文字のSHA-256を計算し、`filename`・`content_type`・`size_bytes`・`sha256` を指定して `shanone_prepare_file_upload` を呼び出します。
+
+    ```json
+    {
+      "filename": "photo.jpg",
+      "content_type": "image/jpeg",
+      "size_bytes": 192489,
+      "sha256": "実際のファイルから計算した64文字の小文字SHA256に置換"
+    }
+    ```
+
+    サイズとハッシュは実際の値に置き換えてください。成功応答の `data` に `attachment_id`、`expires_at`、`upload` が返ります。`upload` には `method`・`url`・`fields` と、アップロード用の `expires_at` が含まれます。
+  </Step>
+  <Step title="クライアント側からファイル本体を送る">
+    `upload.url` に **multipart POST** します。返された `upload.fields` をすべて変更せずに含め、最後の `file` フィールドにローカルファイルを指定します。生のファイルをPUTする方式ではありません。リモートMCPサーバーは、利用者のPCのパスを直接読み取れません。
+
+    リポジトリの `scripts/upload_temporary_attachment.py` を `--file` 付きで実行すると準備用の引数を取得できます。準備応答の `data` を非公開のJSONファイルに保存し、`--prepared prepared.json` を追加すると転送します。このJSONには一時的なアップロード認証情報が含まれるため、使用後に削除してください。
+  </Step>
+  <Step title="完了を確認する">
+    返された `attachment_id` で `shanone_get_file_upload_status` を呼び出します。所有者・期限・サイズ・SHA-256の照合後に `data.status` が `ready` になります。
+  </Step>
+  <Step title="添付IDをツールに渡す">
+    `shanone_execute_tool` で利用先のツールを実行します。例えば `openai_edit_image` には `attachment_id`、`openai_analyze_file` には `attachment_ids` を渡します。利用先でもファイルを再検証します。
+  </Step>
+</Steps>
+
+## 対応ツール
+
+- `openai_edit_image`：`attachment_id`・`reference_attachment_ids`・`mask_attachment_id`。元画像とマスクは、それぞれURLかIDの一方を指定します。参照画像はURLとIDを合わせて15枚までです。
+- `openai_transcribe_audio`：`audio_url` の代わりに `attachment_id`。25 MBまで、対応する音声形式に限ります。
+- `openai_analyze_file`：`file_url`／`file_urls` の代わりに `attachment_ids`。5ファイル、合計20 MBまでです。
+- `openai_compare_sources`：`attachment_ids` と `file_urls` を併用可能。合計5ファイル、20 MBまでです。
+- `gmail_send_message`：`attachment_ids`。10ファイル、MIME変換前の合計18 MBまでです。
+
+共通アップロードの上限は **1ファイル50 MB** です。利用先ツール固有の容量・形式制限は引き続き適用されます。既存の公開HTTPS URL入力も利用できます。
+
+## 保存期間とプライバシー
+
+- ShanoneのS3に非公開で保存し、認証済みの利用者に紐づけます。
+- アップロード用の認証は **最大15分**。AWSのセッション期限により短くなる場合があります。
+- ファイルの利用期限は **準備から24時間**。完了確認を繰り返しても延長されません。
+- S3のライフサイクル設定で過去のバージョンを含めて非同期に削除します。24時間ちょうどの物理削除は保証されませんが、Shanone側で期限切れファイルの利用を拒否します。
+- 編集後の画像、外部APIに渡したコピー、送信済みメールの添付には、それぞれ別の保存期間が適用されます。
+
+## 権限・利用回数・互換性
+
+新しい名前はShanoneの標準MCPツールです。外部の `artifacts` サービスを接続する操作は不要で、OAuthやストレージ用のAPIキーも必要ありません。ShanoneのAPIキーには `tasks:create` または `all` が必要で、既存のファイルツール権限とTool Call利用枠も適用されます。
+
+互換性のため、保存済みの権限と実行処理のキーは `artifacts_prepare_upload`・`artifacts_get_upload_status` を維持し、**Shanone標準ファイル機能**として表示します。既存の許可・拒否設定、発行済みの添付ID、旧名を指定した `shanone_execute_tool` 呼び出しも利用できます。権限不足の場合は、この2つの既存権限キーを有効にしてください。新しい名前に変えただけで権限が付与されることはありません。
+
+標準ツールの呼び出しは既存のファイル実行処理へ1回だけ委譲し、Tool Callを二重計上しません。現在の利用ログには互換用の操作名が記録されます。利用先の画像・音声・分析ツールには、別途Tool Callと外部APIの料金が適用されます。
