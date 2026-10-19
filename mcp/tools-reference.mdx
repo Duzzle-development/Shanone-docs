@@ -113,7 +113,7 @@ Unauthenticated requests, unknown MCP tools, and schema validation failures that
 
 Check MCP connectivity, API-key authentication, and backend health. No provider credentials are tested.
 
-Returns health fields under `data`, including `status` and the terminal-style `screen` string. A degraded health result sets `success: false` and MCP `isError: true`.
+Returns structured health fields under `data`: `status`, `service`, `version`, `timestamp`, `checks`, and `user` when authenticated. Degraded results also include troubleshooting tips. Display-only `banner` and `screen` fields are no longer returned, reducing context usage. A degraded health result sets `success: false` and MCP `isError: true`.
 
 No parameters. Pass `{}`.
 

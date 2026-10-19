@@ -113,7 +113,7 @@ const tools = data.tools; // Tool listing
 
 MCP の接続、API キー認証、バックエンドの稼働状態を確認します。外部サービスの認証は検証しません。
 
-`data` 内に `status` や表示用の `screen` 文字列などを返します。稼働状態が `degraded` の場合は `success: false`、MCPの `isError: true` になります。
+`data` 内に `status`・`service`・`version`・`timestamp`・`checks`・認証済みの場合は `user` を構造化データとして返します。不調時には対処方法も含まれます。コンテキスト消費を抑えるため、表示用の `banner`・`screen` は返しません。稼働状態が `degraded` の場合は `success: false`、MCPの `isError: true` になります。
 
 パラメーターはありません。`{}` を渡します。
 
